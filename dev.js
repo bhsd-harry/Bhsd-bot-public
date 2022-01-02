@@ -15,9 +15,6 @@ const info = (msg = 'dev.info测试') => {
 // 判断是否为对象
 const isObject = (obj) => typeof obj?.toString === 'function' && obj.toString() === '[object Object]';
 
-// 判断是否为空对象
-const isEmptyObject = (obj) => isObject(obj) && Object.keys(obj).length === 0;
-
 // 将Shell命令转化为Proimse
 const cmd = (str) => new Promise((resolve) => {
 	exec(str, (_, stdout) => {
@@ -25,4 +22,4 @@ const cmd = (str) => new Promise((resolve) => {
 	});
 });
 
-module.exports = {error, info, isObject, isEmptyObject, cmd};
+module.exports = {error, info, isObject, cmd};

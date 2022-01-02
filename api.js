@@ -66,7 +66,7 @@ class Api {
 		if (this.#token === '+\\') {
 			throw '尚未获得csrftoken！';
 		}
-		form = {action: 'edit', assert: 'bot', nocreate: 1, summary: '测试性编辑', ...form};
+		form = {action: 'edit', assert: 'bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...form};
 		const {error, edit} = await this.#rp.post(form);
 		if (error) {
 			dev.error(error);
@@ -85,8 +85,7 @@ class Api {
 
 	async #revisions(params) {
 		const qs = {prop: 'revisions', rvprop: 'contentmodel|content', converttitles: 1, ...params},
-			res = await this.#rp.get(qs);
-		const {query, continue: c} = res;
+			{query, continue: c} = await this.#rp.get(qs);
 		if (!query) {
 			return [[], c];
 		}
@@ -95,24 +94,27 @@ class Api {
 		return [pages, c];
 	}
 
-	async #categorymembers(qs, pages) {
+	async #recursiveRevisions(qs, pages) {
+		if (!dev.isObject(qs)) {
+			throw new TypeError('需要对象参数！');
+		}
+		if (!Array.isArray(pages)) {
+			throw new TypeError('第二个可选参数应为数组！');
+		}
 		const [newpages, c] = await this.#revisions(qs);
 		pages = [...pages, ...newpages];
 		if (!c) {
 			return pages;
 		}
-		return this.#categorymembers({...qs, ...c}, pages);
+		return this.#recursiveRevisions({...qs, ...c}, pages);
 	}
 
 	categorymembers(gcmtitle, pages = []) {
 		if (typeof gcmtitle !== 'string') {
 			throw new TypeError('目标分类应为字符串！');
 		}
-		if (!Array.isArray(pages)) {
-			throw new TypeError('第二个可选参数应为数组！');
-		}
 		const qs = {generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'};
-		return this.#categorymembers(qs, pages);
+		return this.#recursiveRevisions(qs, pages);
 	}
 }
 
