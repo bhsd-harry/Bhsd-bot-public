@@ -13,7 +13,7 @@ const url = 'https://zh.moegirl.org.cn',
 
 (async () => {
 	if (process.argv[2] !== 'dry') {
-		await api.csrftoken();
+		await api.csrfToken();
 	}
 	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
 		'em', 's', 'strike', 'strong', 'tt', 'var', 'div', 'center', 'blockquote', 'ol', 'ul', 'dl', 'table',
