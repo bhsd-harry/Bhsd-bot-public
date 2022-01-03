@@ -1,9 +1,11 @@
+/* eslint-disable no-await-in-loop */
 /**
  * @Function: 仅用于标准的MediaWiki API访问方法
  */
 'use strict';
 const Rp = require('./request-promise.js'),
-	dev = require('./dev.js');
+	dev = require('./dev.js'),
+	{promises: fs} = require('fs');
 
 class Api {
 	#user;
@@ -66,7 +68,7 @@ class Api {
 		if (this.#token === '+\\') {
 			throw '尚未获得csrftoken！';
 		}
-		form = {action: 'edit', assert: 'bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...form};
+		form = {action: 'edit', tags: 'Bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...form};
 		const {error, edit} = await this.#rp.post(form);
 		if (error) {
 			dev.error(error);
@@ -81,6 +83,23 @@ class Api {
 			throw new TypeError('需要对象参数！');
 		}
 		return this.#edit(form);
+	}
+
+	// 批量编辑，此函数不应手动执行
+	async massEdit(list, mode, summary) {
+		if (mode !== 'dry') {
+			return Promise.all(list.map(async ([pageid,, text], t) => {
+				await dev.sleep(t);
+				return this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
+			}));
+		}
+		for (const [i, [pageid, content, text]] of list.entries()) { // 这里有意改为同步执行以保证输出连贯
+			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
+			const diff = await dev.cmd(`diff oldcontent${i} newcontent${i}`);
+			dev.cmd(`rm oldcontent${i} newcontent${i}`);
+			dev.info(`${pageid}:`);
+			console.log(diff);
+		}
 	}
 
 	async #revisions(params) {
@@ -114,6 +133,14 @@ class Api {
 			throw new TypeError('目标分类应为字符串！');
 		}
 		const qs = {generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'};
+		return this.#recursiveRevisions(qs, pages);
+	}
+
+	search(gsrsearch, pages = []) {
+		if (typeof gsrsearch !== 'string') {
+			throw new TypeError('查询条件应为字符串！');
+		}
+		const qs = {generator: 'search', gsrsearch, gsrlimit: 50, gsrnamespace: '0', gsrprop: ''};
 		return this.#recursiveRevisions(qs, pages);
 	}
 }

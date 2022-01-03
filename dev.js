@@ -22,4 +22,9 @@ const cmd = (str) => new Promise((resolve) => {
 	});
 });
 
-module.exports = {error, info, isObject, cmd};
+// 延时
+const sleep = (t) => new Promise(resolve => {
+	setTimeout(resolve, t * 1000);
+});
+
+module.exports = {error, info, isObject, cmd, sleep};

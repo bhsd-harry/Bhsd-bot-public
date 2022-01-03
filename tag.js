@@ -5,14 +5,14 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error, cmd} = require('./dev.js'),
-	{promises: fs} = require('fs');
+	{info, error} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
-	api = new Api(user, pin, url);
+	api = new Api(user, pin, url),
+	[,, mode] = process.argv;
 
 (async () => {
-	if (process.argv[2] !== 'dry') {
+	if (mode !== 'dry') {
 		await api.csrfToken();
 	}
 	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
@@ -22,11 +22,10 @@ const url = 'https://zh.moegirl.org.cn',
 	],
 		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi'),
 		pages = await api.categorymembers('Category:使用无效自封闭HTML标签的页面');
-	pages.map(({pageid, content}) => {
-		const mistakes = content.match(regex);
-		if (!mistakes) {
+	const list = pages.map(({pageid, content}) => {
+		if (!regex.test(content)) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);
-			return undefined;
+			return null;
 		}
 		const text = content.replace(regex, (p0, p1) => {
 			if (p0.slice(p1.length + 1, -2).trim()) { // 这大概率是一个独立标签
@@ -36,16 +35,7 @@ const url = 'https://zh.moegirl.org.cn',
 			return `</${p1}>`;
 		});
 		return [pageid, content, text];
-	}).filter(page => page).forEach(async ([pageid, content, text], i) => {
-		if (process.argv[2] === 'dry') {
-			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
-			const diff = await cmd(`diff oldcontent${i} newcontent${i}`);
-			cmd(`rm oldcontent${i} newcontent${i}`);
-			info(`${pageid}:`);
-			console.log(diff);
-			return;
-		}
-		api.edit({pageid, text, summary: '自动修复无效自封闭的HTML标签，如有错误请联系[[User talk:Bhsd|用户Bhsd]]'});
-	});
+	}).filter(page => page);
+	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
 	info('检查完毕！');
 })();
