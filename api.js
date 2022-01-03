@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 /**
  * @Function: 仅用于标准的MediaWiki API访问方法
  */
@@ -96,13 +95,15 @@ class Api {
 				return this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
 			}));
 		}
-		for (const [i, [pageid, content, text]] of list.entries()) { // 这里有意改为同步执行以保证输出连贯
+		(await Promise.all(list.map(async ([pageid, content, text], i) => {
 			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
 			const diff = await dev.cmd(`diff oldcontent${i} newcontent${i}`);
 			dev.cmd(`rm oldcontent${i} newcontent${i}`);
+			return [pageid, diff];
+		}))).forEach(([pageid, diff]) => {
 			dev.info(`${pageid}:`);
 			console.log(diff);
-		}
+		});
 	}
 
 	async #revisions(params) {

@@ -28,7 +28,7 @@ const url = 'https://zh.moegirl.org.cn',
 			return null;
 		}
 		const text = content.replace(regex, (p0, p1) => {
-			if (p0.slice(p1.length + 1, -2).trim()) { // 这大概率是一个独立标签
+			if (p0.slice(p1.length + 1, -2)) { // 这大概率是一个独立标签
 				return `${p0.slice(0, -2)}></${p1}>`;
 			}
 			// 这大概率是一个错误的闭合标签
