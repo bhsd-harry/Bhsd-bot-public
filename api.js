@@ -7,6 +7,9 @@ const Rp = require('./request-promise.js'),
 	dev = require('./dev.js'),
 	{promises: fs} = require('fs');
 
+// 生成标准的分类名称
+const _getCategoryTitle = (title) => /^(?:category|分[类類]):/i.test(title) ? title : `Category:${title}`;
+
 class Api {
 	#user;
 	#pin;
@@ -128,20 +131,21 @@ class Api {
 		return this.#recursiveRevisions({...qs, ...c}, pages);
 	}
 
-	categorymembers(gcmtitle, pages = []) {
+	categorymembers(gcmtitle) {
 		if (typeof gcmtitle !== 'string') {
 			throw new TypeError('目标分类应为字符串！');
 		}
+		gcmtitle = _getCategoryTitle(gcmtitle);
 		const qs = {generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'};
-		return this.#recursiveRevisions(qs, pages);
+		return this.#recursiveRevisions(qs, []);
 	}
 
-	search(gsrsearch, pages = []) {
+	search(gsrsearch) {
 		if (typeof gsrsearch !== 'string') {
 			throw new TypeError('查询条件应为字符串！');
 		}
 		const qs = {generator: 'search', gsrsearch, gsrlimit: 50, gsrnamespace: '0', gsrprop: ''};
-		return this.#recursiveRevisions(qs, pages);
+		return this.#recursiveRevisions(qs, []);
 	}
 }
 

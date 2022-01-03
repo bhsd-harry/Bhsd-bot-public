@@ -21,7 +21,7 @@ const url = 'https://zh.moegirl.org.cn',
 		'mark', 'li', 'dt', 'dd', 'td', 'th', 'tr'
 	],
 		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi'),
-		pages = await api.categorymembers('Category:使用无效自封闭HTML标签的页面');
+		pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
 	const list = pages.map(({pageid, content}) => {
 		if (!regex.test(content)) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);
