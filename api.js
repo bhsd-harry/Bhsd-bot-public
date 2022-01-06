@@ -36,18 +36,12 @@ class Api {
 		this.#token = '+\\';
 	}
 
-	// 获取logintoken
-	async #loginToken() {
-		const {query: {tokens: {logintoken}}} = await this.#rp.get({meta: 'tokens', type: 'login'});
-		return logintoken;
-	}
-
-	// login
+	// 登入
 	async login() {
 		if (this.#login) {
 			return;
 		}
-		const lgtoken = await this.#loginToken();
+		const {query: {tokens: {logintoken: lgtoken}}} = await this.#rp.get({meta: 'tokens', type: 'login'});
 		const {login} = await this.#rp.post({action: 'login', lgname: this.#user, lgpassword: this.#pin, lgtoken});
 		console.log(login);
 		this.#login = true;
@@ -66,7 +60,10 @@ class Api {
 	}
 
 	// 编辑
-	async #edit(form) {
+	async edit(form) {
+		if (!dev.isObject(form)) {
+			throw new TypeError('需要对象参数！');
+		}
 		if (this.#token === '+\\') {
 			throw '尚未获得csrftoken！';
 		}
@@ -77,14 +74,6 @@ class Api {
 			throw error.code;
 		}
 		dev.info(edit);
-	}
-
-	// 检查输入参数并编辑
-	edit(form) {
-		if (!dev.isObject(form)) {
-			throw new TypeError('需要对象参数！');
-		}
-		return this.#edit(form);
 	}
 
 	// 批量编辑，此函数不应手动执行
@@ -137,7 +126,9 @@ class Api {
 			throw new TypeError('目标分类应为字符串！');
 		}
 		gcmtitle = _getCategoryTitle(gcmtitle);
-		const qs = {generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'};
+		const qs = {
+			generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'
+		};
 		return this.#recursiveRevisions(qs, []);
 	}
 
@@ -147,6 +138,45 @@ class Api {
 		}
 		const qs = {generator: 'search', gsrsearch, gsrlimit: 50, gsrnamespace: '0', gsrprop: ''};
 		return this.#recursiveRevisions(qs, []);
+	}
+
+	async #recursiveList(qs, pageids) {
+		if (!dev.isObject(qs)) {
+			throw new TypeError('需要对象参数！');
+		}
+		if (!qs.list) {
+			throw new RangeError('必需list属性！');
+		}
+		if (!Array.isArray(pageids)) {
+			throw new TypeError('第二个可选参数应为数组！');
+		}
+		const {query: {[qs.list]: pages}, continue: c} = await this.#rp.get(qs);
+		pageids = [...pageids, ...pages.map(({pageid}) => pageid)];
+		if (!c) {
+			return pageids;
+		}
+		return this.#recursiveList({...qs, ...c}, pages);
+	}
+
+	onlyCategorymembers(cmtitle) {
+		if (typeof cmtitle !== 'string') {
+			throw new TypeError('目标分类应为字符串！');
+		}
+		cmtitle = _getCategoryTitle(cmtitle);
+		const qs = {list: 'categorymembers', cmlimit: 'max', cmtitle, cmnamespace: '0|9|11|12|13|14|15|275|829'};
+		return this.#recursiveList(qs, []);
+	}
+
+	async parse(params) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('需要对象参数！');
+		}
+		if (params.text) {
+			params.contentmodel = 'wikitext';
+		}
+		const qs = {action: 'parse', prop: 'wikitext|parsewarnings', ...params},
+			{parse: {wikitext, parsewarnings}} = await this.#rp.get(qs);
+		return [wikitext, parsewarnings];
 	}
 }
 

@@ -1,6 +1,5 @@
 /**
- * @Function: 1. 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
- *            2. 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
+ * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
  */
 'use strict';
 const {user, pin} = require('./user.json'),

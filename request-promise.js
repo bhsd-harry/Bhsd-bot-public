@@ -28,7 +28,10 @@ class Rp {
 			throw new TypeError('需要对象参数！');
 		}
 		return new Promise((resolve, reject) => {
-			qs = {action: 'query', format: 'json', formatversion: 2, errorformat: 'plaintext', ..._deleteKeys(qs)};
+			qs = {
+				action: 'query', format: 'json', formatversion: 2, errorformat: 'plaintext', uselang: 'zh-cn',
+				..._deleteKeys(qs)
+			};
 			request.get({url: this.url, qs}, (e, _, body) => {
 				if (e) {
 					reject(e);
@@ -47,7 +50,10 @@ class Rp {
 			throw new TypeError('需要对象参数！');
 		}
 		return new Promise((resolve, reject) => {
-			form = {bot: 1, format: 'json', formatversion: 2, errorformat: 'plaintext', ..._deleteKeys(form)};
+			form = {
+				bot: 1, format: 'json', formatversion: 2, errorformat: 'plaintext', uselang: 'zh-cn',
+				..._deleteKeys(form)
+			};
 			request.post({url: this.url, form}, (e, _, body) => {
 				if (e) {
 					reject(e);
