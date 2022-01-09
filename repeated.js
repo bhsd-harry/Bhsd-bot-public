@@ -4,8 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, sleep, error} = require('./dev.js'),
-	whitelist = require('./whitelist.json');
+	{info, sleep, error} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -112,9 +111,6 @@ const _analyze = (wikitext, repeated, pageid) => {
 	}
 	const pageids = await api.onlyCategorymembers('调用重复模板参数的页面');
 	const list = (await Promise.all(pageids.map(async (pageid, t) => {
-		if (whitelist.includes(pageid)) {
-			return null;
-		}
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
 		const repeated = parsewarnings.filter(warning => warning.includes("'''重复使用'''"));
