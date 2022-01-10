@@ -23,14 +23,14 @@ class Rp {
 		this.url = url;
 	}
 
-	get(qs) {
-		if (!isObject(qs)) {
+	get(params) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		return new Promise((resolve, reject) => {
-			qs = {
+			const qs = {
 				action: 'query', format: 'json', formatversion: 2, errorformat: 'plaintext', uselang: 'zh-cn',
-				..._deleteKeys(qs)
+				..._deleteKeys(params)
 			};
 			request.get({url: this.url, qs}, (e, _, body) => {
 				if (e) {
@@ -45,14 +45,14 @@ class Rp {
 		});
 	}
 
-	post(form) {
-		if (!isObject(form)) {
+	post(params) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		return new Promise((resolve, reject) => {
-			form = {
+			const form = {
 				bot: 1, format: 'json', formatversion: 2, errorformat: 'plaintext', uselang: 'zh-cn',
-				..._deleteKeys(form)
+				..._deleteKeys(params)
 			};
 			request.post({url: this.url, form}, (e, _, body) => {
 				if (e) {

@@ -6,6 +6,16 @@ const Rp = require('./request-promise.js'),
 	dev = require('./dev.js'),
 	{promises: fs} = require('fs');
 
+// 转换为UTC时间
+const _convertToUtc = (str) => {
+	if (str === undefined) {
+		return;
+	} else if (typeof str !== 'string') {
+		throw new TypeError('时间戳应为字符串！');
+	}
+	return new Date(str).toISOString(); // 无效的时间戳会自动抛出RangeError
+};
+
 // 生成标准的分类名称
 const _getCategoryTitle = (title) => /^(?:category|分[类類]):/i.test(title) ? title : `Category:${title}`;
 
@@ -13,10 +23,11 @@ class Api {
 	#user;
 	#pin;
 	#rp;
+	#site;
 	#login = false;
 	#token = '+\\';
 
-	constructor(user, pin, url) {
+	constructor(user, pin, url, site) {
 		if (typeof user !== 'string') {
 			throw new TypeError('用户名应为字符串！');
 		} else if (typeof pin !== 'string') {
@@ -29,6 +40,7 @@ class Api {
 		this.#pin = pin;
 		this.#rp = new Rp(`${url.replace(/api\.php$/i, '').replace(/\/$/, '')}/api.php`);
 		this.url = this.#rp.url;
+		this.#site = site;
 	}
 
 	// 手动标记csrftoken过期
@@ -60,14 +72,14 @@ class Api {
 	}
 
 	// 编辑
-	async edit(form) {
-		if (!dev.isObject(form)) {
+	async edit(params) {
+		if (!dev.isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (this.#token === '+\\') {
 			throw '尚未获得csrftoken！';
 		}
-		form = {action: 'edit', tags: 'Bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...form};
+		const form = {action: 'edit', tags: 'Bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...params};
 		const {error, edit} = await this.#rp.post(form);
 		if (error) {
 			dev.error(error);
@@ -106,7 +118,7 @@ class Api {
 		return [pages, c];
 	}
 
-	async #recursiveRevisions(qs, pages) {
+	async #recursiveRevisions(qs, pages = []) {
 		if (!dev.isObject(qs)) {
 			throw new TypeError('需要对象参数！');
 		}
@@ -114,7 +126,7 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const [newpages, c] = await this.#revisions(qs);
-		pages = [...pages, ...newpages];
+		pages = [...pages, ...newpages]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return pages;
 		}
@@ -125,11 +137,11 @@ class Api {
 		if (typeof gcmtitle !== 'string') {
 			throw new TypeError('目标分类应为字符串！');
 		}
-		gcmtitle = _getCategoryTitle(gcmtitle);
+		gcmtitle = _getCategoryTitle(gcmtitle); // eslint-disable-line no-param-reassign
 		const qs = {
 			generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'
 		};
-		return this.#recursiveRevisions(qs, []);
+		return this.#recursiveRevisions(qs);
 	}
 
 	search(gsrsearch) {
@@ -137,10 +149,10 @@ class Api {
 			throw new TypeError('查询条件应为字符串！');
 		}
 		const qs = {generator: 'search', gsrsearch, gsrlimit: 50, gsrnamespace: '0', gsrprop: ''};
-		return this.#recursiveRevisions(qs, []);
+		return this.#recursiveRevisions(qs);
 	}
 
-	async #recursiveList(qs, pageids) {
+	async #recursiveList(qs, pageids = []) {
 		if (!dev.isObject(qs)) {
 			throw new TypeError('需要对象参数！');
 		}
@@ -151,7 +163,7 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const {query: {[qs.list]: pages}, continue: c} = await this.#rp.get(qs);
-		pageids = [...pageids, ...pages.map(({pageid}) => pageid)];
+		pageids = [...pageids, ...pages.map(({pageid}) => pageid)]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return pageids;
 		}
@@ -162,9 +174,89 @@ class Api {
 		if (typeof cmtitle !== 'string') {
 			throw new TypeError('目标分类应为字符串！');
 		}
-		cmtitle = _getCategoryTitle(cmtitle);
+		cmtitle = _getCategoryTitle(cmtitle); // eslint-disable-line no-param-reassign
 		const qs = {list: 'categorymembers', cmlimit: 'max', cmtitle, cmnamespace: '0|9|11|12|13|14|15|275|829'};
-		return this.#recursiveList(qs, []);
+		return this.#recursiveList(qs);
+	}
+
+	async #recentChanges(params, rcl = []) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('需要对象参数！');
+		}
+		if (!Array.isArray(rcl)) {
+			throw new TypeError('第二个可选参数应为数组！');
+		}
+		const qs = {
+			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 'max',
+			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', ...params
+		},
+			{query: {recentchanges}, curtimestamp, continue: c} = await this.#rp.get(qs);
+		rcl = [...rcl, ...recentchanges]; // eslint-disable-line no-param-reassign
+		if (!c) {
+			const rcend = params.rcend || curtimestamp;
+			dev.info(`${this.#site}已检查至 ${rcend}`);
+			return [rcl, rcend];
+		}
+		return this.#recentChanges({...params, ...c}, rcl);
+	}
+
+	recentChanges(rcstart, rcend) {
+		try {
+			rcstart = _convertToUtc(rcstart); // eslint-disable-line no-param-reassign
+			rcend = _convertToUtc(rcend); // eslint-disable-line no-param-reassign
+			return this.#recentChanges({rcstart, rcend});
+		} catch {
+			throw new TypeError('无效时间戳！');
+		}
+	}
+
+	async #recentChangesInCategories(params, cats, rcl = []) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('需要对象参数！');
+		}
+		/* eslint-disable no-param-reassign */
+		if (Array.isArray(cats)) {
+			cats = cats.map(_getCategoryTitle);
+		} else if (typeof cats === 'string') {
+			cats = [_getCategoryTitle(cats)];
+		} else {
+			throw new TypeError('分类参数应为数组或字符串！');
+		}
+		/* eslint-enable no-param-reassign */
+		if (!Array.isArray(rcl)) {
+			throw new TypeError('第三个可选参数应为数组！');
+		}
+		const qs = {
+			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 50,
+			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', prop: 'categories',
+			generator: 'recentchanges', grcdir: 'newer', grclimit: 50, clshow: '!hidden', cllimit: 'max', ...params
+		};
+		const {query: {pages = [], recentchanges = []}, curtimestamp, continue: c} = await this.#rp.get(qs);
+		const relatedPages = pages.filter(({categories = []}) => categories.some(cat => cats.includes(cat.title)))
+			.map(({title}) => title);
+		rcl = [...rcl, ...recentchanges.filter(({title, logparams}) => // eslint-disable-line no-param-reassign
+			relatedPages.includes(title) || relatedPages.includes(logparams?.target_title)
+		)];
+		if (!c) {
+			const rcend = params.rcend || curtimestamp;
+			dev.info(`${this.#site}已检查至 ${rcend}`);
+			return [rcl, rcend];
+		}
+		return this.#recentChangesInCategories({...params, ...c}, cats, rcl);
+	}
+
+	recentChangesInCategories(cats, rcstart, rcend, params = {}) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('第四个可选参数应为对象！');
+		}
+		try {
+			rcstart = _convertToUtc(rcstart); // eslint-disable-line no-param-reassign
+			rcend = _convertToUtc(rcend); // eslint-disable-line no-param-reassign
+			const qs = {rcstart, rcend, grcstart: rcstart, grcend: rcend, ...params};
+			return this.#recentChangesInCategories(qs, cats);
+		} catch {
+			throw new TypeError('无效时间戳！');
+		}
 	}
 
 	async parse(params) {

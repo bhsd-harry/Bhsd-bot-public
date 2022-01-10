@@ -1,3 +1,5 @@
 *~
 *.swp
-*.json
+user.json
+cmoegirl.json
+data/*
