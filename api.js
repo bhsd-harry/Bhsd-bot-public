@@ -23,7 +23,6 @@ class Api {
 	#user;
 	#pin;
 	#rp;
-	#site;
 	#login = false;
 	#token = '+\\';
 
@@ -40,7 +39,7 @@ class Api {
 		this.#pin = pin;
 		this.#rp = new Rp(`${url.replace(/api\.php$/i, '').replace(/\/$/, '')}/api.php`);
 		this.url = this.#rp.url;
-		this.#site = site;
+		this.site = site;
 	}
 
 	// 手动标记csrftoken过期
@@ -194,7 +193,7 @@ class Api {
 		rcl = [...rcl, ...recentchanges]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			const rcend = params.rcend || curtimestamp;
-			dev.info(`${this.#site}已检查至 ${rcend}`);
+			dev.info(`${this.site}已检查至 ${rcend}`);
 			return [rcl, rcend];
 		}
 		return this.#recentChanges({...params, ...c}, rcl);
@@ -239,7 +238,7 @@ class Api {
 		)];
 		if (!c) {
 			const rcend = params.rcend || curtimestamp;
-			dev.info(`${this.#site}已检查至 ${rcend}`);
+			dev.info(`${this.site}已检查至 ${rcend}`);
 			return [rcl, rcend];
 		}
 		return this.#recentChangesInCategories({...params, ...c}, cats, rcl);

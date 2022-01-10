@@ -3,6 +3,7 @@
  */
 'use strict';
 const {error, trim} = require('./dev.js'),
+	{promises: fs} = require('fs'),
 
 	// 常用编辑工具
 	tools = {Wikiplus: /\/\/ (?:使用Wikiplus小工具快速编辑|Edit via Wikiplus)/,
@@ -80,19 +81,26 @@ const _handleReplace = (rules, rc, summary) => {
 	}
 };
 
+const _notOnline = () => {
+	error(`${new Date().toISOString()} QQ已断开连接！`);
+};
+
 class Rc {
 	#api;
 	#qq;
 	#gid;
 	#getPrivacy;
+	#path;
 
-	constructor(api, qq, gid, params, categories, getPrivacy = () => false) {
+	constructor(api, qq, gid, path, params, categories, getPrivacy = () => false) {
 		this.#api = api;
 		this.#qq = qq;
 		this.#gid = gid;
 		this.params = params;
 		this.categories = categories;
 		this.#getPrivacy = getPrivacy;
+		this.#path = path;
+		this.rcstart = require(path);
 	}
 
 	#prepareLink(rc) {
@@ -228,7 +236,7 @@ class Rc {
 	}
 
 	// 在线或离线记录最近更改
-	async post(rcstart, rcend, offline) {
+	async #post(rcstart, rcend, offline) {
 		const replaceRules = [{}, {}],
 			[rcl, timestamp] = await this.#get(rcstart, rcend);
 		rcl.forEach((rc, t) => {
@@ -249,12 +257,36 @@ class Rc {
 		return timestamp;
 	}
 
+	async #recursivePost() {
+		if (this.#qq.isOnline()) {
+			this.rcstart = await this.#post(this.rcstart);
+			fs.writeFile(this.#path, JSON.stringify(this.rcstart));
+		} else {
+			_notOnline();
+		}
+		setTimeout(this.#recursivePost, 1000 * 60 * 10);
+	}
+
+	#inform() {
+		if (this.#qq.isOnline()) {
+			this.#qq.sendPrivateMsg(`${this.#api.site}最近一次检查至：${this.rcstart}`);
+		} else {
+			_notOnline();
+		}
+		setTimeout(this.#inform, 1000 * 60 * 60);
+	}
+
+	async watch() {
+		await this.#recursivePost();
+		this.#inform();
+	}
+
 	// 检查某一天并离线记录
 	test(rcstart) {
 		try {
 			const date = new Date(rcstart);
 			date.setDate(date.getDate() + 1);
-			this.post(rcstart, date.toISOString(), true);
+			this.#post(rcstart, date.toISOString(), true);
 		} catch {
 			error('无效的时间戳！');
 		}
