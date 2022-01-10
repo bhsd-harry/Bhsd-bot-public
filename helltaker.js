@@ -1,5 +1,5 @@
 /**
- * @Function: 1. 检查嵌入了{{空洞骑士}}的条目，如果模板默认背景覆盖了定制背景则进行修复
+ * @Function: 1. 检查嵌入了{{Helltaker}}的条目，如果模板默认背景覆盖了定制背景则进行修复
  */
 'use strict';
 const {user, pin} = require('./user.json'),
@@ -16,10 +16,10 @@ const url = 'https://zh.moegirl.org.cn',
 	}
 	const regex1 = /{{\s*背景[圖图]片\s*\|([\s\S]+?)}}/, // 捕获定制的背景图片
 		regex2 = /{{\s*背景[圖图]片\s*\|?}}/g, // 错误模板用法
-		regex3 = /{{\s*空洞[骑騎]士\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
+		regex3 = /{{\s*[Hh]elltaker\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
 		// 匹配无效的背景图片参数
-		regex4 = /\|\s*logo-(?:url|size)\s*=[\s\S]*(?=\||$)/g,
-		pages = await api.search('hastemplate:"空洞骑士" insource:"背景图片"');
+		regex4 = /\|\s*(?:position\s*=\s*center|animate\s*=\s*appear|logo-url\s*=[\s\S]*)\s*(?=\||$)/g,
+		pages = await api.search('hastemplate:"Helltaker" insource:"背景图片"');
 	const list = pages.map(({pageid, content}) => {
 		const template = content.match(regex1);
 		let text;
@@ -39,7 +39,7 @@ const url = 'https://zh.moegirl.org.cn',
 			}
 			// 将背景图片合并至大家族模板
 			const image = params.replace(/^(?:file:|url\s*=)\s*/i, '').trim();
-			if (/^[Bb]anner[ _]type[ _]02-1.jpg$/.test(image)) { // 默认背景
+			if (/^[Dd]ialogueBG[ _]abyss02.png$/.test(image)) { // 默认背景
 				text = content.replace(regex1, '');
 			} else {
 				text = content.replace(regex1, '').replace(regex3, `$&|背景图片=${image}`);
