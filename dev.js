@@ -27,4 +27,7 @@ const sleep = (t) => new Promise(resolve => {
 	setTimeout(resolve, t * 1000);
 });
 
-module.exports = {error, info, isObject, cmd, sleep};
+// 移除不可见空格
+const trim = (str = '') => str.replaceAll('\u200e', '').trim();
+
+module.exports = {error, info, isObject, cmd, sleep, trim};

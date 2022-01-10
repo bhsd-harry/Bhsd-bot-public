@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, sleep, error} = require('./dev.js');
+	{info, sleep, error, trim} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -50,7 +50,7 @@ const _scan = (str) => {
 
 const _findEnds = (scope, template, param) => {
 	const start = scope.findIndex(([t, p]) => t === template && p === param),
-		end = scope.length - scope.reverse().findIndex(([t, p]) => t === template && p === param);
+		end = scope.length - scope.slice().reverse().findIndex(([t, p]) => t === template && p === param);
 	return [start, end];
 };
 
@@ -86,7 +86,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 		}
 		const curScope = pScope.filter((_, i) => tScope[i] === target),
 			candidates = curScope.map(p => _findEnds(scope, target, p)),
-			values = candidates.map(([start, end]) => text.slice(start, end).replace(regexStart, '').trim()),
+			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
 			redundant = values.findIndex((val, i) => val === '' || values.indexOf(val) !== i);
 		if (redundant >= 0) { // 修复情形1：空参数或重复参数值
 			const [start, end] = candidates[redundant];

@@ -2,7 +2,7 @@
  * @Function: 分析RecentChanges数据，并生成消息发送至QQ
  */
 'use strict';
-const {error} = require('./dev.js'),
+const {error, trim} = require('./dev.js'),
 
 	// 常用编辑工具
 	tools = {Wikiplus: /\/\/ (?:使用Wikiplus小工具快速编辑|Edit via Wikiplus)/,
@@ -33,7 +33,6 @@ const _comment = {
 		amp: '&', lt: '<', gt: '>', '#039': "'", quot: '"'
 	}[code])),
 	replaceLinks: (comment) => comment.replace(/\[\[(?:[^[\]{}]+?\|)?(.+?)]]/g, '$1'),
-	trim: (str = '') => str.replaceAll('\u200e', '').trim(),
 	findSection(str) {
 		let section = '';
 		const comment = str.replace(/\/\*\s*(.+?)\s*\*\//, (_, hash) => {
@@ -65,7 +64,7 @@ const _convertTime = (time) => {
 // 准备QQ消息
 const _msgTemplate = (title, summary, sizeDiff, user, timestamp, comment, link = '') => {
 	const time = _convertTime(timestamp);
-	comment = _comment.trim(comment); // eslint-disable-line no-param-reassign
+	comment = trim(comment); // eslint-disable-line no-param-reassign
 	return `${title}\n${summary} | ${sizeDiff}${sizeDiff && ' | '}${user} | ${time}\n${comment}\n${link}`
 		.replaceAll('\n\n', '\n').replace(/\n$/, '');
 };
@@ -114,7 +113,7 @@ class Rc {
 		let {title, comment} = rc,
 			action = actions[logaction];
 		if (logtype === 'protect') {
-			comment = `${_comment.trim(logparams.description)}${comment}`;
+			comment = `${trim(logparams.description)}${comment}`;
 		} else if (logaction === 'rights') {
 			comment = `从${_group(logparams.oldgroups)}到${_group(logparams.newgroups)}。${comment}`;
 		} else if (logtype === 'abusefilter') {

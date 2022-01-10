@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error} = require('./dev.js');
+	{info, error, trim} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -38,7 +38,7 @@ const url = 'https://zh.moegirl.org.cn',
 				return null;
 			}
 			// 将背景图片合并至大家族模板
-			const image = params.replace(/^(?:file:|url\s*=)\s*/i, '').trim();
+			const image = trim(params.replace(/^(?:file:|url\s*=)\s*/i, ''));
 			if (/^[Bb]anner[ _]type[ _]02-1.jpg$/.test(image)) { // 默认背景
 				text = content.replace(regex1, '');
 			} else {

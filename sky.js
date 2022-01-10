@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error} = require('./dev.js');
+	{info, error, trim} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -33,7 +33,7 @@ const url = 'https://zh.moegirl.org.cn',
 			return null;
 		} else {
 			const params = template[1].replace(regex4, ''),
-				image = params.replace(/^(?:file:|url\s*=)\s*/i, '').trim();
+				image = trim(params.replace(/^(?:file:|url\s*=)\s*/i, ''));
 			if (image !== '光遇背景-主.jpg') { // 非默认背景或额外规定了背景图片的有效参数
 				const nav = content.match(regex3);
 				if (/\|\s*2\s*=/.test(nav[0]) || nav[0].match(/\|/g).length > 1) { // 已修复
