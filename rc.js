@@ -264,7 +264,9 @@ class Rc {
 		} else {
 			_notOnline();
 		}
-		setTimeout(this.#recursivePost, 1000 * 60 * 10);
+		setTimeout(() => {
+			this.#recursivePost();
+		}, 1000 * 60 * 10);
 	}
 
 	#inform() {
@@ -273,7 +275,9 @@ class Rc {
 		} else {
 			_notOnline();
 		}
-		setTimeout(this.#inform, 1000 * 60 * 60);
+		setTimeout(() => {
+			this.#inform();
+		}, 1000 * 60 * 60);
 	}
 
 	async watch() {
