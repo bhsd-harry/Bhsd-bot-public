@@ -78,7 +78,10 @@ class Api {
 		if (this.#token === '+\\') {
 			throw '尚未获得csrftoken！';
 		}
-		const form = {action: 'edit', tags: 'Bot', nocreate: 1, summary: '测试性编辑', token: this.#token, ...params};
+		const form = {
+			action: 'edit', nocreate: 1, summary: '测试性编辑', token: this.#token, ...params,
+			tags: this.url === 'https://llwiki.org/mediawiki/api.php' ? undefined : 'Bot'
+		};
 		const {error, edit} = await this.#rp.post(form);
 		if (error) {
 			dev.error(error);
@@ -274,13 +277,23 @@ class Api {
 		return [wikitext, parsewarnings];
 	}
 
-	async extUrl(eucontinue) {
+	async extUrl(eucontinue, ext = []) {
+		if (eucontinue !== undefined && typeof eucontinue !== 'string') {
+			throw new TypeError('第一个可选参数应为字符串！');
+		}
+		if (!Array.isArray(ext)) {
+			throw new TypeError('第二个可选参数应为数组！');
+		}
 		const qs = {
 			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
 			eunamespace: '0|4|6|8|10|12|14|274|828', eucontinue
 		},
 			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
-		return [exturlusage, c?.eucontinue];
+		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
+		if (!c) {
+			return ext;
+		}
+		return this.extUrl(c.eucontinue, ext);
 	}
 }
 
