@@ -288,23 +288,23 @@ class Api {
 		return [wikitext, parsewarnings];
 	}
 
-	async extUrl(eucontinue, ext = []) {
-		if (eucontinue !== undefined && typeof eucontinue !== 'string') {
-			throw new TypeError('第一个可选参数应为字符串！');
+	async extUrl(params = {}, ext = []) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('第一个可选参数应为对象！');
 		}
 		if (!Array.isArray(ext)) {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const qs = {
 			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
-			eunamespace: '0|4|6|8|10|12|14|274|828', eucontinue
+			eunamespace: '0|4|6|8|10|12|14|274|828', ...params
 		},
 			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
 		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return ext;
 		}
-		return this.extUrl(c.eucontinue, ext);
+		return this.extUrl({...params, eucontinue: c.eucontinue, euoffset: c.euoffset}, ext);
 	}
 }
 

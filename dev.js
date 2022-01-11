@@ -23,17 +23,21 @@ const cmd = (str) => new Promise(resolve => {
 	});
 });
 
-const ping = async (url) => {
-	const response = await cmd(`curl -LsI -o /dev/null -w "%{http_code}%{url_effective}" --connect-timeout 3 ${url}`);
-	const code = Number(response.slice(1, 4)),
-		redirect = response.slice(4, -1);
-	if (code === 0 || code >= 400) {
-		throw url;
-	} else if (url !== redirect) {
-		throw [url, redirect];
-	}
-	return url;
-};
+const ping = (url) => new Promise((resolve, reject) => {
+	spawn('curl', ['-LsI', '-o', '/dev/null', '-w', '"%{http_code}%{url_effective}"', '--connect-timeout', '3', url])
+		.stdout.on('data', data => {
+		const response = data.toString(),
+			code = Number(response.slice(1, 4)),
+			redirect = response.slice(4, -1).replace(/^(https?:\/\/[^/]+).*/, '$1');
+		if (code === 0 || code >= 400) {
+			reject(url);
+		} else if (url !== redirect) {
+			reject([url, redirect]);
+		} else {
+			resolve(url);
+		}
+	});
+});
 
 // 延时
 const sleep = (t) => new Promise(resolve => {
