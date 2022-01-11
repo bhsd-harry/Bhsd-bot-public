@@ -11,9 +11,7 @@ const url = 'https://zh.moegirl.org.cn',
 	[,, mode] = process.argv;
 
 (async () => {
-	if (mode !== 'dry') {
-		await api.csrfToken();
-	}
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
 		'em', 's', 'strike', 'strong', 'tt', 'var', 'div', 'center', 'blockquote', 'ol', 'ul', 'dl', 'table',
 		'caption', 'pre', 'ruby', 'rb', 'rp', 'rt', 'rtc', 'p', 'span', 'abbr', 'dfn', 'kbd', 'samp', 'data', 'time',

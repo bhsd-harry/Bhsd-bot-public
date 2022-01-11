@@ -132,13 +132,17 @@ class Api {
 		return this.#recursiveRevisions({...qs, ...c}, pages);
 	}
 
+	revisions(pageids) {
+		return this.#recursiveRevisions({pageids});
+	}
+
 	categorymembers(gcmtitle) {
 		if (typeof gcmtitle !== 'string') {
 			throw new TypeError('目标分类应为字符串！');
 		}
 		gcmtitle = _getCategoryTitle(gcmtitle); // eslint-disable-line no-param-reassign
 		const qs = {
-			generator: 'categorymembers', gcmtitle, gcmlimit: 50, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'
+			generator: 'categorymembers', gcmtitle, gcmlimit: 500, gcmnamespace: '0|9|10|11|12|13|14|15|275|829'
 		};
 		return this.#recursiveRevisions(qs);
 	}
@@ -147,7 +151,7 @@ class Api {
 		if (typeof gsrsearch !== 'string') {
 			throw new TypeError('查询条件应为字符串！');
 		}
-		const qs = {generator: 'search', gsrsearch, gsrlimit: 50, gsrnamespace: '0', gsrprop: ''};
+		const qs = {generator: 'search', gsrsearch, gsrlimit: 500, gsrnamespace: '0', gsrprop: ''};
 		return this.#recursiveRevisions(qs);
 	}
 
@@ -226,9 +230,9 @@ class Api {
 			throw new TypeError('第三个可选参数应为数组！');
 		}
 		const qs = {
-			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 50,
+			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 500,
 			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', prop: 'categories',
-			generator: 'recentchanges', grcdir: 'newer', grclimit: 50, clshow: '!hidden', cllimit: 'max', ...params
+			generator: 'recentchanges', grcdir: 'newer', grclimit: 500, clshow: '!hidden', cllimit: 'max', ...params
 		};
 		const {query: {pages = [], recentchanges = []}, curtimestamp, continue: c} = await this.#rp.get(qs);
 		const relatedPages = pages.filter(({categories = []}) => categories.some(cat => cats.includes(cat.title)))
@@ -268,6 +272,15 @@ class Api {
 		const qs = {action: 'parse', prop: 'wikitext|parsewarnings', ...params},
 			{parse: {wikitext, parsewarnings}} = await this.#rp.get(qs);
 		return [wikitext, parsewarnings];
+	}
+
+	async extUrl(eucontinue) {
+		const qs = {
+			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
+			eunamespace: '0|4|6|8|10|12|14|274|828', eucontinue
+		},
+			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
+		return [exturlusage, c?.eucontinue];
 	}
 }
 

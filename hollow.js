@@ -11,9 +11,7 @@ const url = 'https://zh.moegirl.org.cn',
 	[,, mode] = process.argv;
 
 (async () => {
-	if (mode !== 'dry') {
-		await api.csrfToken();
-	}
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	const regex1 = /{{\s*背景[圖图]片\s*\|([\s\S]+?)}}/, // 捕获定制的背景图片
 		regex2 = /{{\s*背景[圖图]片\s*\|?}}/g, // 错误模板用法
 		regex3 = /{{\s*空洞[骑騎]士\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）

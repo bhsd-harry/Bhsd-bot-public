@@ -18,10 +18,19 @@ const isObject = (obj) => typeof obj?.toString === 'function' && obj.toString() 
 // 将Shell命令转化为Proimse
 const cmd = (str) => new Promise(resolve => {
 	const [command, ...args] = str.split(/\s+/);
-	spawn(command, args).stdout.on('data', (data) => {
+	spawn(command, args).stdout.on('data', data => {
 		resolve(data.toString());
 	});
 });
+
+const ping = async (url) => {
+	const response = await cmd(`curl -s -o /dev/null -I -w "%{http_code}" --connect-timeout 3 ${url}`);
+	const code = Number(response.slice(1, -1));
+	if (code === 0 || code >= 400) {
+		throw url;
+	}
+	return url;
+};
 
 // 延时
 const sleep = (t) => new Promise(resolve => {
@@ -31,4 +40,4 @@ const sleep = (t) => new Promise(resolve => {
 // 移除不可见空格
 const trim = (str = '') => str.replaceAll('\u200e', '').trim();
 
-module.exports = {error, info, isObject, cmd, sleep, trim};
+module.exports = {error, info, isObject, cmd, ping, sleep, trim};

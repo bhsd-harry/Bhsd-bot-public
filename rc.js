@@ -228,7 +228,8 @@ class Rc {
 	}
 
 	// 获取符合要求的最近更改
-	#get(rcstart, rcend) {
+	async #get(rcstart, rcend) {
+		await this.#api.login();
 		if (this.categories) {
 			return this.#api.recentChangesInCategories(this.categories, rcstart, rcend, this.params);
 		}

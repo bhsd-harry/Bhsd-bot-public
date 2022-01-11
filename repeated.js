@@ -75,7 +75,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 			return;
 		}
 		const scope = _scan(text), // 宁可降低运行效率也要重新遍历一次，以保证更正确地处理下一组重复参数
-			allScope = occurrence.map(ins => scope[ins.index]).filter(([t]) => t > 0), // 位于模板内，不检测模板名
+			allScope = occurrence.map(({index}) => scope[index]).filter(([t]) => t > 0), // 位于模板内，不检测模板名
 			tScope = allScope.map(([t]) => t),
 			pScope = allScope.map(([, p]) => p),
 			target = tScope.find((t, i) => !lastTry.includes(t) && tScope.indexOf(t) !== i);
@@ -106,9 +106,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 };
 
 (async () => {
-	if (mode !== 'dry') {
-		await api.csrfToken();
-	}
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	const pageids = await api.onlyCategorymembers('调用重复模板参数的页面');
 	const list = (await Promise.all(pageids.map(async (pageid, t) => {
 		await sleep(t);
