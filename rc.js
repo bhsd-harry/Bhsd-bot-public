@@ -260,8 +260,14 @@ class Rc {
 
 	async #recursivePost() {
 		if (this.#qq.isOnline()) {
-			this.rcstart = await this.#post(this.rcstart);
-			fs.writeFile(this.#path, JSON.stringify(this.rcstart));
+			try {
+				this.rcstart = await this.#post(this.rcstart);
+				fs.writeFile(this.#path, JSON.stringify(this.rcstart));
+			} catch (e) {
+				if (e === '504') {
+					this.#qq.sendErrorMsg(`${this.#api.site}触发错误代码 504 ！`);
+				}
+			}
 		} else {
 			_notOnline();
 		}
