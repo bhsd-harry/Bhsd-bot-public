@@ -39,6 +39,9 @@ class Rp {
 				try {
 					resolve(JSON.parse(body));
 				} catch {
+					if (body.includes('腾讯T-Sec Web应用防火墙')) {
+						reject('触发WAF！');
+					}
 					reject(body);
 				}
 			});
@@ -61,6 +64,9 @@ class Rp {
 				try {
 					resolve(JSON.parse(body));
 				} catch {
+					if (body.includes('腾讯T-Sec Web应用防火墙')) {
+						reject('触发WAF！');
+					}
 					reject(body);
 				}
 			});

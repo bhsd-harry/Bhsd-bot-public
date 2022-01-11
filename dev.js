@@ -27,15 +27,17 @@ const ping = (url) => new Promise((resolve, reject) => {
 	spawn('curl', ['-LsI', '-o', '/dev/null', '-w', '"%{http_code}%{url_effective}"', '--connect-timeout', '3', url])
 		.stdout.on('data', data => {
 		const response = data.toString(),
-			code = Number(response.slice(1, 4)),
-			redirect = response.slice(4, -1).replace(/^(https?:\/\/[^/]+).*/, '$1');
+			code = Number(response.slice(1, 4));
+		let redirect = response.slice(4, -1);
+		if (!url.slice(8).includes('/')) { // 只是domain而不是完整网址
+			redirect = redirect.replace(/^(https?:\/\/[^/]+).*/, '$1');
+		}
 		if (code === 0 || code >= 400) {
 			reject(url);
 		} else if (url !== redirect) {
 			reject([url, redirect]);
-		} else {
-			resolve(url);
 		}
+		resolve(url);
 	});
 });
 

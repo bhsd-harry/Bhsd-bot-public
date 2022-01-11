@@ -163,7 +163,7 @@ class Api {
 			throw new TypeError('标签应为字符串！');
 		}
 		const qs = {
-			generator: 'recentchanges', grcnamespace: '0', grctag, grclimit: 'max', grctype: 'edit|new',
+			generator: 'recentchanges', grcnamespace: '0', grctag, grclimit: 500, grctype: 'edit|new',
 			grcexcludeuser: 'Bhsd', grcend
 		};
 		return this.#recursiveRevisions(qs);
