@@ -154,7 +154,7 @@ class Api {
 		if (typeof gsrsearch !== 'string') {
 			throw new TypeError('查询条件应为字符串！');
 		}
-		const qs = {generator: 'search', gsrsearch, gsrlimit: 500, gsrnamespace: '0', gsrprop: ''};
+		const qs = {generator: 'search', gsrsearch, gsrlimit: 500, gsrnamespace: '0|10|12', gsrprop: ''};
 		return this.#recursiveRevisions(qs);
 	}
 
