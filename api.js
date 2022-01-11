@@ -158,6 +158,14 @@ class Api {
 		return this.#recursiveRevisions(qs);
 	}
 
+	taggedRecentChanges(grctag) {
+		if (typeof grctag !== 'string') {
+			throw new TypeError('标签应为字符串！');
+		}
+		const qs = {generator: 'recentchanges', grcnamespace: '0', grctag, grclimit: 10, grctype: 'edit|new'};
+		return this.#recursiveRevisions(qs);
+	}
+
 	async #recursiveList(qs, pageids = []) {
 		if (!dev.isObject(qs)) {
 			throw new TypeError('需要对象参数！');
