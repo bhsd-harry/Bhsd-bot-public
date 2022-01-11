@@ -55,11 +55,17 @@ const _findEnds = (scope, template, param) => {
 };
 
 const _analyze = (wikitext, repeated, pageid) => {
-	const regexTemplate = /(?<=模板【\[\[:Template:).+?(?=]]】)/, // 仅用于判断是不是{{Timeline}}
+	const regexPage = /(?<=页面【\[\[:).+?(?=]]】)/,
+		regexTemplate = /(?<=模板【\[\[:Template:).+?(?=]]】)/, // 仅用于判断是不是{{Timeline}}
 		regexParam = /(?<=<code>\|)[\s\S]+?(?=<\/code>)/,
 		failed = {}; // 避免重复失败的尝试
 	let text = wikitext;
 	repeated.forEach(warning => {
+		const [page] = warning.match(regexPage);
+		if (page.startsWith('Template:')) {
+			error(`请人工检查 ${page}`);
+			return;
+		}
 		const [template] = warning.match(regexTemplate),
 			[param] = warning.match(regexParam),
 			lastTry = failed[param] || [];
@@ -93,7 +99,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 			info(`页面 ${pageid} 移除 ${text.slice(start, end).replaceAll('\n', '\\n')}`);
 			text = `${text.slice(0, start)}${text.slice(end)}`;
 		} else if (template === 'Timeline' && /in\d+月\d+日/.test(param)) { // 修复情形2：{{Timeline}}
-			const [, [start, end]] = values,
+			const [, [start, end]] = candidates,
 				newText = text.slice(start, end).replace(param, `${param}#2`);
 			info(`页面 ${pageid} 将 ${param} 替换为 ${param}#2`);
 			text = `${text.slice(0, start)}${newText}${text.slice(end)}`;
