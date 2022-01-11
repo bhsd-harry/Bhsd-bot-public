@@ -2,7 +2,7 @@
  * @Function: 仅用于提供一些基础公用函数
  */
 'use strict';
-const {exec} = require('child_process');
+const {spawn} = require('child_process');
 
 // 命令行输出函数
 const error = (msg = 'dev.error测试') => {
@@ -16,9 +16,10 @@ const info = (msg = 'dev.info测试') => {
 const isObject = (obj) => typeof obj?.toString === 'function' && obj.toString() === '[object Object]';
 
 // 将Shell命令转化为Proimse
-const cmd = (str) => new Promise((resolve) => {
-	exec(str, (_, stdout) => {
-		resolve(stdout);
+const cmd = (str) => new Promise(resolve => {
+	const [command, ...args] = str.split(/\s+/);
+	spawn(command, args).stdout.on('data', (data) => {
+		resolve(data.toString());
 	});
 });
 
