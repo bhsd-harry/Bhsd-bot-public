@@ -266,6 +266,9 @@ class Rc {
 			} catch (e) {
 				if (e === '504') {
 					this.#qq.sendErrorMsg(`${this.#api.site}触发错误代码 504 ！`);
+				} else {
+					this.#qq.sendErrorMsg('未知错误！请查阅控制台记录。');
+					error(e);
 				}
 			}
 		} else {
