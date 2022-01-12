@@ -5,31 +5,39 @@
 const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
 	{ping, info, save, error} = require('./dev.js'),
-	{euquery} = require('./exturlquery.json');
+	params = require('./exturlquery.json'),
+	{euquery} = params;
 
-let {http, https} = require('./exturl.json'),
-	{euoffset} = require('./exturlquery.json');
+let {http, https} = require('./exturl.json');
 
 const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 	[,, mode] = process.argv,
-	caution = /^www\.(?:typemoon\.com|gov\.cn)/,
-	allKnown = [...http, ...https];
+	caution = /^www\.(?:typemoon\.com|gov\.cn)/;
 
 (async () => {
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	const [ext, c] = await api.extUrl({euquery, euoffset}, null);
-	euoffset = c?.euoffset; // eslint-disable-line require-atomic-updates
-	if (Array.isArray(ext) && ext.length > 0) { // 否则直接跳过，记录euoffset
-		ext.forEach(ele => {
-			[ele.domain] = ele.url.slice(7).split('/', 1);
-			if (caution.test(ele.domain)) {
-				ele.domain = ele.url.slice(7);
-			}
+	if (mode === 'rerun') {
+		const {edits, c} = require('./dry.json');
+		await api.massEdit(edits, mode, '自动修复http链接');
+		save('exturlquery.json', {euquery, ...c});
+		save('dry.json', {});
+		return;
+	}
+	const [pages, c] = await api.extSearch({...params, geuquery: euquery});
+	if (pages.length > 0) { // 否则直接跳过，记录euoffset
+		pages.forEach(page => {
+			page.domains = [...new Set(page.urls.map(url => {
+				const [domain] = url.slice(7).split('/', 1);
+				if (caution.test(domain)) {
+					return url.slice(7);
+				}
+				return domain;
+			}))].filter(domain => !http.includes(domain));
+			delete page.urls;
 		});
-		const unknown = ext.filter(({domain}) => !allKnown.includes(domain));
+		const unknown = [...new Set(pages.map(({domains}) => domains).flat())].filter(domain => !https.includes(domain));
 		if (unknown.length > 0) { // 否则直接跳过，开始生成编辑
-			const domains = [...new Set(unknown.map(({domain}) => domain))],
-				responses = await Promise.allSettled(domains.map(ele => ping(`https://${ele}`)));
+			const responses = await Promise.allSettled(unknown.map(ele => ping(`https://${ele}`)));
 			const redirects = responses.filter(({reason}) => Array.isArray(reason)).map(({reason}) => reason),
 				redirected = redirects.filter(([, url]) => url.startsWith('https://')).map(([url]) => url.slice(8)),
 				unredirected = redirects.filter(([, url]) => url.startsWith('http://')).map(([url]) => url.slice(8));
@@ -43,20 +51,19 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 					.map(({reason}) => reason.slice(8))
 			];
 		}
-		const known = ext.filter(({domain}) => https.includes(domain)),
-			pageids = [...new Set(known.map(({pageid}) => pageid))].join('|'); // 一个页面可能有多个http链接
-		if (unknown.length > 0) {
-			https = https.filter(url => !url.includes('/'));
-			save('exturl.json', {http, https});
-		}
-		const edits = (await api.revisions(pageids)).map(({pageid, content}) => {
-			const urls = known.filter(({pageid: id}) => id === pageid).map(({url}) => url);
+		pages.forEach(page => {
+			page.domains = page.domains.filter(domain => https.includes(domain));
+		});
+		https = https.filter(url => !url.includes('/'));
+		save('exturl.json', {http, https});
+		const known = pages.filter(({domains}) => domains.length > 0),
+			edits = known.map(({pageid, content, domains}) => {
 			let text = content;
-			urls.forEach(url => {
-				if (text.includes(url)) {
-					text = text.replaceAll(url, `https://${url.slice(7)}`);
+			domains.forEach(domain => {
+				if (text.includes(domain)) {
+					text = text.replaceAll(`http://${domain}`, `https://${domain}`);
 				} else {
-					error(`页面 ${pageid} 找不到链接 ${url} ！`);
+					error(`页面 ${pageid} 找不到链接 http://${domain} ！`);
 				}
 			});
 			if (text === content) {
@@ -64,11 +71,14 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 			}
 			return [pageid, content, text];
 		}).filter(edit => edit);
+		if (mode === 'dry') {
+			save('dry.json', {edits, c});
+		}
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
 	if (mode === 'dry') {
-		info(euoffset ? `下次检查从 ${euoffset} 开始。` : '已全部检查完毕！');
+		info(c ? `下次检查从 ${c.euoffset} 开始。` : '已全部检查完毕！');
 	} else {
-		save('exturlquery.json', {euquery, euoffset});
+		save('exturlquery.json', {euquery, ...c});
 	}
 })();

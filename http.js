@@ -14,9 +14,14 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 	caution = /^www\.(?:typemoon\.com|gov.cn)/;
 
 (async () => {
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	if (mode === 'rerun') {
+		const edits = require('./dry.json');
+		await api.massEdit(edits, mode, '自动修复http链接');
+		return;
+	}
 	const date = new Date();
 	date.setDate(date.getDate() - 1);
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	const ext = (await api.taggedRecentChanges('非https地址插入', date.toISOString()))
 		.filter(({content}) => content.includes('http://'));
 	ext.forEach(ele => {
@@ -61,6 +66,9 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 		}
 		return [pageid, content, text];
 	}).filter(edit => edit);
+	if (mode === 'dry') {
+		save('dry.json', edits);
+	}
 	await api.massEdit(edits, mode, '自动修复http链接');
 	if (redirects) {
 		info('检测到以下重定向：');

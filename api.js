@@ -112,11 +112,11 @@ class Api {
 	async #revisions(params) {
 		const qs = {prop: 'revisions', rvprop: 'contentmodel|content', converttitles: 1, ...params},
 			{query, continue: c} = await this.#rp.get(qs);
-		if (!query) {
+		if (!query?.pages) {
 			return [[], c];
 		}
 		const pages = query.pages.filter(({revisions}) => revisions && revisions[0].contentmodel === 'wikitext')
-			.map(({pageid, revisions}) => ({pageid, content: revisions[0].content}));
+			.map(({pageid, revisions: [{content}]}) => ({pageid, content}));
 		return [pages, c];
 	}
 
@@ -154,7 +154,7 @@ class Api {
 		if (typeof gsrsearch !== 'string') {
 			throw new TypeError('查询条件应为字符串！');
 		}
-		const qs = {generator: 'search', gsrsearch, gsrlimit: 500, gsrnamespace: '0|10|12', gsrprop: ''};
+		const qs = {generator: 'search', gsrsearch, gsrlimit: 500, gsrnamespace: '0|10|12'};
 		return this.#recursiveRevisions(qs);
 	}
 
@@ -292,22 +292,37 @@ class Api {
 		if (!dev.isObject(params)) {
 			throw new TypeError('第一个可选参数应为对象！');
 		}
-		if (!Array.isArray(ext) && ext !== null) {
+		if (!Array.isArray(ext)) {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const qs = {
-			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', euexpandurl: 1,
-			eunamespace: '0|4|6|8|10|12|14|274|828', eulimit: ext === null ? 50 : 500, ...params
+			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
+			eunamespace: '0|4|6|8|10|12|14|274|828', ...params
 		},
 			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
-		if (ext === null) {
-			return [exturlusage, c];
-		}
 		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return ext;
 		}
-		return this.extUrl({...params, eucontinue: c.eucontinue, euoffset: c.euoffset}, ext);
+		return this.extUrl({...params, ...c}, ext);
+	}
+
+	async extSearch(params = {}) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('可选参数应为对象！');
+		}
+		const qs = {
+			generator: 'exturlusage', geuexpandurl: 1, geulimit: 50, geunamespace: '0|10|12|14|828',
+			list: 'exturlusage', euprop: 'ids|url', euexpandurl: 1, eulimit: 50, eunamespace: '0|10|12|14|828',
+			prop: 'revisions', rvprop: 'contentmodel|content', ...params
+		},
+			{query: {exturlusage, pages = []}, continue: c} = await this.#rp.get(qs);
+		return [
+			pages.filter(({revisions}) => revisions && revisions[0].contentmodel === 'wikitext')
+				.map(({pageid, revisions: [{content}]}) => ({
+				pageid, content, urls: exturlusage.filter(({pageid: id}) => id === pageid).map(({url}) => url)
+			})), c
+		];
 	}
 }
 

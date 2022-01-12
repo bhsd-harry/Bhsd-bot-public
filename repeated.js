@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, sleep, error, trim} = require('./dev.js');
+	{info, sleep, error, trim, save} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -113,6 +113,11 @@ const _analyze = (wikitext, repeated, pageid) => {
 
 (async () => {
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	if (mode === 'rerun') {
+		const list = require('./dry.json');
+		await api.massEdit(list, mode, '自动修复重复的模板参数');
+		return;
+	}
 	const pageids = await api.onlyCategorymembers('调用重复模板参数的页面');
 	const list = (await Promise.all(pageids.map(async (pageid, t) => {
 		await sleep(t);
@@ -129,6 +134,9 @@ const _analyze = (wikitext, repeated, pageid) => {
 		}
 		return [pageid, wikitext, text];
 	}))).filter(page => page);
+	if (mode === 'dry') {
+		save('dry.json', list);
+	}
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
 	info('检查完毕！');
 })();
