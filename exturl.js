@@ -31,13 +31,14 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 			const domains = [...new Set(unknown.map(({domain}) => domain))],
 				responses = await Promise.allSettled(domains.map(ele => ping(`https://${ele}`)));
 			const redirects = responses.filter(({reason}) => Array.isArray(reason)).map(({reason}) => reason),
-				redirected = redirects.filter(([, url]) => url.startsWith('https://')).map(([url]) => url.slice(8));
+				redirected = redirects.filter(([, url]) => url.startsWith('https://')).map(([url]) => url.slice(8)),
+				unredirected = redirects.filter(([, url]) => url.startsWith('http://')).map(([url]) => url.slice(8));
 			https = [
 				...https, ...redirected,
 				...responses.filter(({status}) => status === 'fulfilled').map(({value}) => value.slice(8))
 			];
 			http = [
-				...http,
+				...http, ...unredirected,
 				...responses.filter(({reason}) => typeof reason === 'string' && !reason.slice(8).includes('/'))
 					.map(({reason}) => reason.slice(8))
 			];
