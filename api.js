@@ -292,14 +292,17 @@ class Api {
 		if (!dev.isObject(params)) {
 			throw new TypeError('第一个可选参数应为对象！');
 		}
-		if (!Array.isArray(ext)) {
+		if (!Array.isArray(ext) && ext !== null) {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const qs = {
-			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
-			eunamespace: '0|4|6|8|10|12|14|274|828', ...params
+			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', euexpandurl: 1,
+			eunamespace: '0|4|6|8|10|12|14|274|828', eulimit: ext === null ? 50 : 500, ...params
 		},
 			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
+		if (ext === null) {
+			return [exturlusage, c];
+		}
 		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return ext;

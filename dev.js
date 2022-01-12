@@ -2,7 +2,8 @@
  * @Function: 仅用于提供一些基础公用函数
  */
 'use strict';
-const {spawn} = require('child_process');
+const {spawn} = require('child_process'),
+	{promises: fs} = require('fs');
 
 // 命令行输出函数
 const error = (msg = 'dev.error测试') => {
@@ -49,4 +50,8 @@ const sleep = (t) => new Promise(resolve => {
 // 移除不可见空格
 const trim = (str = '') => str.replaceAll('\u200e', '').trim();
 
-module.exports = {error, info, isObject, cmd, ping, sleep, trim};
+const save = (file, obj) => {
+	fs.writeFile(file, JSON.stringify(obj, null, '\t'));
+};
+
+module.exports = {error, info, isObject, cmd, ping, sleep, trim, save};
