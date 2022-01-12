@@ -12,7 +12,7 @@ let {http, https} = require('./exturl.json'),
 
 const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 	[,, mode] = process.argv,
-	caution = /^www\.(?:typemoon\.com|gov.cn)/,
+	caution = /^www\.(?:typemoon\.com|gov\.cn)/,
 	allKnown = [...http, ...https];
 
 (async () => {
