@@ -48,7 +48,7 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 				...http, ...unredirected,
 				...responses.filter(({reason}) => typeof reason === 'string' && !reason.slice(8).includes('/'))
 					.map(({reason}) => reason.slice(8))
-			];
+			].filter(url => !url.includes('/'));
 		}
 		pages.forEach(page => {
 			page.domains = page.domains.filter(domain => https.includes(domain));
