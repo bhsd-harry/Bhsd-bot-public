@@ -107,7 +107,7 @@ class Api {
 		dev.save('dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
 		(await Promise.all(list.map(async ([pageid, content, text], i) => {
 			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
-			const diff = await dev.cmd(`diff oldcontent${i} newcontent${i}`);
+			const diff = await dev.diff(`oldcontent${i}`, `newcontent${i}`);
 			dev.cmd(`rm oldcontent${i} newcontent${i}`);
 			return [pageid, diff];
 		}))).forEach(([pageid, diff]) => {

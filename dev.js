@@ -42,6 +42,13 @@ const ping = (url) => new Promise((resolve, reject) => {
 	});
 });
 
+const diff = (oldfile, newfile) => new Promise(resolve => {
+	spawn('git', ['diff', '--color-words=\\w+|[^[:space:]]', '-U0', '--no-index', oldfile, newfile])
+		.stdout.on('data', data => {
+		resolve(data.toString().split('\n').slice(4).join('\n'));
+	});
+});
+
 // 延时
 const sleep = (t) => new Promise(resolve => {
 	setTimeout(resolve, t * 1000);
@@ -54,4 +61,4 @@ const save = (file, obj) => {
 	fs.writeFile(file, JSON.stringify(obj, null, '\t'));
 };
 
-module.exports = {error, info, isObject, cmd, ping, sleep, trim, save};
+module.exports = {error, info, isObject, cmd, ping, sleep, trim, save, diff};
