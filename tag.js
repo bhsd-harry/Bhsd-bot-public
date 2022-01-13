@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error, save} = require('./dev.js');
+	{info, error} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -13,8 +13,7 @@ const url = 'https://zh.moegirl.org.cn',
 (async () => {
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
-		const list = require('./dry.json');
-		await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
+		await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');
 		return;
 	}
 	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
@@ -38,9 +37,6 @@ const url = 'https://zh.moegirl.org.cn',
 		});
 		return [pageid, content, text];
 	}).filter(page => page);
-	if (mode === 'dry') {
-		save('dry.json', list);
-	}
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
 	info('检查完毕！');
 })();

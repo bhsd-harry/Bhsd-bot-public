@@ -93,11 +93,18 @@ class Api {
 	// 批量编辑，此函数不应手动执行
 	async massEdit(list, mode, summary) {
 		if (mode !== 'dry') {
+			if (mode === 'rerun') {
+				list = require('./dry.json'); // eslint-disable-line no-param-reassign
+			}
+			if (!Array.isArray(list)) {
+				throw new TypeError('编辑数据应为数组！');
+			}
 			return Promise.all(list.map(async ([pageid,, text], t) => {
 				await dev.sleep(t);
 				return this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
 			}));
 		}
+		dev.save('dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
 		(await Promise.all(list.map(async ([pageid, content, text], i) => {
 			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
 			const diff = await dev.cmd(`diff oldcontent${i} newcontent${i}`);

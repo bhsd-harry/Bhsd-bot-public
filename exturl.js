@@ -17,10 +17,9 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 (async () => {
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
-		const {edits, c} = require('./dry.json');
-		await api.massEdit(edits, mode, '自动修复http链接');
+		const c = require('./euoffset.json');
+		await api.massEdit(null, mode, '自动修复http链接');
 		save('exturlquery.json', {euquery, ...c});
-		save('dry.json', {});
 		return;
 	}
 	const [pages, c] = await api.extSearch({...params, geuquery: euquery});
@@ -71,12 +70,10 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 			}
 			return [pageid, content, text];
 		}).filter(edit => edit);
-		if (mode === 'dry') {
-			save('dry.json', {edits, c});
-		}
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
 	if (mode === 'dry') {
+		save('euoffset.json', c);
 		info(c ? `下次检查从 ${c.euoffset} 开始。` : '已全部检查完毕！');
 	} else {
 		save('exturlquery.json', {euquery, ...c});
