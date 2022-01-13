@@ -66,7 +66,7 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 		return [pageid, content, text];
 	}).filter(edit => edit);
 	await api.massEdit(edits, mode, '自动修复http链接');
-	if (redirects) {
+	if (redirects && redirects.length > 0) {
 		info('检测到以下重定向：');
 		redirects.forEach(([oldUrl, newUrl]) => {
 			console.log(`${oldUrl} → ${newUrl}`);
