@@ -10,7 +10,7 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 	[,, mode] = process.argv,
 	regex = /https:\/\/(?:i\d\.hdslb\.com|ww\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
 
-const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"Noreferer"`);
+const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);
 
 (async () => {
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();

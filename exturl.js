@@ -2,13 +2,17 @@
  * @Function: 提供一个标准函数，用于修复指定文本中的http链接
  */
 'use strict';
-const {ping, save, error, info} = require('./dev.js');
+const {ping, save, error, info} = require('./dev.js'),
+	{regexSource} = require('./exturl.json'); // 仅手动更新
 
 let {http, https} = require('./exturl.json'),
 	flag;
 
 const caution = /^www\.(?:typemoon\.com|gov\.cn)/;
 
+/**
+ * @param domains, 小写网站地址组成的数组，可以有重复
+ */
 const update = async (domains) => {
 	const unknown = [...new Set(domains)].filter(domain => !https.includes(domain));
 	if (unknown.length === 0) {
@@ -40,28 +44,31 @@ const update = async (domains) => {
  * @return edits, 形如[pageid, content, text]的标准数组构成的数组
  */
 const exturl = async (pages) => {
+	const regex = new RegExp(`^(?:${regexSource.join('|')})`, 'i');
 	pages.forEach(page => {
-		const urls = page.content.match(/(?<=[^/]http:\/\/)[\S]+/g).filter(url => url.includes('.')) || [];
-		page.domains = [
-			...urls.filter(url => caution.test(url)),
-			...urls.filter(url => !caution.test(url)).map(url => url.split('/', 1)[0])
-		].filter(domain => !http.includes(domain));
+		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[\S]+/g) || [])
+			.filter(url => url.includes('.') && !regex.test(url)))];
+		page.domains = [...new Set([
+			...page.urls.filter(url => caution.test(url)),
+			...page.urls.filter(url => !caution.test(url)).map(url => url.split('/', 1)[0])
+		].map(domain => domain.toLowerCase()))].filter(domain => !http.includes(domain));
 	});
 	[http, https, flag] = await update(pages.map(({domains}) => domains).flat());
 	pages.forEach(page => {
 		page.domains = page.domains.filter(domain => https.includes(domain));
+		page.urls = page.urls.filter(url => page.domains.some(domain => url.toLowerCase().startsWith(domain)));
 	});
 	if (flag) {
 		https = https.filter(url => !url.includes('/'));
-		save('../Bhsd-bot-public/exturl.json', {http, https});
+		save('../Bhsd-bot-public/exturl.json', {http, https, regexSource});
 	}
-	return pages.filter(({domains}) => domains.length > 0).map(({pageid, content, domains}) => {
+	return pages.filter(({urls}) => urls.length > 0).map(({pageid, content, urls}) => {
 		let text = content;
-		domains.forEach(domain => {
-			if (text.includes(domain)) {
-				text = text.replaceAll(`http://${domain}`, `https://${domain}`);
+		urls.forEach(url => {
+			if (text.includes(url)) {
+				text = text.replaceAll(`http://${url}`, `https://${url}`);
 			} else {
-				error(`页面 ${pageid} 找不到链接 http://${domain} ！`);
+				error(`页面 ${pageid} 找不到链接 http://${url} ！`);
 			}
 		});
 		if (text === content) {
