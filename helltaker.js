@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error, trim} = require('./dev.js');
+	{error, trim} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -46,5 +46,4 @@ const url = 'https://zh.moegirl.org.cn',
 		return [pageid, content, text];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复被大家族模板覆盖的背景图片');
-	info('检查完毕！');
 })();

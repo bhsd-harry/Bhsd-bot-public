@@ -87,6 +87,10 @@ class Api {
 			dev.error(error);
 			throw error.code;
 		}
+		delete edit.contentmodel;
+		delete edit.oldrevid;
+		delete edit.newrevid;
+		delete edit.newtimestamp;
 		dev.info(edit);
 	}
 

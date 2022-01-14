@@ -96,12 +96,10 @@ const _analyze = (wikitext, repeated, pageid) => {
 			redundant = values.findIndex((val, i) => val === '' || values.indexOf(val) !== i);
 		if (redundant >= 0) { // 修复情形1：空参数或重复参数值
 			const [start, end] = candidates[redundant];
-			info(`页面 ${pageid} 移除 ${text.slice(start, end).replaceAll('\n', '\\n')}`);
 			text = `${text.slice(0, start)}${text.slice(end)}`;
 		} else if (template === 'Template:Timeline' && /in\d+月\d+日/.test(param)) { // 修复情形2：{{Timeline}}
 			const [, [start, end]] = candidates,
 				newText = text.slice(start, end).replace(param, `${param}#2`);
-			info(`页面 ${pageid} 将 ${param} 替换为 ${param}#2`);
 			text = `${text.slice(0, start)}${newText}${text.slice(end)}`;
 		} else {
 			error(`页面 ${pageid} 中重复的模板参数 ${param} 均非空，无法简单修复！`);
@@ -127,12 +125,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 			return null;
 		}
 		const text = _analyze(wikitext, repeated, pageid);
-		if (text === wikitext) {
-			error(`页面 ${pageid} 未能修复！`);
-			return null;
-		}
-		return [pageid, wikitext, text];
+		return text === wikitext ? null : [pageid, wikitext, text];
 	}))).filter(page => page);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
-	info('检查完毕！');
 })();

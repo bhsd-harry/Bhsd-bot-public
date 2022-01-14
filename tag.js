@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error} = require('./dev.js');
+	{error} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
 	api = new Api(user, pin, url),
@@ -38,5 +38,4 @@ const url = 'https://zh.moegirl.org.cn',
 		return [pageid, content, text];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
-	info('检查完毕！');
 })();
