@@ -105,7 +105,11 @@ class Api {
 			}
 			return Promise.all(list.map(async ([pageid,, text], t) => {
 				await dev.sleep(t);
-				return this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
+				try {
+					await this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
+				} catch { // 防止一次编辑出错就打断整个流程
+					dev.error(`页面 ${pageid} 编辑失败！`);
+				}
 			}));
 		}
 		dev.save('dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
