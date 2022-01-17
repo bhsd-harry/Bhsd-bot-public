@@ -7,8 +7,9 @@ const {createClient} = require('oicq'),
 
 class QQ {
 	#uid;
+	#password;
 
-	constructor(account, uid) {
+	constructor(account, uid, password) {
 		if (typeof account !== 'number') {
 			throw new TypeError('账号应为数字！');
 		}
@@ -17,6 +18,7 @@ class QQ {
 		}
 		this.client = createClient(account);
 		this.#uid = uid;
+		this.#password = password;
 	}
 
 	isOnline() {
@@ -25,7 +27,7 @@ class QQ {
 
 	login() {
 		if (!this.isOnline()) {
-			this.client.login();
+			this.client.login(this.#password);
 		}
 	}
 
@@ -63,6 +65,14 @@ class QQ {
 		} else {
 			error(msg);
 		}
+	}
+
+	watchGroupMsg(gid, callback) {
+		this.client.on('message.group', ({group_id, message}) => {
+			if (group_id === gid) {
+				callback(message.filter(({type}) => type === 'text').map(({text}) => text));
+			}
+		});
 	}
 }
 

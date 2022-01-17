@@ -85,6 +85,11 @@ const _notOnline = () => {
 	error(`${new Date().toISOString()} QQ已断开连接！`);
 };
 
+// 解析内链
+const _wikilink = (text) => {
+	return [...text.matchAll(/\[\[\s*:?(.+?)(?:#.*)?(?:\|.*)?\s*]]/g)].map(([, page]) => page);
+};
+
 class Rc {
 	#api;
 	#qq;
@@ -92,7 +97,7 @@ class Rc {
 	#getPrivacy;
 	#path;
 
-	constructor(api, qq, gid, path, params, categories, getPrivacy = () => false) {
+	constructor(api, qq, gid, path, params, categories, getPrivacy = () => false, url = null) {
 		this.#api = api;
 		this.#qq = qq;
 		this.#gid = gid;
@@ -101,6 +106,7 @@ class Rc {
 		this.#getPrivacy = getPrivacy;
 		this.#path = path;
 		this.rcstart = require(path);
+		this.url = url;
 	}
 
 	#prepareLink(rc) {
@@ -304,6 +310,17 @@ class Rc {
 		} catch {
 			error('无效的时间戳！');
 		}
+	}
+
+	watchGroupMsg() {
+		if (typeof this.url !== 'string') {
+			throw new TypeError('站点网址应为字符串！');
+		}
+		this.#qq.watchGroupMsg(this.#gid, msg => {
+			[...new Set(msg.map(_wikilink).flat())].forEach((page, t) => {
+				this.#qq.sendMsg(`${this.url}/special:search/${encodeURIComponent(page)}`, t, this.#gid);
+			});
+		});
 	}
 }
 

@@ -6,10 +6,10 @@ const Api = require('../Bhsd-bot-public/api.js'),
 	QQ = require('../Bhsd-bot-public/qq.js'),
 	Rc = require('../Bhsd-bot-public/rc.js'),
 	categories = require('../Bhsd-bot-public/categories.json'),
-	{user, cmpin, account, uid, gid} = require('../Bhsd-bot-public/user.json');
+	{user, cmpin, account, uid, gid, password} = require('../Bhsd-bot-public/user.json');
 
 const api = new Api(user, cmpin, 'https://commons.moegirl.org.cn', '萌娘共享'),
-	qq = global.qq || new QQ(account, uid),
+	qq = global.qq || new QQ(account, uid, password),
 	params = {rcnamespace: '6|14', grcnamespace: '6|14'},
 	rc = new Rc(api, qq, gid, '../Bhsd-bot-public/cmoegirl.json', params, categories);
 
