@@ -20,8 +20,8 @@ const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"No
 	}
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
 	const pages = (await Promise.all([
-		// ...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
-		// ...new Array(4).fill().map((_, i) => search(`ww${i + 1}.sinaimg.cn`)),
+		...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
+		...new Array(4).fill().map((_, i) => search(`ww${i + 1}.sinaimg.cn`)),
 		...new Array(4).fill().map((_, i) => search(`wx${i + 1}.sinaimg.cn`))
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],

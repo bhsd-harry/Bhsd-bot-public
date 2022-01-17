@@ -8,7 +8,7 @@ const {ping, save, error, info} = require('./dev.js'),
 let {http, https} = require('./exturl.json'),
 	flag;
 
-const caution = /^www\.(?:typemoon\.com|gov\.cn)/;
+const caution = /^(?:www\.typemoon\.com|www\.gov\.cn|moba\.163\.com)/;
 
 /**
  * @param domains, 小写网站地址组成的数组，可以有重复
@@ -46,7 +46,7 @@ const update = async (domains) => {
 const exturl = async (pages) => {
 	const regex = new RegExp(`^(?:${regexSource.join('|')})`, 'i');
 	pages.forEach(page => {
-		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[\S]+/g) || [])
+		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[^\s\]]+/g) || [])
 			.filter(url => url.includes('.') && !regex.test(url)))];
 		page.domains = [...new Set([
 			...page.urls.filter(url => caution.test(url)),

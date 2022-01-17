@@ -135,6 +135,14 @@ class Api {
 		return [pages, c];
 	}
 
+	extSearch(params = {}) {
+		if (!dev.isObject(params)) {
+			throw new TypeError('可选参数应为对象！');
+		}
+		const qs = {generator: 'exturlusage', geulimit: 50, geunamespace: '0|10|12|14|828', ...params};
+		return this.#revisions(qs);
+	}
+
 	async #recursiveRevisions(qs, pages = []) {
 		if (!dev.isObject(qs)) {
 			throw new TypeError('需要对象参数！');
@@ -320,24 +328,6 @@ class Api {
 			return ext;
 		}
 		return this.extUrl({...params, ...c}, ext);
-	}
-
-	async extSearch(params = {}) {
-		if (!dev.isObject(params)) {
-			throw new TypeError('可选参数应为对象！');
-		}
-		const qs = {
-			generator: 'exturlusage', geuexpandurl: 1, geulimit: 50, geunamespace: '0|10|12|14|828',
-			list: 'exturlusage', euprop: 'ids|url', euexpandurl: 1, eulimit: 50, eunamespace: '0|10|12|14|828',
-			prop: 'revisions', rvprop: 'contentmodel|content', ...params
-		},
-			{query: {exturlusage, pages = []}, continue: c} = await this.#rp.get(qs);
-		return [
-			pages.filter(({revisions}) => revisions && revisions[0].contentmodel === 'wikitext')
-				.map(({pageid, revisions: [{content}]}) => ({
-				pageid, content, urls: exturlusage.filter(({pageid: id}) => id === pageid).map(({url}) => url)
-			})), c
-		];
 	}
 }
 
