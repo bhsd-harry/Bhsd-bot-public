@@ -112,7 +112,7 @@ class Api {
 				}
 			}));
 		}
-		dev.save('dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
+		dev.save('../Bhsd-bot-public/dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
 		(await Promise.all(list.map(async ([pageid, content, text], i) => {
 			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
 			const diff = await dev.diff(`oldcontent${i}`, `newcontent${i}`);

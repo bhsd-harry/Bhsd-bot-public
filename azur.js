@@ -4,14 +4,18 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, error, trim} = require('./dev.js');
+	{info, error, trim, runMode} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
-	api = new Api(user, pin, url),
-	[,, mode] = process.argv;
+	api = new Api(user, pin, url);
 
 (async () => {
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	if (mode === 'rerun') {
+		await api.massEdit(null, mode, '自动修复被大家族模板覆盖的背景图片');
+		return;
+	}
 	const regex1 = /{{\s*(?:碧[蘭蓝]航[線线])?背景[圖图]片\s*\|([\s\S]+?)}}/, // 捕获定制的背景图片
 		regex2 = /{{\s*(?:碧[蘭蓝]航[線线])?背景[圖图]片\s*\|?}}/g, // 错误模板用法
 		regex3 = /{{\s*碧[蘭蓝]航[線线]\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）

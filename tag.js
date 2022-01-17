@@ -4,13 +4,13 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{error} = require('./dev.js');
+	{error, runMode} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
-	api = new Api(user, pin, url),
-	[,, mode] = process.argv;
+	api = new Api(user, pin, url);
 
 (async () => {
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');

@@ -4,15 +4,15 @@
 'use strict';
 const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
-	{error} = require('./dev.js');
+	{error, runMode} = require('./dev.js');
 
 const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
-	[,, mode] = process.argv,
 	regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
 
 const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);
 
 (async () => {
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复引自bilibili或新浪的图片外链');

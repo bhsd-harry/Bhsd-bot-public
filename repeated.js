@@ -4,11 +4,10 @@
 'use strict';
 const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, sleep, error, trim} = require('./dev.js');
+	{info, sleep, error, trim, runMode} = require('./dev.js');
 
 const url = 'https://zh.moegirl.org.cn',
-	api = new Api(user, pin, url),
-	[,, mode] = process.argv;
+	api = new Api(user, pin, url);
 
 // 确定各模板及各参数的范围
 const _scan = (str) => {
@@ -110,6 +109,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 };
 
 (async () => {
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复重复的模板参数');

@@ -4,19 +4,15 @@
 'use strict';
 const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
-	{info, save, error} = require('./dev.js'),
+	{info, save, runMode} = require('./dev.js'),
 	{exturl} = require('./exturl.js'),
 	params = require('./extLink.json'),
 	{geuquery} = params;
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
-	[,, mode] = process.argv;
+const api = new Api(user, pin, 'https://zh.moegirl.org.cn');
 
 (async () => {
-	if (mode && !['dry', 'rerun'].includes(mode)) {
-		error('未定义的运行参数！');
-		return;
-	}
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		const c = require('./euoffset.json');

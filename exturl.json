@@ -376,7 +376,8 @@
 		"epaper.langya.cn",
 		"www.tutufu.com",
 		"cdn.edgecast.steamstatic.com",
-		"miku.163.com"
+		"miku.163.com",
+		"forzamotorsport.cn"
 	],
 	"https": [
 		"f7.16163.com",
@@ -644,7 +645,8 @@
 		"www.jiemian.com",
 		"mobile.163.com",
 		"www.setn.com",
-		"linyi.dzwww.com"
+		"linyi.dzwww.com",
+		"www.rocchen.com"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",

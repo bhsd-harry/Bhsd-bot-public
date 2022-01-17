@@ -61,4 +61,12 @@ const save = (file, obj) => {
 	fs.writeFile(file, JSON.stringify(obj, null, '\t'));
 };
 
-module.exports = {error, info, isObject, cmd, ping, sleep, trim, save, diff};
+const runMode = () => {
+	const [,, mode] = process.argv;
+	if (mode && !['dry', 'rerun'].includes(mode)) {
+		throw new RangeError('未定义的运行参数！');
+	}
+	return mode;
+};
+
+module.exports = {error, info, isObject, cmd, ping, sleep, trim, save, diff, runMode};

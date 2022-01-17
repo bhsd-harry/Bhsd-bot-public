@@ -4,12 +4,13 @@
 'use strict';
 const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
-	{exturl} = require('./exturl.js');
+	{exturl} = require('./exturl.js'),
+	{runMode} = require('./dev.js');
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
-	[,, mode] = process.argv;
+const api = new Api(user, pin, 'https://zh.moegirl.org.cn');
 
 (async () => {
+	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复http链接');
