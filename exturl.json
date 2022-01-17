@@ -377,7 +377,8 @@
 		"www.tutufu.com",
 		"cdn.edgecast.steamstatic.com",
 		"miku.163.com",
-		"forzamotorsport.cn"
+		"forzamotorsport.cn",
+		"static.mengniang.org"
 	],
 	"https": [
 		"f7.16163.com",
@@ -646,7 +647,10 @@
 		"mobile.163.com",
 		"www.setn.com",
 		"linyi.dzwww.com",
-		"www.rocchen.com"
+		"www.rocchen.com",
+		"mumu.163.com",
+		"www2.mmc.atomi.ac.jp",
+		"wiki.puella-magi.net"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",

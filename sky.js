@@ -17,7 +17,7 @@ const url = 'https://zh.moegirl.org.cn',
 		return;
 	}
 	const regex1 = /{{\s*背景[圖图]片\s*\|([\s\S]+?)}}/, // 捕获定制的背景图片
-		regex2 = /{{\s*背景[圖图]片\s*\|?}}/g, // 错误模板用法
+		regex2 = /{{\s*背景[圖图]片\s*\|?\s*}}/g, // 错误模板用法
 		regex3 = /{{\s*(?:[Ss]ky光·遇|光遇)\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
 		// 匹配无效的背景图片参数
 		regex4 = /\|\s*(?:color\s*=\s*#(?:99[Cc][Cc][Ff][Ff]|9[Cc][Ff])|animate\s*=\s*appear)\s*(?=\||$)/g,
