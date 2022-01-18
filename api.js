@@ -91,7 +91,7 @@ class Api {
 		delete edit.oldrevid;
 		delete edit.newrevid;
 		delete edit.newtimestamp;
-		dev.info(edit);
+		console.log(edit);
 	}
 
 	// 批量编辑，此函数不应手动执行

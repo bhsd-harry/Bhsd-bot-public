@@ -378,7 +378,17 @@
 		"cdn.edgecast.steamstatic.com",
 		"miku.163.com",
 		"forzamotorsport.cn",
-		"static.mengniang.org"
+		"static.mengniang.org",
+		"www.dokidokivisual.com",
+		"www.sanapri.com",
+		"www.niconico.com",
+		"www.crossfire.co.kr",
+		"cf.vtc.vn",
+		"crossfire.gamerage.com",
+		"www.popiask.cn",
+		"hetalia.com",
+		"www.sonymusic.co.jp",
+		"media.people.com.cn"
 	],
 	"https": [
 		"f7.16163.com",
@@ -650,7 +660,19 @@
 		"www.rocchen.com",
 		"mumu.163.com",
 		"www2.mmc.atomi.ac.jp",
-		"wiki.puella-magi.net"
+		"wiki.puella-magi.net",
+		"crossfire.lytogame.com",
+		"sp.nicovideo.jp",
+		"www.cave.co.jp",
+		"www.wikihouse.com",
+		"persona5.jp",
+		"atlus.com",
+		"cf.qq.com",
+		"crossfire.z8games.com",
+		"www.zj-mahjong.info",
+		"game.163.com",
+		"ds.163.com",
+		"www.1905.com"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",
