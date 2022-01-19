@@ -3,7 +3,7 @@
  */
 'use strict';
 const Rp = require('./request-promise.js'),
-	dev = require('./dev.js'),
+	{error, isObject, sleep, save, diff, cmd, info} = require('./dev.js'),
 	{promises: fs} = require('fs');
 
 // 转换为UTC时间
@@ -72,7 +72,7 @@ class Api {
 
 	// 编辑
 	async edit(params) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (this.#token === '+\\') {
@@ -82,10 +82,10 @@ class Api {
 			action: 'edit', nocreate: 1, summary: '测试性编辑', token: this.#token, ...params,
 			tags: this.url === 'https://llwiki.org/mediawiki/api.php' ? undefined : 'Bot'
 		};
-		const {error, edit} = await this.#rp.post(form);
-		if (error) {
-			dev.error(error);
-			throw error.code;
+		const {errors, edit} = await this.#rp.post(form);
+		if (errors) {
+			error(errors[0]);
+			throw errors[0].code;
 		}
 		delete edit.contentmodel;
 		delete edit.oldrevid;
@@ -104,23 +104,23 @@ class Api {
 				throw new TypeError('编辑数据应为数组！');
 			}
 			return Promise.all(list.map(async ([pageid,, text], t) => {
-				await dev.sleep(t);
+				await sleep(t);
 				try {
 					await this.edit({pageid, text, summary: `${summary}，如有错误请联系[[User talk:Bhsd|用户Bhsd]]`});
 				} catch { // 防止一次编辑出错就打断整个流程
-					dev.error(`页面 ${pageid} 编辑失败！`);
+					error(`页面 ${pageid} 编辑失败！`);
 				}
 			}));
 		}
-		dev.save('../Bhsd-bot-public/dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
+		save('../Bhsd-bot-public/dry.json', list.map(([pageid,, text]) => [pageid, null, text]));
 		(await Promise.all(list.map(async ([pageid, content, text], i) => {
 			await Promise.all([fs.writeFile(`oldcontent${i}`, content), fs.writeFile(`newcontent${i}`, text)]);
-			const diff = await dev.diff(`oldcontent${i}`, `newcontent${i}`);
-			dev.cmd(`rm oldcontent${i} newcontent${i}`);
-			return [pageid, diff];
-		}))).forEach(([pageid, diff]) => {
-			dev.info(`${pageid}:`);
-			console.log(diff);
+			const diffOut = await diff(`oldcontent${i}`, `newcontent${i}`);
+			cmd(`rm oldcontent${i} newcontent${i}`);
+			return [pageid, diffOut];
+		}))).forEach(([pageid, diffOut]) => {
+			info(`${pageid}:`);
+			console.log(diffOut);
 		});
 	}
 
@@ -136,7 +136,7 @@ class Api {
 	}
 
 	extSearch(params = {}) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('可选参数应为对象！');
 		}
 		const qs = {generator: 'exturlusage', geulimit: 50, geunamespace: '0|10|12|14|828', ...params};
@@ -144,7 +144,7 @@ class Api {
 	}
 
 	async #recursiveRevisions(qs, pages = []) {
-		if (!dev.isObject(qs)) {
+		if (!isObject(qs)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (!Array.isArray(pages)) {
@@ -193,7 +193,7 @@ class Api {
 	}
 
 	async #recursiveList(qs, pageids = []) {
-		if (!dev.isObject(qs)) {
+		if (!isObject(qs)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (!qs.list) {
@@ -220,7 +220,7 @@ class Api {
 	}
 
 	async #recentChanges(params, rcl = []) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (!Array.isArray(rcl)) {
@@ -234,7 +234,7 @@ class Api {
 		rcl = [...rcl, ...recentchanges]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			const rcend = params.rcend || curtimestamp;
-			dev.info(`${this.site}已检查至 ${rcend}`);
+			info(`${this.site}已检查至 ${rcend}`);
 			return [rcl, rcend];
 		}
 		return this.#recentChanges({...params, ...c}, rcl);
@@ -251,7 +251,7 @@ class Api {
 	}
 
 	async #recentChangesInCategories(params, cats, rcl = []) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		/* eslint-disable no-param-reassign */
@@ -279,14 +279,14 @@ class Api {
 		)];
 		if (!c) {
 			const rcend = params.rcend || curtimestamp;
-			dev.info(`${this.site}已检查至 ${rcend}`);
+			info(`${this.site}已检查至 ${rcend}`);
 			return [rcl, rcend];
 		}
 		return this.#recentChangesInCategories({...params, ...c}, cats, rcl);
 	}
 
 	recentChangesInCategories(cats, rcstart, rcend, params = {}) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('第四个可选参数应为对象！');
 		}
 		try {
@@ -300,7 +300,7 @@ class Api {
 	}
 
 	async parse(params) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('需要对象参数！');
 		}
 		if (params.text) {
@@ -312,7 +312,7 @@ class Api {
 	}
 
 	async extUrl(params = {}, ext = []) {
-		if (!dev.isObject(params)) {
+		if (!isObject(params)) {
 			throw new TypeError('第一个可选参数应为对象！');
 		}
 		if (!Array.isArray(ext)) {
