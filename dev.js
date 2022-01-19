@@ -25,7 +25,7 @@ const cmd = (str) => new Promise(resolve => {
 });
 
 const ping = (url) => new Promise((resolve, reject) => {
-	spawn('curl', ['-LsI', '-o', '/dev/null', '-w', '"%{http_code}%{url_effective}"', '--connect-timeout', '3', url])
+	spawn('curl', ['-LsI', '-o', '/dev/null', '-w', '"%{http_code}%{url_effective}"', '--connect-timeout', '5', url])
 		.stdout.on('data', data => {
 		const response = data.toString(),
 			code = Number(response.slice(1, 4));
