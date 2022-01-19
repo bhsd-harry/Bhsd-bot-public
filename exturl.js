@@ -46,7 +46,7 @@ const update = async (domains) => {
 const exturl = async (pages) => {
 	const regex = new RegExp(`^(?:${regexSource.join('|')})`, 'i');
 	pages.forEach(page => {
-		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[^\s\]]+/g) || [])
+		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[^\s|\]]+/g) || [])
 			.filter(url => url.includes('.') && !regex.test(url)))];
 		page.domains = [...new Set([
 			...page.urls.filter(url => caution.test(url)),
@@ -62,8 +62,9 @@ const exturl = async (pages) => {
 		https = https.filter(url => !url.includes('/'));
 		save('../Bhsd-bot-public/exturl.json', {http, https, regexSource});
 	}
-	return pages.filter(({urls}) => urls.length > 0).map(({pageid, content, urls}) => {
+	return pages.map(({pageid, content, oldContent, urls}) => {
 		let text = content;
+		oldContent ||= content; // eslint-disable-line no-param-reassign
 		urls.forEach(url => {
 			if (text.includes(url)) {
 				text = text.replaceAll(`http://${url}`, `https://${url}`);
@@ -71,10 +72,10 @@ const exturl = async (pages) => {
 				error(`页面 ${pageid} 找不到链接 http://${url} ！`);
 			}
 		});
-		if (text === content) {
+		if (text === oldContent) {
 			return null;
 		}
-		return [pageid, content, text];
+		return [pageid, oldContent, text];
 	}).filter(edit => edit);
 };
 
