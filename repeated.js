@@ -53,7 +53,7 @@ const _findEnds = (scope, template, param) => {
 	return [start, end];
 };
 
-const _analyze = (wikitext, repeated, pageid) => {
+const _analyze = (wikitext, repeated, pageid, title) => {
 	const regexPage = /(?<=页面【\[\[:).+?(?=]]】)/,
 		regexTemplate = /(?<=模板【\[\[:).+?(?=]]】)/, // 仅用于判断是不是{{Timeline}}
 		regexParam = /(?<=<code>\|)[\s\S]*?(?=<\/code>)/,
@@ -61,7 +61,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 	let text = wikitext;
 	repeated.forEach(warning => {
 		const [page] = warning.match(regexPage);
-		if (page.startsWith('Template:')) {
+		if (page !== title) {
 			error(`请人工检查 ${page}`);
 			return;
 		}
@@ -116,7 +116,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 		return;
 	}
 	const pageids = await api.onlyCategorymembers('调用重复模板参数的页面');
-	const list = (await Promise.all(pageids.map(async (pageid, t) => {
+	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
 		const repeated = parsewarnings.filter(warning => warning.includes("'''重复使用'''"));
@@ -124,7 +124,7 @@ const _analyze = (wikitext, repeated, pageid) => {
 			info(`页面 ${pageid} 已无重复的模板参数！`);
 			return null;
 		}
-		const text = _analyze(wikitext, repeated, pageid);
+		const text = _analyze(wikitext, repeated, pageid, title);
 		return text === wikitext ? null : [pageid, wikitext, text];
 	}))).filter(page => page);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');

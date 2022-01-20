@@ -203,7 +203,7 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const {query: {[qs.list]: pages}, continue: c} = await this.#rp.get(qs);
-		pageids = [...pageids, ...pages.map(({pageid}) => pageid)]; // eslint-disable-line no-param-reassign
+		pageids = [...pageids, ...pages.map(({pageid, title}) => ({pageid, title}))]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return pageids;
 		}

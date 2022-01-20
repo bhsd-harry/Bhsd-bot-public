@@ -53,7 +53,7 @@ const exturl = async (pages) => {
 			...page.urls.filter(url => !caution.test(url)).map(url => url.split('/', 1)[0])
 		].map(domain => domain.toLowerCase()))].filter(domain => !http.includes(domain));
 	});
-	[http, https, flag] = await update(pages.map(({domains}) => domains).flat());
+	[http, https, flag] = await update(pages.flatmap(({domains}) => domains));
 	pages.forEach(page => {
 		page.domains = page.domains.filter(domain => https.includes(domain));
 		page.urls = page.urls.filter(url => page.domains.some(domain => url.toLowerCase().startsWith(domain)));

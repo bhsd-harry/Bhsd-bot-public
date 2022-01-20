@@ -317,7 +317,7 @@ class Rc {
 			throw new TypeError('站点网址应为字符串！');
 		}
 		this.#qq.watchGroupMsg(this.#gid, msg => {
-			[...new Set(msg.map(_wikilink).flat())].forEach((page, t) => {
+			[...new Set(msg.flatmap(_wikilink))].forEach((page, t) => {
 				this.#qq.sendMsg(`${this.url}/special:search/${encodeURIComponent(page)}`, t, this.#gid);
 			});
 		});
