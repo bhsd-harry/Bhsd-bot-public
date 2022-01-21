@@ -90,23 +90,33 @@ const _wikilink = (text) => {
 	return [...text.matchAll(/\[\[\s*:?(.+?)(?:#.*)?(?:\|.*)?\s*]]/g)].map(([, page]) => page);
 };
 
+const _normalize = (fromTitle, {normalized = [], converted = [], pages = []}) => {
+	let toTitle = fromTitle;
+	toTitle = normalized.find(({from}) => from === toTitle)?.to || toTitle;
+	toTitle = converted.find(({from}) => from === toTitle)?.to || toTitle;
+	return pages.find(({title}) => title === toTitle)?.pageid;
+};
+
 class Rc {
 	#api;
 	#qq;
 	#gid;
+	#params;
+	#categories;
 	#getPrivacy;
 	#path;
+	#url;
 
 	constructor(api, qq, gid, path, params, categories, getPrivacy = () => false, url = null) {
 		this.#api = api;
 		this.#qq = qq;
 		this.#gid = gid;
-		this.params = params;
-		this.categories = categories;
+		this.#params = params;
+		this.#categories = categories;
 		this.#getPrivacy = getPrivacy;
 		this.#path = path;
 		this.rcstart = require(path);
-		this.url = url;
+		this.#url = url;
 	}
 
 	#prepareLink(rc) {
@@ -236,8 +246,8 @@ class Rc {
 	// 获取符合要求的最近更改
 	async #get(rcstart, rcend) {
 		await this.#api.login();
-		if (this.categories) {
-			return this.#api.recentChangesInCategories(this.categories, rcstart, rcend, this.params);
+		if (this.#categories) {
+			return this.#api.recentChangesInCategories(this.#categories, rcstart, rcend, this.#params);
 		}
 		return this.#api.recentChanges(rcstart, rcend);
 	}
@@ -313,14 +323,28 @@ class Rc {
 	}
 
 	watchGroupMsg() {
-		if (typeof this.url !== 'string') {
+		if (typeof this.#url !== 'string') {
 			throw new TypeError('站点网址应为字符串！');
 		}
-		this.#qq.watchGroupMsg(this.#gid, msg => {
-			[...new Set(msg.flatmap(_wikilink))].forEach((page, t) => {
-				this.#qq.sendMsg(`${this.url}/special:search/${encodeURIComponent(page)}`, t, this.#gid);
+		this.#qq.watchGroupMsg(this.#gid, async (msg) => {
+			const links = [...new Set(msg.flatMap(_wikilink))],
+				titles = links.join('|'),
+				printed = {},
+				{query} = await this.#api.get({titles, converttitles: 1});
+			links.forEach((title, t) => {
+				const pageid = _normalize(title, query);
+				if (pageid === undefined) {
+					this.#qq.sendMsg(`${this.#url}/special:search/${encodeURIComponent(title)}`, t, this.#gid);
+				} else if (!printed[pageid]) {
+					printed[pageid] = true;
+					this.#qq.sendMsg(`${this.#url}?curid=${pageid}`, t, this.#gid);
+				}
 			});
 		});
+	}
+
+	setUrl(url) {
+		this.#url = url;
 	}
 }
 

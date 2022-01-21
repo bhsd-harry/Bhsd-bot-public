@@ -47,13 +47,21 @@ class Api {
 		this.#token = '+\\';
 	}
 
+	get(qs) {
+		return this.#rp.get(qs);
+	}
+
+	post(form) {
+		return this.#rp.post(form);
+	}
+
 	// 登入
 	async login() {
 		if (this.#login) {
 			return;
 		}
-		const {query: {tokens: {logintoken: lgtoken}}} = await this.#rp.get({meta: 'tokens', type: 'login'});
-		const {login} = await this.#rp.post({action: 'login', lgname: this.#user, lgpassword: this.#pin, lgtoken});
+		const {query: {tokens: {logintoken: lgtoken}}} = await this.get({meta: 'tokens', type: 'login'});
+		const {login} = await this.post({action: 'login', lgname: this.#user, lgpassword: this.#pin, lgtoken});
 		console.log(login);
 		this.#login = true;
 		this.revokeToken();
@@ -65,7 +73,7 @@ class Api {
 		if (this.#token !== '+\\') {
 			return this.#token;
 		}
-		const {query: {tokens: {csrftoken}}} = await this.#rp.get({meta: 'tokens'});
+		const {query: {tokens: {csrftoken}}} = await this.get({meta: 'tokens'});
 		this.#token = csrftoken;
 		return csrftoken;
 	}
@@ -82,7 +90,7 @@ class Api {
 			action: 'edit', nocreate: 1, summary: '测试性编辑', token: this.#token, ...params,
 			tags: this.url === 'https://llwiki.org/mediawiki/api.php' ? undefined : 'Bot'
 		};
-		const {errors, edit} = await this.#rp.post(form);
+		const {errors, edit} = await this.post(form);
 		if (errors) {
 			error(errors[0]);
 			throw errors[0].code;
@@ -126,7 +134,7 @@ class Api {
 
 	async #revisions(params) {
 		const qs = {prop: 'revisions', rvprop: 'contentmodel|content', converttitles: 1, ...params},
-			{query, continue: c} = await this.#rp.get(qs);
+			{query, continue: c} = await this.get(qs);
 		if (!query?.pages) {
 			return [[], c];
 		}
@@ -202,7 +210,7 @@ class Api {
 		if (!Array.isArray(pageids)) {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
-		const {query: {[qs.list]: pages}, continue: c} = await this.#rp.get(qs);
+		const {query: {[qs.list]: pages}, continue: c} = await this.get(qs);
 		pageids = [...pageids, ...pages.map(({pageid, title}) => ({pageid, title}))]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return pageids;
@@ -230,7 +238,7 @@ class Api {
 			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 'max',
 			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', ...params
 		},
-			{query: {recentchanges}, curtimestamp, continue: c} = await this.#rp.get(qs);
+			{query: {recentchanges}, curtimestamp, continue: c} = await this.get(qs);
 		rcl = [...rcl, ...recentchanges]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			const rcend = params.rcend || curtimestamp;
@@ -271,7 +279,7 @@ class Api {
 			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', prop: 'categories',
 			generator: 'recentchanges', grcdir: 'newer', grclimit: 500, clshow: '!hidden', cllimit: 'max', ...params
 		};
-		const {query: {pages = [], recentchanges = []}, curtimestamp, continue: c} = await this.#rp.get(qs);
+		const {query: {pages = [], recentchanges = []}, curtimestamp, continue: c} = await this.get(qs);
 		const relatedPages = pages.filter(({categories = []}) => categories.some(cat => cats.includes(cat.title)))
 			.map(({title}) => title);
 		rcl = [...rcl, ...recentchanges.filter(({title, logparams}) => // eslint-disable-line no-param-reassign
@@ -307,7 +315,7 @@ class Api {
 			params.contentmodel = 'wikitext';
 		}
 		const qs = {action: 'parse', prop: 'wikitext|parsewarnings', ...params},
-			{parse: {wikitext, parsewarnings}} = await this.#rp.get(qs);
+			{parse: {wikitext, parsewarnings}} = await this.get(qs);
 		return [wikitext, parsewarnings];
 	}
 
@@ -322,7 +330,7 @@ class Api {
 			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
 			eunamespace: '0|4|6|8|10|12|14|274|828', ...params
 		},
-			{query: {exturlusage}, continue: c} = await this.#rp.get(qs);
+			{query: {exturlusage}, continue: c} = await this.get(qs);
 		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
 		if (!c) {
 			return ext;

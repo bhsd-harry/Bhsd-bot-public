@@ -6,6 +6,7 @@ const {createClient} = require('oicq'),
 	{info, error} = require('./dev.js');
 
 class QQ {
+	#client;
 	#uid;
 	#password;
 
@@ -16,24 +17,31 @@ class QQ {
 		if (typeof uid !== 'number') {
 			throw new TypeError('管理人账号应为数字！');
 		}
-		this.client = createClient(account);
+		this.#client = createClient(account);
 		this.#uid = uid;
 		this.#password = password;
 	}
 
 	isOnline() {
-		return this.client.isOnline();
+		return this.#client.isOnline();
 	}
 
 	login() {
 		if (!this.isOnline()) {
-			this.client.login(this.#password);
+			this.#client.login(this.#password);
+		}
+	}
+
+	loginQR() {
+		if (!this.isOnline()) {
+			delete this.#client.password_md5;
+			this.#client.login();
 		}
 	}
 
 	logout() {
 		if (this.isOnline()) {
-			this.client.logout();
+			this.#client.logout();
 		}
 	}
 
@@ -45,12 +53,12 @@ class QQ {
 			} else if (!this.isOnline()) {
 				throw '机器人未登入！';
 			} else if (isPrivate) {
-				this.client.sendPrivateMsg(this.#uid, msg);
+				this.#client.sendPrivateMsg(this.#uid, msg);
 			} else {
 				if (!Number.isInteger(gid)) {
 					throw new TypeError('gid应为整数！');
 				}
-				this.client.sendGroupMsg(gid, msg);
+				this.#client.sendGroupMsg(gid, msg);
 			}
 		}, delay * 1000);
 	}
@@ -68,7 +76,7 @@ class QQ {
 	}
 
 	watchGroupMsg(gid, callback) {
-		this.client.on('message.group', ({group_id, message}) => {
+		this.#client.on('message.group', ({group_id, message}) => {
 			if (group_id === gid) {
 				callback(message.filter(({type}) => type === 'text').map(({text}) => text));
 			}
