@@ -9,7 +9,8 @@ const Api = require('./api.js'),
 	params = require('./extLink.json'),
 	{geuquery} = params;
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn');
+const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
+	protectedPages = [923];
 
 (async () => {
 	const mode = runMode();
@@ -20,9 +21,10 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn');
 		save('extLink.json', {geuquery, ...c});
 		return;
 	}
-	const [pages, c] = await api.extSearch(params);
-	if (pages.length > 0) { // 否则直接跳过，记录euoffset
-		const edits = await exturl(pages);
+	const [pages, c] = await api.extSearch(params),
+		editable = pages.filter(({pageid}) => !protectedPages.includes(pageid));
+	if (editable.length > 0) { // 否则直接跳过，记录euoffset
+		const edits = await exturl(editable);
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
 	if (mode === 'dry') {
