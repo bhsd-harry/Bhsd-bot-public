@@ -29,5 +29,5 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 		const edits = await exturl(pages);
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
-	save('moegirl.json', mode === 'dry' ? {run, dry: now} : {run: now}); // 以发出API请求之前的时间作为基准
+	save('moegirl.json', mode === 'dry' && pages.length > 0 ? {run, dry: now} : {run: now}); // 记录API请求时间
 })();
