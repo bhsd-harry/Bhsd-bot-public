@@ -46,7 +46,7 @@ const update = async (domains) => {
 const exturl = async (pages) => {
 	const regex = new RegExp(`^(?:${regexSource.join('|')})`, 'i');
 	pages.forEach(page => {
-		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[^\s|\]>)]+/g) || [])
+		page.urls = [...new Set((page.content.match(/(?<=[^/]http:\/\/)[^\s|[\]{}()<>]+/g) || [])
 			.filter(url => url.includes('.') && !regex.test(url)))];
 		page.domains = [...new Set([
 			...page.urls.filter(url => caution.test(url)),

@@ -265,6 +265,7 @@
 		"i2.img.969g.com",
 		"96neko-fanclub.com",
 		"www.97973.com",
+		"98book.com",
 		"bbs.9gal.com",
 		"gamenews.9you.com",
 		"www.aastocks.com",
@@ -813,7 +814,11 @@
 		"moemoe.us",
 		"cf.vtc.vn",
 		"www.dilidili.wang",
-		"theaterdays.xyz"
+		"theaterdays.xyz",
+		"kyoto-report.wikidot.com",
+		"img.mp.itc.cn",
+		"zt.tgbus.com",
+		"swallow-p.com"
 	],
 	"https": [
 		"loj.ac",
@@ -1342,7 +1347,8 @@
 		"grayraven.tw",
 		"www.bbc.co.uk",
 		"www.thewire.co.uk",
-		"danbooru.donmai.us"
+		"danbooru.donmai.us",
+		"jump2.bdimg.com"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",
