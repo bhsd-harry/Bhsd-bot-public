@@ -58,8 +58,8 @@ const _convertTime = (time) => {
 	const date = new Date(time),
 		timeZone = 'asia/shanghai';
 	// eslint-disable-next-line prefer-template
-	return date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'}).replace('/', '.') +
-		` ${date.toLocaleTimeString('ia', {timeZone, hour: 'numeric', minute: '2-digit', hour12: false})}`;
+	return date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'}).replace('/', '.')
+		+ ` ${date.toLocaleTimeString('ia', {timeZone, hour: 'numeric', minute: '2-digit', hour12: false})}`;
 };
 
 // 准备QQ消息
@@ -195,8 +195,8 @@ class Rc {
 			summary = tags.includes('mobile edit') ? '手机版' : '';
 
 		// 1. 不处理多余的移动、保护、内容模型更改和删除
-		if (comment.startsWith(`${user}移动页面[[`) || comment.startsWith(`${user} 已移動頁面 [[`) ||
-			['protect', 'contentmodel'].includes(logtype) && revid === 0 || logaction === 'delete_redir') {
+		if (comment.startsWith(`${user}移动页面[[`) || comment.startsWith(`${user} 已移動頁面 [[`)
+			|| ['protect', 'contentmodel'].includes(logtype) && revid === 0 || logaction === 'delete_redir') {
 			return;
 		}
 

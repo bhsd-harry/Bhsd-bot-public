@@ -147,7 +147,9 @@ class Api {
 		if (!isObject(params)) {
 			throw new TypeError('可选参数应为对象！');
 		}
-		const qs = {generator: 'exturlusage', geulimit: 50, geunamespace: '0|10|12|14|828', ...params};
+		const qs = {
+			generator: 'exturlusage', geulimit: 50, geunamespace: '0|10|12|14|828', geuprotocol: 'http', ...params
+		};
 		return this.#revisions(qs);
 	}
 
@@ -211,7 +213,8 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const {query: {[qs.list]: pages}, continue: c} = await this.get(qs);
-		pageids = [...pageids, ...pages.map(({pageid, title}) => ({pageid, title}))]; // eslint-disable-line no-param-reassign
+		// eslint-disable-next-line no-param-reassign
+		pageids = [...pageids, ...pages.map(({pageid, title}) => ({pageid, title}))];
 		if (!c) {
 			return pageids;
 		}
