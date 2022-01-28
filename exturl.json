@@ -912,7 +912,14 @@
 		"cf.vtc.vn",
 		"www.dilidili.wang",
 		"pewpewpew.work",
-		"theaterdays.xyz"
+		"theaterdays.xyz",
+		"wordgear.x0.com",
+		"www.asciimw.jp",
+		"awvssao.bn-ent.net",
+		"www.amazon.co.jp",
+		"dongman.cnnb.com.cn",
+		"otogi-bank.com",
+		"www.fenter.jp"
 	],
 	"https": [
 		"loj.ac",
@@ -1557,7 +1564,19 @@
 		"www.cambridgefilmfestival.org.uk",
 		"www.object.org.uk",
 		"danbooru.donmai.us",
-		"gmgard.us"
+		"gmgard.us",
+		"www.swordart-online.net",
+		"sao-movie.net",
+		"sao-im.bngames.net",
+		"sao-hf.bngames.net",
+		"sao-lostsong.bngames.net",
+		"hl.sao-game.jp",
+		"hr.sao-game.jp",
+		"moca-news.net",
+		"www.nitroplus.co.jp",
+		"www.filmcritics.org.hk",
+		"www.boyangu.com",
+		"news.nicovideo.jp"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",

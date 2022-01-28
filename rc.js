@@ -87,7 +87,7 @@ const _notOnline = () => {
 
 // 解析内链
 const _wikilink = (text) => {
-	return [...text.matchAll(/\[\[\s*:?(.+?)(?:#.*)?(?:\|.*)?\s*]]/g)].map(([, page]) => page);
+	return [...text.matchAll(/\[\[[\s\u200e]*:?(.+?)(?:#.*)?(?:\|.*)?[\s\u200e]*]]/g)].map(([, page]) => page);
 };
 
 const _normalize = (fromTitle, {normalized = [], converted = [], pages = []}) => {
@@ -282,6 +282,8 @@ class Rc {
 			} catch (e) {
 				if (e === '504') {
 					this.#qq.sendErrorMsg(`${this.#api.site}触发错误代码 504 ！`);
+				} else if (e === 'waf') {
+					this.#qq.sendErrorMsg(`${this.#api.site}触发 WAF ！`);
 				} else if (e?.code === 'ETIMEDOUT') {
 					this.#qq.sendErrorMsg(`${this.#api.site}触发错误 ETIMEDOUT ！`);
 				} else {

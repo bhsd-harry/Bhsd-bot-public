@@ -16,9 +16,9 @@ const url = 'https://mzh.moegirl.org.cn',
 		await api.massEdit(null, mode, '自动修复被大家族模板覆盖的背景图片');
 		return;
 	}
-	const regex1 = /{{\s*(?:碧[蘭蓝]航[線线])?背景[圖图]片\s*\|([\s\S]+?)}}/, // 捕获定制的背景图片
-		regex2 = /{{\s*(?:碧[蘭蓝]航[線线])?背景[圖图]片\s*\|?\s*}}/g, // 错误模板用法
-		regex3 = /{{\s*碧[蘭蓝]航[線线]\s*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
+	const regex1 = /{{[\s\u200e]*(?:碧[蘭蓝]航[線线])?背景[圖图]片[\s\u200e]*\|([\s\S]+?)}}/, // 捕获定制的背景图片
+		regex2 = /{{[\s\u200e]*(?:碧[蘭蓝]航[線线])?背景[圖图]片[\s\u200e]*\|?[\s\u200e]*}}/g, // 错误模板用法
+		regex3 = /{{[\s\u200e]*碧[蘭蓝]航[線线][\s\u200e]*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
 		// 匹配无效的背景图片参数
 		regex4 = /\|\s*(?:position\s*=\s*center|logo-url\s*=[\s\S]*?|logo-size\s*=\s*contain)\s*(?=\||$)/g,
 		pages = await api.search('hastemplate:"碧蓝航线" insource:"背景图片"');

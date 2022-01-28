@@ -139,7 +139,13 @@ class Api {
 			return [[], c];
 		}
 		const pages = query.pages.filter(({revisions}) => revisions && revisions[0].contentmodel === 'wikitext')
-			.map(({pageid, revisions: [{content}]}) => ({pageid, content}));
+			.map(({pageid, revisions: [{content}]}) => ({pageid, content})).filter(({pageid, content}) => {
+			if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|编辑中)/.test(content)) {
+				error(`已跳过施工中的页面 ${pageid} ！`);
+				return false;
+			}
+			return true;
+		});
 		return [pages, c];
 	}
 

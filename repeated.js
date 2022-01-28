@@ -119,6 +119,10 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
+		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|编辑中)/.test(wikitext)) {
+			error(`已跳过施工中的页面 ${pageid} ！`);
+			return null;
+		}
 		const repeated = parsewarnings.filter(warning => warning.includes("'''重复使用'''"));
 		if (repeated.length === 0) {
 			info(`页面 ${pageid} 已无重复的模板参数！`);
