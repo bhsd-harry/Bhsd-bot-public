@@ -10,7 +10,8 @@ const Api = require('./api.js'),
 	{geuquery} = params;
 
 const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
-	protectedPages = [923];
+	protectedPages = [923],
+	[,,, geulimit] = process.argv;
 
 (async () => {
 	const mode = runMode();
@@ -20,6 +21,9 @@ const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 		await api.massEdit(null, mode, '自动修复http链接');
 		save('extLink.json', {geuquery, ...c});
 		return;
+	}
+	if (geulimit) {
+		params.geulimit = geulimit;
 	}
 	const [pages, c] = await api.extSearch(params),
 		editable = pages.filter(({pageid}) => !protectedPages.includes(pageid));
