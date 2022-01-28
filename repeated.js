@@ -6,7 +6,7 @@ const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
 	{info, sleep, error, trim, runMode} = require('./dev.js');
 
-const url = 'https://zh.moegirl.org.cn',
+const url = 'https://mzh.moegirl.org.cn',
 	api = new Api(user, pin, url);
 
 // 确定各模板及各参数的范围

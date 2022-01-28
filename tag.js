@@ -6,7 +6,7 @@ const {user, pin} = require('./user.json'),
 	Api = require('./api.js'),
 	{error, runMode} = require('./dev.js');
 
-const url = 'https://zh.moegirl.org.cn',
+const url = 'https://mzh.moegirl.org.cn',
 	api = new Api(user, pin, url);
 
 (async () => {

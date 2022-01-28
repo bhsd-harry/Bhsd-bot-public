@@ -7,7 +7,7 @@ const Api = require('./api.js'),
 	{error, runMode} = require('./dev.js'),
 	{exturl} = require('./exturl.js');
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
+const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 	regex = /https?:\/{0,2}https?:\/{0,2}/g;
 
 (async () => {

@@ -9,7 +9,7 @@ const Api = require('./api.js'),
 	params = require('./extLink.json'),
 	{geuquery} = params;
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
+const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 	protectedPages = [923];
 
 (async () => {

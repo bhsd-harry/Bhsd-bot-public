@@ -838,7 +838,14 @@
 		"moemoe.us",
 		"cf.vtc.vn",
 		"www.dilidili.wang",
-		"theaterdays.xyz"
+		"theaterdays.xyz",
+		"www.cabbit.jp",
+		"www.suns.fm",
+		"www.office-pac.jp",
+		"pewpewpew.work",
+		"jashinchan.com",
+		"www.pro-baobab.jp",
+		"adeltaz1.wix.com"
 	],
 	"https": [
 		"loj.ac",
@@ -1390,7 +1397,10 @@
 		"grayraven.tw",
 		"www.bbc.co.uk",
 		"www.thewire.co.uk",
-		"danbooru.donmai.us"
+		"danbooru.donmai.us",
+		"tenhou.net",
+		"www.vjmedia.com.hk",
+		"dramaticcreate.com"
 	],
 	"regexSource": [
 		"ent\\.163\\.com\\/special\\/",

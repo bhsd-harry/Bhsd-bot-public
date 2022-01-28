@@ -6,7 +6,7 @@ const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
 	{error, runMode} = require('./dev.js');
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
+const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 	regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
 
 const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);

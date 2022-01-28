@@ -39,10 +39,12 @@ class Rp {
 				try {
 					resolve(JSON.parse(body));
 				} catch {
-					if (body.includes('腾讯T-Sec Web应用防火墙')) {
-						reject('waf');
-					} else if (body.includes('504 Gateway Time-out')) {
-						reject('504');
+					if (typeof body === 'string') {
+						if (body.includes('腾讯T-Sec Web应用防火墙')) {
+							reject('waf');
+						} else if (body.includes('504 Gateway Time-out')) {
+							reject('504');
+						}
 					}
 					reject(body);
 				}

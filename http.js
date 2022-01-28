@@ -7,7 +7,7 @@ const Api = require('./api.js'),
 	{exturl} = require('./exturl.js'),
 	{runMode, save} = require('./dev.js');
 
-const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
+const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 	{run, dry} = require('./moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 (async () => {
@@ -25,9 +25,9 @@ const api = new Api(user, pin, 'https://zh.moegirl.org.cn'),
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1天
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
 		.filter(({content}) => content.includes('http://'));
-	if (pages.length > 0) {
-		const edits = await exturl(pages);
+	const edits = pages.length > 0 ? await exturl(pages) : [];
+	if (edits.length > 0) {
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
-	save('moegirl.json', mode === 'dry' && pages.length > 0 ? {run, dry: now} : {run: now}); // 记录API请求时间
+	save('moegirl.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
 })();
