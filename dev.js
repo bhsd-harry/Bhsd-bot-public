@@ -61,9 +61,9 @@ const save = (file, obj) => {
 	fs.writeFile(file, JSON.stringify(obj, null, '\t'));
 };
 
-const runMode = () => {
+const runMode = (modes = []) => {
 	const [,, mode] = process.argv;
-	if (mode && !['dry', 'rerun'].includes(mode)) {
+	if (mode && !['dry', 'rerun', ...typeof modes === 'string' ? [modes] : modes].includes(mode)) {
 		throw new RangeError('未定义的运行参数！');
 	}
 	return mode;

@@ -4,14 +4,18 @@
 'use strict';
 const Api = require('./api.js'),
 	{user, pin} = require('./user.json'),
-	{exturl} = require('./exturl.js'),
+	{exturl, sort} = require('./exturl.js'),
 	{runMode, save} = require('./dev.js');
 
 const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 	{run, dry} = require('./moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 (async () => {
-	const mode = runMode();
+	const mode = runMode('sort');
+	if (mode === 'sort') {
+		sort();
+		return;
+	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复http链接');

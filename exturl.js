@@ -10,6 +10,14 @@ let {http, https} = require('./exturl.json'),
 
 const caution = /^(?:www\.typemoon\.com|www\.gov\.cn|moba\.163\.com)/;
 
+const _save = () => {
+	save('../Bhsd-bot-public/exturl.json', {http, https, regexSource});
+};
+
+const _format = (url) => url.split('.').reverse().join('.');
+
+const _sort = (a, b) => _format(a) < _format(b) ? -1 : 1;
+
 /**
  * @param domains, 小写网站地址组成的数组，可以有重复
  */
@@ -60,7 +68,7 @@ const exturl = async (pages) => {
 	});
 	if (flag) {
 		https = https.filter(url => !url.includes('/'));
-		save('../Bhsd-bot-public/exturl.json', {http, https, regexSource});
+		_save();
 	}
 	return pages.map(({pageid, content, oldContent, urls}) => {
 		let text = content;
@@ -79,4 +87,10 @@ const exturl = async (pages) => {
 	}).filter(edit => edit);
 };
 
-module.exports = {update, exturl};
+const sort = () => {
+	http = http.sort(_sort);
+	https = https.sort(_sort);
+	_save();
+};
+
+module.exports = {update, exturl, sort};
