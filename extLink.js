@@ -31,9 +31,11 @@ const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
 		const edits = await exturl(editable);
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
-	if (mode === 'dry') {
+	if (c === undefined) {
+		info('已全部检查完毕！');
+	} else if (mode === 'dry') {
 		save('euoffset.json', c);
-		info(c ? `下次检查从 ${c.geuoffset} 开始。` : '已全部检查完毕！');
+		info(`下次检查从 ${c.geuoffset} 开始。`);
 	} else {
 		save('extLink.json', {geuquery, ...c});
 	}

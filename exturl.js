@@ -14,7 +14,7 @@ const _save = () => {
 	save('../Bhsd-bot-public/exturl.json', {http, https, regexSource});
 };
 
-const _format = (url) => url.split('.').reverse().join('.');
+const _format = (url) => url.replace(/:\d+$/, '').split('.').reverse().join('.');
 
 const _sort = (a, b) => _format(a) < _format(b) ? -1 : 1;
 
