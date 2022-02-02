@@ -15,7 +15,8 @@ const {error, trim} = require('./dev.js'),
 	CodeMirror: /使用CodeMirror快速编辑/,
 	批量回退: /^批量回退：/,
 	'Cat-a-lot': /使用Cat-a-lot小工具/,
-	mobileBlock: /使用mobileBlock小工具创建/
+	mobileBlock: /使用mobileBlock小工具创建/,
+	InPageEdit: /\[InPageEdit]/
 },
 	// 日志类型
 	actions = {upload: '上传', overwrite: '上传新版本', revert: '文件回退', delete: '删除', restore: '还原',
@@ -26,14 +27,15 @@ const {error, trim} = require('./dev.js'),
 	tagsList = {'mw-rollback': '回退', 'mw-undo': '撤销', 'mw-blank': '清空', 'mw-replce': '替换',
 	'mw-changed-redirect-target': '重定向目标更改', 'mw-removed-redirect': '移除重定向', bigdelete: '大段删除',
 	'mw-contentmodelchange': '内容模型更改'
-};
+},
+	specialPage = /^(?:special|特殊):/i;
 
 // 各种工具函数
 const _comment = {
 	decodeHtml: (str) => str.replace(/&(amp|lt|gt|#039|quot);/g, (_, code) => ({
 		amp: '&', lt: '<', gt: '>', '#039': "'", quot: '"'
 	}[code])),
-	replaceLinks: (comment) => comment.replace(/\[\[(?:[^[\]{}]+?\|)?(.+?)]]/g, '$1'),
+	replaceLinks: (comment) => comment.replace(/\[\[[\s\u200e]*:?(?:[^[\]{}]+?\|)?(.+?)\|?]]/g, '$1'),
 	findSection(str) {
 		let section = '';
 		const comment = str.replace(/\/\*\s*(.+?)\s*\*\//, (_, hash) => {
@@ -43,6 +45,7 @@ const _comment = {
 		return [comment, section];
 	},
 	findTool(comment) {
+		comment = comment.replace(/没有编辑摘要/, ''); // eslint-disable-line no-param-reassign
 		for (const [key, val] of Object.entries(tools)) {
 			if (val.test(comment)) {
 				return [comment.replace(val, ''), key];
@@ -332,10 +335,15 @@ class Rc {
 		}
 		this.#qq.watchGroupMsg(this.#gid, async (msg) => {
 			const links = [...new Set(msg.flatMap(_wikilink))],
-				titles = links.join('|'),
+				titles = links.filter(title => !specialPage.test(title)).join('|'),
 				printed = {},
-				{query} = await this.#api.get({titles, converttitles: 1});
+				{query} = titles ? await this.#api.get({titles, converttitles: 1}) : {};
 			links.forEach((title, t) => {
+				if (specialPage.test(title)) {
+					title = title.replace(specialPage, 'special:'); // eslint-disable-line no-param-reassign
+					this.#qq.sendMsg(`${this.#url}/${encodeURIComponent(title)}`, t, this.#gid);
+					return;
+				}
 				const pageid = _normalize(title, query);
 				if (pageid === undefined) {
 					this.#qq.sendMsg(`${this.#url}/special:search/${encodeURIComponent(title)}`, t, this.#gid);
