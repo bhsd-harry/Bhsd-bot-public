@@ -2,7 +2,7 @@
  * @Function: 仅用于为API请求提供Promise界面
  */
 'use strict';
-const request = require('request').defaults({jar: true}),
+const request = require('request').defaults({jar: true, headers: {'content-type': 'application/json'}}),
 	{isObject} = require('./dev.js');
 
 // 移除无用的对象键
