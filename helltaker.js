@@ -2,12 +2,11 @@
  * @Function: 1. 检查嵌入了{{Helltaker}}的条目，如果模板默认背景覆盖了定制背景则进行修复
  */
 'use strict';
-const {user, pin} = require('./user.json'),
+const {user, pin, url} = require('./user.json'),
 	Api = require('./api.js'),
 	{error, trim, runMode} = require('./dev.js');
 
-const url = 'https://mzh.moegirl.org.cn',
-	api = new Api(user, pin, url);
+const api = new Api(user, pin, url);
 
 (async () => {
 	const mode = runMode();

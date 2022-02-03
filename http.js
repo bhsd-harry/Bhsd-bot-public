@@ -3,11 +3,11 @@
  */
 'use strict';
 const Api = require('./api.js'),
-	{user, pin} = require('./user.json'),
+	{user, pin, url} = require('./user.json'),
 	{exturl, sort} = require('./exturl.js'),
 	{runMode, save} = require('./dev.js');
 
-const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
+const api = new Api(user, pin, url),
 	{run, dry} = require('./moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 (async () => {

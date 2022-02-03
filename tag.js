@@ -2,12 +2,11 @@
  * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
  */
 'use strict';
-const {user, pin} = require('./user.json'),
+const {user, pin, url} = require('./user.json'),
 	Api = require('./api.js'),
 	{error, runMode} = require('./dev.js');
 
-const url = 'https://mzh.moegirl.org.cn',
-	api = new Api(user, pin, url);
+const api = new Api(user, pin, url);
 
 (async () => {
 	const mode = runMode();

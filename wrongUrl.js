@@ -3,11 +3,11 @@
  */
 'use strict';
 const Api = require('./api.js'),
-	{user, pin} = require('./user.json'),
+	{user, pin, url} = require('./user.json'),
 	{error, runMode} = require('./dev.js'),
 	{exturl} = require('./exturl.js');
 
-const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
+const api = new Api(user, pin, url),
 	regex = /https?:\/{0,2}https?:\/{0,2}/g;
 
 (async () => {

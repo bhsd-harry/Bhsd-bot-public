@@ -3,10 +3,10 @@
  */
 'use strict';
 const Api = require('./api.js'),
-	{user, pin} = require('./user.json'),
+	{user, pin, url} = require('./user.json'),
 	{error, runMode} = require('./dev.js');
 
-const api = new Api(user, pin, 'https://mzh.moegirl.org.cn'),
+const api = new Api(user, pin, url),
 	regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
 
 const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);
@@ -32,8 +32,8 @@ const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"No
 			return null;
 		}
 		let text = content;
-		urls.forEach(url => {
-			text = text.replace(url, `http://${url.slice(8)}`);
+		urls.forEach(imgUrl => {
+			text = text.replace(url, `http://${imgUrl.slice(8)}`);
 		});
 		return [pageid, content, text];
 	}).filter(edit => edit);

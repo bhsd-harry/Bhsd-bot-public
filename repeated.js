@@ -2,12 +2,11 @@
  * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
  */
 'use strict';
-const {user, pin} = require('./user.json'),
+const {user, pin, url} = require('./user.json'),
 	Api = require('./api.js'),
 	{info, sleep, error, trim, runMode} = require('./dev.js');
 
-const url = 'https://mzh.moegirl.org.cn',
-	api = new Api(user, pin, url);
+const api = new Api(user, pin, url);
 
 // 确定各模板及各参数的范围
 const _scan = (str) => {
