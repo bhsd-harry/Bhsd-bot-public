@@ -21,7 +21,8 @@ const {error, trim} = require('./dev.js'),
 	// 日志类型
 	actions = {upload: '上传', overwrite: '上传新版本', revert: '文件回退', delete: '删除', restore: '还原',
 	create: '新用户', create2: '新用户', protect: '保护', unprotect: '移除保护', modify: '更改保护',
-	rights: '更改权限', block: '封禁', unblock: '解封', change: '内容模型更改', move: '移动', move_redir: '移动'
+	rights: '更改权限', block: '封禁', unblock: '解封', reblock: '更改封禁', move: '移动', move_redir: '移动',
+	revision: '隐藏', change: '内容模型更改'
 },
 	// 标签类型
 	tagsList = {'mw-rollback': '回退', 'mw-undo': '撤销', 'mw-blank': '清空', 'mw-replce': '替换',
