@@ -140,12 +140,12 @@ class Api {
 		}
 		const pages = query.pages.filter(({revisions}) => revisions && revisions[0].contentmodel === 'wikitext')
 			.map(({pageid, revisions: [{content}]}) => ({pageid, content})).filter(({pageid, content}) => {
-			if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|编辑中)/.test(content)) {
-				error(`已跳过施工中的页面 ${pageid} ！`);
-				return false;
-			}
-			return true;
-		});
+				if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|编辑中)/.test(content)) {
+					error(`已跳过施工中的页面 ${pageid} ！`);
+					return false;
+				}
+				return true;
+			});
 		return [pages, c];
 	}
 
@@ -244,9 +244,9 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const qs = {
-			curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 'max',
-			rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', ...params
-		},
+				curtimestamp: 1, list: 'recentchanges', rcdir: 'newer', rclimit: 'max',
+				rcprop: 'user|comment|flags|timestamp|title|ids|sizes|redirect|loginfo|tags', ...params
+			},
 			{query: {recentchanges}, curtimestamp, continue: c} = await this.get(qs);
 		rcl = [...rcl, ...recentchanges]; // eslint-disable-line no-param-reassign
 		if (!c) {
@@ -336,9 +336,9 @@ class Api {
 			throw new TypeError('第二个可选参数应为数组！');
 		}
 		const qs = {
-			list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
-			eunamespace: '0|4|6|8|10|12|14|274|828', ...params
-		},
+				list: 'exturlusage', euprop: 'ids|url', euprotocol: 'http', eulimit: 'max', euexpandurl: 1,
+				eunamespace: '0|4|6|8|10|12|14|274|828', ...params
+			},
 			{query: {exturlusage}, continue: c} = await this.get(qs);
 		ext = [...ext, ...exturlusage]; // eslint-disable-line no-param-reassign
 		if (!c) {

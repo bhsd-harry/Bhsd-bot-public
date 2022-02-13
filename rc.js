@@ -7,28 +7,28 @@ const {error, trim} = require('./dev.js'),
 
 	// 常用编辑工具
 	tools = {Wikiplus: /\/\/ (?:使用Wikiplus小工具快速编辑|Edit via Wikiplus)/,
-	Inspector: /\/\/使用页面\/文本对比查看器快速编辑/,
-	HotDefaultSort: /使用HotDefaultSort小工具/,
-	HotCat: /(?:使用HotCat小工具|——HotCat)/,
-	Mainpage: /使用Mainpage小工具快速编辑/,
-	Definitions: /使用definitions小工具编辑/,
-	CodeMirror: /使用CodeMirror快速编辑/,
-	批量回退: /^批量回退：/,
-	'Cat-a-lot': /使用Cat-a-lot小工具/,
-	mobileBlock: /使用mobileBlock小工具创建/,
-	InPageEdit: /\[InPageEdit]/
-},
+		Inspector: /\/\/使用页面\/文本对比查看器快速编辑/,
+		HotDefaultSort: /使用HotDefaultSort小工具/,
+		HotCat: /(?:使用HotCat小工具|——HotCat)/,
+		Mainpage: /使用Mainpage小工具快速编辑/,
+		Definitions: /使用definitions小工具编辑/,
+		CodeMirror: /使用CodeMirror快速编辑/,
+		批量回退: /^批量回退：/,
+		'Cat-a-lot': /使用Cat-a-lot小工具/,
+		mobileBlock: /使用mobileBlock小工具创建/,
+		InPageEdit: /\[InPageEdit]/
+	},
 	// 日志类型
 	actions = {upload: '上传', overwrite: '上传新版本', revert: '文件回退', delete: '删除', restore: '还原',
-	create: '新用户', create2: '新用户', protect: '保护', unprotect: '移除保护', modify: '更改保护',
-	rights: '更改权限', block: '封禁', unblock: '解封', reblock: '更改封禁', move: '移动', move_redir: '移动',
-	revision: '隐藏', change: '内容模型更改'
-},
+		create: '新用户', create2: '新用户', protect: '保护', unprotect: '移除保护', modify: '更改保护',
+		rights: '更改权限', block: '封禁', unblock: '解封', reblock: '更改封禁', move: '移动', move_redir: '移动',
+		revision: '隐藏', change: '内容模型更改'
+	},
 	// 标签类型
 	tagsList = {'mw-rollback': '回退', 'mw-undo': '撤销', 'mw-blank': '清空', 'mw-replce': '替换',
-	'mw-changed-redirect-target': '重定向目标更改', 'mw-removed-redirect': '移除重定向', bigdelete: '大段删除',
-	'mw-contentmodelchange': '内容模型更改'
-},
+		'mw-changed-redirect-target': '重定向目标更改', 'mw-removed-redirect': '移除重定向', bigdelete: '大段删除',
+		'mw-contentmodelchange': '内容模型更改'
+	},
 	specialPage = /^(?:special|特殊):/i;
 
 // 各种工具函数

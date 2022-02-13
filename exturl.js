@@ -22,7 +22,7 @@ const _sort = (a, b) => _format(a) < _format(b) ? -1 : 1;
  * @param domains, 小写网站地址组成的数组，可以有重复
  */
 const update = async (domains) => {
-	const unknown = [...new Set(domains)].filter(domain => !https.includes(domain));
+	const unknown = [...new Set(domains)].filter(domain => ![...http, ...https].includes(domain));
 	if (unknown.length === 0) {
 		return [http, https];
 	}
@@ -59,7 +59,7 @@ const exturl = async (pages) => {
 		page.domains = [...new Set([
 			...page.urls.filter(url => caution.test(url)),
 			...page.urls.filter(url => !caution.test(url)).map(url => url.split('/', 1)[0])
-		].map(domain => domain.toLowerCase()))].filter(domain => !http.includes(domain));
+		].map(domain => domain.toLowerCase()))];
 	});
 	[http, https, flag] = await update(pages.flatMap(({domains}) => domains));
 	pages.forEach(page => {

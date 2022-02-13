@@ -16,10 +16,10 @@ const api = new Api(user, pin, url);
 		return;
 	}
 	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
-		'em', 's', 'strike', 'strong', 'tt', 'var', 'div', 'center', 'blockquote', 'ol', 'ul', 'dl', 'table',
-		'caption', 'pre', 'ruby', 'rb', 'rp', 'rt', 'rtc', 'p', 'span', 'abbr', 'dfn', 'kbd', 'samp', 'data', 'time',
-		'mark', 'li', 'dt', 'dd', 'td', 'th', 'tr'
-	],
+			'em', 's', 'strike', 'strong', 'tt', 'var', 'div', 'center', 'blockquote', 'ol', 'ul', 'dl', 'table',
+			'caption', 'pre', 'ruby', 'rb', 'rp', 'rt', 'rtc', 'p', 'span', 'abbr', 'dfn', 'kbd', 'samp', 'data',
+			'time', 'mark', 'li', 'dt', 'dd', 'td', 'th', 'tr'
+		],
 		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi'),
 		pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
 	const list = pages.map(({pageid, content}) => {

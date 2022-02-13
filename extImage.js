@@ -26,16 +26,16 @@ const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"No
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid)).map(({pageid, content}) => {
-		const urls = content.match(regex);
-		if (!urls) {
-			error(`页面 ${pageid} 找不到图片链接！`);
-			return null;
-		}
-		let text = content;
-		urls.forEach(imgUrl => {
-			text = text.replace(url, `http://${imgUrl.slice(8)}`);
-		});
-		return [pageid, content, text];
-	}).filter(edit => edit);
+			const urls = content.match(regex);
+			if (!urls) {
+				error(`页面 ${pageid} 找不到图片链接！`);
+				return null;
+			}
+			let text = content;
+			urls.forEach(imgUrl => {
+				text = text.replace(url, `http://${imgUrl.slice(8)}`);
+			});
+			return [pageid, content, text];
+		}).filter(edit => edit);
 	api.massEdit(edits, mode, '自动修复引自bilibili或新浪的图片外链');
 })();

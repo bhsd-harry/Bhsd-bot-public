@@ -27,26 +27,26 @@ const cmd = (str) => new Promise(resolve => {
 const ping = (url) => new Promise((resolve, reject) => {
 	spawn('curl', ['-LsI', '-o', '/dev/null', '-w', '"%{http_code}%{url_effective}"', '--connect-timeout', '5', url])
 		.stdout.on('data', data => {
-		const response = data.toString(),
-			code = Number(response.slice(1, 4));
-		let redirect = response.slice(4, -1);
-		if (!url.slice(8).includes('/')) { // 只是domain而不是完整网址
-			redirect = redirect.replace(/^(https?:\/\/[^/]+).*/, '$1');
-		}
-		if (code === 0 || code >= 400) {
-			reject(url);
-		} else if (url !== redirect) {
-			reject([url, redirect]);
-		}
-		resolve(url);
-	});
+			const response = data.toString(),
+				code = Number(response.slice(1, 4));
+			let redirect = response.slice(4, -1);
+			if (!url.slice(8).includes('/')) { // 只是domain而不是完整网址
+				redirect = redirect.replace(/^(https?:\/\/[^/]+).*/, '$1');
+			}
+			if (code === 0 || code >= 400) {
+				reject(url);
+			} else if (url !== redirect) {
+				reject([url, redirect]);
+			}
+			resolve(url);
+		});
 });
 
 const diff = (oldfile, newfile) => new Promise(resolve => {
 	spawn('git', ['diff', '--color-words=<?/?\\w+/?>?|[^[:space:]]', '-U0', '--no-index', oldfile, newfile])
 		.stdout.on('data', data => {
-		resolve(data.toString().split('\n').slice(4).join('\n'));
-	});
+			resolve(data.toString().split('\n').slice(4).join('\n'));
+		});
 });
 
 // 延时

@@ -28,7 +28,7 @@ const api = new Api(user, pin, url),
 	yesterday.setDate(yesterday.getDate() - 1);
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1天
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
-		.filter(({content}) => content.includes('http://'));
+			.filter(({content}) => content.includes('http://'));
 	const edits = pages.length > 0 ? await exturl(pages) : [];
 	if (edits.length > 0) {
 		await api.massEdit(edits, mode, '自动修复http链接');
