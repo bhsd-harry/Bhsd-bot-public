@@ -69,4 +69,8 @@ const runMode = (modes = []) => {
 	return mode;
 };
 
-module.exports = {error, info, isObject, cmd, ping, sleep, trim, save, diff, runMode};
+const decodeHtml = (str) => str.replace(/&(amp|lt|gt|#0?39|quot);/g, (_, code) => ({
+	amp: '&', lt: '<', gt: '>', '#039': "'", '#39': "'", quot: '"'
+}[code]));
+
+module.exports = {error, info, isObject, cmd, ping, sleep, trim, save, diff, runMode, decodeHtml};

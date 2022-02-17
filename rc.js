@@ -2,7 +2,7 @@
  * @Function: 分析RecentChanges数据，并生成消息发送至QQ
  */
 'use strict';
-const {error, trim} = require('./dev.js'),
+const {error, trim, decodeHtml} = require('./dev.js'),
 	{promises: fs} = require('fs'),
 
 	// 常用编辑工具
@@ -33,9 +33,6 @@ const {error, trim} = require('./dev.js'),
 
 // 各种工具函数
 const _comment = {
-	decodeHtml: (str) => str.replace(/&(amp|lt|gt|#039|quot);/g, (_, code) => ({
-		amp: '&', lt: '<', gt: '>', '#039': "'", quot: '"'
-	}[code])),
 	replaceLinks: (comment) => comment.replace(/\[\[[\s\u200e]*:?(?:[^[\]{}]+?\|)?(.+?)\|?]]/g, '$1'),
 	findSection(str) {
 		let section = '';
@@ -77,7 +74,7 @@ const _msgTemplate = (title, summary, sizeDiff, user, timestamp, comment, link =
 const _handleReplace = (rules, rc, summary) => {
 	const {user, title, revid} = rc;
 	let {comment} = rc;
-	comment = _comment.decodeHtml(comment.slice(7));
+	comment = decodeHtml(comment.slice(7));
 	if (rules[comment]) {
 		rules[comment].count++;
 	} else {

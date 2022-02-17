@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin, url} = require('./user.json'),
 	Api = require('./api.js'),
-	{info, sleep, error, trim, runMode} = require('./dev.js');
+	{info, sleep, error, trim, runMode, decodeHtml} = require('./dev.js');
 
 const api = new Api(user, pin, url);
 
@@ -59,7 +59,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		failed = {}; // 避免重复失败的尝试
 	let text = wikitext;
 	repeated.forEach(warning => {
-		const [page] = warning.match(regexPage);
+		const page = decodeHtml(warning.match(regexPage)[0]);
 		if (page !== title) {
 			error(`请人工检查 ${page}`);
 			return;
