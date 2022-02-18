@@ -232,7 +232,7 @@ class Api {
 			throw new TypeError('目标分类应为字符串！');
 		}
 		cmtitle = _getCategoryTitle(cmtitle); // eslint-disable-line no-param-reassign
-		const qs = {list: 'categorymembers', cmlimit: 'max', cmtitle, cmnamespace: '0|3|9|11|12|13|14|15|275|829'};
+		const qs = {list: 'categorymembers', cmlimit: 'max', cmtitle, cmnamespace: '0|2|3|9|11|12|13|14|15|275|829'};
 		return this.#recursiveList(qs);
 	}
 

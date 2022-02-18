@@ -31,6 +31,9 @@ const _scan = (str) => {
 		} else if (c === '|' && nl === 0) {
 			scope[i] = [tStack[0], ++np];
 		} else {
+			if (c === '\n') { // 处理可能存在的中括号不匹配
+				nl = 0;
+			}
 			scope[i] = [tStack[0], np];
 			if (c === '[' && str[i + 1] === '[') {
 				nl = nl < 1 ? nl + 1 : 2; // 至多2层内链
@@ -91,10 +94,17 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		const curScope = pScope.filter((_, i) => tScope[i] === target),
 			candidates = curScope.map(p => _findEnds(scope, target, p)),
 			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
-			redundant = values.findIndex((val, i) => val === '' || values.indexOf(val) !== i);
-		if (redundant >= 0) { // 修复情形1：空参数或重复参数值
-			const [start, end] = candidates[redundant];
-			text = `${text.slice(0, start)}${text.slice(end)}`;
+			empty = values.filter(val => val === '').map((_, i) => i),
+			identical = values.filter((val, i) => values.indexOf(val) !== i).map((_, i) => i);
+		if (empty.length === candidates.length) { // 全是空参数时，需要保留一个
+			empty.shift();
+		}
+		const redundant = [...new Set([...empty, ...identical])].sort((a, b) => b - a); // 除重后倒序排列
+		if (redundant.length) { // 修复情形1：空参数或重复参数值
+			redundant.forEach(index => {
+				const [start, end] = candidates[index];
+				text = `${text.slice(0, start)}${text.slice(end)}`;
+			});
 		} else if (template === 'Template:Timeline' && /in(?:\d+年)?\d+月\d+日/.test(param)) { // 修复情形2：{{Timeline}}
 			const [, [start, end]] = candidates,
 				newText = text.slice(start, end).replace(param, `${param}#2`);
