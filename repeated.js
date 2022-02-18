@@ -8,6 +8,10 @@ const {user, pin, url} = require('./user.json'),
 
 const api = new Api(user, pin, url);
 
+const ignorePages = [
+	500885, 358226, 446806, 495996, 486365, 377922, 442674, 477281, 490805, 456515, 358226, 466171, 147593
+];
+
 // 确定各模板及各参数的范围
 const _scan = (str) => {
 	let nt = 0, // 模板计数，0表示非模板
@@ -124,7 +128,8 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		await api.massEdit(null, mode, '自动修复重复的模板参数');
 		return;
 	}
-	const pageids = await api.onlyCategorymembers('调用重复模板参数的页面');
+	const pageids = (await api.onlyCategorymembers('调用重复模板参数的页面'))
+		.filter(({pageid}) => !ignorePages.includes(pageid));
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
