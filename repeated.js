@@ -8,9 +8,7 @@ const {user, pin, url} = require('./user.json'),
 
 const api = new Api(user, pin, url);
 
-const ignorePages = [
-	500885, 358226, 446806, 495996, 486365, 377922, 442674, 477281, 490805, 456515, 358226, 466171, 147593
-];
+const ignorePages = [];
 
 // 确定各模板及各参数的范围
 const _scan = (str) => {
