@@ -1,5 +1,5 @@
 *~
 *.swp
-config/*
+config/
 !config/exturl.json
-data/*
+data/
