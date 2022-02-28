@@ -2,9 +2,9 @@
  * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
  */
 'use strict';
-const {user, pin, url} = require('./user.json'),
-	Api = require('./api.js'),
-	{error, runMode} = require('./dev.js');
+const {user, pin, url} = require('../config/user.json'),
+	Api = require('../lib/api.js'),
+	{error, runMode} = require('../lib/dev.js');
 
 const api = new Api(user, pin, url);
 

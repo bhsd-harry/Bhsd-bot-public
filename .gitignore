@@ -1,9 +1,5 @@
 *~
 *.swp
-user.json
-moegirl.json
-cmoegirl.json
-extLink.json
-dry.json
-euoffset.json
+config/*
+!config/exturl.json
 data/*

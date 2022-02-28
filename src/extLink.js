@@ -2,11 +2,11 @@
  * @Function: 用于修复http链接
  */
 'use strict';
-const Api = require('./api.js'),
-	{user, pin, url} = require('./user.json'),
-	{info, save, runMode} = require('./dev.js'),
-	{exturl} = require('./exturl.js'),
-	params = require('./extLink.json'),
+const Api = require('../lib/api.js'),
+	{user, pin, url} = require('../config/user.json'),
+	{info, save, runMode} = require('../lib/dev.js'),
+	{exturl} = require('../lib/exturl.js'),
+	params = require('../config/extLink.json'),
 	{geuquery} = params;
 
 const api = new Api(user, pin, url),
@@ -17,9 +17,9 @@ const api = new Api(user, pin, url),
 	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
-		const c = require('./euoffset.json');
+		const c = require('../config/euoffset.json');
 		await api.massEdit(null, mode, '自动修复http链接');
-		save('extLink.json', {geuquery, ...c});
+		save('../config/extLink.json', {geuquery, ...c});
 		return;
 	}
 	if (geulimit) {
@@ -34,9 +34,9 @@ const api = new Api(user, pin, url),
 	if (c === undefined) {
 		info('已全部检查完毕！');
 	} else if (mode === 'dry') {
-		save('euoffset.json', c);
+		save('../config/euoffset.json', c);
 		info(`下次检查从 ${c.geuoffset} 开始。`);
 	} else {
-		save('extLink.json', {geuquery, ...c});
+		save('../config/extLink.json', {geuquery, ...c});
 	}
 })();

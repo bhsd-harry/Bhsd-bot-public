@@ -2,9 +2,9 @@
  * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
  */
 'use strict';
-const {user, pin, url} = require('./user.json'),
-	Api = require('./api.js'),
-	{info, sleep, error, trim, runMode, decodeHtml} = require('./dev.js');
+const {user, pin, url} = require('../config/user.json'),
+	Api = require('../lib/api.js'),
+	{info, sleep, error, trim, runMode, decodeHtml} = require('../lib/dev.js');
 
 const api = new Api(user, pin, url);
 

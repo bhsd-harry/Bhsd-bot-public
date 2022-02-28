@@ -2,13 +2,13 @@
  * @Function: 用于修复http链接
  */
 'use strict';
-const Api = require('./api.js'),
-	{user, pin, url} = require('./user.json'),
-	{exturl, sort} = require('./exturl.js'),
-	{runMode, save} = require('./dev.js');
+const Api = require('../lib/api.js'),
+	{user, pin, url} = require('../config/user.json'),
+	{exturl, sort} = require('../lib/exturl.js'),
+	{runMode, save} = require('../lib/dev.js');
 
 const api = new Api(user, pin, url),
-	{run, dry} = require('./moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+	{run, dry} = require('../config/moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 (async () => {
 	const mode = runMode('sort');
@@ -19,7 +19,7 @@ const api = new Api(user, pin, url),
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		await api.massEdit(null, mode, '自动修复http链接');
-		save('moegirl.json', {run: dry}); // 将上一次dry run转化为实际执行
+		save('../config/moegirl.json', {run: dry}); // 将上一次dry run转化为实际执行
 		return;
 	}
 	const last = new Date(run),
@@ -33,5 +33,5 @@ const api = new Api(user, pin, url),
 	if (edits.length > 0) {
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
-	save('moegirl.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
+	save('../config/moegirl.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
 })();

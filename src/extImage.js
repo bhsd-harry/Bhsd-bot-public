@@ -2,9 +2,9 @@
  * @Function: 用于修复引自bilibili的图片
  */
 'use strict';
-const Api = require('./api.js'),
-	{user, pin, url} = require('./user.json'),
-	{error, runMode} = require('./dev.js');
+const Api = require('../lib/api.js'),
+	{user, pin, url} = require('../config/user.json'),
+	{error, runMode} = require('../lib/dev.js');
 
 const api = new Api(user, pin, url),
 	regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;

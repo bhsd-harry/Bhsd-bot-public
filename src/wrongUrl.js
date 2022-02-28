@@ -2,10 +2,10 @@
  * @Function: 用于修复形如http://http://或类似的错误URL
  */
 'use strict';
-const Api = require('./api.js'),
-	{user, pin, url} = require('./user.json'),
-	{error, runMode} = require('./dev.js'),
-	{exturl} = require('./exturl.js');
+const Api = require('../lib/api.js'),
+	{user, pin, url} = require('../config/user.json'),
+	{error, runMode} = require('../lib/dev.js'),
+	{exturl} = require('../lib/exturl.js');
 
 const api = new Api(user, pin, url),
 	regex = /https?:\/{0,2}https?:\/{0,2}/g;
