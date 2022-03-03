@@ -138,7 +138,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		const repeated = parsewarnings.filter(warning => warning.includes("'''重复使用'''"));
 		if (repeated.length === 0) {
 			info(`页面 ${pageid} 已无重复的模板参数！`);
-			return null;
+			return [pageid, wikitext, null];
 		}
 		const text = _analyze(wikitext, repeated, pageid, title);
 		return text === wikitext ? null : [pageid, wikitext, text];
