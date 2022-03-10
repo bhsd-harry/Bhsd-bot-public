@@ -96,12 +96,15 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		const curScope = pScope.filter((_, i) => tScope[i] === target),
 			candidates = curScope.map(p => _findEnds(scope, target, p)),
 			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
-			empty = values.filter(val => val === '').map((_, i) => i),
-			identical = values.filter((val, i) => values.indexOf(val) !== i).map((_, i) => i);
+			entries = [...values.entries()], // filter时保留原有index
+			empty = entries.filter(([, val]) => val === ''),
+			identical = entries.filter(([i, val]) => values.indexOf(val) !== i);
 		if (empty.length === candidates.length) { // 全是空参数时，需要保留一个
 			empty.shift();
 		}
-		const redundant = [...new Set([...empty, ...identical])].sort((a, b) => b - a); // 除重后倒序排列
+		const redundant = [
+			...new Set([...empty, ...identical].map(([i]) => i))
+		].sort((a, b) => b - a); // 除重后倒序排列
 		if (redundant.length) { // 修复情形1：空参数或重复参数值
 			redundant.forEach(index => {
 				const [start, end] = candidates[index];
