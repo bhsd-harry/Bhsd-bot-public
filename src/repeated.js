@@ -103,7 +103,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 			empty.shift();
 		}
 		const redundant = [
-			...new Set([...empty, ...identical].map(([i]) => i))
+			...new Set([...empty, ...identical].map(([i]) => i)),
 		].sort((a, b) => b - a); // 除重后倒序排列
 		if (redundant.length) { // 修复情形1：空参数或重复参数值
 			redundant.forEach(index => {

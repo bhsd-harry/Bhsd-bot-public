@@ -19,7 +19,7 @@ const api = new Api(user, pin, url),
 	}
 	const pages = (await Promise.all([
 		api.search('insource:"https://http"'),
-		api.search('insource:"http://http"')
+		api.search('insource:"http://http"'),
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		pageSet = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid));
