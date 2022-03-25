@@ -3,3 +3,5 @@
 config/
 !config/exturl.json
 data/
+interactive/lyrics
+interactive/ruby
