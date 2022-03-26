@@ -110,7 +110,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 				const [start, end] = candidates[index];
 				text = `${text.slice(0, start)}${text.slice(end)}`;
 			});
-		} else if (template === 'Template:Timeline' && /in(?:\d+年)?\d+月\d+日/.test(param)) { // 修复情形2：{{Timeline}}
+		} else if (template === 'Template:Timeline' && /in(?:\d+年)?\d+月(?:\d+日)?/.test(param)) { // 修复情形2：{{Timeline}}
 			const [, [start, end]] = candidates,
 				newText = text.slice(start, end).replace(param, `${param}#2`);
 			text = `${text.slice(0, start)}${newText}${text.slice(end)}`;
