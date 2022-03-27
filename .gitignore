@@ -3,6 +3,7 @@
 .DS_store
 config/
 !config/exturl.json
+!config/corrections.json
 data/
 interactive/lyrics
 interactive/ruby
