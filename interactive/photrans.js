@@ -1,5 +1,5 @@
 const fs = require('fs'),
-	{yahoo, diff} = require('../lib/dev.js');
+	dev = require('../lib/dev.js');
 
 (async () => {
 	// 1. 将模板替换为占位符
@@ -17,14 +17,12 @@ const fs = require('fs'),
 	});
 
 	// 2. 获取注音
-	const output = (await yahoo(replaced, {middle: '|'}))
-		.replace(/\$(\d+)/g, (_, k) => { // 替换回原文中的模板
-			return templates[k - 1][0];
-		});
-
-	// 3. 输出
-	fs.writeFileSync('ruby', output);
-	if (process.argv.length > 2) {
-		console.log(await diff('lyrics', 'ruby'));
-	}
+	await Promise.all(['kakasi', 'yahoo'].map(async (method) => {
+		const output = (await dev[method](replaced, {middle: '|'}))
+			.replace(/\$(\d+)/g, (_, k) => { // 替换回原文中的模板
+				return templates[k - 1][0];
+			});
+		fs.writeFileSync(`ruby-${method}`, output);
+	}));
+	console.log(await dev.diff('ruby-kakasi', 'ruby-yahoo'));
 })();

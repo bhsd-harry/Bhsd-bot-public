@@ -6,4 +6,5 @@ config/
 !config/corrections.json
 data/
 interactive/lyrics
-interactive/ruby
+interactive/ruby-*
+interactive/*llwiki.js
