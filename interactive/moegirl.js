@@ -11,6 +11,6 @@ const Api = require('../lib/api.js'),
 const api = new Api(user, pin, url, '萌娘百科'),
 	qq = global.qq || new QQ(account, uid, password),
 	params = {rcnamespace: '0|10|14', grcnamespace: '0|10|14'},
-	rc = new Rc(api, qq, gid, '../config/hulubot.json', params, categories);
+	rc = new Rc(api, qq, gid, '../config/hulubot.json', 'zh.moegirl.org.cn', __filename, params, categories);
 
 module.exports = {qq, rc};
