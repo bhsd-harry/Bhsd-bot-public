@@ -17,7 +17,7 @@ const fs = require('fs'),
 	});
 
 	// 2. 获取注音
-	await Promise.all(['kakasi', 'yahoo'].map(async (method) => {
+	await Promise.all(['kakasi', 'yahoo'].map(async method => {
 		const output = (await dev[method](replaced, {middle: '|'}))
 			.replace(/\$(\d+)/g, (_, k) => { // 替换回原文中的模板
 				return templates[k - 1][0];

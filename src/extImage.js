@@ -9,7 +9,7 @@ const Api = require('../lib/api.js'),
 const api = new Api(user, pin, url),
 	regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[\S]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
 
-const search = (site) => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);
+const search = site => api.search(`insource:"https://${site}" -hastemplate:"NoReferer"`);
 
 (async () => {
 	const mode = runMode();
