@@ -9,3 +9,4 @@ interactive/lyrics
 interactive/ruby-*
 interactive/*llwiki.js
 interactive/cache/
+cron.sh

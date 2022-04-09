@@ -6,8 +6,6 @@ const {user, pin, url} = require('../config/user.json'),
 	Api = require('../lib/api.js'),
 	{info, sleep, error, trim, runMode, decodeHtml, escapeRegExp} = require('../lib/dev.js');
 
-const api = new Api(user, pin, url);
-
 const ignorePages = [];
 
 // 确定各模板及各参数的范围
@@ -122,12 +120,14 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 	return text;
 };
 
-(async () => {
+const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	if (mode === 'rerun') {
-		await api.massEdit(null, mode, '自动修复重复的模板参数');
-		return;
+	if (!module.parent) {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		if (mode === 'rerun') {
+			await api.massEdit(null, mode, '自动修复重复的模板参数');
+			return;
+		}
 	}
 	const pageids = (await api.onlyCategorymembers('调用重复模板参数的页面'))
 		.filter(({pageid}) => !ignorePages.includes(pageid));
@@ -147,4 +147,10 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		return text === wikitext ? null : [pageid, wikitext, text];
 	}))).filter(page => page);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
-})();
+};
+
+if (!module.parent) {
+	main();
+}
+
+module.exports = main;

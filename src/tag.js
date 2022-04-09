@@ -6,19 +6,26 @@ const {user, pin, url} = require('../config/user.json'),
 	Api = require('../lib/api.js'),
 	{error, runMode} = require('../lib/dev.js');
 
-const api = new Api(user, pin, url);
-
-(async () => {
+const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	if (mode === 'rerun') {
-		await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');
-		return;
+	if (!module.parent) {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		if (mode === 'rerun') {
+			await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');
+			return;
+		}
 	}
-	const tags = ['b', 'bdi', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h[1-6]', 'cite', 'code',
-			'em', 's', 'strike', 'strong', 'tt', 'var', 'div', 'center', 'blockquote', 'ol', 'ul', 'dl', 'table',
-			'caption', 'pre', 'ruby', 'rb', 'rp', 'rt', 'rtc', 'p', 'span', 'abbr', 'dfn', 'kbd', 'samp', 'data',
-			'time', 'mark', 'li', 'dt', 'dd', 'td', 'th', 'tr',
+	const tags = [ // 同步自CodeMirror扩展，移除了空标签和非HTML标签
+			'b', 'bdi', 'del', 'i', 'ins',
+			'u', 'font', 'big', 'small', 'sub', 'sup',
+			'h[1-6]', 'cite',
+			'code', 'em', 's', 'strike', 'strong', 'tt',
+			'var', 'div', 'center', 'blockquote', 'q', 'ol', 'ul',
+			'dl', 'table', 'caption', 'pre', 'ruby', 'rb',
+			'rp', 'rt', 'rtc', 'p', 'span', 'abbr', 'dfn',
+			'kbd', 'samp', 'data', 'time', 'mark',
+			'li', 'dt', 'dd', 'td', 'th',
+			'tr',
 		],
 		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi'),
 		pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
@@ -37,4 +44,10 @@ const api = new Api(user, pin, url);
 		return [pageid, content, text];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
-})();
+};
+
+if (!module.parent) {
+	main();
+}
+
+module.exports = main;
