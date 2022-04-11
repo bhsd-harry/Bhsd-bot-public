@@ -1,3 +1,4 @@
+'use strict';
 const fs = require('fs'),
 	dev = require('../lib/dev.js');
 

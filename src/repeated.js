@@ -134,7 +134,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
-		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|编辑中)/.test(wikitext)) {
+		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
 		}
