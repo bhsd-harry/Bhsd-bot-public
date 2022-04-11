@@ -129,12 +129,20 @@ const main = async (api = new Api(user, pin, url)) => {
 			return;
 		}
 	}
-	const pageids = (await api.onlyCategorymembers('调用重复模板参数的页面'))
-		.filter(({pageid}) => !ignorePages.includes(pageid));
+	// 先只检查模板，防止大量嵌入
+	let pageids = await api.onlyCategorymembers('调用重复模板参数的页面', {cmnamespace: 10});
+	if (pageids.length === 0) {
+		pageids = (await api.onlyCategorymembers('调用重复模板参数的页面'))
+			.filter(({pageid}) => !ignorePages.includes(pageid));
+	} else {
+		error('请先人工检查以下模板：');
+		console.log(pageids);
+		return;
+	}
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
-		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
+		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(wikitext)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
 		}

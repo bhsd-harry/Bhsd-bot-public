@@ -1,22 +1,20 @@
 /**
  * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
  */
-/* global CeL */
 'use strict';
 const fs = require('fs'),
 	{user, pin, url} = require('../config/user.json'),
 	Api = require('../lib/api.js'),
-	{error, runMode} = require('../lib/dev.js');
-
-require('../../CeJS/CeJS-master/_for include/node.loader.js');
-CeL.run('application.net.wiki.parser');
+	{error, runMode, parse} = require('../lib/dev.js');
 
 const ignorePages = [];
 
+// 以下函数只会修改index_of属性，其他属性可暂时忽略
 const _splice = (token, i) => {
-	if (typeof token[i].key === 'number') {
+	if (typeof token[i].key === 'number') { // 至多发生一次
 		token.filter(({key}) => typeof key === 'number').forEach(arg => {
-			arg[0] = String(arg.key);
+			arg.key = String(arg.key);
+			arg[0] = arg.key;
 			arg[1] = '=';
 		});
 	}
@@ -29,19 +27,19 @@ const _splice = (token, i) => {
 };
 
 const _analyze = (wikitext, pageid) => {
-	const parsed = CeL.wiki.parser(wikitext);
+	const parsed = parse(wikitext);
 	const found = {};
 	parsed.each('transclusion', token => {
-		if (!token.ignored || token.ignored.length === 0) {
+		if (token.ignored.length === 0) {
 			return;
 		}
-		token.ignored.sort((a, b) => b - a).forEach(i => {
+		token.ignored.sort((a, b) => b - a).forEach(i => { // 倒序排列，以保证序号不会因_splice()变更
 			const {key, 2: ignored_value} = token[i],
 				j = token.index_of[key],
 				[,, effective_value] = token[j];
 			if (!ignored_value || ignored_value === effective_value) { // 修复情形1：空参数或重复参数
 				_splice(token, i);
-			} else if (!effective_value) { // 修复情形1：空参数
+			} else if (!effective_value) { // 修复情形1：空参数；注意这种情形至多发生一次
 				_splice(token, j);
 				token.index_of[key] = i;
 			} else if (token.page_title === 'Template:Timeline' && /^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
@@ -71,8 +69,16 @@ const main = async (api = new Api(user, pin, url)) => {
 			return;
 		}
 	}
-	const pages = (await api.categorymembers('调用重复模板参数的页面'))
-		.filter(({pageid}) => !ignorePages.includes(pageid));
+	// 先只检查模板，防止大量嵌入
+	let pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: 10});
+	if (pages.length === 0) {
+		pages = (await api.categorymembers('调用重复模板参数的页面'))
+			.filter(({pageid}) => !ignorePages.includes(pageid));
+	} else {
+		error('请先人工检查以下模板：');
+		console.log(pages);
+		return;
+	}
 	const list = pages.map(({pageid, content}) => {
 		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);

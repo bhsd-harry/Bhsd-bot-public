@@ -2,7 +2,7 @@
 const {user, pin, url} = require('../config/user.json'),
 	Api = require('../lib/api.js'),
 	{runMode} = require('../lib/dev.js'),
-	repeated = require('./repeated.js'),
+	repeated = require('./repeated-CeL.js'),
 	tag = require('./tag.js');
 
 const api = new Api(user, pin, url);
