@@ -3,7 +3,8 @@
  */
 /* global CeL */
 'use strict';
-const {user, pin, url} = require('../config/user.json'),
+const fs = require('fs'),
+	{user, pin, url} = require('../config/user.json'),
 	Api = require('../lib/api.js'),
 	{error, runMode} = require('../lib/dev.js');
 
@@ -56,7 +57,13 @@ const _analyze = (wikitext, pageid) => {
 };
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
+	const mode = runMode('test');
+	if (mode === 'test') {
+		const content = fs.readFileSync('test.txt', 'utf8'),
+			[text] = _analyze(content, 0);
+		await api.massEdit([[0, content, text]], 'dry', '测试修复重复的模板参数');
+		return;
+	}
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
