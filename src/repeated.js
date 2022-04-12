@@ -96,7 +96,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
 			entries = [...values.entries()], // filter时保留原有index
 			empty = entries.filter(([, val]) => val === ''),
-			identical = entries.filter(([i, val]) => values.indexOf(val) !== i);
+			identical = /\D\d+$/.test(param) ? [] : entries.filter(([i, val]) => values.indexOf(val) !== i);
 		if (empty.length === candidates.length) { // 全是空参数时，需要保留一个
 			empty.shift();
 		}

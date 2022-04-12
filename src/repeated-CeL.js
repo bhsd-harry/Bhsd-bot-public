@@ -37,13 +37,15 @@ const _analyze = (wikitext, pageid) => {
 			const {key, 2: ignored_value} = token[i],
 				j = token.index_of[key],
 				[,, effective_value] = token[j];
-			if (!ignored_value || ignored_value === effective_value) { // 修复情形1：空参数或重复参数
+			if (!ignored_value || !/\D\d+$/.test(key) && ignored_value === effective_value) {
+				// 修复情形1：忽略空参数或重复参数
 				_splice(token, i);
-			} else if (!effective_value) { // 修复情形1：空参数；注意这种情形至多发生一次
+			} else if (!effective_value) {
+				// 修复情形2：有效值被空参数覆盖；注意这种情形至多发生一次
 				_splice(token, j);
 				token.index_of[key] = i;
 			} else if (token.page_title === 'Template:Timeline' && /^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
-				// 修复情形2：{{Timeline}}
+				// 修复情形3：{{Timeline}}
 				token[j][0] += '#2';
 			} else if (!(key in found)) {
 				error(`页面 ${pageid} 中重复的模板参数 ${key} 均非空，无法简单修复！`);
