@@ -7,12 +7,44 @@ const fs = require('fs'),
 	Api = require('../lib/api.js'),
 	{error, runMode} = require('../lib/dev.js');
 
-const _analyze = (content, regex) => content.replace(regex, (p0, p1) => {
-	if (p0.slice(p1.length + 1, -2)) { // 这大概率是一个独立标签
-		return `${p0.slice(0, -2)}></${p1}>`;
+const _analyze = (content, regex) => {
+	const ambiguous = [],
+		count = {};
+	let text = content.replace(regex, (p0, p1) => {
+		if (p0.slice(p1.length + 1, -2)) { // 这大概率是一个独立标签
+			return `${p0.slice(0, -2)}></${p1}>`;
+		}
+		const key = p1.toLowerCase();
+		if (!(key in count)) {
+			ambiguous.push(key);
+			count[key] = 0;
+		}
+		return p0;
+	});
+	if (ambiguous.length) {
+		const regexp = new RegExp(`<(/?)(${ambiguous.join('|')})(/?)`, 'gi');
+		let adjust = 0,
+			key;
+		for (const {0: mt, 1: close, 2: tag, 3: selfClose, index} of text.matchAll(regexp)) {
+			key = tag.toLowerCase();
+			if (close) {
+				count[key]--;
+			} else if (!selfClose) {
+				count[key]++;
+			} else {
+				const start = index + adjust;
+				if (count[key] > 0) { // 这大概率是一个错误的闭合标签
+					text = `${text.slice(0, start)}</${key}${text.slice(start + mt.length)}`;
+					count[key]--;
+				} else { // 这大概率是一个独立标签
+					text = `${text.slice(0, start)}<${key}></${key}${text.slice(start + mt.length)}`;
+					adjust += key.length + 2;
+				}
+			}
+		}
 	}
-	return `</${p1}>`; // 这大概率是一个错误的闭合标签
-});
+	return text;
+};
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode('test'),
