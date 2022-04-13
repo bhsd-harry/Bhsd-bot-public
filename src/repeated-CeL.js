@@ -9,6 +9,8 @@ const fs = require('fs'),
 
 const ignorePages = [];
 
+const _empty = value => !value.toString().replace(/\s*<!--.*?-->\s*/g, ''); // 除注释外有非空字符的参数值才是非空的
+
 // 以下函数只会修改index_of属性，其他属性可暂时忽略
 const _splice = (token, i) => {
 	if (typeof token[i].key === 'number') { // 至多发生一次
@@ -37,10 +39,11 @@ const _analyze = (wikitext, pageid) => {
 			const {key, 2: ignored_value} = token[i],
 				j = token.index_of[key],
 				[,, effective_value] = token[j];
-			if (!ignored_value || !/\D\d+$/.test(key) && ignored_value === effective_value) {
+			if (_empty(ignored_value)
+				|| !/\D\d+$/.test(key) && ignored_value.toString() === effective_value.toString()) {
 				// 修复情形1：忽略空参数或重复参数
 				_splice(token, i);
-			} else if (!effective_value) {
+			} else if (_empty(effective_value)) {
 				// 修复情形2：有效值被空参数覆盖；注意这种情形至多发生一次
 				_splice(token, j);
 				token.index_of[key] = i;
@@ -48,7 +51,7 @@ const _analyze = (wikitext, pageid) => {
 				// 修复情形3：{{Timeline}}
 				token[j][0] += '#2';
 			} else if (!(key in found)) {
-				error(`页面 ${pageid} 中重复的模板参数 ${key} 均非空，无法简单修复！`);
+				error(`页面 ${pageid} 中重复的模板参数 ${key.toString().replaceAll('\n', '\\n')} 均非空，无法简单修复！`);
 				found[key] = true;
 			}
 		});
@@ -81,7 +84,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		console.log(pages);
 		return;
 	}
-	const list = pages.map(({pageid, content}) => {
+	const list = pages.map(({pageid, content, title}) => {
 		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
@@ -89,7 +92,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		const [text, found] = _analyze(content, pageid);
 		if (text === content) {
 			if (Object.keys(found).length === 0) {
-				error(`页面 ${pageid} 找不到重复的模板参数！`);
+				error(`页面 ${pageid} ${title.replaceAll(' ', '_')} 找不到重复的模板参数！`);
 			}
 			return null;
 		}
