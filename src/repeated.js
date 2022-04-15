@@ -136,7 +136,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	} else {
 		error('请先人工检查以下模板：');
-		console.log(pageids);
+		console.log(pageids.map(({pageid}) => pageid));
 		return;
 	}
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {

@@ -79,10 +79,6 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (pages.length === 0) {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
-	} else {
-		error('请先人工检查以下模板：');
-		console.log(pages);
-		return;
 	}
 	const list = pages.map(({pageid, content, title}) => {
 		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
