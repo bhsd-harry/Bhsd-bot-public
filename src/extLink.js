@@ -18,8 +18,10 @@ const api = new Api(user, pin, url),
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		const c = require('../config/euoffset.json');
-		await api.massEdit(null, mode, '自动修复http链接');
-		save('../config/extLink.json', {geuquery, ...c});
+		await Promise.all([
+			api.massEdit(null, mode, '自动修复http链接'),
+			save('../config/extLink.json', {geuquery, ...c}),
+		]);
 		return;
 	}
 	if (geulimit) {
@@ -34,9 +36,9 @@ const api = new Api(user, pin, url),
 	if (c === undefined) {
 		info('已全部检查完毕！');
 	} else if (mode === 'dry') {
-		save('../config/euoffset.json', c);
+		await save('../config/euoffset.json', c);
 		info(`下次检查从 ${c.geuoffset} 开始。`);
 	} else {
-		save('../config/extLink.json', {geuquery, ...c});
+		await save('../config/extLink.json', {geuquery, ...c});
 	}
 })();

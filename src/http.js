@@ -18,8 +18,10 @@ const api = new Api(user, pin, url),
 	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
-		await api.massEdit(null, mode, '自动修复http链接');
-		save('../config/moegirl.json', {run: dry}); // 将上一次dry run转化为实际执行
+		await Promise.all([
+			api.massEdit(null, mode, '自动修复http链接'),
+			save('../config/moegirl.json', {run: dry}), // 将上一次dry run转化为实际执行
+		]);
 		return;
 	}
 	const last = new Date(run),
@@ -30,8 +32,8 @@ const api = new Api(user, pin, url),
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
 			.filter(({content}) => content.includes('http://'));
 	const edits = pages.length > 0 ? await exturl(pages) : [];
-	if (edits.length > 0) {
-		await api.massEdit(edits, mode, '自动修复http链接');
-	}
-	save('../config/moegirl.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
+	await Promise.all([
+		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
+		save('../config/moegirl.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
+	]);
 })();

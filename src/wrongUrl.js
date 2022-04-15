@@ -33,5 +33,5 @@ const api = new Api(user, pin, url),
 		page.content = content.replace(regex, 'http://');
 	});
 	const edits = await exturl(pageSet);
-	api.massEdit(edits, mode, '自动修复错误格式的外链');
+	await api.massEdit(edits, mode, '自动修复错误格式的外链');
 })();

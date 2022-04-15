@@ -37,5 +37,5 @@ const search = site => api.search(`insource:"https://${site}" -hastemplate:"NoRe
 			});
 			return [pageid, content, text];
 		}).filter(edit => edit);
-	api.massEdit(edits, mode, '自动修复引自bilibili或新浪的图片外链');
+	await api.massEdit(edits, mode, '自动修复引自bilibili或新浪的图片外链');
 })();
