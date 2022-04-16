@@ -80,7 +80,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	}
-	const list = pages.map(({pageid, content, title}) => {
+	const list = pages.map(({pageid, content, title, timestamp, curtimestamp}) => {
 		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
@@ -92,7 +92,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 			return null;
 		}
-		return [pageid, content, text];
+		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
 };

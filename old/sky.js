@@ -21,7 +21,7 @@ const api = new Api(user, pin, url);
 		// 匹配无效的背景图片参数
 		regex4 = /\|\s*(?:color\s*=\s*#(?:99[Cc][Cc][Ff][Ff]|9[Cc][Ff])|animate\s*=\s*appear)\s*(?=\||$)/g,
 		pages = await api.search('hastemplate:"Sky光·遇" insource:"背景图片"');
-	const list = pages.map(({pageid, content}) => {
+	const list = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 		const template = content.match(regex1);
 		let text;
 		if (regex2.test(content)) { // 错误模板用法
@@ -46,7 +46,7 @@ const api = new Api(user, pin, url);
 				text = content.replace(regex1, '');
 			}
 		}
-		return [pageid, content, text];
+		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复被大家族模板覆盖的背景图片');
 })();

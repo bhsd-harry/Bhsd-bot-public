@@ -75,7 +75,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	const pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
-	const list = pages.map(({pageid, content}) => {
+	const list = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
@@ -84,7 +84,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			return null;
 		}
 		const text = _analyze(content, regex);
-		return [pageid, content, text];
+		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
 };

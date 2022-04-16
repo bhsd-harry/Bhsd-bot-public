@@ -27,18 +27,19 @@ const main = async (api = new Api(user, pin, url)) => {
 		...new Array(4).fill().map((_, i) => _search(`wx${i + 1}.sinaimg.cn`)),
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
-		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid)).map(({pageid, content}) => {
-			const urls = content.match(regex);
-			if (!urls) {
-				error(`页面 ${pageid} 找不到图片链接！`);
-				return null;
-			}
-			let text = content;
-			urls.forEach(imgUrl => {
-				text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
-			});
-			return [pageid, content, text];
-		}).filter(edit => edit);
+		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid))
+			.map(({pageid, content, timestamp, curtimestamp}) => {
+				const urls = content.match(regex);
+				if (!urls) {
+					error(`页面 ${pageid} 找不到图片链接！`);
+					return null;
+				}
+				let text = content;
+				urls.forEach(imgUrl => {
+					text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
+				});
+				return [pageid, content, text, timestamp, curtimestamp];
+			}).filter(edit => edit);
 	await api.massEdit(edits, mode, '自动修复引自bilibili或新浪的图片外链');
 };
 
