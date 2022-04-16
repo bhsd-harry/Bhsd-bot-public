@@ -10,5 +10,4 @@ interactive/ruby-*
 interactive/*llwiki.js
 interactive/cache/
 cron.sh
-mail
 src/test.txt
