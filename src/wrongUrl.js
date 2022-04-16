@@ -7,19 +7,22 @@ const Api = require('../lib/api.js'),
 	{error, runMode} = require('../lib/dev.js'),
 	{exturl} = require('../lib/exturl.js');
 
-const api = new Api(user, pin, url),
-	regex = /https?:\/{0,2}https?:\/{0,2}/g;
+const regex = /https?:?\/{0,2}https?:\/{0,2}/g;
 
-(async () => {
+const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	if (mode === 'rerun') {
-		await api.massEdit(null, mode, '自动修复错误格式的外链');
-		return;
+	if (!module.parent) {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		if (mode === 'rerun') {
+			await api.massEdit(null, mode, '自动修复错误格式的外链');
+			return;
+		}
 	}
+
+	const params = {gsrnamespace: '0|2|3|9|10|11|12|13|14|15|275|829'};
 	const pages = (await Promise.all([
-		api.search('insource:"https://http"'),
-		api.search('insource:"http://http"'),
+		api.search('insource:"https://http"', params),
+		api.search('insource:"http://http"', params),
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		pageSet = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid));
@@ -34,4 +37,10 @@ const api = new Api(user, pin, url),
 	});
 	const edits = await exturl(pageSet);
 	await api.massEdit(edits, mode, '自动修复错误格式的外链');
-})();
+};
+
+if (!module.parent) {
+	main();
+}
+
+module.exports = main;
