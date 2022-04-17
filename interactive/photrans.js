@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs'),
-	dev = require('../lib/dev.js');
+	dev = require('../lib/dev');
 
 (async () => {
 	// 1. 将模板替换为占位符

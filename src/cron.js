@@ -1,7 +1,7 @@
 'use strict';
-const {user, pin, url} = require('../config/user.json'),
-	Api = require('../lib/api.js'),
-	{runMode} = require('../lib/dev.js'),
+const {user, pin, url} = require('../config/user'),
+	Api = require('../lib/api'),
+	{runMode} = require('../lib/dev'),
 	scripts = [
 		'repeated-CeL',
 		'tag',

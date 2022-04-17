@@ -3,9 +3,9 @@
  */
 'use strict';
 const fs = require('fs'),
-	{user, pin, url} = require('../config/user.json'),
-	Api = require('../lib/api.js'),
-	{error, runMode, parse} = require('../lib/dev.js');
+	{user, pin, url} = require('../config/user'),
+	Api = require('../lib/api'),
+	{error, runMode, parse} = require('../lib/dev');
 
 const ignorePages = [];
 

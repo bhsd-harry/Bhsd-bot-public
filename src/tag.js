@@ -3,9 +3,9 @@
  */
 'use strict';
 const fs = require('fs'),
-	{user, pin, url} = require('../config/user.json'),
-	Api = require('../lib/api.js'),
-	{error, runMode} = require('../lib/dev.js');
+	{user, pin, url} = require('../config/user'),
+	Api = require('../lib/api'),
+	{error, runMode} = require('../lib/dev');
 
 const _analyze = (content, regex) => {
 	const ambiguous = [],

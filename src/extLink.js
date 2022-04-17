@@ -2,11 +2,11 @@
  * @Function: 用于修复http链接
  */
 'use strict';
-const Api = require('../lib/api.js'),
-	{user, pin, url} = require('../config/user.json'),
-	{info, save, runMode} = require('../lib/dev.js'),
-	{exturl} = require('../lib/exturl.js'),
-	params = require('../config/extLink.json'),
+const Api = require('../lib/api'),
+	{user, pin, url} = require('../config/user'),
+	{info, save, runMode} = require('../lib/dev'),
+	{exturl} = require('../lib/exturl'),
+	params = require('../config/extLink'),
 	{geuquery} = params;
 
 const api = new Api(user, pin, url),
@@ -17,7 +17,7 @@ const api = new Api(user, pin, url),
 	const mode = runMode();
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
-		const c = require('../config/euoffset.json');
+		const c = require('../config/euoffset');
 		await Promise.all([
 			api.massEdit(null, mode, '自动修复http链接'),
 			save('../config/extLink.json', {geuquery, ...c}),

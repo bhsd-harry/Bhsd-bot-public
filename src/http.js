@@ -2,12 +2,12 @@
  * @Function: 用于修复http链接
  */
 'use strict';
-const Api = require('../lib/api.js'),
-	{user, pin, url} = require('../config/user.json'),
-	{exturl, sort} = require('../lib/exturl.js'),
-	{runMode, save} = require('../lib/dev.js');
+const Api = require('../lib/api'),
+	{user, pin, url} = require('../config/user'),
+	{exturl, sort} = require('../lib/exturl'),
+	{runMode, save} = require('../lib/dev');
 
-const {run, dry} = require('../config/moegirl.json'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+const {run, dry} = require('../config/moegirl'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = module.parent ? 'dry' : runMode('sort');

@@ -2,9 +2,9 @@
  * @Function: 1. 检查嵌入了{{Sky光·遇}}的条目，如果模板默认背景覆盖了定制背景则进行修复
  */
 'use strict';
-const {user, pin, url} = require('../config/user.json'),
-	Api = require('../lib/api.js'),
-	{info, error, trim, runMode} = require('../lib/dev.js');
+const {user, pin, url} = require('../config/user'),
+	Api = require('../lib/api'),
+	{info, error, trim, runMode} = require('../lib/dev');
 
 const api = new Api(user, pin, url);
 

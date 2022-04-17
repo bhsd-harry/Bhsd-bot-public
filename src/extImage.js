@@ -2,11 +2,14 @@
  * @Function: 用于修复引自bilibili的图片
  */
 'use strict';
-const Api = require('../lib/api.js'),
-	{user, pin, url} = require('../config/user.json'),
-	{error, runMode} = require('../lib/dev.js');
+const Api = require('../lib/api'),
+	{user, pin, url} = require('../config/user'),
+	{error, runMode, urlRegex} = require('../lib/dev');
 
-const regex = /https:\/\/(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)\/[^\s[\]<>"|{}]+\.(?:jpe?g|png|gif|tiff|bmp)/gi;
+const regex = new RegExp(
+	`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
+	'gi',
+);
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();

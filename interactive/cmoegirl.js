@@ -2,11 +2,11 @@
  * @Function: 仅用于生成萌娘共享需要的Rc对象
  */
 'use strict';
-const Api = require('../lib/api.js'),
-	QQ = require('../lib/qq.js'),
-	Rc = require('../lib/rc.js'),
-	categories = require('../config/categories.json'),
-	{user, cmpin, account, uid, gid, password} = require('../config/user.json');
+const Api = require('../lib/api'),
+	QQ = require('../lib/qq'),
+	Rc = require('../lib/rc'),
+	categories = require('../config/categories'),
+	{user, cmpin, account, uid, gid, password} = require('../config/user');
 
 const api = new Api(user, cmpin, 'https://commons.moegirl.org.cn', '萌娘共享'),
 	qq = global.qq || new QQ(account, uid, password),
