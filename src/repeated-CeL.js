@@ -81,10 +81,6 @@ const main = async (api = new Api(user, pin, url)) => {
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	}
 	const list = pages.map(({pageid, content, title, timestamp, curtimestamp}) => {
-		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
-			error(`已跳过施工中的页面 ${pageid} ！`);
-			return null;
-		}
 		const [text, found] = _analyze(content, pageid);
 		if (text === content) {
 			if (Object.keys(found).length === 0) {

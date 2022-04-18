@@ -76,10 +76,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
 	const list = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(content)) {
-			error(`已跳过施工中的页面 ${pageid} ！`);
-			return null;
-		} else if (!regex.test(content)) {
+		if (!regex.test(content)) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);
 			return null;
 		}
