@@ -28,13 +28,18 @@ const main = async (api = new Api(user, pin, url)) => {
 		queries = await Promise.all([
 			api.taggedRecentChanges('内外链误写', date),
 			api.search('insource:"zh.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
+			api.search('insource:"commons.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
 		]),
 		pageids = queries[1].map(({pageid}) => pageid);
 	queries[0] = queries[0].filter(({pageid}) => !pageids.includes(pageid));
 	const pages = queries.flat().filter(({pageid}) => !protectedPages.includes(pageid));
 
 	// 2. 再进行修复
-	const wikiUrl = new WikiUrl('zh.moegirl.org.cn', '/'),
+	const wikiUrl = new WikiUrl({
+			'zh.moegirl.org.cn': '',
+			'mzh.moegirl.org.cn': '',
+			'commons.moegirl.org.cn': 'cm:',
+		}, '/'),
 		regex = new RegExp(`\\[(\\[(?:https?:)?//${urlRegex}+.*?])`, 'gi'),
 		edits = pages.map(({content, pageid, timestamp, curtimestamp}) =>
 			[pageid, content, wikiUrl.replace(content.replace(regex, '$1'), pageid), timestamp, curtimestamp],
