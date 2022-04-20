@@ -3,7 +3,7 @@ const Api = require('../lib/api'),
 	WikiUrl = require('../lib/url'),
 	{user, pin, url} = require('../config/user');
 
-const protectedPages = [923, 359506];
+const protectedPages = [923, 100877, 359506, 401150, 404396];
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
@@ -18,7 +18,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const editable = pages.filter(({pageid}) => !protectedPages.includes(pageid)),
 		wikiUrl = new WikiUrl('zh.moegirl.org.cn', '/'),
 		edits = editable.map(({content, pageid, timestamp, curtimestamp}) =>
-			[pageid, content, wikiUrl.replace(content), timestamp, curtimestamp],
+			[pageid, content, wikiUrl.replace(content, pageid), timestamp, curtimestamp],
 		).filter(page => page).filter(([, content, text]) => content !== text);
 	await api.massEdit(edits, mode, '自动修复误写作外链的内链');
 };
