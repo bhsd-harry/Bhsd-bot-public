@@ -6,7 +6,7 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{exturl, sort} = require('../lib/exturl'),
 	{runMode, save} = require('../lib/dev'),
-	{run, dry} = require('../config/abusefilter32'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+	{run, dry} = require('../config/abuse32'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = module.parent ? 'dry' : runMode('sort');
@@ -18,7 +18,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		if (mode === 'rerun') {
 			await Promise.all([
 				api.massEdit(null, mode, '自动修复http链接'),
-				save('../config/abusefilter32.json', {run: dry}), // 将上一次dry run转化为实际执行
+				save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
 			]);
 			return;
 		}
@@ -33,7 +33,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const edits = pages.length > 0 ? await exturl(pages) : [];
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
-		save('../config/abusefilter32.json', mode === 'dry' ? {run, dry: now} : {run: now}),
+		save('../config/abuse32.json', mode === 'dry' ? {run, dry: now} : {run: now}),
 	]);
 };
 

@@ -7,6 +7,8 @@ const {user, pin, url} = require('../config/user'),
 		'tag',
 		'extImage',
 		'wrongUrl',
+		'removeInUse',
+		'wrongInternal',
 		'http',
 	];
 

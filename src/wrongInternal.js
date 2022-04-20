@@ -2,7 +2,7 @@ const Api = require('../lib/api'),
 	{runMode, save, urlRegex} = require('../lib/dev'),
 	WikiUrl = require('../lib/url'),
 	{user, pin, url} = require('../config/user'),
-	{run, dry} = require('../config/abusefilter15'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+	{run, dry} = require('../config/abuse15'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
 const protectedPages = [923, 100877, 359506, 401150, 404396];
 
@@ -13,7 +13,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		if (mode === 'rerun') {
 			await Promise.all([
 				api.massEdit(null, mode, '自动修复误写作外链的内链'),
-				save('../config/abusefilter15.json', {run: dry}), // 将上一次dry run转化为实际执行
+				save('../config/abuse15.json', {run: dry}), // 将上一次dry run转化为实际执行
 			]);
 			return;
 		}
@@ -41,7 +41,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		).filter(page => page).filter(([, content, text]) => content !== text);
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复误写作外链的内链') : null,
-		save('../config/abusefilter15.json', mode === 'dry' ? {run, dry: now} : {run: now}),
+		save('../config/abuse15.json', mode === 'dry' ? {run, dry: now} : {run: now}),
 	]);
 };
 

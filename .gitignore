@@ -6,7 +6,7 @@
 data/
 config/
 !config/exturl.json
-!config/corrections.json
+!config/photrans.json
 interactive/lyrics
 interactive/ruby-*
 interactive/*llwiki.js
