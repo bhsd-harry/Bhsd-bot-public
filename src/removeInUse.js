@@ -1,9 +1,10 @@
 const Api = require('../lib/api'),
-	{runMode, parse, error} = require('../lib/dev'),
+	{runMode, parse, error, info} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user');
 
-const age = 1000 * 86400 * 7, // 一周
-	inuse = ['Template:Inuse', 'Template:施工中', 'Template:编辑中', 'Template:編輯中'],
+const protectedPages = [9658, 33803, 44832],
+	age = 1000 * 86400 * 7, // 一周
+	inuse = ['Inuse', '施工中', '编辑中', '編輯中'],
 	zhnum = {半: '.5', 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 兩: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9},
 	unit = {天: 1440, 日: 1440, 小时: 60, 小時: 60, 时: 60, 時: 60, 钟头: 60, 鐘頭: 60, 分钟: 1, 分鐘: 1, 分: 1};
 
@@ -33,6 +34,19 @@ const _parseTime = token => {
 	return time;
 };
 
+const _format = time => {
+	const minute = Math.ceil(time / 1000 / 60);
+	if (minute < 60) {
+		return `${minute}分`;
+	}
+	const hour = Math.floor(minute / 60);
+	if (hour < 24) {
+		return `${hour}小时${minute - hour * 60}分`;
+	}
+	const day = Math.floor(hour / 24);
+	return `${day}天${hour - day * 24}小时${minute - hour * 60}分`;
+};
+
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
 	if (!module.parent) {
@@ -42,24 +56,37 @@ const main = async (api = new Api(user, pin, url)) => {
 			return;
 		}
 	}
-	const list = await api.categorymembers('正在编辑的条目', {rvdir: 'newer', rvlimit: 1, rvprop: 'timestamp'});
-	const pageids = list.filter(({timestamp}) => Date.now() - new Date(timestamp).getTime() > age)
-		.map(({pageid}) => pageid);
+	const pageids = (await Promise.all((await api.embeddedIn(33803))
+		.filter(({pageid}) => !protectedPages.includes(pageid))
+		.map(async ({pageid}) => {
+			const {query: {pages: [{revisions: [{timestamp}]}]}, curtimestamp} = await api.get({
+				pageids: pageid, prop: 'revisions', rvdir: 'newer', rvlimit: 1, rvprop: 'timestamp', curtimestamp: 1,
+			});
+			if (new Date(curtimestamp).getTime() - new Date(timestamp).getTime() > age) {
+				return pageid;
+			}
+			return null;
+		}),
+	)).filter(pageid => pageid);
 	if (pageids.length === 0) {
 		return;
 	}
-	const pages = await api.revisions({pageids, inuse: true});
+	const pages = await api.revisions({pageids: pageids.join('|'), inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 		const parsed = parse(content);
-		parsed.each('transclusion', token => {
-			if (!inuse.includes(token.page_title)) {
-				return;
-			}
-			const time = _parseTime(token) * 60;
-			if (new Date(timestamp).getTime() + time < Date.now()) {
-				token.toString = () => '';
-			}
-		});
+		parsed.each(
+			(type, name) => type === 'transclusion' && inuse.includes(name),
+			token => {
+				const time = _parseTime(token) * 60 * 1000,
+					remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
+				if (remain < 0) {
+					info(`${pageid}: 施工持续 ${_format(time)}，已超过 ${_format(-remain)}`);
+					token.toString = () => '';
+				} else {
+					error(`${pageid}: 施工持续 ${_format(time)}，还剩 ${_format(remain)}`);
+				}
+			},
+		);
 		const text = parsed.toString();
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
