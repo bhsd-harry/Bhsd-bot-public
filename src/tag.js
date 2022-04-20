@@ -2,8 +2,7 @@
  * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
  */
 'use strict';
-const fs = require('fs'),
-	{user, pin, url} = require('../config/user'),
+const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{error, runMode} = require('../lib/dev');
 
@@ -47,7 +46,7 @@ const _analyze = (content, regex) => {
 };
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode('test'),
+	const mode = runMode(),
 		tags = [ // 同步自CodeMirror扩展，移除了空标签和非HTML标签
 			'b', 'bdi', 'del', 'i', 'ins',
 			'u', 'font', 'big', 'small', 'sub', 'sup',
@@ -61,12 +60,6 @@ const main = async (api = new Api(user, pin, url)) => {
 			'tr',
 		],
 		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi');
-	if (mode === 'test') {
-		const content = fs.readFileSync('test.txt', 'utf8'),
-			text = _analyze(content, regex);
-		await api.massEdit([[0, content, text]], 'dry', '测试修复重复的模板参数');
-		return;
-	}
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
