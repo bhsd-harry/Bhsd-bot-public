@@ -40,7 +40,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			'mzh.moegirl.org.cn': '',
 			'commons.moegirl.org.cn': 'cm:',
 		}, '/'),
-		regex = new RegExp(`\\[(\\[(?:https?:)?//${urlRegex}+.*?])`, 'gi'),
+		regex = new RegExp(`\\[(\\[(?:https?:)?//${urlRegex}+.*?]?)]`, 'gi'),
 		edits = pages.map(({content, pageid, timestamp, curtimestamp}) =>
 			[pageid, content, wikiUrl.replace(content.replace(regex, '$1'), pageid), timestamp, curtimestamp],
 		).filter(page => page).filter(([, content, text]) => content !== text);
