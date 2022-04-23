@@ -78,6 +78,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		if (text === content) {
 			if (Object.keys(found).length === 0) {
 				error(`页面 ${pageid} ${title.replaceAll(' ', '_')} 找不到重复的模板参数！`);
+				return [pageid, null, null, timestamp, curtimestamp];
 			}
 			return null;
 		}
