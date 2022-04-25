@@ -14,12 +14,14 @@ const api = new Api(user, pin, url),
 	[,,, geulimit] = process.argv;
 
 (async () => {
-	const mode = runMode();
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	if (mode === 'rerun') {
+	const mode = runMode('redry');
+	if (mode !== 'redry') {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
 		await Promise.all([
 			api.massEdit(null, mode, '自动修复http链接'),
-			save('../config/extLink.json', {run: {geuquery, ...dry}}),
+			mode === 'rerun' ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
 		]);
 		return;
 	}
