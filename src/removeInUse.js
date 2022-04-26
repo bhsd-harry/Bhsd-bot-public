@@ -71,7 +71,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (pageids.length === 0) {
 		return;
 	}
-	const pages = await api.revisions({pageids: pageids.join('|'), inuse: true});
+	const pages = await api.revisions({pageids, inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 		const parsed = parse(content);
 		parsed.each(
