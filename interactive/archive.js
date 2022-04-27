@@ -38,7 +38,7 @@ const Api = require('../lib/api'),
 				sibling.find(({type}) => type === 'url').dead = true;
 			}
 		});
-		const text = await broken(parsed, pageid, chat, true);
+		const text = await broken({content: parsed, pageid, timestamp, curtimestamp}, chat, true);
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}))).filter(page => page);
 	await Promise.all([
