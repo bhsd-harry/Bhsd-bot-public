@@ -3,6 +3,7 @@
  */
 'use strict';
 const Api = require('../lib/api'),
+	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user'),
 	{info, save, runMode} = require('../lib/dev'),
 	{exturl} = require('../lib/exturl'),
@@ -10,6 +11,7 @@ const Api = require('../lib/api'),
 	{geuquery} = run;
 
 const api = new Api(user, pin, url),
+	chat = new Interface(),
 	protectedPages = [923],
 	[,,, geulimit] = process.argv;
 
@@ -31,7 +33,7 @@ const api = new Api(user, pin, url),
 	const [pages, c] = await api.extSearch(run),
 		editable = pages.filter(({pageid}) => !protectedPages.includes(pageid));
 	if (editable.length > 0) { // 否则直接跳过，记录euoffset
-		const edits = await exturl(editable);
+		const edits = await exturl(editable, chat);
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
 	if (c === undefined) {

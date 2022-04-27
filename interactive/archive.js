@@ -2,11 +2,13 @@
 const Api = require('../lib/api'),
 	{runMode, parse, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
+	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user');
 
 (async () => {
 	const mode = runMode('redry'),
-		api = new Api(user, pin, url);
+		api = new Api(user, pin, url),
+		chat = new Interface();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
@@ -36,7 +38,7 @@ const Api = require('../lib/api'),
 				sibling.find(({type}) => type === 'url').dead = true;
 			}
 		});
-		const text = await broken(parsed, pageid, true);
+		const text = await broken(parsed, pageid, chat, true);
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}))).filter(page => page);
 	await Promise.all([
