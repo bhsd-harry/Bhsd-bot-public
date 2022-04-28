@@ -1,5 +1,6 @@
 'use strict';
-const Api = require('../lib/api'),
+const {promises} = require('fs'),
+	Api = require('../lib/api'),
 	{runMode, parse, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
@@ -21,10 +22,12 @@ const Api = require('../lib/api'),
 	if (titles) {
 		pages = await api.revisions({titles});
 	} else {
-		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 20),
+		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 5),
 			[, c] = response;
 		info(c === undefined ? '已检查完毕！' : `下次检查从 ${c.gcmcontinue} 开始。`);
-		save('../config/archive.json', c ?? {});
+		if (c) {
+			await save('../config/archive.json', c);
+		}
 		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
@@ -38,13 +41,20 @@ const Api = require('../lib/api'),
 				sibling = parent[i - 2];
 			}
 			if (sibling.type === 'url') {
-				sibling.dead = true;
+				sibling.dead = token;
 			} else if (sibling.type === 'external_link') {
-				sibling.find(({type}) => type === 'url').dead = true;
+				sibling.find(({type}) => type === 'url').dead = token;
 			}
 		});
 		const text = await broken({content: parsed, pageid, timestamp, curtimestamp}, chat, true);
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}))).filter(page => page);
+	try {
+		const temp = require('../config/broken-temp');
+		await Promise.all([
+			save('../config/broken.json', temp),
+			promises.unlink('../config/broken-temp.json'),
+		]);
+	} catch {}
 	await api.massEdit(edits, mode, '自动添加网页存档或标记失效链接');
 })();
