@@ -17,11 +17,7 @@ const Api = require('../lib/api'),
 		list: 'exturlusage', eulimit: 'max', eunamespace: '0|10|12|14|828', euprotocol: 'https',
 		euquery: 'www.bilibili.com/video/av', ...require('../config/bilibili'),
 	});
-	if (c === undefined) {
-		info('已全部检查完毕！');
-	} else {
-		info(`下次检查从 ${c.euoffset} 开始。`);
-	}
+	info(c === undefined ? '已全部检查完毕！' : `下次检查从 ${c.euoffset} 开始。`);
 	const pageids = [...new Set(exturlusage.filter(({url}) => urlRegex.test(url)).map(({pageid}) => pageid))],
 		pages = await api.revisions({pageids});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {

@@ -7,6 +7,7 @@ const Api = require('../lib/api'),
 
 (async () => {
 	const mode = runMode('redry'),
+		[,,, titles] = process.argv,
 		api = new Api(user, pin, url),
 		chat = new Interface();
 	if (mode !== 'redry') {
@@ -16,11 +17,15 @@ const Api = require('../lib/api'),
 		await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
 		return;
 	}
-	const [pages, c] = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 20);
-	if (c === undefined) {
-		info('已检查完毕！');
+	let pages;
+	if (titles) {
+		pages = await api.revisions({titles});
 	} else {
-		info(`下次检查从 ${c.gcmcontinue} 开始。`);
+		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 20),
+			[, c] = response;
+		info(c === undefined ? '已检查完毕！' : `下次检查从 ${c.gcmcontinue} 开始。`);
+		save('../config/archive.json', c ?? {});
+		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
 		const parsed = parse(content);
@@ -41,8 +46,5 @@ const Api = require('../lib/api'),
 		const text = await broken({content: parsed, pageid, timestamp, curtimestamp}, chat, true);
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}))).filter(page => page);
-	await Promise.all([
-		api.massEdit(edits, mode, '自动添加网页存档或标记失效链接'),
-		save('../config/archive.json', c ?? {}),
-	]);
+	await api.massEdit(edits, mode, '自动添加网页存档或标记失效链接');
 })();
