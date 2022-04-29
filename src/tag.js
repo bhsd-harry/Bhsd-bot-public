@@ -59,7 +59,8 @@ const main = async (api = new Api(user, pin, url)) => {
 			'li', 'dt', 'dd', 'td', 'th',
 			'tr',
 		],
-		regex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'gi');
+		testRegex = new RegExp(`<(${tags.join('|')})(?:\\s+[^>]*?)?/>`, 'i'), // 用于test时不能有g修饰符
+		replaceRegex = new RegExp(testRegex, 'gi');
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
@@ -69,11 +70,11 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.categorymembers('使用无效自封闭HTML标签的页面');
 	const list = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		if (!regex.test(content)) {
+		if (!testRegex.test(content)) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);
 			return null;
 		}
-		const text = _analyze(content, regex);
+		const text = _analyze(content, replaceRegex);
 		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');

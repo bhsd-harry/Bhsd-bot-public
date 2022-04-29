@@ -7,7 +7,8 @@ const Api = require('../lib/api'),
 	{error, runMode} = require('../lib/dev'),
 	{exturl} = require('../lib/exturl');
 
-const regex = /https?:?\/{0,2}https?:\/{0,2}/g;
+const testRegex = /https?:?\/{0,2}https?:\/{0,2}/, // 用于test时不能有g修饰符
+	replaceRegex = new RegExp(testRegex, 'g');
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
@@ -28,12 +29,12 @@ const main = async (api = new Api(user, pin, url)) => {
 		pageSet = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid));
 	pageSet.forEach(page => {
 		const {pageid, content} = page;
-		if (!regex.test(content)) {
+		if (!testRegex.test(content)) {
 			error(`页面 ${pageid} 找不到错误URL！`);
 			return;
 		}
 		page.oldContent = content;
-		page.content = content.replace(regex, 'http://');
+		page.content = content.replace(replaceRegex, 'http://');
 	});
 	const edits = await exturl(pageSet);
 	await api.massEdit(edits, mode, '自动修复错误格式的外链');
