@@ -30,7 +30,7 @@ const _splice = (token, i) => {
 const _analyze = (wikitext, pageid) => {
 	const parsed = parse(wikitext);
 	const found = {};
-	parsed.each('transclusion', token => {
+	parsed.each(type => ['transclusion', 'magic_word_function'].includes(type), token => {
 		if (token.ignored.length === 0) {
 			return;
 		}
