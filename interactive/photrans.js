@@ -2,6 +2,8 @@
 const fs = require('fs'),
 	dev = require('../lib/dev');
 
+const _ucfirst = str => str[0].toUpperCase() + str.slice(1);
+
 (async () => {
 	// 1. 将模板替换为占位符
 	const lyrics = fs.readFileSync('lyrics', 'utf8');
@@ -18,12 +20,25 @@ const fs = require('fs'),
 	});
 
 	// 2. 获取注音
-	await Promise.all(['kakasi', 'yahoo'].map(async method => {
-		const output = (await dev[method](replaced, {middle: '|'}))
-			.replace(/\$(\d+)/g, (_, k) => { // 替换回原文中的模板
-				return templates[k - 1][0];
-			});
-		fs.writeFileSync(`ruby-${method}`, output);
+	const promises = await Promise.allSettled(['kakasi', 'kuromoji', 'yahoo'].map(async method => {
+		try {
+			const photrans = (await dev[method](replaced, {middle: '|'}))
+				.replace(/\$(\d+)/g, (_, k) => templates[k - 1][0]); // 替换回原文中的模板
+			fs.writeFileSync(`ruby-${method}`, photrans);
+			return method;
+		} catch (e) {
+			e.summary = `注音工具 ${_ucfirst(method)} 出错！`;
+			throw e;
+		}
 	}));
-	console.log(await dev.diff('ruby-kakasi', 'ruby-yahoo'));
+	const success = promises.filter(({status}) => status === 'fulfilled'),
+		reference = success.at(-1)?.value;
+	for (const {value} of success.slice(0, -1)) {
+		console.log(`比较 ${_ucfirst(value)} 和 ${_ucfirst(reference)} ：`);
+		// eslint-disable-next-line no-await-in-loop
+		console.log(await dev.diff(`ruby-${value}`, `ruby-${reference}`) || '无差异\n');
+	}
+	promises.filter(({status}) => status === 'rejected').forEach(({reason}) => {
+		console.error(reason);
+	});
 })();
