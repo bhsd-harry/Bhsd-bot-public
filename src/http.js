@@ -33,7 +33,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const edits = pages.length > 0 ? await exturl(pages) : [];
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
-		save('../config/abuse32.json', mode === 'dry' ? {run, dry: now} : {run: now}),
+		save('../config/abuse32.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);
 };
 

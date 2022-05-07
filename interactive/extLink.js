@@ -32,16 +32,17 @@ const api = new Api(user, pin, url),
 	}
 	const [pages, c] = await api.extSearch(run),
 		editable = pages.filter(({pageid}) => !protectedPages.includes(pageid));
+	let edits = [];
 	if (editable.length > 0) { // 否则直接跳过，记录euoffset
-		const edits = await exturl(editable, chat);
+		edits = await exturl(editable, chat);
 		await api.massEdit(edits, mode, '自动修复http链接');
 	}
 	if (c === undefined) {
 		info('已全部检查完毕！');
-	} else if (mode === 'dry') {
-		await save('../config/extLink.json', {run, dry: c});
-		info(`下次检查从 ${c.geuoffset} 开始。`);
 	} else {
-		await save('../config/extLink.json', {run: {geuquery, ...c}});
+		if (mode === 'dry') {
+			info(`下次检查从 ${c.geuoffset} 开始。`);
+		}
+		await save('../config/extLink.json', mode === 'dry' && edits.length ? {run, dry: c} : {run: {geuquery, ...c}});
 	}
 })();

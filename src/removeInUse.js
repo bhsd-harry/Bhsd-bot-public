@@ -1,5 +1,6 @@
 const Api = require('../lib/api'),
-	{runMode, parse, error, info} = require('../lib/dev'),
+	{runMode, error, info} = require('../lib/dev'),
+	{parse} = require('../../parser-node/token'),
 	{user, pin, url} = require('../config/user');
 
 const protectedPages = [9658, 33803, 44832],
@@ -10,13 +11,13 @@ const protectedPages = [9658, 33803, 44832],
 
 const _parseTime = token => {
 	const fallback = 2 * 1440,
-		until = token.parameters['直到'],
-		last = token.parameters['持续时间'] ?? token.parameters[1] ?? '2小时';
+		until = token.getValue('直到');
 	if (until) {
 		error(`无法解析的参数：直到 ${until}`);
 		return fallback;
 	}
-	const lapse = last.replace(/[\s个個]/g, '').replace(/[半零〇一二两兩三四五六七八九]/g, m => zhnum[m])
+	const last = token.getValue('持续时间') ?? token.getValue(1) ?? '2小时',
+		lapse = last.replace(/[\s个個]/g, '').replace(/[半零〇一二两兩三四五六七八九]/g, m => zhnum[m])
 			.replace(/(\d?)十(\d?)/g, (_, p1, p2) => `${p1 || 1}${p2 || 0}`),
 		args = [...lapse.matchAll(/([\d.]+)(\D+)/g)];
 	if (args.map(([m]) => m).join('') !== lapse) {
@@ -73,20 +74,17 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.revisions({pageids, inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const parsed = parse(content);
-		parsed.each(
-			(type, name) => type === 'transclusion' && inuse.includes(name),
-			token => {
-				const time = _parseTime(token) * 60 * 1000,
-					remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
-				if (remain < 0) {
-					info(`${pageid}: 施工持续 ${_format(time)}，已超过 ${_format(-remain)}`);
-					token.toString = () => '';
-				} else {
-					error(`${pageid}: 施工持续 ${_format(time)}，还剩 ${_format(remain)}`);
-				}
-			},
-		);
+		const parsed = parse(content, 2);
+		parsed.each(inuse.map(str => `#Template:${str}`).join(), token => {
+			const time = _parseTime(token) * 60 * 1000,
+				remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
+			if (remain < 0) {
+				info(`${pageid}: 施工持续 ${_format(time)}，已超过 ${_format(-remain)}`);
+				token.remove();
+			} else {
+				error(`${pageid}: 施工持续 ${_format(time)}，还剩 ${_format(remain)}`);
+			}
+		});
 		const text = parsed.toString();
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);

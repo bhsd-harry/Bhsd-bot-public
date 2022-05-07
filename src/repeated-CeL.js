@@ -4,54 +4,65 @@
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
-	{error, runMode, parse} = require('../lib/dev');
+	{error, runMode} = require('../lib/dev'),
+	Parser = require('../../parser-node/token'),
+	{parse} = Parser;
+Parser.warning = false;
 
 const ignorePages = [];
 
-const _empty = value => !value.toString().replace(/\s*<!--.*?-->\s*/g, ''); // 除注释外有非空字符的参数值才是非空的
-
-// 以下函数只会修改index_of属性，其他属性可暂时忽略
-const _splice = (token, i) => {
-	if (typeof token[i].key === 'number') { // 至多发生一次
-		token.filter(({key}) => typeof key === 'number').forEach(arg => {
-			arg.key = String(arg.key);
-			arg[0] = arg.key;
-			arg[1] = '=';
-		});
-	}
-	token.splice(i, 1);
-	for (const key in token.index_of) {
-		if (token.index_of[key] > i) {
-			token.index_of[key]--;
-		}
-	}
-};
-
 const _analyze = (wikitext, pageid) => {
-	const parsed = parse(wikitext);
-	const found = {};
-	parsed.each(type => ['transclusion', 'magic_word_function'].includes(type), token => {
-		if (token.ignored.length === 0) {
+	const parsed = parse(wikitext, 2);
+	let found = false;
+	parsed.each('template, magic-word#invoke', token => {
+		const keys = new Set(token.slice(1).map(({name}) => name));
+		if (keys.size === token.length - 1) {
 			return;
 		}
-		token.ignored.sort((a, b) => b - a).forEach(i => { // 倒序排列，以保证序号不会因_splice()变更
-			const {key, 2: ignored_value} = token[i],
-				j = token.index_of[key],
-				[,, effective_value] = token[j];
-			if (_empty(ignored_value)
-				|| !/\D\d+$/.test(key) && ignored_value.toString() === effective_value.toString()) {
-				// 修复情形1：忽略空参数或重复参数
-				_splice(token, i);
-			} else if (_empty(effective_value)) {
-				// 修复情形2：有效值被空参数覆盖；注意这种情形至多发生一次
-				_splice(token, j);
-				token.index_of[key] = i;
-			} else if (token.page_title === 'Template:Timeline' && /^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
-				// 修复情形3：{{Timeline}}
-				token[j][0] += '#2';
-			} else if (!(key in found)) {
+		found = true;
+		keys.forEach(key => {
+			let args = token.getArgs(key),
+				{length} = args;
+			if (length === 1) {
+				return;
+			}
+			let iAnon;
+			const values = {};
+			args.forEach((arg, i) => {
+				const val = arg.getValue();
+				if (val) {
+					if (!(val in values)) {
+						values[val] = i;
+						if (iAnon !== undefined) {
+							token.naming();
+							args[iAnon].remove(); // 修复情形1：忽略空参数
+							length--;
+						}
+					} else if (!arg.anon) {
+						arg.remove(); // 修复情形2：忽略重复参数
+						length--;
+					} else {
+						args[values[val]].remove(); // 修复情形2：忽略重复参数
+						length--;
+					}
+				} else if (iAnon !== undefined || values.length || !arg.anon && i < args.length - 1) {
+					arg.remove(); // 修复情形1：忽略空参数
+					length--;
+				} else {
+					iAnon = i;
+				}
+			});
+			if (length === 1) {
+				return;
+			} else if (length < args.length) {
+				args = token.getArgs(key);
+			}
+			if (token.name === 'Template:Timeline' && /^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
+				args.slice(1).forEach((arg, i) => {
+					arg[0].update(`${key}#${i + 2}`); // 修复情形3：{{Timeline}}
+				});
+			} else {
 				error(`页面 ${pageid} 中重复的模板参数 ${key.toString().replaceAll('\n', '\\n')} 均非空，无法简单修复！`);
-				found[key] = true;
 			}
 		});
 	});
@@ -76,7 +87,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const list = pages.map(({pageid, content, title, timestamp, curtimestamp}) => {
 		const [text, found] = _analyze(content, pageid);
 		if (text === content) {
-			if (Object.keys(found).length === 0) {
+			if (!found) {
 				error(`页面 ${pageid} ${title.replaceAll(' ', '_')} 找不到重复的模板参数！`);
 				return [pageid, null, null, timestamp, curtimestamp];
 			}

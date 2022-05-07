@@ -46,7 +46,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		).filter(page => page).filter(([, content, text]) => content !== text);
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复误写作外链的内链') : null,
-		save('../config/abuse15.json', mode === 'dry' ? {run, dry: now} : {run: now}),
+		save('../config/abuse15.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);
 };
 
