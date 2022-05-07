@@ -5,14 +5,13 @@
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{error, runMode} = require('../lib/dev'),
-	Parser = require('../../parser-node/token'),
-	{parse} = Parser;
+	Parser = require('../../parser-node/token');
 Parser.warning = false;
 
 const ignorePages = [];
 
 const _analyze = (wikitext, pageid) => {
-	const parsed = parse(wikitext, 2);
+	const parsed = Parser.parse(wikitext, 2);
 	let found = false;
 	parsed.each('template, magic-word#invoke', token => {
 		const keys = new Set(token.slice(1).map(({name}) => name));

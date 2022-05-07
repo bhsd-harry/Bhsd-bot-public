@@ -1,7 +1,8 @@
 const Api = require('../lib/api'),
 	{runMode, error, info} = require('../lib/dev'),
-	{parse} = require('../../parser-node/token'),
+	Parser = require('../../parser-node/token'),
 	{user, pin, url} = require('../config/user');
+Parser.warning = false;
 
 const protectedPages = [9658, 33803, 44832],
 	age = 1000 * 86400 * 7, // 一周
@@ -74,8 +75,8 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.revisions({pageids, inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const parsed = parse(content, 2);
-		parsed.each(inuse.map(str => `#Template:${str}`).join(), token => {
+		const parsed = Parser.parse(content, 2);
+		parsed.each(inuse.map(str => `template#Template:${str}`).join(), token => {
 			const time = _parseTime(token) * 60 * 1000,
 				remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
 			if (remain < 0) {
