@@ -18,16 +18,12 @@ const {promises} = require('fs'),
 		await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
 		return;
 	}
-	let pages;
+	let pages, c;
 	if (titles) {
 		pages = await api.revisions({titles});
 	} else {
-		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 5),
-			[, c] = response;
-		info(c === undefined ? '已检查完毕！' : `下次检查从 ${c.gcmcontinue} 开始。`);
-		if (c) {
-			await save('../config/archive.json', c);
-		}
+		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 5);
+		[pages, c] = response;
 		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
@@ -49,9 +45,11 @@ const {promises} = require('fs'),
 		const text = await broken({content: parsed, pageid, timestamp, curtimestamp}, chat, true);
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}))).filter(page => page);
+	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	try {
 		const temp = require('../config/broken-temp');
 		await Promise.all([
+			c ? save('../config/archive.json', c) : null,
 			save('../config/broken.json', temp),
 			promises.unlink('../config/broken-temp.json'),
 		]);

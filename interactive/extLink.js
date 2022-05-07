@@ -23,7 +23,7 @@ const api = new Api(user, pin, url),
 	if (mode === 'rerun' || mode === 'redry') {
 		await Promise.all([
 			api.massEdit(null, mode, '自动修复http链接'),
-			mode === 'rerun' ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
+			mode === 'rerun' && dry ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
 		]);
 		return;
 	}
