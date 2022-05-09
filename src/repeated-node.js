@@ -4,21 +4,26 @@
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
-	{error, runMode} = require('../lib/dev'),
+	{error, runMode, info} = require('../lib/dev'),
 	Parser = require('../../parser-node/token');
 Parser.warning = false;
 
 const ignorePages = [];
 
 const _analyze = (wikitext, pageid) => {
-	const parsed = Parser.parse(wikitext, 2);
 	let found = false;
-	parsed.each('template, magic-word#invoke', token => {
-		const keys = new Set(token.slice(1).map(({name}) => name));
+	const text = Parser.parse(wikitext, 2).each('template, magic-word#invoke', token => {
+		if (/\n\s*{\|.+\n\|}[^}]/s.test(token.toString())) {
+			error(`页面 ${pageid} 中模板 ${token.name} 疑似包含未转义的表格语法！`);
+			found = true;
+			return;
+		}
+		const keys = token.getKeys();
 		if (keys.size === token.length - 1) {
 			return;
 		}
 		found = true;
+		const numbered = [];
 		keys.forEach(key => {
 			let args = token.getArgs(key),
 				{length} = args;
@@ -26,12 +31,12 @@ const _analyze = (wikitext, pageid) => {
 				return;
 			}
 			let iAnon;
-			const values = {};
+			const values = new Map();
 			args.forEach((arg, i) => {
-				const val = arg.getValue();
+				const val = arg.getValue().trim(); // 只有空白字符的参数一般相当于空参数
 				if (val) {
-					if (!(val in values)) {
-						values[val] = i;
+					if (!values.has(val)) {
+						values.set(val, i);
 						if (iAnon !== undefined) {
 							token.naming();
 							args[iAnon].remove(); // 修复情形1：忽略空参数
@@ -41,10 +46,10 @@ const _analyze = (wikitext, pageid) => {
 						arg.remove(); // 修复情形2：忽略重复参数
 						length--;
 					} else {
-						args[values[val]].remove(); // 修复情形2：忽略重复参数
+						args[values.get(val)].remove(); // 修复情形2：忽略重复参数
 						length--;
 					}
-				} else if (iAnon !== undefined || values.length || !arg.anon && i < args.length - 1) {
+				} else if (iAnon !== undefined || values.size || !arg.anon && i < args.length - 1) {
 					arg.remove(); // 修复情形1：忽略空参数
 					length--;
 				} else {
@@ -57,15 +62,55 @@ const _analyze = (wikitext, pageid) => {
 				args = token.getArgs(key);
 			}
 			if (token.name === 'Template:Timeline' && /^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
-				args.slice(1).forEach((arg, i) => {
-					arg[0].update(`${key}#${i + 2}`); // 修复情形3：{{Timeline}}
+				let i = 2;
+				const attempt = arg => {
+					try {
+						arg.rename(`${key}#${i}`); // 修复情形3：{{Timeline}}
+					} catch {
+						i++;
+						attempt(arg);
+					}
+				};
+				args.slice(1).forEach(arg => {
+					attempt(arg);
+					i++;
 				});
+			} else if (/\D\d+$/.test(key) || Number.isInteger(Number(key)) && token.getAnonArgs().length === 0) {
+				const str = key.slice(0, -key.match(/\d+$/)[0].length),
+					regex = new RegExp(`^${str.replace(/[\\{}()|.?*+\-^$[\]]/g, '\\$&')}\\d+$`),
+					series = token.slice(1).filter(({name}) => regex.test(name));
+				let last;
+				const ordered = series.every(({name}, i) => {
+					const j = Number(name.slice(str.length)),
+						cmp = j <= i + 1 && (i === 0 || j >= last);
+					last = j;
+					return cmp;
+				});
+				if (ordered) { // 修复情形4: 连续的编号参数
+					series.forEach((arg, i) => {
+						const name = `${str}${i + 1}`;
+						if (arg.name !== name) {
+							arg.rename(name, true);
+						}
+					});
+				} else {
+					numbered.push(key);
+				}
 			} else {
-				error(`页面 ${pageid} 中重复的模板参数 ${key.toString().replaceAll('\n', '\\n')} 均非空，无法简单修复！`);
+				error(`页面 ${pageid} 中模板 ${token.name} 的重复参数 ${key.replaceAll('\n', '\\n')} 均非空！`);
 			}
 		});
-	});
-	return [parsed.toString(), found];
+		if (numbered.length) {
+			info(`页面 ${pageid} 中模板 ${token.name} 的参数名如下：`);
+			token.slice(1).forEach(({name}) => {
+				if (!/\d+$/.test(name)) {
+					return;
+				}
+				(numbered.includes(name) ? error : console.log)(name);
+			});
+		}
+	}).toString();
+	return [text, found];
 };
 
 const main = async (api = new Api(user, pin, url)) => {
