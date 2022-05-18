@@ -4,7 +4,7 @@
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
-	{error, runMode, info} = require('../lib/dev'),
+	{error, runMode, info, escapeRegExp} = require('../lib/dev'),
 	Parser = require('../../parser-node/token');
 Parser.warning = false;
 
@@ -19,7 +19,7 @@ const _analyze = (wikitext, pageid) => {
 			return;
 		}
 		const keys = token.getKeys();
-		if (keys.size === token.length - 1) {
+		if (keys.size === token.$children.length - 1) {
 			return;
 		}
 		found = true;
@@ -77,12 +77,12 @@ const _analyze = (wikitext, pageid) => {
 				});
 			} else if (/\D\d+$/.test(key) || Number.isInteger(Number(key)) && token.getAnonArgs().length === 0) {
 				const str = key.slice(0, -key.match(/\d+$/)[0].length),
-					regex = new RegExp(`^${str.replace(/[\\{}()|.?*+\-^$[\]]/g, '\\$&')}\\d+$`),
-					series = token.slice(1).filter(({name}) => regex.test(name));
+					regex = new RegExp(`^${escapeRegExp(str)}\\d+$`),
+					series = token.$children.slice(1).filter(({name}) => regex.test(name));
 				let last;
 				const ordered = series.every(({name}, i) => {
 					const j = Number(name.slice(str.length)),
-						cmp = j <= i + 1 && (i === 0 || j >= last);
+						cmp = j <= i + 1 && (i === 0 || j >= last || name === key);
 					last = j;
 					return cmp;
 				});
