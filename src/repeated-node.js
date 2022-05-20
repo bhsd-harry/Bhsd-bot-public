@@ -102,7 +102,7 @@ const _analyze = (wikitext, pageid) => {
 		});
 		if (numbered.length) {
 			info(`页面 ${pageid} 中模板 ${token.name} 的参数名如下：`);
-			token.slice(1).forEach(({name}) => {
+			token.$children.slice(1).forEach(({name}) => {
 				if (!/\d+$/.test(name)) {
 					return;
 				}
