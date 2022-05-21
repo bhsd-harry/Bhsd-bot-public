@@ -1,3 +1,4 @@
+'use strict';
 const Api = require('../lib/api'),
 	{runMode, error, info} = require('../lib/dev'),
 	Parser = require('../../parser-node/token'),

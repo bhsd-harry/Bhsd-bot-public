@@ -1,3 +1,4 @@
+'use strict';
 const Api = require('../lib/api'),
 	{runMode, save, urlRegex} = require('../lib/dev'),
 	WikiUrl = require('../lib/url'),
