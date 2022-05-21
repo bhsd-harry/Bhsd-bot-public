@@ -7,17 +7,23 @@ const mode = runMode();
 
 if (mode === 'dry') {
 	(async () => {
-		const api = new Api(user, pin, url);
+		const api = new Api(user, pin, url),
+			[,,, mistake = 403] = process.argv,
+			mistakes = {
+				403: '-403 - 访问权限不足',
+				62003: '62003 - 稿件已审核通过，等待发布中',
+			};
 		await api.login();
 		const {query: {usercontribs}} = await api.get({
 			list: 'usercontribs', uclimit: 'max', ucuser: 'AnnAngela-abot', ucnamespace: 0, ucprop: 'ids|comment',
 			uctag: '发现失效视频',
 		});
-		const uc = usercontribs.filter(({comment}) => /^发现失效视频：(?:\w+: -403 - 访问权限不足、?)+$/.test(comment)),
+		const uc = usercontribs
+				.filter(({comment}) => new RegExp(`^发现失效视频：(?:\\w+: ${mistakes[mistake]}、?)+$`).test(comment)),
 			pageids = uc.map(({pageid}) => pageid);
 		const {query: {pages}, curtimestamp} = await api.get({
-			prop: 'categories|revisions', pageids, clcategories: 'Category:带有失效视频的条目|Category:带有受限视频的条目',
-			cllimit: 'max', rvprop: 'content|timestamp', curtimestamp: 1,
+			prop: 'categories|revisions', clcategories: 'Category:带有失效视频的条目|Category:带有受限视频的条目',
+			pageids, cllimit: 'max', rvprop: 'content|timestamp', curtimestamp: 1,
 		});
 		const edits = pages.filter(({categories}) =>
 			categories && categories.some(({title}) => title === 'Category:带有失效视频的条目'),
@@ -25,7 +31,7 @@ if (mode === 'dry') {
 			[
 				pageid, content,
 				content.replace(/\n\[\[Category:带有失效视频的条目]]/g, '')
-					+ (categories.length === 1 ? '\n[[Category:带有受限视频的条目]]' : ''),
+					+ (mistake === 403 && categories.length === 1 ? '\n[[Category:带有受限视频的条目]]' : ''),
 				timestamp, curtimestamp,
 			],
 		);
