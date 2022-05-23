@@ -16,6 +16,9 @@ const main = async (api = new Api(user, pin, url)) => {
 	} else if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
+			if (!dry) {
+				throw new Error('没有保存的dry run！');
+			}
 			await Promise.all([
 				api.massEdit(null, mode, '自动修复http链接'),
 				save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
