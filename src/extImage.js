@@ -3,16 +3,24 @@
  */
 'use strict';
 const Api = require('../lib/api'),
+	Parser = require('../../parser-node/token'),
 	{user, pin, url} = require('../config/user'),
 	{error, runMode, urlRegex} = require('../lib/dev');
+Parser.warning = false;
 
-const regex = new RegExp(
-	`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
-	'gi',
-);
+const regexHttps = new RegExp(
+		`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
+		'gi',
+	),
+	regexHttp = new RegExp(
+		`http://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
+		'gi',
+	),
+	norefererTemplates = ['NoReferer', 'Producer Song', 'Producer Music']
+		.map(str => `template#Template:${str}`).join();
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
+	const mode = runMode('noreferer');
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
@@ -21,8 +29,20 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 
-	const _search = site => api.search(`insource:"https://${site}"`);
+	const _searchHttps = site => api.search(`insource:"https://${site}"`),
+		_searchHttp = site => api.search(`insource:"http://${site}"`),
+		_insert = parsed => {
+			const [token] = parsed.sections().find(section => regexHttp.test(section.text()));
+			regexHttp.lastIndex = 0;
+			if (token instanceof Parser && token.is('heading')) {
+				parsed.insert('\n{{noReferer}}', token.index() + 1);
+			} else {
+				parsed.prepend('{{noReferer}}\n');
+			}
+		};
 
+	const _search = mode === 'noreferer' ? _searchHttp : _searchHttps,
+		regex = mode === 'noreferer' ? regexHttp : regexHttps;
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
 	const pages = (await Promise.all([
 		...new Array(3).fill().map((_, i) => _search(`i${i}.hdslb.com`)),
@@ -38,12 +58,23 @@ const main = async (api = new Api(user, pin, url)) => {
 					return null;
 				}
 				let text = content;
-				urls.forEach(imgUrl => {
-					text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
-				});
-				return [pageid, content, text, timestamp, curtimestamp];
+				if (mode !== 'noreferer') {
+					urls.forEach(imgUrl => {
+						text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
+					});
+				}
+				const parsed = Parser.parse(text, 2);
+				if (parsed.descendants(norefererTemplates).length === 0) {
+					_insert(parsed);
+				} else if (mode === 'noreferer') {
+					return null;
+				}
+				return [pageid, content, parsed.text(), timestamp, curtimestamp];
 			}).filter(edit => edit);
-	await api.massEdit(edits, mode, '自动修复引自bilibili或新浪的图片外链');
+	await api.massEdit(edits, mode === 'noreferer' ? 'dry' : mode, mode === 'noreferer'
+		? '自动添加{{[[template:noReferer|noReferer]]}}模板'
+		: '自动修复引自bilibili或新浪的图片外链',
+	);
 };
 
 if (!module.parent) {
