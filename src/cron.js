@@ -1,7 +1,7 @@
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
-	{runMode, sleep, info} = require('../lib/dev'),
+	{runMode} = require('../lib/dev'),
 	scripts = [
 		'repeated-node',
 		'tag',
@@ -13,19 +13,6 @@ const {user, pin, url} = require('../config/user'),
 	];
 
 const api = new Api(user, pin, url);
-
-const _login = async mode => {
-	try {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	} catch (e) {
-		if (e.statusCode === 502) {
-			info('登入时触发http代码502！将于1分钟后再次尝试。');
-			await sleep(60);
-			return _login(mode);
-		}
-		throw e;
-	}
-};
 
 const _execute = async script => {
 	try {
@@ -42,7 +29,7 @@ const _execute = async script => {
 	if (mode) {
 		throw new RangeError('仅供cron自动执行，不可使用附加模式！');
 	}
-	await _login(mode);
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	for (const script of scripts) {
 		await _execute(script); // eslint-disable-line no-await-in-loop
 	}
