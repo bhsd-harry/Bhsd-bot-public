@@ -77,7 +77,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.revisions({pageids, inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const root = Parser.parse(content, 2),
+		const root = Parser.parse(content, false, 2),
 			templates = root.querySelectorAll(inuse);
 		for (const token of templates) {
 			const time = _parseTime(token) * 60 * 1000,

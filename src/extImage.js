@@ -4,6 +4,7 @@
 'use strict';
 const Api = require('../lib/api'),
 	Parser = require('../../wikiparser-node'),
+	$ = Parser.getTool(),
 	{user, pin, url} = require('../config/user'),
 	{error, runMode, urlRegex} = require('../lib/dev');
 Parser.warning = false;
@@ -33,12 +34,13 @@ const main = async (api = new Api(user, pin, url)) => {
 	const _searchHttps = site => api.search(`insource:"https://${site}"`),
 		_searchHttp = site => api.search(`insource:"http://${site}"`),
 		_insert = parsed => {
-			const [token] = parsed.sections().find(section => regexHttp.test(section.text()));
+			const [token] = parsed.sections().find(section => regexHttp.test($(section).text())),
+				{firstChild} = Parser.parse('{{noReferer}}', false, 2);
 			regexHttp.lastIndex = 0;
 			if (typeof token === 'object' && token.matches(':header')) {
-				token.after('\n{{noReferer}}');
+				token.after('\n', firstChild);
 			} else {
-				parsed.prepend('{{noReferer}}\n');
+				parsed.prepend(firstChild, '\n');
 			}
 		};
 
@@ -64,7 +66,7 @@ const main = async (api = new Api(user, pin, url)) => {
 						text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
 					});
 				}
-				const parsed = Parser.parse(text, 2);
+				const parsed = Parser.parse(text, false, 2);
 				if (!parsed.querySelector(norefererTemplates)) {
 					_insert(parsed);
 				} else if (mode === 'noreferer') {
