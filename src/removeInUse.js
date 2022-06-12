@@ -1,9 +1,10 @@
 'use strict';
 const Api = require('../lib/api'),
 	{runMode, error, info} = require('../lib/dev'),
-	Parser = require('../../parser-node/token'),
+	Parser = require('../../wikiparser-node'),
 	{user, pin, url} = require('../config/user');
 Parser.warning = false;
+Parser.config = './config/moegirl';
 
 const protectedPages = [9658, 33803, 44832],
 	age = 1000 * 86400 * 7, // 一周
@@ -76,7 +77,9 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 	const pages = await api.revisions({pageids, inuse: true});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const text = Parser.parse(content, 2).each(inuse, token => {
+		const root = Parser.parse(content, 2),
+			templates = root.querySelectorAll(inuse);
+		for (const token of templates) {
 			const time = _parseTime(token) * 60 * 1000,
 				remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
 			if (remain < 0) {
@@ -85,7 +88,8 @@ const main = async (api = new Api(user, pin, url)) => {
 			} else {
 				error(`${pageid}: 施工持续 ${_format(time)}，还剩 ${_format(remain)}`);
 			}
-		}).toString();
+		}
+		const text = root.toString();
 		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(edits, mode, '自动移除超时的[[template:施工中|施工中]]模板');

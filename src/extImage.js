@@ -3,10 +3,11 @@
  */
 'use strict';
 const Api = require('../lib/api'),
-	Parser = require('../../parser-node/token'),
+	Parser = require('../../wikiparser-node'),
 	{user, pin, url} = require('../config/user'),
 	{error, runMode, urlRegex} = require('../lib/dev');
 Parser.warning = false;
+Parser.config = './config/moegirl';
 
 const regexHttps = new RegExp(
 		`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
@@ -34,8 +35,8 @@ const main = async (api = new Api(user, pin, url)) => {
 		_insert = parsed => {
 			const [token] = parsed.sections().find(section => regexHttp.test(section.text()));
 			regexHttp.lastIndex = 0;
-			if (token instanceof Parser && token.is('heading')) {
-				parsed.insert('\n{{noReferer}}', token.index() + 1);
+			if (typeof token === 'object' && token.matches(':header')) {
+				token.after('\n{{noReferer}}');
 			} else {
 				parsed.prepend('{{noReferer}}\n');
 			}
@@ -64,12 +65,12 @@ const main = async (api = new Api(user, pin, url)) => {
 					});
 				}
 				const parsed = Parser.parse(text, 2);
-				if (parsed.descendants(norefererTemplates).length === 0) {
+				if (!parsed.querySelector(norefererTemplates)) {
 					_insert(parsed);
 				} else if (mode === 'noreferer') {
 					return null;
 				}
-				return [pageid, content, parsed.text(), timestamp, curtimestamp];
+				return [pageid, content, parsed.toString(), timestamp, curtimestamp];
 			}).filter(edit => edit);
 	await api.massEdit(edits, mode === 'noreferer' ? 'dry' : mode, mode === 'noreferer'
 		? '自动添加{{[[template:noReferer|noReferer]]}}模板'
