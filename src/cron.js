@@ -3,7 +3,7 @@ const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	scripts = [
-		'repeated-node',
+		// 'repeated-node',
 		'tag',
 		'extImage',
 		'wrongUrl',

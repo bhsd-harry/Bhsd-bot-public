@@ -64,7 +64,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	// 先只检查模板，防止大量嵌入
-	let pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: 10});
+	let pages = await api.categorymembers('调用重复模板参数的页面');
 	if (pages.length === 0) {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
