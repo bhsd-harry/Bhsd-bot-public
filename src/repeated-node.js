@@ -15,13 +15,19 @@ const _analyze = (wikitext, pageid, ns) => {
 	let found = false;
 	const root = Parser.parse(wikitext, ns === 10, 2),
 		templates = root.querySelectorAll('template, magic-word#invoke');
-	for (const token of templates) {
-		if (/\n\s*{\|.+\n\|}[^}]/s.test(token.text())) {
-			error(`页面 ${pageid} 中模板 ${token.name} 疑似包含未转义的表格语法！`);
-			found = true;
+	for (let token of templates) {
+		if (!token.hasDuplicatedArgs()) {
 			continue;
-		} else if (token.getDuplicatedArgs().length > 0) {
-			found = true;
+		}
+		found = true;
+		try {
+			token = token.escapeTables();
+		} catch {
+			error(`页面 ${pageid} 中模板 ${token.name} 疑似包含未转义的表格语法！`);
+			continue;
+		}
+		if (!token.hasDuplicatedArgs()) {
+			continue;
 		}
 		const keys = new Set(token.fixDuplication(true));
 		if (keys.size === 0) {
