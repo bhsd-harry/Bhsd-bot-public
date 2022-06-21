@@ -28,7 +28,9 @@ const main = async (api = new Api(user, pin, url)) => {
 			return null;
 		}
 		for (const token of tokens) {
-			token.fix();
+			try {
+				token.fix();
+			} catch {}
 		}
 		return [pageid, content, root.toString(), timestamp, curtimestamp];
 	}).filter(page => page);
