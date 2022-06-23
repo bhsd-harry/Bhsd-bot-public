@@ -12,7 +12,7 @@ const Api = require('../lib/api'),
 
 const api = new Api(user, pin, url),
 	chat = new Interface(),
-	protectedPages = [923, 206749],
+	protectedPages = [923, 83736, 191917, 206749],
 	[,,, geulimit] = process.argv;
 
 (async () => {
