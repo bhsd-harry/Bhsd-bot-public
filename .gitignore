@@ -5,6 +5,7 @@
 .DS_Store
 data/
 config/
+!config/example_user.json
 !config/exturl.json
 !config/photrans.json
 interactive/lyrics
