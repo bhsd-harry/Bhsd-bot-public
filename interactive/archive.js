@@ -1,7 +1,8 @@
 'use strict';
 const {promises} = require('fs'),
 	Api = require('../lib/api'),
-	{runMode, parse, info, save} = require('../lib/dev'),
+	Parser = require('../../wikiparser-node'),
+	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user');
@@ -27,21 +28,17 @@ const {promises} = require('fs'),
 		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
-		const parsed = parse(content);
-		parsed.each('transclusion', (token, i, parent) => {
-			if (i === 0 || !/[Dd]ead ?link|死[链鏈]|失效[链鏈]接/.test(token.name)) {
-				return;
+		const parsed = Parser.parse(content, false, 9),
+			selectors = ['Dead link', 'Deadlink', '死链', '死鏈', '失效链接', '失效鏈接']
+				.map(name => `template#Template:${name}`).join();
+		for (const token of parsed.querySelectorAll(selectors)) {
+			const {previousElementSibling} = token;
+			if (previousElementSibling?.type === 'free-extlink') {
+				previousElementSibling.dead = token;
+			} else if (previousElementSibling.type === 'ext-link') {
+				previousElementSibling.firstChild.dead = token;
 			}
-			let sibling = parent[i - 1];
-			if (i > 1 && typeof sibling === 'string' && !/\S/.test(sibling)) {
-				sibling = parent[i - 2];
-			}
-			if (sibling.type === 'url') {
-				sibling.dead = token;
-			} else if (sibling.type === 'external_link') {
-				sibling.find(({type}) => type === 'url').dead = token;
-			}
-		});
+		}
 		const [text, nBroken, nArchived] = await broken({
 			content: parsed, pageid, timestamp, curtimestamp,
 		}, chat, true);
