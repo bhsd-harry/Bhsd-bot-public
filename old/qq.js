@@ -3,7 +3,7 @@
  */
 'use strict';
 const {createClient} = require('oicq'),
-	{info, error} = require('./dev');
+	{info, error} = require('../lib/dev');
 
 class QQ {
 	#client;
@@ -17,7 +17,7 @@ class QQ {
 		if (!Number.isInteger(uid)) {
 			throw new TypeError('管理人账号应为整数！');
 		}
-		this.#client = createClient(account);
+		this.#client = createClient(account, {reconn_interval: 0});
 		this.#uid = uid;
 		this.#password = password;
 	}

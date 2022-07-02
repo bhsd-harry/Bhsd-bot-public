@@ -5,7 +5,7 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{run, dry} = require('../config/abuse15'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
-const protectedPages = [923, 100877, 359506, 401150, 404396];
+const protectedPages = [923, 100877, 359506, 401150, 404396, 428291];
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();

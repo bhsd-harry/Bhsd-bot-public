@@ -2,9 +2,9 @@
  * @Function: 分析RecentChanges数据，并生成消息发送至QQ
  */
 'use strict';
-const Api = require('./api'),
+const Api = require('../lib/api'),
 	QQ = require('./qq'),
-	{error, trim, decodeHtml, sleep, isObject, info} = require('./dev'),
+	{error, trim, decodeHtml, sleep, isObject, info} = require('../lib/dev'),
 	{promises: fs} = require('fs'),
 
 	// 常用编辑工具
