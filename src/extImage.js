@@ -3,7 +3,7 @@
  */
 'use strict';
 const Api = require('../lib/api'),
-	Parser = require('../../wikiparser-node'),
+	Parser = require('wikiparser-node'),
 	$ = Parser.getTool(),
 	{user, pin, url} = require('../config/user'),
 	{error, runMode, urlRegex} = require('../lib/dev');

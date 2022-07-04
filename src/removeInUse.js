@@ -1,7 +1,7 @@
 'use strict';
 const Api = require('../lib/api'),
 	{runMode, error, info} = require('../lib/dev'),
-	Parser = require('../../wikiparser-node'),
+	Parser = require('wikiparser-node'),
 	{user, pin, url} = require('../config/user');
 Parser.warning = false;
 Parser.config = './config/moegirl';

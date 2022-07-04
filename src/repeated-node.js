@@ -5,7 +5,7 @@
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{error, runMode} = require('../lib/dev'),
-	Parser = require('../../wikiparser-node');
+	Parser = require('wikiparser-node');
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
