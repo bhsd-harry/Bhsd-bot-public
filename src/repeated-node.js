@@ -12,9 +12,15 @@ Parser.config = './config/moegirl';
 const ignorePages = [];
 
 const _analyze = (wikitext, pageid, ns) => {
+	let root = Parser.parse(wikitext, ns === 10, 2);
+	const comments = root.querySelectorAll('comment[closed=true]')
+		.filter(({firstChild}) => firstChild.includes('<!--'));
+	for (const comment of comments) {
+		comment.replaceWith(`${comment.firstChild}-->`);
+	}
+	root = Parser.parse(root.toString(), ns === 10, 2);
 	let found = false;
-	const root = Parser.parse(wikitext, ns === 10, 2),
-		templates = root.querySelectorAll('template, magic-word#invoke');
+	const templates = root.querySelectorAll('template, magic-word#invoke');
 	for (let token of templates) {
 		if (!token.hasDuplicatedArgs()) {
 			continue;
