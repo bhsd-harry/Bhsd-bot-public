@@ -36,13 +36,13 @@ const main = async (api = new Api(user, pin, url)) => {
 				modified = false;
 			for (const [key, prop] of Object.entries(dict)) {
 				const value = token.getAttr(key);
-				if (value && value !== true) {
-					if (key === 'cellspacing'
-						&& (value === '0' || /\bborder-collapse\s*:\s*separate\b/.test(token.getAttr('style')))
-					) {
-						// pass
-					} else if (prop) {
-						style = `${prop}:${value}${isNaN(value) ? '' : 'px'};${style}`; // 必须加在开头
+				if (value && value !== true
+					&& (key !== 'cellspacing' || value !== '0' && !/\bborder-collapse\s*:\s*separate\b/.test(style))
+				) {
+					if (prop) {
+						if (key !== 'cellspacing' || !/\border-collapse\s*:\s*collapse\b/.test(style)) {
+							style = `${prop}:${value}${isNaN(value) ? '' : 'px'};${style}`; // 必须加在开头
+						}
 						token.removeAttr(key);
 						modified = true;
 					} else {
