@@ -9,6 +9,8 @@ const {user, pin, url} = require('../config/user'),
 		'wrongUrl',
 		'removeInUse',
 		'wrongInternal',
+		'css',
+		'doc',
 		'http',
 	];
 
