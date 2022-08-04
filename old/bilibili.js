@@ -12,7 +12,7 @@ const Api = require('../lib/api'),
 	}
 
 	const urlRegex = /\/index_\d+\.html$/,
-		textRegex = /(www\.bilibili\.com\/video\/av\d+)\/index_(\d+)\.html/g;
+		textRegex = /(av\d+)\/index_(\d+)\.html/g;
 	const {query: {exturlusage}, continue: c} = await api.get({
 		list: 'exturlusage', eulimit: 'max', eunamespace: '0|10|12|14|828', euprotocol: 'https',
 		euquery: 'www.bilibili.com/video/av', ...require('../config/bilibili'),
