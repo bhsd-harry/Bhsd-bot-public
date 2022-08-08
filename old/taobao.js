@@ -15,7 +15,7 @@ const spams = [
 		null, null, null, null, null, null, null, null, null,
 		/^\/(.+\/)?items\b/, /^\/(registry|hz)\/wishlist\b/, /^\/@/,
 	],
-	index = -1,
+	[,,, index = 0] = process.argv,
 	targetPath = paths.at(index),
 	skip = [196275, 321048, 347990];
 let geuquery = spams.at(index);
