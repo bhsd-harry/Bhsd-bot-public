@@ -63,15 +63,12 @@ const main = async (api = new Api(user, pin, url)) => {
 		return;
 	}
 
-	const {query: {pages}, curtimestamp} = await api.get({
-			generator: 'search', gsrnamespace: 10, gsrlimit: 500, prop: 'categories|revisions', curtimestamp: 1,
-			gsrsearch: 'intitle:doc -intitle:sandbox -intitle:沙盒 -incategory:模板文档',
-			cllimit: 'max', clshow: '!hidden', rvprop: 'contentmodel|content|timestamp',
-		}),
-		uncat = pages.filter(({title, categories, revisions}) =>
-			!categories && revisions[0].contentmodel === 'wikitext' && regex.test(title),
+	const pages = await api.search(
+			'intitle:doc -intitle:sandbox -intitle:沙盒 -incategory:模板文档',
+			{gsrnamespace: 10, prop: 'categories|revisions', cllimit: 'max', clshow: '!hidden'},
 		),
-		edits = uncat.map(({pageid, revisions: [{content, timestamp}]}) => {
+		uncat = pages.filter(({title, categories}) => !categories && regex.test(title)),
+		edits = uncat.map(({pageid, content, timestamp, curtimestamp}) => {
 			const root = Parser.parse(content, false, 1);
 			insertCategory(root);
 			return [pageid, content, root.toString(), timestamp, curtimestamp];

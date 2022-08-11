@@ -21,13 +21,13 @@ if (mode === 'dry') {
 		const uc = usercontribs
 				.filter(({comment}) => new RegExp(`^发现失效视频：(?:\\w+: ${mistakes[mistake]}、?)+$`).test(comment)),
 			pageids = uc.map(({pageid}) => pageid);
-		const {query: {pages}, curtimestamp} = await api.get({
-			prop: 'categories|revisions', clcategories: 'Category:带有失效视频的条目|Category:带有受限视频的条目',
-			pageids, cllimit: 'max', rvprop: 'content|timestamp', curtimestamp: 1,
+		const pages = await api.revisions({
+			pageids, prop: 'categories|revisions', cllimit: 'max',
+			clcategories: 'Category:带有失效视频的条目|Category:带有受限视频的条目',
 		});
 		const edits = pages.filter(({categories}) =>
 			categories && categories.some(({title}) => title === 'Category:带有失效视频的条目'),
-		).map(({pageid, revisions: [{content, timestamp}], categories}) =>
+		).map(({pageid, content, timestamp, curtimestamp, categories}) =>
 			[
 				pageid, content,
 				content.replace(/\n\[\[Category:带有失效视频的条目]]/g, '')
