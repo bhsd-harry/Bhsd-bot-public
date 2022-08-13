@@ -8,8 +8,8 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const spams = [
-		'*.taobao.com', '*.tmall.com', '*.fanbox.cc', '*.modian.com', 'pan.baidu.com', '*.popiask.cn', 'peing.net',
-		'marshmallow-qa.com', '*.tapechat.net', 'booth.pm', '*.amazon.co.jp', 'afdian.net',
+		'*.taobao.com', '*.tmall.com', '*.fanbox.cc', '*.modian.com', 'pan.baidu.com', '*.popiask.cn', '*.peing.net',
+		'*.marshmallow-qa.com', '*.tapechat.net', '*.booth.pm', '*.amazon.co.jp', '*.afdian.net',
 	],
 	paths = [
 		null, null, null, null, null, null, null, null, null,
