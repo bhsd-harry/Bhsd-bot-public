@@ -21,7 +21,7 @@ const insertCategory = root => {
 };
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode('includeonly');
+	const mode = runMode('includeonly') || 'run';
 	if (!module.parent) {
 		await api[mode.endsWith('dry') ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
