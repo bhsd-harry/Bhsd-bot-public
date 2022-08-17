@@ -62,6 +62,13 @@ const _analyze = (wikitext, pageid, ns) => {
 			error(`页面 ${pageid} 中模板 ${token.name} 的重复参数 ${key.replaceAll('\n', '\\n')} 均非空！`);
 		}
 	}
+	for (const token of templates.filter(({name}) => /^Template:彩虹社信息[栏欄]$/.test(name))) {
+		found = true;
+		for (const key of ['形象设计', '同期']) {
+			token.getArg(`相关人士_${key}`)?.rename(key);
+			token.getArg(`相关人士-${key}`)?.rename(key);
+		}
+	}
 	const text = root.toString();
 	return [text, found];
 };
