@@ -54,10 +54,11 @@ const main = async (api = new Api(user, pin, url)) => {
 			console.log({pageid, brackets});
 			edits.push([
 				pageid, content,
-				content.replace(/\[ (?=(?:https?:)?\/\/)/g, '[')
-					.replace(/(?<!\[)(https?:\/\/[^[\]]+]|\[[^[\]]+]])/g, '[$1')
+				content.replace(/\[ (?=(?:https?:)?\/\/)/gi, '[')
+					.replace(/(?<!\[)(https?:\/\/[^[\]]+]|\[[^[\]]+]])/gi, '[$1')
 					.replace(/\[\[[^\]]+](?!])/g, '$&]')
-					.replace(/\[(?:https?:)?\/\/[^\]]+]/g, p => p.replaceAll('\n', ' ')),
+					.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/gi, '$&]')
+					.replace(/\[(?:https?:)?\/\/[^\]]+]/gi, p => p.replaceAll('\n', ' ')),
 				timestamp, curtimestamp,
 			]);
 		}
