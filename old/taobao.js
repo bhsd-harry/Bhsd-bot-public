@@ -9,11 +9,12 @@ Parser.config = './config/moegirl';
 
 const spams = [
 		'*.taobao.com', '*.tmall.com', '*.fanbox.cc', '*.modian.com', 'pan.baidu.com', '*.popiask.cn', '*.peing.net',
-		'*.marshmallow-qa.com', '*.tapechat.net', '*.booth.pm', '*.amazon.co.jp', '*.afdian.net',
+		'*.marshmallow-qa.com', '*.tapechat.net', '*.booth.pm', '*.amazon.co.jp', '*.afdian.net', '*.wj.qq.com',
+		'*.wjx.cn',
 	],
 	paths = [
 		null, null, null, null, null, null, null, null, null,
-		/^\/(.+\/)?items\b/, /^\/(registry|hz)\/wishlist\b/, /^\/@/,
+		/^\/(.+\/)?items\b/, /^\/(registry|hz)\/wishlist\b/, /^\/@/, null, null,
 	],
 	[,,, index = 0] = process.argv,
 	targetPath = paths.at(index),
