@@ -64,6 +64,12 @@ const _analyze = (wikitext, pageid, ns) => {
 	}
 	for (const token of templates.filter(({name}) => /^Template:彩虹社信息[栏欄]$/.test(name))) {
 		found = true;
+		for (const key of [
+			'本名', '昵称', '发色', '瞳色', '身高', '体重', '年龄', '生日', '星座', '血型', '种族', '出身地区', '语言',
+			'萌点', '个人状态',
+		]) {
+			token.getArg(`基本信息-${key}`)?.rename(key);
+		}
 		for (const key of ['形象设计', '同期']) {
 			token.getArg(`相关人士_${key}`)?.rename(key);
 			token.getArg(`相关人士-${key}`)?.rename(key);
@@ -101,7 +107,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page && !(templateOnly && page[1] === page[2]));
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
-	if (templateOnly) {
+	if (templateOnly && mode !== 'dry') {
 		main(api, false);
 	}
 };
