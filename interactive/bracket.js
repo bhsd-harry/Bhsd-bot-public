@@ -8,6 +8,8 @@ const Api = require('../lib/api'),
 Parser.config = './config/moegirl';
 Parser.warning = false;
 
+const skip = [535567];
+
 const findBrackets = text => {
 	const brackets = [],
 		root = Parser.parse(text, false, 8);
@@ -49,6 +51,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = await api.taggedRecentChanges('方括号不配对', date);
 	let edits = [];
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
+		if (skip.includes(pageid)) {
+			continue;
+		}
 		const brackets = findBrackets(content);
 		if (brackets.length) {
 			console.log({pageid, brackets});
