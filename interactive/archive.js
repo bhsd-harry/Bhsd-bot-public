@@ -9,10 +9,13 @@ const {promises} = require('fs'),
 Parser.config = './config/moegirl';
 
 (async () => {
-	const mode = runMode('redry'),
-		[,,, titles] = process.argv,
+	const [,,, titles] = process.argv,
 		api = new Api(user, pin, url),
 		chat = new Interface();
+	let mode = runMode('redry');
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}

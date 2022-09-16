@@ -81,16 +81,19 @@ const _analyze = (wikitext, pageid, ns) => {
 
 const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 	const mode = runMode();
-	if (!module.parent) {
+	if (templateOnly && !module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
 			await api.massEdit(null, mode, '自动修复重复的模板参数');
 			return;
 		}
 	}
-	// 先只检查模板，防止大量嵌入
-	let pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: 10});
-	templateOnly &&= pages.length > 0; // eslint-disable-line no-param-reassign
+	let pages;
+	if (templateOnly) {
+		// 先只检查模板，防止大量嵌入
+		pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: 10});
+		templateOnly &&= pages.length > 0; // eslint-disable-line no-param-reassign
+	}
 	if (!templateOnly) {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
@@ -107,7 +110,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 		return [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page && !(templateOnly && page[1] === page[2]));
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
-	if (templateOnly && mode !== 'dry') {
+	if (templateOnly && mode === 'run') {
 		main(api, false);
 	}
 };

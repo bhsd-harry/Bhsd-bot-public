@@ -11,11 +11,11 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const regexHttps = new RegExp(
-		`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
+		`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
 		'gi',
 	),
 	regexHttp = new RegExp(
-		`http://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)`,
+		`http://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
 		'gi',
 	),
 	norefererTemplates = ['NoReferer', 'Producer Song', 'Producer Music']
