@@ -28,7 +28,7 @@ const _execute = async script => {
 
 (async () => {
 	const mode = runMode();
-	if (mode) {
+	if (mode !== 'run') {
 		throw new RangeError('仅供cron自动执行，不可使用附加模式！');
 	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();

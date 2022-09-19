@@ -32,7 +32,10 @@ const findBrackets = text => {
 };
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
+	let mode = runMode();
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {

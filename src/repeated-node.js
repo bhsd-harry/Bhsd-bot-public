@@ -80,7 +80,7 @@ const _analyze = (wikitext, pageid, ns) => {
 };
 
 const main = async (api = new Api(user, pin, url), templateOnly = true) => {
-	const mode = runMode();
+	const mode = runMode('user');
 	if (templateOnly && !module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
@@ -91,10 +91,10 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 	let pages;
 	if (templateOnly) {
 		// 先只检查模板，防止大量嵌入
-		pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: 10});
+		pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: mode === 'user' ? 2 : 10});
 		templateOnly &&= pages.length > 0; // eslint-disable-line no-param-reassign
 	}
-	if (!templateOnly) {
+	if (!templateOnly && mode !== 'user') {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	}

@@ -10,7 +10,7 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
+	const mode = runMode('user');
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
@@ -18,7 +18,10 @@ const main = async (api = new Api(user, pin, url)) => {
 			return;
 		}
 	}
-	const pages = await api.categorymembers('使用无效自封闭HTML标签的页面'),
+	const pages = await api.categorymembers(
+			'使用无效自封闭HTML标签的页面',
+			mode === 'user' ? {gcmnamespace: 2} : undefined,
+		),
 		{html: [tags]} = Parser.getConfig();
 	const list = pages.map(({pageid, ns, content, timestamp, curtimestamp}) => {
 		const root = Parser.parse(content, ns === 10, 3),
