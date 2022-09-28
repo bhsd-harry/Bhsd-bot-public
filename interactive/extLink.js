@@ -16,7 +16,10 @@ const api = new Api(user, pin, url),
 	[,,, geulimit] = process.argv;
 
 (async () => {
-	const mode = runMode('redry');
+	let mode = runMode('redry');
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
