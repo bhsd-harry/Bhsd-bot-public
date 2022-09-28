@@ -1,0 +1,4382 @@
+[
+	{
+		"zh": "绿坝娘",
+		"en": "Green Dam Girl",
+		"ja": "グリーンダムたん"
+	},
+	{
+		"zh": "萌拟人化",
+		"en": "Moe anthropomorphism"
+	},
+	{
+		"zh": "萌属性",
+		"en": "Moe Point"
+	},
+	{
+		"zh": "维基娘",
+		"en": "Wikipe-tan"
+	},
+	{
+		"zh": "初音未来",
+		"en": "Hatsune Miku"
+	},
+	{
+		"zh": "英语娘",
+		"en": "English Girl"
+	},
+	{
+		"zh": "生物娘",
+		"en": "Biology girl"
+	},
+	{
+		"zh": "哥伦比亚(美国拟人形象)",
+		"en": "US Girl"
+	},
+	{
+		"zh": "萌百娘",
+		"en": "Moegirlpedia Girl"
+	},
+	{
+		"zh": "镜音铃·连",
+		"en": "Kagamine Rin & Ren"
+	},
+	{
+		"zh": "巡音流歌",
+		"en": "Megurine Luka"
+	},
+	{
+		"zh": "帕秋莉·诺蕾姬",
+		"en": "Patchouli Knowledge"
+	},
+	{
+		"zh": "红美铃",
+		"en": "Hong Meiling"
+	},
+	{
+		"zh": "蕾米莉亚·斯卡蕾特",
+		"en": "Remilia Scarlet"
+	},
+	{
+		"zh": "十六夜咲夜",
+		"en": "Sakuya Izayoi"
+	},
+	{
+		"zh": "芙兰朵露·斯卡蕾特",
+		"en": "Flandre Scarlet",
+		"ja": "フランドール·スカーレット"
+	},
+	{
+		"zh": "小恶魔",
+		"en": "Koakuma"
+	},
+	{
+		"zh": "琪露诺",
+		"en": "Cirno"
+	},
+	{
+		"zh": "大妖精",
+		"en": "Daiyousei"
+	},
+	{
+		"zh": "傲娇",
+		"en": "Tsundere"
+	},
+	{
+		"zh": "天然呆",
+		"en": "Tennen boke"
+	},
+	{
+		"zh": "露米娅",
+		"en": "Rumia"
+	},
+	{
+		"zh": "吐槽",
+		"en": "Tsukkomi"
+	},
+	{
+		"zh": "苏联娘",
+		"en": "Soviet Girl"
+	},
+	{
+		"zh": "青梅竹马",
+		"en": "Osananajimi"
+	},
+	{
+		"zh": "看板娘",
+		"en": "Kanban musume"
+	},
+	{
+		"zh": "徵羽摩柯",
+		"en": "Zhiyu Moke"
+	},
+	{
+		"zh": "洛天依",
+		"en": "Luo Tianyi"
+	},
+	{
+		"zh": "乐正绫",
+		"en": "Yuezheng Ling"
+	},
+	{
+		"zh": "乐正龙牙",
+		"en": "Yuezheng Longya"
+	},
+	{
+		"zh": "巫女(萌属性)",
+		"en": "Miko (moe point)"
+	},
+	{
+		"zh": "大和抚子",
+		"en": "Yamato nadeshiko"
+	},
+	{
+		"zh": "阿尔托莉雅·潘德拉贡",
+		"en": "Artoria Pendragon"
+	},
+	{
+		"zh": "忍者",
+		"en": "Ninja"
+	},
+	{
+		"zh": "萌",
+		"en": "Moe",
+		"ja": "萌え"
+	},
+	{
+		"zh": "环形辫",
+		"en": "Hair rings"
+	},
+	{
+		"zh": "东方Project",
+		"en": "Touhou Project",
+		"ja": "東方Project"
+	},
+	{
+		"zh": "ACG",
+		"en": "ACG"
+	},
+	{
+		"zh": "眼镜",
+		"en": "Glasses"
+	},
+	{
+		"zh": "粉发",
+		"en": "Pink hair"
+	},
+	{
+		"zh": "发卡(用语)",
+		"ja": "カードを配る"
+	},
+	{
+		"zh": "博丽灵梦",
+		"en": "Reimu Hakurei",
+		"ja": "博麗霊夢"
+	},
+	{
+		"zh": "ZUN",
+		"en": "ZUN"
+	},
+	{
+		"zh": "英国娘",
+		"en": "UK girl"
+	},
+	{
+		"zh": "御坂美琴",
+		"en": "Mikoto Misaka"
+	},
+	{
+		"zh": "白井黑子",
+		"en": "Kuroko Shirai"
+	},
+	{
+		"zh": "CP",
+		"en": "Shipping"
+	},
+	{
+		"zh": "初春饰利",
+		"en": "Kazari Uiharu"
+	},
+	{
+		"zh": "佐天泪子",
+		"en": "Ruiko Saten"
+	},
+	{
+		"zh": "雪未来",
+		"en": "Snow miku"
+	},
+	{
+		"zh": "吃货",
+		"en": "Foodie"
+	},
+	{
+		"zh": "最后之作",
+		"en": "Last Order"
+	},
+	{
+		"zh": "雾雨魔理沙",
+		"en": "Marisa Kirisame",
+		"ja": "霧雨魔理沙"
+	},
+	{
+		"zh": "鬼畜",
+		"en": "Kichiku"
+	},
+	{
+		"zh": "风纪委员",
+		"ja": "風紀委員"
+	},
+	{
+		"zh": "结城明日奈",
+		"en": "Yuuki Asuna"
+	},
+	{
+		"zh": "傲沉",
+		"en": "Tsunshun"
+	},
+	{
+		"zh": "Tell Your World",
+		"en": "Tell Your World"
+	},
+	{
+		"zh": "阿卡林",
+		"en": "Akkarin"
+	},
+	{
+		"zh": "二次元",
+		"en": "Nijigen",
+		"ja": "二次元"
+	},
+	{
+		"zh": "玛丽苏",
+		"en": "Mary Sue"
+	},
+	{
+		"zh": "Comic Market",
+		"en": "Comic Market"
+	},
+	{
+		"zh": "婚后光子",
+		"en": "Kongō Mitsuko"
+	},
+	{
+		"zh": "湾内绢保",
+		"en": "Kinuho Wannai"
+	},
+	{
+		"zh": "呗音Uta",
+		"en": "Utane Uta"
+	},
+	{
+		"zh": "呗音Oto",
+		"en": "Utane Oto"
+	},
+	{
+		"zh": "美羊羊",
+		"en": "Tibbie"
+	},
+	{
+		"zh": "魔卡少女樱",
+		"en": "Cardcaptor Sakura"
+	},
+	{
+		"zh": "姬神秋沙",
+		"en": "Aisa Himegami"
+	},
+	{
+		"zh": "高飞车",
+		"en": "Takabisha"
+	},
+	{
+		"zh": "泡浮万彬",
+		"en": "Maaya Awatsuki"
+	},
+	{
+		"zh": "射命丸文",
+		"en": "Aya Shameimaru"
+	},
+	{
+		"zh": "初音未来的消失",
+		"en": "The Disappearance of Hatsune Miku -DEAD END-"
+	},
+	{
+		"zh": "最初的声音",
+		"en": "First tone"
+	},
+	{
+		"zh": "萌娘",
+		"en": "Moegirl"
+	},
+	{
+		"zh": "世界属于我",
+		"en": "World is Mine"
+	},
+	{
+		"zh": "魔法禁书目录",
+		"en": "A Certain Magical Index"
+	},
+	{
+		"zh": "万物皆可萌",
+		"en": "Everything can be moe"
+	},
+	{
+		"zh": "某科学的超电磁炮",
+		"en": "A Certain Scientific Railgun"
+	},
+	{
+		"zh": "CLANNAD",
+		"en": "CLANNAD"
+	},
+	{
+		"zh": "千本樱",
+		"en": "Senbonzakura",
+		"ja": "千本桜"
+	},
+	{
+		"zh": "Only my railgun",
+		"en": "Only my railgun",
+		"ja": "Only my railgun"
+	},
+	{
+		"zh": "千年食谱颂",
+		"en": "A Millennial Menu of China"
+	},
+	{
+		"zh": "姐姐",
+		"en": "Big sister"
+	},
+	{
+		"zh": "摇曳百合",
+		"en": "Yuru Yuri"
+	},
+	{
+		"zh": "同人",
+		"en": "Doujin"
+	},
+	{
+		"zh": "高良美幸",
+		"ja": "高良みゆき"
+	},
+	{
+		"zh": "黑塔利亚",
+		"en": "Hetalia: Axis Powers",
+		"ja": "Axis powers ヘタリア"
+	},
+	{
+		"zh": "喜羊羊",
+		"en": "Weslie"
+	},
+	{
+		"zh": "懒羊羊",
+		"en": "Paddi"
+	},
+	{
+		"zh": "娘化",
+		"en": "Jotaika"
+	},
+	{
+		"zh": "灰太狼",
+		"en": "Wolffy"
+	},
+	{
+		"zh": "LEVEL5 -judgelight-",
+		"en": "LEVEL5 -judgelight-"
+	},
+	{
+		"zh": "大气娘",
+		"en": "Air Girl"
+	},
+	{
+		"zh": "冰原娘",
+		"en": "Ice Field Girl"
+	},
+	{
+		"zh": "Mainpage",
+		"en": "Mainpage",
+		"ja": "Mainpage"
+	},
+	{
+		"zh": "动画",
+		"ja": "アニメ"
+	},
+	{
+		"zh": "酿了你哦",
+		"en": "Kamosuzo"
+	},
+	{
+		"zh": "VOCALOID",
+		"en": "VOCALOID",
+		"ja": "VOCALOID"
+	},
+	{
+		"zh": "约会大作战",
+		"en": "DATE A LIVE",
+		"ja": "デート・ア・ライブ"
+	},
+	{
+		"zh": "上海爱丽丝幻乐团",
+		"en": "Team Shanghai Alice",
+		"ja": "上海アリス幻樂団"
+	},
+	{
+		"zh": "御三家",
+		"ja": "御三家"
+	},
+	{
+		"zh": "声优",
+		"en": "Voice actor"
+	},
+	{
+		"zh": "朝仓音梦",
+		"en": "Asakura Nemu"
+	},
+	{
+		"zh": "东方红魔乡",
+		"en": "Embodiment of Scarlet Devil"
+	},
+	{
+		"zh": "京都脸",
+		"en": "KyoAni face"
+	},
+	{
+		"zh": "东方妖妖梦",
+		"en": "Perfect Cherry Blossom"
+	},
+	{
+		"zh": "From Y to Y",
+		"en": "From Y to Y"
+	},
+	{
+		"zh": "弥斗Naota",
+		"en": "Yato Naomi"
+	},
+	{
+		"zh": "奥特曼:玛丽",
+		"en": "Mother of Ultra"
+	},
+	{
+		"zh": "Oliver(VOCALOID)",
+		"en": "OLIVER"
+	},
+	{
+		"zh": "龙族",
+		"en": "Ryuuzoku"
+	},
+	{
+		"zh": "电脑游戏",
+		"en": "PC game"
+	},
+	{
+		"zh": "G.K",
+		"en": "G.K"
+	},
+	{
+		"zh": "偶像大师 灰姑娘女孩",
+		"ja": "アイドルマスター シンデレラガールズ"
+	},
+	{
+		"zh": "天枷美春",
+		"en": "Amakase Miharu"
+	},
+	{
+		"zh": "兵库北的微笑",
+		"en": "Kana Hanazawa's smile"
+	},
+	{
+		"zh": "月城爱丽丝",
+		"en": "Tsukishiro Alice"
+	},
+	{
+		"zh": "不作死就不会死，为什么不明白！",
+		"en": "No zuo no die"
+	},
+	{
+		"zh": "Sister's noise",
+		"en": "Sister's noise"
+	},
+	{
+		"zh": "人骨娘",
+		"en": "Human Skeleton Girl"
+	},
+	{
+		"zh": "三色彩歌",
+		"en": "Sanshoku Ayaka"
+	},
+	{
+		"zh": "十月绪子",
+		"en": "Juugatsu Oko"
+	},
+	{
+		"zh": "曼秀雷敦娘",
+		"en": "Mentholatum Girl"
+	},
+	{
+		"zh": "Meme",
+		"en": "Meme"
+	},
+	{
+		"zh": "三体",
+		"en": "The Three-Body Problem"
+	},
+	{
+		"zh": "白河小鸟",
+		"en": "Shirakawa kotori"
+	},
+	{
+		"zh": "Eternal reality",
+		"en": "Eternal reality"
+	},
+	{
+		"zh": "言和",
+		"en": "Yan He"
+	},
+	{
+		"zh": "小早川纱枝",
+		"ja": "小早川紗枝"
+	},
+	{
+		"zh": "Siscon",
+		"ja": "シスコン"
+	},
+	{
+		"zh": "光环系列",
+		"en": "Halo"
+	},
+	{
+		"zh": "德国骨科",
+		"ja": "ドイツ整骨"
+	},
+	{
+		"zh": "二次元禁断综合征",
+		"en": "Nijikon",
+		"ja": "二次元コンプレックス"
+	},
+	{
+		"zh": "彩虹小马",
+		"en": "My Little Pony: Friendship Is Magic"
+	},
+	{
+		"zh": "舰队Collection",
+		"ja": "艦隊これくしょん -艦これ-"
+	},
+	{
+		"zh": "睡神",
+		"en": "Nemurigami"
+	},
+	{
+		"zh": "This Will Be the Day",
+		"en": "This Will Be the Day"
+	},
+	{
+		"zh": "Red Like Roses",
+		"en": "Red Like Roses"
+	},
+	{
+		"zh": "Mirror Mirror",
+		"en": "Mirror Mirror"
+	},
+	{
+		"zh": "From Shadows",
+		"en": "From Shadows"
+	},
+	{
+		"zh": "I Burn",
+		"en": "I Burn"
+	},
+	{
+		"zh": "日本麻将娘",
+		"en": "Riichi Mahjong"
+	},
+	{
+		"zh": "歌手",
+		"en": "Singer"
+	},
+	{
+		"zh": "五大流氓",
+		"ja": "五大無頼"
+	},
+	{
+		"zh": "栗山未来",
+		"en": "Kuriyama Mirai"
+	},
+	{
+		"zh": "龙族(江南)",
+		"en": "Dragon Raja"
+	},
+	{
+		"zh": "漫画会",
+		"en": "Shanghai Cartoon Association"
+	},
+	{
+		"zh": "沈泊尘",
+		"en": "Shen Bocheng"
+	},
+	{
+		"zh": "独立漫画",
+		"en": "Independent Cartoon"
+	},
+	{
+		"zh": "Oo推",
+		"en": "Oshi"
+	},
+	{
+		"zh": "但杜宇",
+		"en": "Dan Duyu"
+	},
+	{
+		"zh": "国耻画谱",
+		"en": "Guochi huapu"
+	},
+	{
+		"zh": "北方铁道萌化部",
+		"en": "Moe North Railway",
+		"ja": "萌え北鉄道"
+	},
+	{
+		"zh": "不知火舞",
+		"en": "Mai Shiranui"
+	},
+	{
+		"zh": "帕兹",
+		"en": "Paz Ortega Andrade"
+	},
+	{
+		"zh": "花之安卓学院",
+		"en": "Hana no Android Gakuen"
+	},
+	{
+		"zh": "上海漫画",
+		"en": "Shanghai Manhua"
+	},
+	{
+		"zh": "救亡漫画宣传队",
+		"en": "The Shanghai Cartoonist's National Salvation Propaganda Team"
+	},
+	{
+		"zh": "漫画生活",
+		"en": "Manhua Life"
+	},
+	{
+		"zh": "野田琴音",
+		"en": "Noda Kotone"
+	},
+	{
+		"zh": "内奥米·亨特",
+		"en": "Naomi Hunter"
+	},
+	{
+		"zh": "祈Inory",
+		"en": "Qi Inory"
+	},
+	{
+		"zh": "请问您今天要来点兔子吗",
+		"en": "Is the Order a Rabbit?"
+	},
+	{
+		"zh": "华君武",
+		"en": "Hua Junwu"
+	},
+	{
+		"zh": "丁聪",
+		"en": "Ding Cong"
+	},
+	{
+		"zh": "埃罗芒阿老师",
+		"en": "Eromanga Sensei"
+	},
+	{
+		"zh": "LoveLive!",
+		"en": "LoveLive!",
+		"ja": "ラブライブ！"
+	},
+	{
+		"zh": "阿推",
+		"en": "Push Comic"
+	},
+	{
+		"zh": "冯志明",
+		"en": "Fung Chi ming"
+	},
+	{
+		"zh": "庄永新",
+		"en": "Sean Chuang"
+	},
+	{
+		"zh": "利志达",
+		"en": "Li Chi tak"
+	},
+	{
+		"zh": "美国队长",
+		"en": "Captain America"
+	},
+	{
+		"zh": "钢铁侠",
+		"en": "Iron Man"
+	},
+	{
+		"zh": "孙之儁",
+		"en": "Sun Zhijun"
+	},
+	{
+		"zh": "星宫莓",
+		"en": "Ichigo Hoshimiya"
+	},
+	{
+		"zh": "深海少女",
+		"en": "Shinkai Shōjo"
+	},
+	{
+		"zh": "东方漫画",
+		"en": "Oriental Cartoon"
+	},
+	{
+		"zh": "时代漫画",
+		"en": "Modern Sketch"
+	},
+	{
+		"zh": "丰子恺",
+		"en": "Feng Zikai"
+	},
+	{
+		"zh": "宝冢系",
+		"en": "Takarazuka-kei"
+	},
+	{
+		"zh": "M78星云",
+		"en": "M78 Nebula"
+	},
+	{
+		"zh": "偶像大师系列",
+		"en": "THE IDOLM@STER"
+	},
+	{
+		"zh": "叶浅予",
+		"en": "Ye Qianyu"
+	},
+	{
+		"zh": "嘉鲁达·潘查希拉",
+		"en": "Garuda Pancasila"
+	},
+	{
+		"zh": "雨歌Eru",
+		"en": "Amaga Eru"
+	},
+	{
+		"zh": "白黑Nari",
+		"en": "Shirokuro Nari"
+	},
+	{
+		"zh": "Time to Say Goodbye",
+		"en": "Time to Say Goodbye"
+	},
+	{
+		"zh": "温瑟·麦凯",
+		"en": "Winsor McCay"
+	},
+	{
+		"zh": "作画崩坏",
+		"en": "Sakuga houkai"
+	},
+	{
+		"zh": "老夫子(王泽)",
+		"en": "Old Master Q"
+	},
+	{
+		"zh": "濑尾结月",
+		"en": "Seo Yuzuki"
+	},
+	{
+		"zh": "战舰少女",
+		"ja": "戦艦少女"
+	},
+	{
+		"zh": "萌旅游",
+		"en": "Moe-Tra"
+	},
+	{
+		"zh": "藤崎诗织",
+		"en": "Shiori Fujisaki"
+	},
+	{
+		"zh": "Charlotte",
+		"en": "Charlotte (Key)"
+	},
+	{
+		"zh": "麻将/番种/断幺九",
+		"en": "Mahjong/Types of Faan/All Simples"
+	},
+	{
+		"zh": "冷娇",
+		"en": "Kuudere"
+	},
+	{
+		"zh": "Duang",
+		"en": "Duang"
+	},
+	{
+		"zh": "权御天下",
+		"en": "Sun Quan the Emperor"
+	},
+	{
+		"zh": "非洲人",
+		"en": "Africans"
+	},
+	{
+		"zh": "科技树",
+		"en": "Technology tree"
+	},
+	{
+		"zh": "嫣汐",
+		"en": "Yanxi"
+	},
+	{
+		"zh": "Glass Wall",
+		"en": "Glass Wall"
+	},
+	{
+		"zh": "堇",
+		"en": "Sumire"
+	},
+	{
+		"zh": "莉安娜·哈迪兰",
+		"en": "Leona Heidern"
+	},
+	{
+		"zh": "雀斑",
+		"en": "Freckles"
+	},
+	{
+		"zh": "LoveLive!Sunshine!!",
+		"en": "LoveLive!Sunshine!!",
+		"ja": "ラブライブ！サンシャイン!!"
+	},
+	{
+		"zh": "未来",
+		"en": "Miku"
+	},
+	{
+		"zh": "妖怪",
+		"en": "Yōkai"
+	},
+	{
+		"zh": "Oo流",
+		"en": "OoStream",
+		"ja": "Oo流"
+	},
+	{
+		"zh": "用爱发电",
+		"en": "Love and energy"
+	},
+	{
+		"zh": "梦语",
+		"en": "The Words of My Dream"
+	},
+	{
+		"zh": "渡边曜",
+		"en": "You Watanabe"
+	},
+	{
+		"zh": "时钟机关之星",
+		"en": "Clockwork Planet"
+	},
+	{
+		"zh": "杰顿",
+		"en": "Zetton"
+	},
+	{
+		"zh": "Gold(RWBY)",
+		"en": "Gold"
+	},
+	{
+		"zh": "连衣裙",
+		"en": "Dress"
+	},
+	{
+		"zh": "Endless night",
+		"en": "Endless night"
+	},
+	{
+		"zh": "从零开始的魔法书",
+		"en": "Grimoire of Zero"
+	},
+	{
+		"zh": "凉宫春日的忧郁",
+		"en": "The Melancholy of Haruhi Suzumiya"
+	},
+	{
+		"zh": "历史娘",
+		"en": "History girl"
+	},
+	{
+		"zh": "星尘(平行四界)",
+		"en": "Stardust"
+	},
+	{
+		"zh": "少女前线",
+		"en": "Girls' Frontline",
+		"ja": "ドールズフロントライン"
+	},
+	{
+		"zh": "凛娇",
+		"en": "Rindere"
+	},
+	{
+		"zh": "万由里",
+		"en": "Mayuri"
+	},
+	{
+		"zh": "天使的3P!",
+		"en": "Tenshi no 3P"
+	},
+	{
+		"zh": "MAIKA",
+		"en": "MAIKA"
+	},
+	{
+		"zh": "LEON",
+		"en": "LEON"
+	},
+	{
+		"zh": "弹幕双子",
+		"en": "Danmaku Twins"
+	},
+	{
+		"zh": "Bravely You",
+		"en": "Bravely You"
+	},
+	{
+		"zh": "AVANNA",
+		"en": "AVANNA"
+	},
+	{
+		"zh": "正冈小豆",
+		"en": "Masaoka Azuki"
+	},
+	{
+		"zh": "小林抹茶",
+		"en": "Kobayashi Matcha"
+	},
+	{
+		"zh": "Rana",
+		"en": "Rana"
+	},
+	{
+		"zh": "涂山苏苏",
+		"en": "Tushan Susu"
+	},
+	{
+		"zh": "岁月成碑",
+		"en": "The Years Became Monuments"
+	},
+	{
+		"zh": "赛车未来",
+		"en": "Racing Miku"
+	},
+	{
+		"zh": "另类名字",
+		"ja": "キラキラネーム"
+	},
+	{
+		"zh": "廖冰兄",
+		"en": "Liao Bingxiong"
+	},
+	{
+		"zh": "左手右手",
+		"en": "Left Hands and Right Hands"
+	},
+	{
+		"zh": "NEW GAME!",
+		"en": "NEW GAME!"
+	},
+	{
+		"zh": "Prima",
+		"en": "Prima"
+	},
+	{
+		"zh": "得能正太郎",
+		"en": "Shōtarō Tokunō"
+	},
+	{
+		"zh": "Oo向",
+		"ja": "Oo向け"
+	},
+	{
+		"zh": "Reco",
+		"en": "Reco"
+	},
+	{
+		"zh": "要优雅，不要污",
+		"en": "Yes elegance, no dirt"
+	},
+	{
+		"zh": "DEX",
+		"en": "DEX"
+	},
+	{
+		"zh": "篠咲爱瑠",
+		"ja": "篠咲える"
+	},
+	{
+		"zh": "超长袖",
+		"en": "Sleeves past fingers"
+	},
+	{
+		"zh": "你的名字",
+		"ja": "君の名は。"
+	},
+	{
+		"zh": "Re:从零开始的异世界生活",
+		"en": "Re:Zero − Starting Life in Another World"
+	},
+	{
+		"zh": "二次元经济",
+		"en": "Nijigen Economy"
+	},
+	{
+		"zh": "五色战队",
+		"en": "Five-color formation"
+	},
+	{
+		"zh": "奥特曼:赛文",
+		"en": "Ultraman:Ultraseven"
+	},
+	{
+		"zh": "工作细胞",
+		"en": "Cells at Work!"
+	},
+	{
+		"zh": "御殿谷咲",
+		"en": "Saki Mitonoya"
+	},
+	{
+		"zh": "喜羊羊与灰太狼系列",
+		"en": "Pleasant Goat and Big Big Wolf",
+		"ja": "喜羊羊与灰太狼"
+	},
+	{
+		"zh": "时空使徒",
+		"en": "Bloodivores"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊羊快乐的一年",
+		"en": "Joys of Seasons"
+	},
+	{
+		"zh": "Happy Tree Friends",
+		"en": "Happy Tree Friends"
+	},
+	{
+		"zh": "少女编号",
+		"en": "Gi(a)rlish Number"
+	},
+	{
+		"zh": "少女前线/人形制造",
+		"en": "Girls' Frontline/T-doll production",
+		"ja": "ドールズフロントライン/人形制造"
+	},
+	{
+		"zh": "少女前线:SV-98",
+		"ja": "ドールズフロントライン:SV-98"
+	},
+	{
+		"zh": "天真与闪电",
+		"en": "Sweetness and Lightning"
+	},
+	{
+		"zh": "39(VOCALOID)",
+		"en": "39"
+	},
+	{
+		"zh": "MUTA",
+		"en": "MUTA"
+	},
+	{
+		"zh": "Red Like Roses Part II",
+		"en": "Red Like Roses Part II"
+	},
+	{
+		"zh": "少女前线:StG44",
+		"ja": "ドールズフロントライン:StG44"
+	},
+	{
+		"zh": "少女前线:春田",
+		"en": "Girls' Frontline: Springfield",
+		"ja": "ドールズフロントライン:春田"
+	},
+	{
+		"zh": "少女前线:C96",
+		"en": "Girls' Frontline: Mauser C96",
+		"ja": "ドールズフロントライン:C96"
+	},
+	{
+		"zh": "叶文洁",
+		"en": "Ye Wenjie"
+	},
+	{
+		"zh": "头文字D",
+		"en": "Initial D"
+	},
+	{
+		"zh": "少女前线:M14",
+		"en": "Girls' Frontline: M14",
+		"ja": "ドールズフロントライン:M14"
+	},
+	{
+		"zh": "少女前线:WA2000",
+		"en": "Girls' Frontline: WA2000",
+		"ja": "ドールズフロントライン:WA2000"
+	},
+	{
+		"zh": "歌者",
+		"en": "Singer (The Three-Body Problem)"
+	},
+	{
+		"zh": "StarLaLaLa",
+		"en": "StarLaLaLa"
+	},
+	{
+		"zh": "七夜志贵",
+		"en": "Shiki Nanaya"
+	},
+	{
+		"zh": "九九八十一(乐正绫)",
+		"en": "Nine-Nine Eighty-One"
+	},
+	{
+		"zh": "少女前线:M9",
+		"ja": "ドールズフロントライン:M9"
+	},
+	{
+		"zh": "Grow Slowly",
+		"en": "Grow Slowly"
+	},
+	{
+		"zh": "战争迷雾",
+		"en": "Fog of war"
+	},
+	{
+		"zh": "少女前线:M60",
+		"ja": "ドールズフロントライン:M60"
+	},
+	{
+		"zh": "星愿StarWish",
+		"en": "StarWish"
+	},
+	{
+		"zh": "少女前线:汉阳造88式",
+		"ja": "ドールズフロントライン:漢陽88式"
+	},
+	{
+		"zh": "猫武士",
+		"en": "Warriors (novel series)",
+		"ja": "ウォーリアーズ"
+	},
+	{
+		"zh": "别看我只是一只羊",
+		"en": "Even though I’m just a little goat"
+	},
+	{
+		"zh": "知己(李紫昕)",
+		"en": "Confidant"
+	},
+	{
+		"zh": "少女前线:PPK",
+		"en": "Girls' Frontline: PPK",
+		"ja": "ドールズフロントライン:PPK"
+	},
+	{
+		"zh": "少女前线:M1911",
+		"en": "Girls' Frontline: M1911",
+		"ja": "ドールズフロントライン:M1911"
+	},
+	{
+		"zh": "少女前线:56-1式",
+		"ja": "ドールズフロントライン:56-1式"
+	},
+	{
+		"zh": "少女前线:AK-47",
+		"ja": "ドールズフロントライン:AK-47"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊羊运动会",
+		"en": "Pleasant Goat Sports Game"
+	},
+	{
+		"zh": "嘻哈闯世界",
+		"en": "Marching to the New Wonderland (song)"
+	},
+	{
+		"zh": "少女前线:P08",
+		"ja": "ドールズフロントライン:P08"
+	},
+	{
+		"zh": "少女前线:G3",
+		"ja": "ドールズフロントライン:G3"
+	},
+	{
+		"zh": "少女前线:托卡列夫",
+		"en": "Girls' Frontline: Tokarev",
+		"ja": "ドールズフロントライン:トカレフ"
+	},
+	{
+		"zh": "少女前线:马卡洛夫",
+		"ja": "ドールズフロントライン:マカロフ"
+	},
+	{
+		"zh": "少女前线:PPSh-41",
+		"en": "Girls' Frontline: PPSh-41",
+		"ja": "ドールズフロントライン:PPSh-41"
+	},
+	{
+		"zh": "少女前线:PPS-43",
+		"en": "Girls' Frontline: PPS-43",
+		"ja": "ドールズフロントライン:PPS-43"
+	},
+	{
+		"zh": "少女前线:李-恩菲尔德",
+		"ja": "ドールズフロントライン:リー・エンフィールド"
+	},
+	{
+		"zh": "星之伊始",
+		"en": "The Beginning of the Star"
+	},
+	{
+		"zh": "少女前线:M1加兰德",
+		"ja": "ドールズフロントライン:M1 ガーランド"
+	},
+	{
+		"zh": "我要高飞",
+		"en": "I Want to Soar"
+	},
+	{
+		"zh": "少女前线:64式",
+		"ja": "ドールズフロントライン:64式"
+	},
+	{
+		"zh": "少女前线:MP40",
+		"ja": "ドールズフロントライン:MP40"
+	},
+	{
+		"zh": "少女前线:莫辛-纳甘",
+		"ja": "ドールズフロントライン:モシン・ナガン"
+	},
+	{
+		"zh": "少女前线:司登MkII",
+		"ja": "ドールズフロントライン:ステンMkII"
+	},
+	{
+		"zh": "全职高手",
+		"en": "The King's Avatar"
+	},
+	{
+		"zh": "少女前线:PTRD",
+		"ja": "ドールズフロントライン:PTRD"
+	},
+	{
+		"zh": "少女前线:Kar98k",
+		"ja": "ドールズフロントライン:Kar98k"
+	},
+	{
+		"zh": "少女前线:MP5",
+		"en": "Girls' Frontline: Gr MP5",
+		"ja": "ドールズフロントライン:MP5"
+	},
+	{
+		"zh": "少女前线:HK416",
+		"en": "Girls' Frontline: 416",
+		"ja": "ドールズフロントライン:HK416"
+	},
+	{
+		"zh": "AlphaGo拟人化",
+		"en": "AlphaGo Girl"
+	},
+	{
+		"zh": "少女前线:微型乌兹",
+		"ja": "ドールズフロントライン:マイクロウージー"
+	},
+	{
+		"zh": "Urara迷路帖",
+		"en": "Urara Meirocho"
+	},
+	{
+		"zh": "少女前线:M3",
+		"ja": "ドールズフロントライン:M3"
+	},
+	{
+		"zh": "少女前线:蝎式",
+		"ja": "ドールズフロントライン:スコーピオン"
+	},
+	{
+		"zh": "程丽华",
+		"en": "Cheng Lihua"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之嘻哈闯世界",
+		"en": "Marching to the New Wonderland"
+	},
+	{
+		"zh": "我的三体",
+		"en": "Mine Threebody Animation"
+	},
+	{
+		"zh": "少女前线:MG42",
+		"ja": "ドールズフロントライン:MG42"
+	},
+	{
+		"zh": "少女前线:纳甘左轮",
+		"en": "Girls' Frontline: Nagant revolver",
+		"ja": "ドールズフロントライン:ナガンリボルバー"
+	},
+	{
+		"zh": "红太狼狂想曲",
+		"en": "Wolnie's Rhapsody"
+	},
+	{
+		"zh": "奇思妙想喜羊羊",
+		"en": "Smart Dodging (song)"
+	},
+	{
+		"zh": "少女前线:MG3",
+		"ja": "ドールズフロントライン:MG3"
+	},
+	{
+		"zh": "少女前线:PK",
+		"ja": "ドールズフロントライン:PK"
+	},
+	{
+		"zh": "少女前线:M2HB",
+		"ja": "ドールズフロントライン:M2HB"
+	},
+	{
+		"zh": "少女前线:M1919A4",
+		"ja": "ドールズフロントライン:M1919A4"
+	},
+	{
+		"zh": "给快乐加油",
+		"en": "Happy, Happy, Bang! Bang! (song)"
+	},
+	{
+		"zh": "小时候",
+		"en": "When I Was Young"
+	},
+	{
+		"zh": "只要有梦想",
+		"en": "As Long As We Have Dreams"
+	},
+	{
+		"zh": "开心的战斗",
+		"en": "Happy Fight"
+	},
+	{
+		"zh": "保卫地球",
+		"en": "Defend the Earth"
+	},
+	{
+		"zh": "拥有未来",
+		"en": "Own the Future"
+	},
+	{
+		"zh": "风中的相遇",
+		"en": "Encounter in the Wind"
+	},
+	{
+		"zh": "我们有武功",
+		"en": "We Have Wushu and Kungfu"
+	},
+	{
+		"zh": "我爱平底锅",
+		"en": "I Love Pans"
+	},
+	{
+		"zh": "Nuclear",
+		"en": "Nuclear"
+	},
+	{
+		"zh": "少女前线:m45",
+		"ja": "ドールズフロントライン:m45"
+	},
+	{
+		"zh": "沸腾的心",
+		"en": "Exuberant Heart"
+	},
+	{
+		"zh": "Happy牛Year你最牛",
+		"en": "Happy New Year of Ox and You're the Best"
+	},
+	{
+		"zh": "少女前线:伯莱塔38型",
+		"ja": "ドールズフロントライン:バレッタ38型"
+	},
+	{
+		"zh": "少女前线:92式",
+		"ja": "ドールズフロントライン:92式"
+	},
+	{
+		"zh": "少女前线:布伦",
+		"ja": "ドールズフロントライン:ブレン"
+	},
+	{
+		"zh": "少女前线:M1918",
+		"ja": "ドールズフロントライン:M1918"
+	},
+	{
+		"zh": "少女前线:DP28",
+		"en": "Girls' Frontline: DP28",
+		"ja": "ドールズフロントライン:DP28"
+	},
+	{
+		"zh": "美菲拉斯星人",
+		"en": "Alien Mefilas"
+	},
+	{
+		"zh": "大家一起喜羊羊",
+		"en": "Let's Be Happy Together"
+	},
+	{
+		"zh": "高桥名人的冒险岛系列",
+		"en": "Adventure Island"
+	},
+	{
+		"zh": "蝙蝠侠",
+		"en": "Batman"
+	},
+	{
+		"zh": "人力VOCALOID",
+		"en": "Jinriki VOCALOID"
+	},
+	{
+		"zh": "小林家的龙女仆",
+		"en": "Miss Kobayashi's Dragon Maid"
+	},
+	{
+		"zh": "DAINA",
+		"en": "DAINA"
+	},
+	{
+		"zh": "懒羊羊当大厨",
+		"en": "Paddi the Amazing Chef (song)"
+	},
+	{
+		"zh": "杨冬",
+		"en": "Yang Dong"
+	},
+	{
+		"zh": "少女前线:L85A1",
+		"ja": "ドールズフロントライン:L85A1"
+	},
+	{
+		"zh": "少女前线:FN-49",
+		"ja": "ドールズフロントライン:FN-49"
+	},
+	{
+		"zh": "开心往前飞",
+		"en": "Happily Flying Forward"
+	},
+	{
+		"zh": "苏暖暖",
+		"en": "Nikki"
+	},
+	{
+		"zh": "暗音Renri",
+		"en": "Yamine Renri"
+	},
+	{
+		"zh": "暴娇",
+		"en": "Boudere"
+	},
+	{
+		"zh": "少女前线:FAMAS",
+		"ja": "ドールズフロントライン:FAMAS"
+	},
+	{
+		"zh": "少女前线:MP-446",
+		"ja": "ドールズフロントライン:MP-446"
+	},
+	{
+		"zh": "少女前线:P38",
+		"en": "Girls' Frontline: P38",
+		"ja": "ドールズフロントライン:P38"
+	},
+	{
+		"zh": "少女前线:FNC",
+		"ja": "ドールズフロントライン:FNC"
+	},
+	{
+		"zh": "少女前线:FNP-9",
+		"en": "Girls' Frontline: FF FNP9",
+		"ja": "ドールズフロントライン:FNP-9"
+	},
+	{
+		"zh": "少女前线:PP-2000",
+		"en": "Girls' Frontline: PP-2000",
+		"ja": "ドールズフロントライン:PP-2000"
+	},
+	{
+		"zh": "少女前线:TAR-21",
+		"ja": "ドールズフロントライン:TAR-21"
+	},
+	{
+		"zh": "少女前线:ST AR-15",
+		"ja": "ドールズフロントライン:ST AR-15"
+	},
+	{
+		"zh": "少女前线:M4A1",
+		"en": "Girls' Frontline: M4A1",
+		"ja": "ドールズフロントライン:M4A1"
+	},
+	{
+		"zh": "少女前线:M4 SOPMOD II",
+		"en": "Girls' Frontline: M4 SOPMOD II",
+		"ja": "ドールズフロントライン:M4 SOPMODⅡ"
+	},
+	{
+		"zh": "少女前线:加利尔",
+		"ja": "ドールズフロントライン:ガリル"
+	},
+	{
+		"zh": "少女前线:Spectre M4",
+		"ja": "ドールズフロントライン:スペクトラ M4"
+	},
+	{
+		"zh": "少女前线:SIG-510",
+		"ja": "ドールズフロントライン:SIG-510"
+	},
+	{
+		"zh": "少女前线:AS Val",
+		"en": "Girls' Frontline: AS VAL",
+		"ja": "ドールズフロントライン:AS Val"
+	},
+	{
+		"zh": "少女前线:M16A1",
+		"en": "Girls' Frontline:M16A1",
+		"ja": "ドールズフロントライン:M16A4"
+	},
+	{
+		"zh": "少女前线:NTW-20",
+		"en": "Girls' Frontline: NTW-20",
+		"ja": "ドールズフロントライン:NTW-20"
+	},
+	{
+		"zh": "百变小裁缝",
+		"en": "The Tailor's Closet (song)"
+	},
+	{
+		"zh": "羊羊小心愿",
+		"en": "Dear Little Wish (song)"
+	},
+	{
+		"zh": "少女前线:FAL",
+		"ja": "ドールズフロントライン:FAL"
+	},
+	{
+		"zh": "少女前线:灰熊MKV",
+		"en": "Girls' Frontline: Grizzly"
+	},
+	{
+		"zh": "少女前线:UMP9",
+		"ja": "ドールズフロントライン:UMP9"
+	},
+	{
+		"zh": "天使(五月天)",
+		"en": "Angel (MayDay)"
+	},
+	{
+		"zh": "快乐竞技场",
+		"en": "Happy Arena"
+	},
+	{
+		"zh": "梦见果冻",
+		"en": "Dreaming of Jelly"
+	},
+	{
+		"zh": "善良的力量",
+		"en": "Power of Kindness"
+	},
+	{
+		"zh": "和梦想飞翔",
+		"en": "Flying with Dream"
+	},
+	{
+		"zh": "拥抱春天",
+		"en": "Hugging the Spring"
+	},
+	{
+		"zh": "少女前线:SVT-38",
+		"ja": "ドールズフロントライン:SVT-38"
+	},
+	{
+		"zh": "少女前线:IDW",
+		"en": "Girls' Frontline: IDW",
+		"ja": "ドールズフロントライン:IDW"
+	},
+	{
+		"zh": "少女前线:柯尔特左轮",
+		"ja": "ドールズフロントライン:コルトリボルバー"
+	},
+	{
+		"zh": "少女前线:西蒙诺夫",
+		"ja": "ドールズフロントライン:シモノフ"
+	},
+	{
+		"zh": "少女前线:Vector",
+		"en": "Girls' Frontline: VECTOR",
+		"ja": "ドールズフロントライン:ベクター"
+	},
+	{
+		"zh": "少女前线:OTs-12",
+		"en": "Girls' Frontline: OTs-12",
+		"ja": "ドールズフロントライン:OTs-12"
+	},
+	{
+		"zh": "少女前线:MG5",
+		"ja": "ドールズフロントライン:MG5"
+	},
+	{
+		"zh": "少女前线:斯捷奇金",
+		"en": "Girls' Frontline: Stechkin",
+		"ja": "ドールズフロントライン:スチェッキン"
+	},
+	{
+		"zh": "少女前线:Mk23",
+		"ja": "ドールズフロントライン:Mk23"
+	},
+	{
+		"zh": "少女前线:P7",
+		"ja": "ドールズフロントライン:P7"
+	},
+	{
+		"zh": "少女前线:M950A",
+		"ja": "ドールズフロントライン:M950A"
+	},
+	{
+		"zh": "少女前线:FMG-9",
+		"ja": "ドールズフロントライン:FMG-9"
+	},
+	{
+		"zh": "樱",
+		"en": "Sakura"
+	},
+	{
+		"zh": "绿色的旋律",
+		"en": "Green Melody"
+	},
+	{
+		"zh": "时间旅行少女",
+		"en": "Time Travel Girl"
+	},
+	{
+		"zh": "少女前线:内格夫",
+		"ja": "ドールズフロントライン:ネゲブ"
+	},
+	{
+		"zh": "LOLA",
+		"en": "LOLA"
+	},
+	{
+		"zh": "少女前线:BM59",
+		"en": "Girls' Frontline: VM59",
+		"ja": "ドールズフロントライン:BM59"
+	},
+	{
+		"zh": "少女前线:F2000",
+		"ja": "ドールズフロントライン:F2000"
+	},
+	{
+		"zh": "少女前线:G41",
+		"ja": "ドールズフロントライン:G41"
+	},
+	{
+		"zh": "章北海",
+		"en": "Zhang Beihai"
+	},
+	{
+		"zh": "少女前线:G36",
+		"en": "Girls' Frontline: G36",
+		"ja": "ドールズフロントライン:G36"
+	},
+	{
+		"zh": "狼族崛起",
+		"en": "The Wolves Rise"
+	},
+	{
+		"zh": "少女前线:MAC-10",
+		"en": "Girls' Frontline: Ingram",
+		"ja": "ドールズフロントライン:MAC-10"
+	},
+	{
+		"zh": "少女前线:M249 SAW",
+		"ja": "ドールズフロントライン:M249 SAW"
+	},
+	{
+		"zh": "少女前线:CZ-805",
+		"en": "Girls' Frontline: CZ-805",
+		"ja": "ドールズフロントライン:CZ-805"
+	},
+	{
+		"zh": "少女前线:M21",
+		"ja": "ドールズフロントライン:M21"
+	},
+	{
+		"zh": "少女前线:AAT-52",
+		"ja": "ドールズフロントライン:AAT-52"
+	},
+	{
+		"zh": "少女前线:RPD",
+		"ja": "ドールズフロントライン:RPD"
+	},
+	{
+		"zh": "少女前线:LWMMG",
+		"en": "Girls' Frontline: LWMMG",
+		"ja": "ドールズフロントライン:LWMMG"
+	},
+	{
+		"zh": "末日时在做什么?有没有空?可以来拯救吗?",
+		"en": "What do you do at the end of the world? Are you busy? Will you save us?"
+	},
+	{
+		"zh": "Seven Nation Army",
+		"en": "Seven Nation Army"
+	},
+	{
+		"zh": "那年那兔那些事儿",
+		"en": "Year Hare Affair"
+	},
+	{
+		"zh": "少女前线:UMP45",
+		"en": "Girls' Frontline: UMP45"
+	},
+	{
+		"zh": "少女前线:9A-91",
+		"ja": "ドールズフロントライン:9A-91"
+	},
+	{
+		"zh": "少女前线:索米",
+		"en": "Girls' Frontline: Suomi",
+		"ja": "ドールズフロントライン:スオミ"
+	},
+	{
+		"zh": "羊羊小侦探",
+		"en": "The Little Detective (song)"
+	},
+	{
+		"zh": "少女前线:谢尔久科夫",
+		"ja": "ドールズフロントライン:セルジュコフ"
+	},
+	{
+		"zh": "少女前线:FG42",
+		"ja": "ドールズフロントライン:FG42"
+	},
+	{
+		"zh": "终末的伊泽塔",
+		"en": "Izetta, the Last Witch"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊羊小心愿",
+		"en": "Dear Little Wish"
+	},
+	{
+		"zh": "BanG Dream!",
+		"ja": "BanG Dream!"
+	},
+	{
+		"zh": "珈百璃的堕落",
+		"en": "Gabriel DropOut"
+	},
+	{
+		"zh": "I'm the One",
+		"en": "I'm the One"
+	},
+	{
+		"zh": "少女前线:56式半",
+		"ja": "ドールズフロントライン:56式"
+	},
+	{
+		"zh": "少女前线:OTs-14",
+		"en": "Girls' Frontline: OTs-14"
+	},
+	{
+		"zh": "Lostorage incited WIXOSS",
+		"en": "Lostorage incited WIXOSS"
+	},
+	{
+		"zh": "乔纳森·乔斯达",
+		"en": "Jonathan Joestar"
+	},
+	{
+		"zh": "少女前线:G11",
+		"en": "Girls' Frontline: Gr G11"
+	},
+	{
+		"zh": "少女前线:阿斯特拉左轮",
+		"ja": "ドールズフロントライン:アストラリボルバー"
+	},
+	{
+		"zh": "少女前线:SPP-1",
+		"en": "Girls' Frontline: SPP-1",
+		"ja": "ドールズフロントライン:SPP-1"
+	},
+	{
+		"zh": "日本2017年春季动画",
+		"en": "2017 Spring Japanese Anime"
+	},
+	{
+		"zh": "少女前线:PSG-1",
+		"en": "Girls' Frontline: Gr PSG-1"
+	},
+	{
+		"zh": "少女前线:维尔德MkII",
+		"ja": "ドールズフロントライン:ウェルロッドMkII"
+	},
+	{
+		"zh": "Solar Storm",
+		"en": "Solar Storm"
+	},
+	{
+		"zh": "少女前线:Super SASS",
+		"en": "Girls' Frontline: Super SASS"
+	},
+	{
+		"zh": "少女前线:SVD",
+		"ja": "ドールズフロントライン:SVD"
+	},
+	{
+		"zh": "小灰灰",
+		"en": "Wilie"
+	},
+	{
+		"zh": "唱见",
+		"en": "Utaite"
+	},
+	{
+		"zh": "少女前线/装备制造",
+		"en": "Girls' Frontline/Equipment production"
+	},
+	{
+		"zh": "少女前线:世界观",
+		"en": "Girls' Frontline: Synopsis"
+	},
+	{
+		"zh": "小冰",
+		"en": "XiaoIce"
+	},
+	{
+		"zh": "少女前线:G36C",
+		"en": "Girls' Frontline: G36C",
+		"ja": "ドールズフロントライン:G36C"
+	},
+	{
+		"zh": "Twinkle Star",
+		"en": "Twinkle Star"
+	},
+	{
+		"zh": "梦与现实的联理结",
+		"ja": "夢か現かマトリョーシカ"
+	},
+	{
+		"zh": "少女前线:M99",
+		"en": "Girls' Frontline: M99"
+	},
+	{
+		"zh": "少女前线:95式",
+		"en": "Girls' Frontline: Type 95"
+	},
+	{
+		"zh": "前前前世",
+		"en": "Zenzenzense"
+	},
+	{
+		"zh": "Lame Uncomfortable Laugh",
+		"en": "Lame Uncomfortable Laugh"
+	},
+	{
+		"zh": "CHOCOLAT",
+		"en": "CHOCOLAT"
+	},
+	{
+		"zh": "天真·珈百璃·怀特",
+		"en": "Tenma Gabriel White"
+	},
+	{
+		"zh": "Niconico动画",
+		"en": "Nico nico"
+	},
+	{
+		"zh": "Shelter",
+		"en": "Shelter"
+	},
+	{
+		"zh": "少女前线:59式",
+		"en": "Girls' Frontline: Type 59"
+	},
+	{
+		"zh": "与我共鸣-NENTEN-",
+		"en": "Resonate with Me -NENTEN-"
+	},
+	{
+		"zh": "樱桃小丸子",
+		"en": "Chibi Maruko-chan"
+	},
+	{
+		"zh": "克拉丽莎·伯恩哈德",
+		"ja": "クラリッサ·べルンハルト"
+	},
+	{
+		"zh": "妖怪百姬",
+		"ja": "妖怪百姫たん"
+	},
+	{
+		"zh": "Paprika",
+		"en": "Paprika",
+		"ja": "パプリカ"
+	},
+	{
+		"zh": "狐之工作室",
+		"ja": "狐の工作室"
+	},
+	{
+		"zh": "优木苗",
+		"ja": "優木苗"
+	},
+	{
+		"zh": "桐野天",
+		"ja": "桐野そら"
+	},
+	{
+		"zh": "风羽(霜月遥)",
+		"ja": "カザハネ"
+	},
+	{
+		"zh": "少女前线:M1A1",
+		"ja": "ドールズフロントライン:M1A1"
+	},
+	{
+		"zh": "阴阳师(手游)",
+		"en": "Onmyoji (video game)",
+		"ja": "陰陽師 (ゲーム)"
+	},
+	{
+		"zh": "少女前线/图鉴/战术人形",
+		"ja": "ドールズフロントライン/図鑑/戦術人形"
+	},
+	{
+		"zh": "奥特曼:初代",
+		"en": "Ultraman:Ultraman"
+	},
+	{
+		"zh": "深夜诗人",
+		"en": "Late Night Poets"
+	},
+	{
+		"zh": "Kiri",
+		"en": "Kiri"
+	},
+	{
+		"zh": "3D眩晕症",
+		"en": "Virtual reality sickness"
+	},
+	{
+		"zh": "国标麻将",
+		"en": "Mahjong Competition Rules"
+	},
+	{
+		"zh": "少女前线:SR-3MP",
+		"en": "Girls' Frontline: SR-3MP"
+	},
+	{
+		"zh": "少女前线:PP-19",
+		"en": "Girls' Frontline: PP-19"
+	},
+	{
+		"zh": "少女前线:PP-90",
+		"ja": "ドールズフロントライン:PP-90"
+	},
+	{
+		"zh": "蓝色漫游",
+		"en": "Blue Roam"
+	},
+	{
+		"zh": "Re:CREATORS",
+		"en": "Re:CREATORS"
+	},
+	{
+		"zh": "我爱灰太狼(歌曲)",
+		"en": "I Love Wolffy(song)"
+	},
+	{
+		"zh": "爱哭鬼",
+		"en": "Crybaby"
+	},
+	{
+		"zh": "Undertale",
+		"en": "Undertale"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊羊小侦探",
+		"en": "The Little Detective"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之原始世界历险记",
+		"en": "Adventures in the Primitive World"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之深海历险记",
+		"en": "Adventures in the Sea"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之妈妈乐疯狂",
+		"en": "Love You Babe"
+	},
+	{
+		"zh": "不完整的剧情",
+		"en": "Incomplete Story"
+	},
+	{
+		"zh": "喜羊羊与灰太狼(初代)",
+		"en": "Pleasant Goat and Big Big Wolf (1st Season)"
+	},
+	{
+		"zh": "少女前线:97式霰",
+		"ja": "ドールズフロントライン:97式ショットガン"
+	},
+	{
+		"zh": "成龙",
+		"en": "Jackie Chan"
+	},
+	{
+		"zh": "嫁人就嫁灰太狼(歌曲)",
+		"en": "Mr.Wolffy, Mr.Right!(song)"
+	},
+	{
+		"zh": "少女前线:USP Compact",
+		"en": "Girls' Frontline: USP Compact"
+	},
+	{
+		"zh": "夏安安",
+		"en": "Xia An An"
+	},
+	{
+		"zh": "少女前线:M37",
+		"ja": "ドールズフロントライン:M37"
+	},
+	{
+		"zh": "少女前线:KS-23",
+		"ja": "ドールズフロントライン:KS-23"
+	},
+	{
+		"zh": "Guilty Eyes Fever",
+		"en": "Guilty Eyes Fever"
+	},
+	{
+		"zh": "珈百璃的飞踢",
+		"en": "Gabriel Drop Kick"
+	},
+	{
+		"zh": "少女前线:M590",
+		"ja": "ドールズフロントライン:M590"
+	},
+	{
+		"zh": "麟犀AI韵律",
+		"en": "Kilin & Xi"
+	},
+	{
+		"zh": "逢妻光",
+		"en": "Azuma Hikari"
+	},
+	{
+		"zh": "少女前线:Bren Ten",
+		"en": "Girls' Frontline: Bren Ten"
+	},
+	{
+		"zh": "汪淼",
+		"en": "Wang Miao"
+	},
+	{
+		"zh": "少女前线:MT-9",
+		"en": "Girls' Frontline: MT-9"
+	},
+	{
+		"zh": "少女前线:IWS 2000",
+		"en": "Girls' Frontline: IWS 2000"
+	},
+	{
+		"zh": "少女前线:AEK-999",
+		"en": "Girls' Frontline: AEK-999"
+	},
+	{
+		"zh": "少女前线:RMB-93",
+		"ja": "ドールズフロントライン:RMB-93"
+	},
+	{
+		"zh": "少女前线:M500",
+		"ja": "ドールズフロントライン:M500"
+	},
+	{
+		"zh": "少女前线:KSG",
+		"ja": "ドールズフロントライン:KSG"
+	},
+	{
+		"zh": "三体文明之征途",
+		"en": "The Journey of the Trisolaran Civilization"
+	},
+	{
+		"zh": "少女前线:CZ75",
+		"en": "Girls' Frontline: CZ75"
+	},
+	{
+		"zh": "少女前线:M1897",
+		"ja": "ドールズフロントライン:M1897"
+	},
+	{
+		"zh": "兔",
+		"en": "Rabbit"
+	},
+	{
+		"zh": "珂朵莉·诺塔·瑟尼欧里斯",
+		"en": "Chtholly Nota Seniorious"
+	},
+	{
+		"zh": "少女前线:SPAS-12",
+		"en": "Girls' Frontline: SPAS-12",
+		"ja": "ドールズフロントライン:SPAS-12"
+	},
+	{
+		"zh": "少女前线:Super-Shorty",
+		"ja": "ドールズフロントライン:Super-Shorty"
+	},
+	{
+		"zh": "Clockwork planet",
+		"en": "Clockwork planet (song)"
+	},
+	{
+		"zh": "少女前线:Saiga-12",
+		"ja": "ドールズフロントライン:Saiga-12"
+	},
+	{
+		"zh": "兽娘动物园:貉",
+		"en": "Kemono Friends:Raccoon dog"
+	},
+	{
+		"zh": "斯卡布罗集市",
+		"en": "Scarborough Fair",
+		"ja": "スカボロー・フェア"
+	},
+	{
+		"zh": "宝生永梦",
+		"en": "Emu Hojo"
+	},
+	{
+		"zh": "银之守墓人",
+		"en": "The Silver Guardian"
+	},
+	{
+		"zh": "自言自语(ClariS)",
+		"en": "Hitorigoto"
+	},
+	{
+		"zh": "异世界食堂",
+		"en": "Restaurant to Another World"
+	},
+	{
+		"zh": "奥特曼:佐菲",
+		"en": "Zoffy"
+	},
+	{
+		"zh": "少女前线:Spitfire",
+		"en": "Girls' Frontline: Spitfire"
+	},
+	{
+		"zh": "发现者是我",
+		"en": "Discoverer is Me"
+	},
+	{
+		"zh": "少女前线:利贝罗勒",
+		"en": "Girls' Frontline:Ribeyrolles"
+	},
+	{
+		"zh": "少女前线:PKP",
+		"en": "Girls' Frontline: PKP"
+	},
+	{
+		"zh": "少女前线:RFB",
+		"en": "Girls' Frontline: Am RFB"
+	},
+	{
+		"zh": "太阳系迪斯科",
+		"en": "Solar System Disco"
+	},
+	{
+		"zh": "光环",
+		"en": "Halo (moe point)"
+	},
+	{
+		"zh": "乌糖",
+		"en": "U-tan"
+	},
+	{
+		"zh": "带着智能手机闯荡异世界",
+		"en": "In Another World With My Smartphone"
+	},
+	{
+		"zh": "少女前线:八一式马",
+		"ja": "ドールズフロントライン:81式カービン"
+	},
+	{
+		"zh": "少女前线:ART556",
+		"en": "Girls' Frontline: ART556"
+	},
+	{
+		"zh": "D!scolor",
+		"en": "D!scolor"
+	},
+	{
+		"zh": "邓丽君",
+		"en": "Teresa Teng"
+	},
+	{
+		"zh": "玛尼·拉保泰",
+		"en": "Manee Rakphaothai"
+	},
+	{
+		"zh": "六月的明天",
+		"en": "Tomorrow in June"
+	},
+	{
+		"zh": "少女前线:艾尔菲尔特",
+		"en": "Girls' Frontline: Elphelt Valentine"
+	},
+	{
+		"zh": "奥特曼:阿古茹",
+		"en": "Ultraman Agul"
+	},
+	{
+		"zh": "游戏王",
+		"en": "Yu-Gi-Oh!"
+	},
+	{
+		"zh": "奈芙莲·卢可·印萨尼亚",
+		"en": "Nephren Ruq Insania"
+	},
+	{
+		"zh": "龙的牙医",
+		"en": "The Dragon Dentist"
+	},
+	{
+		"zh": "少女终末旅行",
+		"en": "Girl's Last Tour"
+	},
+	{
+		"zh": "Skull Face",
+		"en": "Paz Ortega Andrade"
+	},
+	{
+		"zh": "赛马娘 Pretty Derby",
+		"en": "Umamusume: Pretty Derby"
+	},
+	{
+		"zh": "Papyrus",
+		"en": "Papyrus"
+	},
+	{
+		"zh": "日本动画人展览会",
+		"en": "Japan Anima(tor)'s Exhibition"
+	},
+	{
+		"zh": "JatingJa",
+		"en": "JatingJa"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之发明大作战",
+		"en": "War of Invention"
+	},
+	{
+		"zh": "风灵玉秀",
+		"ja": "風霊玉秀"
+	},
+	{
+		"zh": "少女前线:UMP40",
+		"ja": "ドールズフロントライン:UMP40"
+	},
+	{
+		"zh": "荷兹",
+		"en": "HeZ",
+		"ja": "HeZ"
+	},
+	{
+		"zh": "少女前线:PzB39",
+		"en": "Girls' Frontline: PzB39"
+	},
+	{
+		"zh": "少女前线:妖精",
+		"en": "Girls' Frontline: Fairy"
+	},
+	{
+		"zh": "家乡之爱满满夏日时光",
+		"en": "Jimo Ai ♡ Mantan ☆ Summer Life"
+	},
+	{
+		"zh": "少女前线:T91",
+		"ja": "ドールズフロントライン:T91"
+	},
+	{
+		"zh": "武藤游戏",
+		"en": "Yugi Muto"
+	},
+	{
+		"zh": "少女前线:竞争者",
+		"en": "Girls' Frontline: Contender",
+		"ja": "ドールズフロントライン:コンテンダー"
+	},
+	{
+		"zh": "奥特曼:泰罗",
+		"en": "Ultraman:Ultraman Taro"
+	},
+	{
+		"zh": "奥特曼:雷欧",
+		"en": "Ultraman:Ultraman Leo"
+	},
+	{
+		"zh": "初岚",
+		"en": "First Storm"
+	},
+	{
+		"zh": "吉祥物",
+		"en": "Mascot"
+	},
+	{
+		"zh": "奥特曼:凯恩",
+		"en": "Father of Ultra"
+	},
+	{
+		"zh": "少女前线:Ak 5",
+		"en": "Girls' Frontline: Ak 5"
+	},
+	{
+		"zh": "少女前线:S.A.T.8",
+		"en": "Girls' Frontline: S.A.T.8",
+		"ja": "ドールズフロントライン:S.A.T.8"
+	},
+	{
+		"zh": "LoveLive!虹咲学园学园偶像同好会",
+		"en": "Love Live! Nijigasaki High School Idol Club"
+	},
+	{
+		"zh": "HILL CLIMB GIRL",
+		"en": "HILL CLIMB GIRL"
+	},
+	{
+		"zh": "西荻洼站步行20分钟两室一厅押金2个月宠物禁止",
+		"en": "20min Walk From Nishi-Ogikubo Station, 2 Bedrooms, Living Room, Dining Room, Kitchen, 2mos Deposit, No Pets Allowed"
+	},
+	{
+		"zh": "未来的我们早已知晓",
+		"en": "Mirai no Bokura wa Shitteru yo"
+	},
+	{
+		"zh": "三只松鼠",
+		"en": "Three Squirrels"
+	},
+	{
+		"zh": "The Other Side of the Wall",
+		"en": "The Other Side of the Wall"
+	},
+	{
+		"zh": "Caffeine",
+		"en": "Caffeine"
+	},
+	{
+		"zh": "Neon",
+		"en": "Neon"
+	},
+	{
+		"zh": "魔法数字",
+		"en": "Magical Number"
+	},
+	{
+		"zh": "勇气在哪?在你的内心!",
+		"en": "Yuuki wa Doko ni? Kimi no Mune ni!"
+	},
+	{
+		"zh": "心跳文学部",
+		"en": "Doki Doki Literature Club!"
+	},
+	{
+		"zh": "奥特曼:阿斯特拉",
+		"en": "Ultraman:Astra"
+	},
+	{
+		"zh": "奥特曼:赛罗",
+		"en": "Ultraman Zero"
+	},
+	{
+		"zh": "Legends Never Die",
+		"en": "Legends Never Die"
+	},
+	{
+		"zh": "Worlds Collide",
+		"en": "Worlds Collide"
+	},
+	{
+		"zh": "奥特曼:银河",
+		"en": "Ultraman:Ultraman Ginga"
+	},
+	{
+		"zh": "机器人",
+		"en": "Robot"
+	},
+	{
+		"zh": "琥珀虚颜",
+		"en": "Hupo Xu Yan"
+	},
+	{
+		"zh": "少女前线:HK23",
+		"en": "Girls' Frontline: HK23"
+	},
+	{
+		"zh": "云烟成雨",
+		"en": "Clouds Into Rain"
+	},
+	{
+		"zh": "甲虫",
+		"en": "Beetle"
+	},
+	{
+		"zh": "小册子",
+		"en": "Booklet"
+	},
+	{
+		"zh": "明日方舟",
+		"en": "Arknights"
+	},
+	{
+		"zh": "WATER BLUE NEW WORLD",
+		"en": "WATER BLUE NEW WORLD"
+	},
+	{
+		"zh": "Phiang aw",
+		"en": "Phiang aw"
+	},
+	{
+		"zh": "WONDERFUL STORIES",
+		"en": "WONDERFUL STORIES"
+	},
+	{
+		"zh": "虚拟UP主",
+		"en": "Virtual YouTuber"
+	},
+	{
+		"zh": "少女前线:CZ52",
+		"en": "Girls' Frontline: CZ52"
+	},
+	{
+		"zh": "少女前线:T77",
+		"en": "Girls' Frontline: T77"
+	},
+	{
+		"zh": "少女前线:HK21",
+		"en": "Girls' Frontline: HK21"
+	},
+	{
+		"zh": "别当欧尼酱了",
+		"ja": "お兄ちゃんはおしまい！"
+	},
+	{
+		"zh": "少女前线:雷电",
+		"en": "Girls' Frontline: Thunder .50"
+	},
+	{
+		"zh": "少女前线:芭莉斯塔",
+		"en": "Girls' Frontline: Ballista"
+	},
+	{
+		"zh": "少女前线:AK-12",
+		"en": "Girls' Frontline: AK-12"
+	},
+	{
+		"zh": "少女前线:AN-94",
+		"en": "Girls' Frontline: AN-94"
+	},
+	{
+		"zh": "空想世界的某一天",
+		"en": "空想世界的某一天"
+	},
+	{
+		"zh": "奥特曼:贝利亚",
+		"en": "Ultraman Belial"
+	},
+	{
+		"zh": "MIRIAM",
+		"en": "MIRIAM"
+	},
+	{
+		"zh": "少女前线:SRS",
+		"en": "Girls' Frontline: SRS"
+	},
+	{
+		"zh": "少女前线:MDR",
+		"en": "Girls' Frontline: MDR"
+	},
+	{
+		"zh": "不管谁说话都在听着的琴叶茜酱",
+		"en": "Akane-chan Will Listen to Whatever You Have to Say"
+	},
+	{
+		"zh": "少女前线:K5",
+		"en": "Girls' Frontline: K5"
+	},
+	{
+		"zh": "少女前线:C-MS",
+		"en": "Girls' Frontline: C-MS"
+	},
+	{
+		"zh": "魂斗罗(游戏)",
+		"en": "Contra"
+	},
+	{
+		"zh": "Euphoria(歌曲)",
+		"en": "Euphoria"
+	},
+	{
+		"zh": "公主连结Re:Dive",
+		"en": "Princess Connect! Re:Dive"
+	},
+	{
+		"zh": "小爱同学",
+		"en": "Xiao Ai"
+	},
+	{
+		"zh": "特别周",
+		"en": "Special Week"
+	},
+	{
+		"zh": "挑染",
+		"en": "Hair streak"
+	},
+	{
+		"zh": "富士葵",
+		"en": "Fuji Aoi"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之奇幻天空岛",
+		"en": "Flying Island: The Sky Adventure"
+	},
+	{
+		"zh": "无声铃鹿",
+		"en": "Silence Suzuka"
+	},
+	{
+		"zh": "萌袖",
+		"en": "Moesode"
+	},
+	{
+		"zh": "舞法天女",
+		"en": "Dancing Baby"
+	},
+	{
+		"zh": "少女前线:AUG",
+		"en": "Girls' Frontline: AUG"
+	},
+	{
+		"zh": "樱花再见",
+		"en": "Sakura Bye Bye"
+	},
+	{
+		"zh": "毕业了呢",
+		"en": "Sotsugyou desu ne"
+	},
+	{
+		"zh": "Guilty!? Farewell party",
+		"en": "Guilty!? Farewell party"
+	},
+	{
+		"zh": "每当有流星划过夜空",
+		"en": "Whenever There Are Meteors Across the Night Sky"
+	},
+	{
+		"zh": "杰斯提斯",
+		"en": "Ultraman Justice"
+	},
+	{
+		"zh": "历史机关",
+		"en": "BUREAU OF PROTO SOCIETY"
+	},
+	{
+		"zh": "嘻哈闯云端",
+		"en": "Marching to the Clouds"
+	},
+	{
+		"zh": "花月精灵",
+		"en": "Hanazuki: Full of Treasures"
+	},
+	{
+		"zh": "蜘蛛侠",
+		"en": "Spider-Man"
+	},
+	{
+		"zh": "蛛丝",
+		"en": "Silk"
+	},
+	{
+		"zh": "少女前线:AA-12",
+		"en": "Girls' Frontline: AA-12"
+	},
+	{
+		"zh": "No.10",
+		"en": "No.10"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊村守护者",
+		"en": "Mighty Little Defenders"
+	},
+	{
+		"zh": "LoveLive!学园偶像祭/歌曲列表",
+		"en": "Love Live! School idol festival/Song List"
+	},
+	{
+		"zh": "中国文具萌化社",
+		"en": "Stationery Moe China",
+		"ja": "中国文房具萌え化社"
+	},
+	{
+		"zh": "Rigel Theatre",
+		"en": "Rigël Theatre"
+	},
+	{
+		"zh": "毒液",
+		"en": "Venom"
+	},
+	{
+		"zh": "谭青花",
+		"en": "Tan Qinghua"
+	},
+	{
+		"zh": "鞭炮娘",
+		"en": "Boomco"
+	},
+	{
+		"zh": "史强",
+		"en": "Shi Qiang"
+	},
+	{
+		"zh": "装甲战争",
+		"en": "Armored Warfare"
+	},
+	{
+		"zh": "索尼克",
+		"en": "Sonic the Hedgehog"
+	},
+	{
+		"zh": "奥特曼:艾克斯",
+		"en": "Ultraman:Ultraman X"
+	},
+	{
+		"zh": "野原新之助",
+		"en": "Shinnosuke Nohara"
+	},
+	{
+		"zh": "Synthesizer V",
+		"en": "Synthesizer V"
+	},
+	{
+		"zh": "TID",
+		"en": "TID"
+	},
+	{
+		"zh": "命令与征服:红色警戒2",
+		"en": "Command & Conquer: Red Alert 2"
+	},
+	{
+		"zh": "Sing",
+		"en": "Sing"
+	},
+	{
+		"zh": "Tessellate",
+		"en": "Tessellate"
+	},
+	{
+		"zh": "麦尔斯·普劳尔",
+		"en": "Miles \"Tails\" Prower"
+	},
+	{
+		"zh": "黑猫警长",
+		"en": "Black Cat Detective"
+	},
+	{
+		"zh": "Ideolo",
+		"en": "Ideolo"
+	},
+	{
+		"zh": "虚拟代言人",
+		"en": "Virtual spokesperson"
+	},
+	{
+		"zh": "橘朔也",
+		"en": "Sakuya Tachibana"
+	},
+	{
+		"zh": "艾玛琳",
+		"en": "IMarine"
+	},
+	{
+		"zh": "拆拆拆",
+		"en": "Pull, Tear, and Knock Down"
+	},
+	{
+		"zh": "妈妈乐疯狂",
+		"en": "Love You Babe (song)"
+	},
+	{
+		"zh": "智趣羊学堂",
+		"en": "Pleasant Goat Fun Class (song)"
+	},
+	{
+		"zh": "发明大作战",
+		"en": "War of Invention (song)"
+	},
+	{
+		"zh": "Next SPARKLING!!",
+		"en": "Next SPARKLING!!"
+	},
+	{
+		"zh": "我们奔跑而来的道路…",
+		"en": "Bokura no Hashittekita Michi wa..."
+	},
+	{
+		"zh": "勇敢向前",
+		"en": "Marching Bravely"
+	},
+	{
+		"zh": "Frisk",
+		"en": "Frisk"
+	},
+	{
+		"zh": "Chara",
+		"en": "Chara"
+	},
+	{
+		"zh": "猪猪侠",
+		"en": "GG Bond"
+	},
+	{
+		"zh": "超级棒棒糖",
+		"en": "Super Lollipop (song)"
+	},
+	{
+		"zh": "小英雄大肚腩",
+		"en": "Tiny Hero Big Tripe"
+	},
+	{
+		"zh": "星愿StarWish(专辑)",
+		"en": "StarWish (album)"
+	},
+	{
+		"zh": "星语Star Whisper",
+		"en": "Star Whisper"
+	},
+	{
+		"zh": "神乐七奈",
+		"ja": "カグラナナ"
+	},
+	{
+		"zh": "上海新创华文化发展有限公司",
+		"en": "SCLA"
+	},
+	{
+		"zh": "K歌",
+		"en": "Karaoke"
+	},
+	{
+		"zh": "嗒啦啦",
+		"en": "Tarara"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之跨时空救兵",
+		"en": "Rescue Across Time"
+	},
+	{
+		"zh": "魔族",
+		"en": "Mazoku"
+	},
+	{
+		"zh": "The Loneliest Girl",
+		"en": "The Loneliest Girl"
+	},
+	{
+		"zh": "奥特曼:奈欧斯",
+		"en": "Ultraman:Ultraman Neos"
+	},
+	{
+		"zh": "奥特曼:葛雷",
+		"en": "Ultraman Great"
+	},
+	{
+		"zh": "雾矢葵",
+		"en": "Aoi Kiriya"
+	},
+	{
+		"zh": "紫吹兰",
+		"en": "Ran Shibuki"
+	},
+	{
+		"zh": "Move Mountains",
+		"en": "Move Mountains"
+	},
+	{
+		"zh": "Unrequited love",
+		"en": "Unrequited love"
+	},
+	{
+		"zh": "Unbreakable(CAROLE & TUESDAY)",
+		"en": "Unbreakable (CAROLE & TUESDAY)"
+	},
+	{
+		"zh": "安真真",
+		"en": "An Zhenzhen"
+	},
+	{
+		"zh": "原神",
+		"en": "Genshin Impact"
+	},
+	{
+		"zh": "绫奈奈奈",
+		"en": "Ayana Nana"
+	},
+	{
+		"zh": "胜利的终点",
+		"en": "The Terminal of Victory"
+	},
+	{
+		"zh": "VirtuaReal",
+		"en": "VirtuaReal"
+	},
+	{
+		"zh": "Sky's the limit",
+		"en": "Sky's the limit"
+	},
+	{
+		"zh": "江上曜",
+		"en": "Egami You"
+	},
+	{
+		"zh": "Shadow World",
+		"en": "Shadow World"
+	},
+	{
+		"zh": "兰希(虚拟UP主)",
+		"en": "LanCee"
+	},
+	{
+		"zh": "奥特曼:格丽乔",
+		"en": "Ultrawoman Grigio"
+	},
+	{
+		"zh": "Want To Be Close",
+		"en": "Want To Be Close"
+	},
+	{
+		"zh": "When The Moon's Reaching Out Stars",
+		"en": "When The Moon's Reaching Out Stars"
+	},
+	{
+		"zh": "Deep Breath Deep Breath",
+		"en": "Deep Breath Deep Breath"
+	},
+	{
+		"zh": "Invitation to Freedom",
+		"en": "Invitation to Freedom"
+	},
+	{
+		"zh": "Nothing is Promised",
+		"en": "Nothing is Promised"
+	},
+	{
+		"zh": "Falling into Right Places",
+		"en": "Falling into Right Places"
+	},
+	{
+		"zh": "必须要吃巧克力薄荷味冰淇淋的琴叶葵酱",
+		"en": "Chocomintopia"
+	},
+	{
+		"zh": "GYARI",
+		"en": "GYARI"
+	},
+	{
+		"zh": "Wiping All Out",
+		"en": "Wiping All Out"
+	},
+	{
+		"zh": "A Way of Life",
+		"en": "A Way of Life"
+	},
+	{
+		"zh": "向死而生(Mt)",
+		"en": "Born to Die (Mt)"
+	},
+	{
+		"zh": "向死而生(乐正绫)",
+		"en": "Born to Die (Yuezheng Ling)"
+	},
+	{
+		"zh": "向死而生",
+		"en": "Born to Die"
+	},
+	{
+		"zh": "向死而生(洛天依)",
+		"en": "Born to Die (Luo Tianyi)"
+	},
+	{
+		"zh": "花环",
+		"en": "Flower crown"
+	},
+	{
+		"zh": "超人(DC漫画)",
+		"en": "Superman"
+	},
+	{
+		"zh": "胧月(初音未来)",
+		"en": "Shinkai Shōjo"
+	},
+	{
+		"zh": "高咲侑",
+		"en": "Takasaki Yu"
+	},
+	{
+		"zh": "Overidea",
+		"en": "Overidea",
+		"ja": "Overidea"
+	},
+	{
+		"zh": "Numb",
+		"en": "Numb"
+	},
+	{
+		"zh": "银河奥特曼之歌",
+		"en": "Ultraman Ginga no Uta"
+	},
+	{
+		"zh": "貉",
+		"en": "Tanuki"
+	},
+	{
+		"zh": "Crazy Little Love",
+		"en": "Crazy Little Love"
+	},
+	{
+		"zh": "A PERFECT HERO",
+		"en": "A PERFECT HERO"
+	},
+	{
+		"zh": "SAVE ME",
+		"en": "SAVE ME"
+	},
+	{
+		"zh": "Space Boy",
+		"en": "Space Boy"
+	},
+	{
+		"zh": "No One Sleep in Tokyo",
+		"en": "No One Sleep in Tokyo"
+	},
+	{
+		"zh": "I Need Your Love",
+		"en": "I Need Your Love"
+	},
+	{
+		"zh": "ADRENALINE",
+		"en": "ADRENALINE"
+	},
+	{
+		"zh": "Speedy Runner",
+		"en": "Speedy Runner"
+	},
+	{
+		"zh": "Takumi",
+		"en": "Takumi"
+	},
+	{
+		"zh": "Dancing On the Street",
+		"en": "Dancing On the Street"
+	},
+	{
+		"zh": "Go Beat Crazy",
+		"en": "Go Beat Crazy"
+	},
+	{
+		"zh": "Max Power",
+		"en": "Max Power"
+	},
+	{
+		"zh": "Burning Up For You",
+		"en": "Burning Up For You"
+	},
+	{
+		"zh": "Crazy For Love",
+		"en": "Crazy For Love"
+	},
+	{
+		"zh": "GRAND PRIX",
+		"en": "GRAND PRIX"
+	},
+	{
+		"zh": "Make Up Your Mind",
+		"en": "Make Up Your Mind"
+	},
+	{
+		"zh": "Night of Fire",
+		"en": "Night of Fire"
+	},
+	{
+		"zh": "STAY",
+		"en": "STAY"
+	},
+	{
+		"zh": "RUNNING IN THE \"90S\"",
+		"en": "RUNNING IN THE \"90S\""
+	},
+	{
+		"zh": "CRAZY ON EMOTION",
+		"en": "CRAZY ON EMOTION"
+	},
+	{
+		"zh": "DON'T STOP THE MUSIC",
+		"en": "DON'T STOP THE MUSIC"
+	},
+	{
+		"zh": "BACK ON THE ROCKS",
+		"en": "BACK ON THE ROCKS"
+	},
+	{
+		"zh": "Dancing",
+		"en": "Dancing"
+	},
+	{
+		"zh": "NIGHT FEVER",
+		"en": "NIGHT FEVER"
+	},
+	{
+		"zh": "Spark In The Dark",
+		"en": "Spark In The Dark"
+	},
+	{
+		"zh": "Speedy Speed Boy",
+		"en": "Speedy Speed Boy"
+	},
+	{
+		"zh": "Speed Lover",
+		"en": "Speed Lover"
+	},
+	{
+		"zh": "常伟思",
+		"en": "Chang Weisi"
+	},
+	{
+		"zh": "夜鹰",
+		"en": "Nighthawk"
+	},
+	{
+		"zh": "Let's Go, Come On",
+		"en": "Let's Go, Come On"
+	},
+	{
+		"zh": "Chemical Love",
+		"en": "Chemical Love"
+	},
+	{
+		"zh": "I Won't Fall Apart",
+		"en": "I Won't Fall Apart"
+	},
+	{
+		"zh": "石蒜",
+		"en": "Higanbana (plant)"
+	},
+	{
+		"zh": "THE TOP",
+		"en": "THE TOP"
+	},
+	{
+		"zh": "Rockin' Hardcore",
+		"en": "Rockin' Hardcore"
+	},
+	{
+		"zh": "WHEN THE SUN GOES DOWN",
+		"en": "WHEN THE SUN GOES DOWN"
+	},
+	{
+		"zh": "兽娘动物园:豺狗",
+		"en": "Kemono Friends:Dhole"
+	},
+	{
+		"zh": "DiverDiva",
+		"en": "DiverDiva"
+	},
+	{
+		"zh": "A·ZU·NA",
+		"en": "A·ZU·NA"
+	},
+	{
+		"zh": "QU4RTZ",
+		"en": "QU4RTZ"
+	},
+	{
+		"zh": "哆啦A梦七小子",
+		"en": "The Doraemons"
+	},
+	{
+		"zh": "REMEMBER ME",
+		"en": "REMEMBER ME"
+	},
+	{
+		"zh": "蓝弧奥特曼侵权事件",
+		"en": "BlueArc Ultraman copyright controversy"
+	},
+	{
+		"zh": "永远都想对战游戏的切蒲英",
+		"en": "Endless Gamers"
+	},
+	{
+		"zh": "Hero for a Day",
+		"en": "Hero for a Day"
+	},
+	{
+		"zh": "Marpril",
+		"en": "Marpril"
+	},
+	{
+		"zh": "发音未来",
+		"en": "Hatsune Miku (SHINKALION THE ANIMATION)"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之奇趣外星客",
+		"en": "The Intriguing Alien Guests"
+	},
+	{
+		"zh": "守护之光",
+		"en": "The Light of Defense"
+	},
+	{
+		"zh": "Vsinger",
+		"en": "Vsinger (disambiguation)"
+	},
+	{
+		"zh": "畑泽和也",
+		"en": "Kazuya Hatazawa"
+	},
+	{
+		"zh": "Cureless",
+		"en": "Cureless"
+	},
+	{
+		"zh": "天官赐福",
+		"ja": "天官賜福"
+	},
+	{
+		"zh": "素还真",
+		"en": "Su Huan-Jen"
+	},
+	{
+		"zh": "银翼杀手:2022大停电",
+		"en": "Blade Runner"
+	},
+	{
+		"zh": "玫瑰公主(猪猪侠)",
+		"en": "Sleeping Beauty (GG Bond)"
+	},
+	{
+		"zh": "MIKADO",
+		"en": "MIKADO"
+	},
+	{
+		"zh": "神秘博士",
+		"en": "Doctor Who"
+	},
+	{
+		"zh": "BBC娘",
+		"en": "BBC Girl"
+	},
+	{
+		"zh": "AISingers",
+		"en": "AISingers"
+	},
+	{
+		"zh": "黑暗森林(歌曲)",
+		"en": "The Dark Forest (song)"
+	},
+	{
+		"zh": "维多利亚三人组",
+		"en": "Paternoster Gang"
+	},
+	{
+		"zh": "百变机兽之洛洛历险记",
+		"en": "RoboWarriors: Adventures of Lolo"
+	},
+	{
+		"zh": "钢铁飞龙",
+		"en": "Dragon Force"
+	},
+	{
+		"zh": "蓝弧文化",
+		"en": "BlueArc Animation Studios"
+	},
+	{
+		"zh": "夜航星",
+		"en": "Night Voyager"
+	},
+	{
+		"zh": "Gigguk",
+		"en": "Gigguk"
+	},
+	{
+		"zh": "All Things Must Die",
+		"en": "All Things Must Die"
+	},
+	{
+		"zh": "硅基生命",
+		"en": "Silicon-based life"
+	},
+	{
+		"zh": "每当你吻我时",
+		"en": "Everytime you kissed me"
+	},
+	{
+		"zh": "琉璃Liliko",
+		"en": "Liliko"
+	},
+	{
+		"zh": "Street Of Fire",
+		"en": "Street Of Fire"
+	},
+	{
+		"zh": "BEAT OF THE RISING SUN",
+		"en": "BEAT OF THE RISING SUN"
+	},
+	{
+		"zh": "天野Pikamee",
+		"en": "Amano Pikamee"
+	},
+	{
+		"zh": "天选姬",
+		"en": "Tianxuan Ji"
+	},
+	{
+		"zh": "SUPERSONIC FIRE",
+		"en": "SUPERSONIC FIRE"
+	},
+	{
+		"zh": "When It Falls",
+		"en": "When It Falls"
+	},
+	{
+		"zh": "镜音铃·连/商业发行的CD",
+		"en": "Kagamine Rin & Len/Commercial CDs"
+	},
+	{
+		"zh": "镜音铃·连/一般歌曲",
+		"en": "Kagamine Rin & Len/Normal Songs"
+	},
+	{
+		"zh": "螳螂",
+		"en": "Mantis"
+	},
+	{
+		"zh": "至孤独",
+		"en": "To Loneliness"
+	},
+	{
+		"zh": "和乐器乐队",
+		"en": "Wagakki Band"
+	},
+	{
+		"zh": "RO姬",
+		"en": "RO Ji"
+	},
+	{
+		"zh": "Monster",
+		"en": "Monster"
+	},
+	{
+		"zh": "秋蒂",
+		"en": "Judy (VTuber)"
+	},
+	{
+		"zh": "DON'T STAND SO CLOSE",
+		"en": "DON'T STAND SO CLOSE"
+	},
+	{
+		"zh": "琼(拳皇)",
+		"en": "King (The King of Fighters' charactor)"
+	},
+	{
+		"zh": "Wheelpower And Go!",
+		"en": "Wheelpower And Go!"
+	},
+	{
+		"zh": "动物行为",
+		"en": "Animal Behaviour"
+	},
+	{
+		"zh": "精神分裂症(动画)",
+		"en": "Skhizein"
+	},
+	{
+		"zh": "左右脑",
+		"en": "Brain Divided"
+	},
+	{
+		"zh": "钟摆",
+		"en": "Furiko"
+	},
+	{
+		"zh": "碧昂丝",
+		"en": "Beyoncé"
+	},
+	{
+		"zh": "MONSTER(KIRA)",
+		"en": "MONSTER(KIRA)"
+	},
+	{
+		"zh": "面对面",
+		"en": "FACING IT"
+	},
+	{
+		"zh": "受够了",
+		"en": "Enough"
+	},
+	{
+		"zh": "午后课堂",
+		"en": "Afternoon Class"
+	},
+	{
+		"zh": "Happy",
+		"en": "Happy"
+	},
+	{
+		"zh": "哥斯拉系列",
+		"en": "Godzilla series"
+	},
+	{
+		"zh": "Again",
+		"en": "Again"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之异国大营救",
+		"en": "Against the Dark Force",
+		"ja": "喜羊羊与灰太狼之異国大営救"
+	},
+	{
+		"zh": "就在身边",
+		"en": "By Your Side"
+	},
+	{
+		"zh": "零和Zero-Sum",
+		"en": "Zero-Sum"
+	},
+	{
+		"zh": "Copycat",
+		"en": "Copycat"
+	},
+	{
+		"zh": "Karma(Circus-P)",
+		"en": "Karma (Circus-P)"
+	},
+	{
+		"zh": "眠歌梦",
+		"en": "Nemuka Yume"
+	},
+	{
+		"zh": "Someone New",
+		"en": "Someone New"
+	},
+	{
+		"zh": "Crystalline",
+		"en": "Crystalline"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之羊羊趣冒险",
+		"en": "Mighty Goat Squad"
+	},
+	{
+		"zh": "原创动力",
+		"ja": "原創動力"
+	},
+	{
+		"zh": "Machine Gun",
+		"en": "Machine Gun"
+	},
+	{
+		"zh": "星尘",
+		"en": "Stardust (disambiguation)"
+	},
+	{
+		"zh": "By-product",
+		"en": "By-product"
+	},
+	{
+		"zh": "WILDFIRE!!",
+		"en": "WILDFIRE!!"
+	},
+	{
+		"zh": "Boom Boom Boom",
+		"en": "Boom Boom Boom"
+	},
+	{
+		"zh": "MaRiNaSu",
+		"en": "MaRiNaSu"
+	},
+	{
+		"zh": "Lie(Circus-P)",
+		"en": "Lie (Circus-P)"
+	},
+	{
+		"zh": "咩栗",
+		"en": "Merry (VTuber)"
+	},
+	{
+		"zh": "彩条屋影业",
+		"en": "Coloroom Pictures"
+	},
+	{
+		"zh": "丽莎·敏兹",
+		"en": "Lisa (Genshin Impact)"
+	},
+	{
+		"zh": "呜米",
+		"en": "Umy"
+	},
+	{
+		"zh": "FOREVER YOUNG",
+		"en": "FOREVER YOUNG"
+	},
+	{
+		"zh": "五行",
+		"en": "Wuxing"
+	},
+	{
+		"zh": "负隅",
+		"en": "With One's Back to Strategic Point"
+	},
+	{
+		"zh": "寒夜方舟",
+		"en": "Ark of Cold Night"
+	},
+	{
+		"zh": "依旧容颜",
+		"en": "Still Looks"
+	},
+	{
+		"zh": "机器人驾驶员",
+		"en": "Mecha pilot"
+	},
+	{
+		"zh": "心灵的质量",
+		"en": "Quality of Mind"
+	},
+	{
+		"zh": "Lunaria(我的三体)",
+		"en": "Lunaria"
+	},
+	{
+		"zh": "三体/衍生作品",
+		"en": "The Three-Body Problem/Derivative works"
+	},
+	{
+		"zh": "时光尽头的记忆",
+		"en": "Memories at the End of Time"
+	},
+	{
+		"zh": "威肯",
+		"en": "The Weeknd"
+	},
+	{
+		"zh": "SKY HIGH(头文字D)",
+		"en": "SKY HIGH"
+	},
+	{
+		"zh": "I DO what i WANT",
+		"en": "I DO what i WANT"
+	},
+	{
+		"zh": "单翼的伊卡洛斯",
+		"ja": "片翼のイカロス"
+	},
+	{
+		"zh": "Switch on",
+		"ja": "スイッチ・オン♪"
+	},
+	{
+		"zh": "Magical O TO HA",
+		"ja": "マジカルO・TO・HA・"
+	},
+	{
+		"zh": "时光代理人",
+		"en": "Link Click",
+		"ja": "時光代理人"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之筐出胜利",
+		"en": "Dunk for Victories",
+		"ja": "喜羊羊与灰太狼之筐出勝利"
+	},
+	{
+		"zh": "羊羊行动队",
+		"en": "Mighty Goat Squad (song)"
+	},
+	{
+		"zh": "山歌对唱",
+		"en": "Folk Song Duet"
+	},
+	{
+		"zh": "我爱你,灰太狼",
+		"en": "I Love You, Wolffy"
+	},
+	{
+		"zh": "我一定会回来的(歌曲)",
+		"en": "I Will Be Back (song)"
+	},
+	{
+		"zh": "我一定会回来的",
+		"en": "I Will Be Back"
+	},
+	{
+		"zh": "奥特曼:索拉",
+		"en": "Ultraman:Sora"
+	},
+	{
+		"zh": "Find me",
+		"en": "Find me"
+	},
+	{
+		"zh": "科学特别搜查队",
+		"en": "Science Special Search Party"
+	},
+	{
+		"zh": "希望之篮",
+		"en": "The Basket of Hope"
+	},
+	{
+		"zh": "A-SOUL",
+		"en": "A-SOUL"
+	},
+	{
+		"zh": "Shiki",
+		"en": "Shiki"
+	},
+	{
+		"zh": "少女前线/动画",
+		"en": "Girls' Frontline",
+		"ja": "ドールズフロントライン"
+	},
+	{
+		"zh": "怒号Uru",
+		"en": "Dogou Uru"
+	},
+	{
+		"zh": "鹿鸣",
+		"en": "Lumi"
+	},
+	{
+		"zh": "Cold",
+		"en": "Cold"
+	},
+	{
+		"zh": "喜羊羊与灰太狼之决战次时代",
+		"en": "Ultimate Battle: The Next Generation",
+		"ja": "喜羊羊与灰太狼之決戦次時代"
+	},
+	{
+		"zh": "Goodbye To A World",
+		"en": "Goodbye To A World"
+	},
+	{
+		"zh": "烈羊羊",
+		"en": "Blazey"
+	},
+	{
+		"zh": "龅牙",
+		"en": "Buck teeth"
+	},
+	{
+		"zh": "Sad Machine",
+		"en": "Sad Machine"
+	},
+	{
+		"zh": "P(ATOLS)",
+		"en": "P"
+	},
+	{
+		"zh": "Ten Thousand Stars",
+		"en": "Ten Thousand Stars"
+	},
+	{
+		"zh": "自然选择，前进四",
+		"en": "Natural Selection, Ahead Four"
+	},
+	{
+		"zh": "达米安·韦恩",
+		"en": "Damian Wayne"
+	},
+	{
+		"zh": "沙赞",
+		"en": "Captain Marvel (DC Comics)"
+	},
+	{
+		"zh": "塞赫麦特",
+		"en": "Sekhmet"
+	},
+	{
+		"zh": "豹姐",
+		"en": "Bao Jie"
+	},
+	{
+		"zh": "亦正亦邪",
+		"en": "Both good and evil"
+	},
+	{
+		"zh": "Kekon",
+		"en": "Kekon"
+	},
+	{
+		"zh": "Unbreakable tie",
+		"en": "Unbreakable tie"
+	},
+	{
+		"zh": "巫女",
+		"en": "Miko"
+	},
+	{
+		"zh": "氦氦",
+		"en": "HeiHei"
+	},
+	{
+		"zh": "迪拉",
+		"en": "DeeLA"
+	},
+	{
+		"zh": "嘟嘟(虚拟UP主)",
+		"en": "DooDoo"
+	},
+	{
+		"zh": "Why Does a Heart Break?",
+		"en": "Why Does a Heart Break?"
+	},
+	{
+		"zh": "Again(Crusher-P)",
+		"en": "Again (Crusher-P)"
+	},
+	{
+		"zh": "蓝色的地球",
+		"en": "Blue Earth"
+	},
+	{
+		"zh": "团团转的地球",
+		"en": "Spinning Earth"
+	},
+	{
+		"zh": "Polly Jean",
+		"en": "Polly Jean"
+	},
+	{
+		"zh": "Not Afraid",
+		"en": "Not Afraid"
+	},
+	{
+		"zh": "死亡细胞",
+		"en": "Dead Cells"
+	},
+	{
+		"zh": "One Last You",
+		"en": "One Last You"
+	},
+	{
+		"zh": "Thunderbird",
+		"en": "Thunderbird"
+	},
+	{
+		"zh": "Dance Tonight",
+		"en": "Dance Tonight"
+	},
+	{
+		"zh": "Whispering My Love",
+		"en": "Whispering My Love"
+	},
+	{
+		"zh": "Milky Way",
+		"en": "Milky Way"
+	},
+	{
+		"zh": "神兽金刚",
+		"en": "Mythic Beasts"
+	},
+	{
+		"zh": "Gravity Bounce",
+		"en": "Gravity Bounce"
+	},
+	{
+		"zh": "铁甲威虫之骑刃王",
+		"en": "Kibaoh Klashers"
+	},
+	{
+		"zh": "All I Want",
+		"en": "All I Want"
+	},
+	{
+		"zh": "Love Yourself",
+		"en": "Love Yourself"
+	},
+	{
+		"zh": "Lost My Way",
+		"en": "Lost My Way"
+	},
+	{
+		"zh": "Light A Fire",
+		"en": "Light A Fire"
+	},
+	{
+		"zh": "无限王者团",
+		"en": "WXWZ"
+	},
+	{
+		"zh": "赤焰七星",
+		"en": "Dylan (Kibaoh Klashers)"
+	},
+	{
+		"zh": "PROJECT聆",
+		"en": "Project Ling"
+	},
+	{
+		"zh": "Breathe Again",
+		"en": "Breathe Again"
+	},
+	{
+		"zh": "Army Of Two",
+		"en": "Army Of Two"
+	},
+	{
+		"zh": "All I See",
+		"en": "All I See"
+	},
+	{
+		"zh": "勇攀大气层",
+		"en": "Hike up the Atmosphere"
+	},
+	{
+		"zh": "Give You The World",
+		"en": "Give You The World"
+	},
+	{
+		"zh": "Day By Day(CAROLE & TUESDAY)",
+		"en": "Day By Day"
+	},
+	{
+		"zh": "紫嫣",
+		"en": "Violet"
+	},
+	{
+		"zh": "Threads",
+		"en": "Threads"
+	},
+	{
+		"zh": "LIGHTS GO OUT",
+		"en": "LIGHTS GO OUT"
+	},
+	{
+		"zh": "Message in the Wind",
+		"en": "Message in the Wind"
+	},
+	{
+		"zh": "Beautiful Breakdown",
+		"en": "Beautiful Breakdown"
+	},
+	{
+		"zh": "桃太郎",
+		"en": "Momotaro"
+	},
+	{
+		"zh": "Lay It All On Me",
+		"en": "Lay It All On Me"
+	},
+	{
+		"zh": "After The Fire",
+		"en": "After The Fire"
+	},
+	{
+		"zh": "Endless",
+		"en": "Endless"
+	},
+	{
+		"zh": "The Tower",
+		"en": "The Tower"
+	},
+	{
+		"zh": "Mother(CAROLE & TUESDAY)",
+		"en": "Mother (CAROLE & TUESDAY)"
+	},
+	{
+		"zh": "星尘(平行四界)/相关活动",
+		"en": "Stardust/Related activities"
+	},
+	{
+		"zh": "DEAD BEATS",
+		"en": "DEAD BEATS"
+	},
+	{
+		"zh": "零(虚拟偶像)",
+		"en": "Ling (virtual idol)"
+	},
+	{
+		"zh": "梦见",
+		"en": "Dreaming"
+	},
+	{
+		"zh": "翼(虚拟偶像)",
+		"en": "Wing (virtual idol)"
+	},
+	{
+		"zh": "屈晨曦",
+		"en": "Wilson (Watsons)"
+	},
+	{
+		"zh": "SPARKS",
+		"en": "SPARKS"
+	},
+	{
+		"zh": "创造未来",
+		"en": "Creating the Future"
+	},
+	{
+		"zh": "BRE@THLESS",
+		"en": "BRE@THLESS"
+	},
+	{
+		"zh": "艾灵",
+		"en": "Ai Ling"
+	},
+	{
+		"zh": "移动的板块",
+		"en": "Moving Plates"
+	},
+	{
+		"zh": "齐奏乐悠扬",
+		"en": "Day and Night"
+	},
+	{
+		"zh": "LOST INTO THE NIGHT",
+		"en": "LOST INTO THE NIGHT"
+	},
+	{
+		"zh": "雷电影",
+		"en": "Raiden Ei"
+	},
+	{
+		"zh": "奥特曼:博伊",
+		"en": "Ultraman Boy"
+	},
+	{
+		"zh": "早柚",
+		"en": "Sayu (Genshin Impact)"
+	},
+	{
+		"zh": "圆谷株式会社",
+		"en": "Tsuburaya Productions"
+	},
+	{
+		"zh": "小雨(喜羊羊与灰太狼)",
+		"en": "Xiao Yu(Pleasant Goat and Big Big Wolf)"
+	},
+	{
+		"zh": "小雷(喜羊羊与灰太狼)",
+		"en": "Xiao Lei"
+	},
+	{
+		"zh": "Dive Back In Time",
+		"en": "Dive Back In Time"
+	},
+	{
+		"zh": "海洋的颜色",
+		"en": "The Color of the Ocean"
+	},
+	{
+		"zh": "神奇的潮汐",
+		"en": "Amazing Tides"
+	},
+	{
+		"zh": "草原竞赛",
+		"en": "Grassland Competition"
+	},
+	{
+		"zh": "远古冰川乐园",
+		"en": "Ancient Glacier Park"
+	},
+	{
+		"zh": "欢乐的芬兰",
+		"en": "Fun Finland"
+	},
+	{
+		"zh": "水循环过山车",
+		"en": "Water Cycle Roller Coaster"
+	},
+	{
+		"zh": "气象探险屋",
+		"en": "Meteorological Adventure House"
+	},
+	{
+		"zh": "美丽的四季",
+		"en": "The Beautiful Four Seasons"
+	},
+	{
+		"zh": "环保的新能源",
+		"en": "New Green Energy"
+	},
+	{
+		"zh": "超级热带雨林",
+		"en": "The Super Rainforest"
+	},
+	{
+		"zh": "闪耀的星星",
+		"en": "Shining Stars"
+	},
+	{
+		"zh": "月亮与太阳",
+		"en": "The Moon and The Sun"
+	},
+	{
+		"zh": "沙漠之洲",
+		"en": "Desert Oasis"
+	},
+	{
+		"zh": "弯曲的河流",
+		"en": "Meandering Rivers"
+	},
+	{
+		"zh": "征服高山",
+		"en": "Conquering the Mountian"
+	},
+	{
+		"zh": "湿地游乐园",
+		"en": "The Wetland Park"
+	},
+	{
+		"zh": "宝贵的淡水",
+		"en": "Our Precious Fresh Water"
+	},
+	{
+		"zh": "咸水盐雕",
+		"en": "Salt Water and Salt Sculpting"
+	},
+	{
+		"zh": "藏在地下的矿产",
+		"en": "Underground Minerals"
+	},
+	{
+		"zh": "干旱与洪水",
+		"en": "Droughts and Floods"
+	},
+	{
+		"zh": "油画中的地震",
+		"en": "The Earthquake in the Oil Painting"
+	},
+	{
+		"zh": "谢琳",
+		"en": "Charlene.X"
+	},
+	{
+		"zh": "雾霾大作战",
+		"en": "The Haze Battle"
+	},
+	{
+		"zh": "佩盖萨星人",
+		"en": "Alien Pegassa"
+	},
+	{
+		"zh": "翼之光",
+		"en": "The Light of Wings"
+	},
+	{
+		"zh": "卢永强",
+		"en": "Lo Wing Keung",
+		"ja": "盧永強"
+	},
+	{
+		"zh": "凑诗",
+		"en": "Cou Shi"
+	},
+	{
+		"zh": "韦启良",
+		"en": "Tomy Wai"
+	},
+	{
+		"zh": "杨沛宜",
+		"en": "Camellia Yang"
+	},
+	{
+		"zh": "星辰StarLight",
+		"en": "StarLight"
+	},
+	{
+		"zh": "黄俊铭",
+		"en": "Huang Junming"
+	},
+	{
+		"zh": "阴阳师手游:为崽而战",
+		"ja": "陰陽師 (ゲーム)"
+	},
+	{
+		"zh": "纳克鲁斯",
+		"en": "Knuckles the Echidna"
+	},
+	{
+		"zh": "璐米娜",
+		"en": "Lumina"
+	},
+	{
+		"zh": "古惑狼(角色)",
+		"en": "Crash Bandicoot"
+	},
+	{
+		"zh": "'Cause I'm a Liar",
+		"en": "'Cause I'm a Liar"
+	},
+	{
+		"zh": "变身器",
+		"en": "Transformation device"
+	},
+	{
+		"zh": "地狱乐园",
+		"en": "Demon in the Heaven"
+	},
+	{
+		"zh": "假面骑士Revice(骑士)",
+		"en": "Kamen Rider Revice (Riders)"
+	},
+	{
+		"zh": "Kumarba",
+		"en": "Kumarba"
+	},
+	{
+		"zh": "竹蜻蜓",
+		"en": "Bamboo-copter"
+	},
+	{
+		"zh": "星瞳",
+		"en": "Xingtong"
+	},
+	{
+		"zh": "魂斗罗系列",
+		"en": "Contra"
+	},
+	{
+		"zh": "迫水真吾",
+		"en": "Shingo Sakomizu"
+	},
+	{
+		"zh": "斯派罗(角色)",
+		"en": "Spyro (character)"
+	},
+	{
+		"zh": "Vice(假面骑士Revice)",
+		"en": "Vice (Kamen Rider Revice)"
+	},
+	{
+		"zh": "斯帕克斯",
+		"en": "Sparx"
+	},
+	{
+		"zh": "小龙斯派罗系列",
+		"en": "Spyro"
+	},
+	{
+		"zh": "古惑狼系列",
+		"en": "Crash Bandicoot"
+	},
+	{
+		"zh": "The Call to Arms",
+		"en": "The Call to Arms"
+	},
+	{
+		"zh": "Keep on keeping on",
+		"en": "Keep on keeping on"
+	},
+	{
+		"zh": "像素画佳佳",
+		"en": "Piko Piko Fuuka"
+	},
+	{
+		"zh": "End of a life",
+		"en": "End of a life"
+	},
+	{
+		"zh": "五郎(原神)",
+		"en": "Gorou (Genshin Impact)"
+	},
+	{
+		"zh": "五郎",
+		"en": "Goro"
+	},
+	{
+		"zh": "怪兽",
+		"en": "Kaiju"
+	},
+	{
+		"zh": "猪猪侠(歌曲)",
+		"en": "GG Bond (song)"
+	},
+	{
+		"zh": "斯皮鲁",
+		"en": "Spirou"
+	},
+	{
+		"zh": "耀西系列",
+		"en": "Yoshi"
+	},
+	{
+		"zh": "斯皮鲁和方大炯历险记",
+		"en": "Spirou & Fantasio"
+	},
+	{
+		"zh": "方大炯",
+		"en": "Fantasio"
+	},
+	{
+		"zh": "小皮(斯皮鲁和方大炯历险记)",
+		"en": "Spip"
+	},
+	{
+		"zh": "陆鳐LuLu",
+		"en": "LuyeeLuLu"
+	},
+	{
+		"zh": "Enemy",
+		"en": "Enemy"
+	},
+	{
+		"zh": "杜皮依",
+		"en": "Dupuis"
+	},
+	{
+		"zh": "宝玲公主",
+		"en": "Princess Pring (character)"
+	},
+	{
+		"zh": "总理俱乐部",
+		"en": "Prime Minister Club",
+		"ja": "総理倶楽部"
+	},
+	{
+		"zh": "加斯顿(漫画)",
+		"en": "Gaston (comics)"
+	},
+	{
+		"zh": "Dofus",
+		"en": "Dofus"
+	},
+	{
+		"zh": "雷蒂丽·达古露萝德",
+		"en": "雷蒂丽·坦格罗德"
+	},
+	{
+		"zh": "QQfamily",
+		"en": "QQfamily"
+	},
+	{
+		"zh": "西西",
+		"en": "Judy (VTuber)"
+	},
+	{
+		"zh": "塞尔维亚",
+		"en": "Serbia"
+	},
+	{
+		"zh": "黑暗路基艾尔",
+		"en": "Dark Lugiel"
+	},
+	{
+		"zh": "GET ME POWER",
+		"en": "GET ME POWER"
+	},
+	{
+		"zh": "LOVE & MONEY",
+		"en": "LOVE & MONEY"
+	},
+	{
+		"zh": "Drum Go Dum",
+		"en": "Drum Go Dum"
+	},
+	{
+		"zh": "五月天",
+		"en": "Mayday"
+	},
+	{
+		"zh": "Sparks of Joy",
+		"en": "Sparks of Joy"
+	},
+	{
+		"zh": "耀西",
+		"en": "Yoshi (character)"
+	},
+	{
+		"zh": "Shizukou",
+		"en": "Shizukou"
+	},
+	{
+		"zh": "LuckyCupCake",
+		"en": "LuckyCupCake"
+	},
+	{
+		"zh": "别看我只是一只羊2022",
+		"en": "Even Though I'm Just a Little Goat 2022"
+	},
+	{
+		"zh": "苏苏和维维历险记",
+		"en": "Suske en Wiske"
+	},
+	{
+		"zh": "四禧丸子",
+		"en": "Si Xi Wan Zi"
+	},
+	{
+		"zh": "追傩酱",
+		"en": "Tsuina-chan"
+	},
+	{
+		"zh": "珠珠的秘密",
+		"en": "Secret Jouju"
+	},
+	{
+		"zh": "珠珠",
+		"en": "Jouju"
+	},
+	{
+		"zh": "日本麻将",
+		"en": "Riichi Mahjong"
+	},
+	{
+		"zh": "Crush",
+		"en": "Crush (WL.S)"
+	},
+	{
+		"zh": "Beyond the Sky",
+		"en": "Beyond the Sky"
+	},
+	{
+		"zh": "Aura",
+		"en": "Aura"
+	},
+	{
+		"zh": "888号",
+		"en": "Numbuh 888"
+	},
+	{
+		"zh": "Drifting Soul",
+		"en": "Drifting Soul"
+	},
+	{
+		"zh": "量子少年",
+		"en": "量子少年"
+	},
+	{
+		"zh": "馅蜜椿",
+		"en": "Anmitsu Tsubaki"
+	},
+	{
+		"zh": "Janly",
+		"en": "Janly"
+	},
+	{
+		"zh": "夜兰",
+		"en": "Yelan"
+	},
+	{
+		"zh": "长平传",
+		"en": "The Legend of Princess ChangPing"
+	},
+	{
+		"zh": "雷鸟特攻队",
+		"en": "Thunderbirds"
+	},
+	{
+		"zh": "雷鸟特攻队(动画)",
+		"en": "Thunderbirds Are Go"
+	},
+	{
+		"zh": "阿兰·特雷西",
+		"en": "Alan Tracy"
+	},
+	{
+		"zh": "伏见香音",
+		"en": "Fushimi Colon"
+	},
+	{
+		"zh": "夏予扬",
+		"en": "Xia Yuyang"
+	},
+	{
+		"zh": "机械生命体",
+		"en": "Mechanical lifeform"
+	},
+	{
+		"zh": "十六夜萌爱",
+		"en": "Izayoi Mea"
+	},
+	{
+		"zh": "小涂真纪"
+	},
+	{
+		"zh": "鹿野院平藏",
+		"en": "Shikanoin Heizou"
+	},
+	{
+		"zh": "阿兰·特雷西(2015)",
+		"en": "Alan Tracy (2015)"
+	},
+	{
+		"zh": "维吉尔·特雷西(2015)",
+		"en": "Virgil Tracy (2015)"
+	},
+	{
+		"zh": "紫罗兰(植物)",
+		"en": "Violet (plant)"
+	},
+	{
+		"zh": "樱花",
+		"en": "Cherry blossom"
+	},
+	{
+		"zh": "速食炒面现象",
+		"en": "Lookalike"
+	},
+	{
+		"zh": "X探险特工队",
+		"en": "X-Venture"
+	},
+	{
+		"zh": "平八郎",
+		"en": "Goro"
+	},
+	{
+		"zh": "霜戌蕾娜",
+		"en": "Shimoinu Reina"
+	},
+	{
+		"zh": "Hudson Soft",
+		"en": "Hudson Soft"
+	},
+	{
+		"zh": "交织的Aestivum",
+		"en": "交織的Aestivum"
+	},
+	{
+		"zh": "APOKI",
+		"en": "APOKI",
+		"ja": "APOKI"
+	},
+	{
+		"zh": "熊出没之怪兽计划2",
+		"en": "Bonnie Bears:Monster Plan 2"
+	},
+	{
+		"zh": "The History of Burning Drafts",
+		"en": "The History of Burning Drafts"
+	},
+	{
+		"zh": "幻想乡",
+		"ja": "幻想郷"
+	}
+]

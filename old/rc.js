@@ -402,9 +402,9 @@ class RecentChanges {
 		}
 		this.#qq.watchGroupMsg(this.#gid, async msg => {
 			const links = [...new Set(msg.flatMap(RecentChanges.wikilink))],
-				titles = links.filter(title => !specialPage.test(title)).join('|'),
+				titles = links.filter(title => !specialPage.test(title)),
 				printed = {},
-				{query} = titles ? await this.#api.get({titles, converttitles: 1}) : {};
+				{query} = titles.length ? await this.#api.get({titles, converttitles: 1}) : {};
 			links.forEach((title, t) => {
 				if (specialPage.test(title)) {
 					title = title.replace(specialPage, 'special:'); // eslint-disable-line no-param-reassign

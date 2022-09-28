@@ -8,6 +8,7 @@ config/
 !config/example_user.json
 !config/exturl.json
 !config/photrans.json
+!config/langlinks.json
 interactive/lyrics
 interactive/ruby-*
 interactive/*llwiki.js
