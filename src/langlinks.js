@@ -7,9 +7,9 @@ const Api = require('../lib/api'),
 	Parser = require('wikiparser-node'),
 	records = require('../config/langlinks'),
 	config = {
-		ja: {url: jaurl, pin: japin, name: '日'},
-		en: {url: enurl, pin: enpin, name: '英'},
-		zh: {url, pin, name: '中'},
+		ja: {url: jaurl, pin: japin, name: '日', summary: '言語間リンクを追加または修正'},
+		en: {url: enurl, pin: enpin, name: '英', summary: 'adding or amending interlanguage links'},
+		zh: {url, pin, name: '中', summary: '添加或修正跨语言链接'},
 	},
 	sourceParams = {
 		generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 'max',
@@ -103,10 +103,13 @@ const targetMain = async target => {
 			}
 		}
 		if (appendtext) {
-			if (mode !== 'dry') {
+			const params = {pageid, appendtext, summary: config[target].summary};
+			if (mode === 'dry') {
+				console.log(params);
+			} else {
 				await targetApi.csrfToken();
+				await targetApi.edit(params);
 			}
-			await targetApi.edit({pageid, appendtext, summary: `自动添加跨语言链接`}, mode === 'dry');
 		}
 	}
 };
@@ -127,10 +130,10 @@ const editMain = async wiki => {
 		}
 		list.push([pageid, content, root.toString(), timestamp, curtimestamp]);
 	}
-	if (mode !== 'dry') {
+	if (mode !== 'dry' && list.length) {
 		await api.csrfToken();
 	}
-	await api.massEdit(list, mode, '修正跨语言链接');
+	await api.massEdit(list, mode, config[wiki].summary);
 };
 
 const main = async () => {
