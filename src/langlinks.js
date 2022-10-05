@@ -45,6 +45,7 @@ const getLangLinks = async (source, c = {}) => {
 			newLinks.push({source, title, links: newLangLinks});
 		}
 	}
+	info(`已检查${config[source].name}萌的 ${pages.length} 个含跨语言链接的页面。`);
 	if (q.continue) {
 		return getLangLinks(source, q.continue);
 	}
