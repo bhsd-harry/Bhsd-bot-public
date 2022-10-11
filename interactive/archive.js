@@ -52,10 +52,12 @@ Parser.config = './config/moegirl';
 	try {
 		const temp = require('../config/broken-temp');
 		await Promise.all([
-			c ? save('../config/archive.json', c) : null,
 			save('../config/broken.json', temp),
 			promises.unlink('../config/broken-temp.json'),
 		]);
 	} catch {}
-	await api.massEdit(edits, mode, '自动添加网页存档或标记失效链接');
+	await Promise.all([
+		c ? save('../config/archive.json', c) : null,
+		api.massEdit(edits, mode, '自动添加网页存档或标记失效链接'),
+	]);
 })();

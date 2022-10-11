@@ -35,6 +35,9 @@ const main = async (api = new Api(user, pin, url)) => {
 	let mode = runMode();
 	if (mode === 'run') {
 		mode = 'dry';
+	} else if (mode === 'redry') {
+		await api.massEdit(null, mode);
+		return;
 	}
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
