@@ -26,7 +26,7 @@
 	},
 	{
 		"zh": "生物娘",
-		"en": "Biology girl"
+		"en": "Biology Girl"
 	},
 	{
 		"zh": "哥伦比亚(美国拟人形象)",
@@ -34,11 +34,11 @@
 	},
 	{
 		"zh": "萌百娘",
-		"en": "Moegirlpedia Girl"
+		"en": "Moegirlpe-tan"
 	},
 	{
 		"zh": "镜音铃·连",
-		"en": "Kagamine Rin & Ren"
+		"en": "Kagamine Rin & Len"
 	},
 	{
 		"zh": "巡音流歌",
@@ -178,7 +178,7 @@
 	},
 	{
 		"zh": "英国娘",
-		"en": "UK girl"
+		"en": "UK Girl"
 	},
 	{
 		"zh": "御坂美琴",
@@ -256,7 +256,7 @@
 	},
 	{
 		"zh": "婚后光子",
-		"en": "Kongō Mitsuko"
+		"en": "Mitsuko Kongō"
 	},
 	{
 		"zh": "湾内绢保",
@@ -409,7 +409,7 @@
 	},
 	{
 		"zh": "约会大作战",
-		"en": "DATE A LIVE",
+		"en": "Date A Live",
 		"ja": "デート・ア・ライブ"
 	},
 	{
@@ -459,7 +459,7 @@
 	},
 	{
 		"zh": "龙族",
-		"en": "Ryuuzoku"
+		"en": "Ryūzoku"
 	},
 	{
 		"zh": "电脑游戏",
@@ -519,7 +519,7 @@
 	},
 	{
 		"zh": "白河小鸟",
-		"en": "Shirakawa kotori"
+		"en": "Shirakawa Kotori"
 	},
 	{
 		"zh": "Eternal reality",
@@ -581,10 +581,6 @@
 	{
 		"zh": "I Burn",
 		"en": "I Burn"
-	},
-	{
-		"zh": "日本麻将娘",
-		"en": "Riichi Mahjong"
 	},
 	{
 		"zh": "歌手",
@@ -668,7 +664,7 @@
 		"en": "Qi Inory"
 	},
 	{
-		"zh": "请问您今天要来点兔子吗",
+		"zh": "请问您今天要来点兔子吗？",
 		"en": "Is the Order a Rabbit?"
 	},
 	{
@@ -685,7 +681,7 @@
 	},
 	{
 		"zh": "LoveLive!",
-		"en": "LoveLive!",
+		"en": "Love Live!",
 		"ja": "ラブライブ！"
 	},
 	{
@@ -694,7 +690,7 @@
 	},
 	{
 		"zh": "冯志明",
-		"en": "Fung Chi ming"
+		"en": "Fung Chi Ming"
 	},
 	{
 		"zh": "庄永新",
@@ -702,7 +698,7 @@
 	},
 	{
 		"zh": "利志达",
-		"en": "Li Chi tak"
+		"en": "Li Chi Tak"
 	},
 	{
 		"zh": "美国队长",
@@ -846,7 +842,7 @@
 	},
 	{
 		"zh": "LoveLive!Sunshine!!",
-		"en": "LoveLive!Sunshine!!",
+		"en": "Love Live! Sunshine!!",
 		"ja": "ラブライブ！サンシャイン!!"
 	},
 	{
@@ -904,7 +900,7 @@
 	},
 	{
 		"zh": "历史娘",
-		"en": "History girl"
+		"en": "History Girl"
 	},
 	{
 		"zh": "星尘(平行四界)",
@@ -924,8 +920,8 @@
 		"en": "Mayuri"
 	},
 	{
-		"zh": "天使的3P!",
-		"en": "Tenshi no 3P"
+		"zh": "天使的3P！",
+		"en": "Here Comes the Three Angels"
 	},
 	{
 		"zh": "MAIKA",
@@ -1172,7 +1168,7 @@
 	},
 	{
 		"zh": "别看我只是一只羊",
-		"en": "Even though I’m just a little goat"
+		"en": "Even Though I'm Just a Little Goat"
 	},
 	{
 		"zh": "知己(李紫昕)",
@@ -1547,7 +1543,7 @@
 	},
 	{
 		"zh": "少女前线:M16A1",
-		"en": "Girls' Frontline:M16A1",
+		"en": "Girls' Frontline: M16A1",
 		"ja": "ドールズフロントライン:M16A4"
 	},
 	{
@@ -1661,7 +1657,7 @@
 	},
 	{
 		"zh": "时间旅行少女",
-		"en": "Time Travel Girl"
+		"en": "Time Travel Girl ~Mari, Waka, and the Eight Scientists~"
 	},
 	{
 		"zh": "少女前线:内格夫",
@@ -1729,7 +1725,7 @@
 		"ja": "ドールズフロントライン:LWMMG"
 	},
 	{
-		"zh": "末日时在做什么?有没有空?可以来拯救吗?",
+		"zh": "末日时在做什么？有没有空？可以来拯救吗？",
 		"en": "What do you do at the end of the world? Are you busy? Will you save us?"
 	},
 	{
@@ -1897,7 +1893,7 @@
 	},
 	{
 		"zh": "Niconico动画",
-		"en": "Nico nico"
+		"en": "Niconico"
 	},
 	{
 		"zh": "Shelter",
@@ -2043,7 +2039,7 @@
 	},
 	{
 		"zh": "嫁人就嫁灰太狼(歌曲)",
-		"en": "Mr.Wolffy, Mr.Right!(song)"
+		"en": "Mr.Wolffy, Mr.Right! (song)"
 	},
 	{
 		"zh": "少女前线:USP Compact",
@@ -2075,7 +2071,7 @@
 	},
 	{
 		"zh": "麟犀AI韵律",
-		"en": "Kilin & Xi"
+		"en": "Heart x Algorhythm"
 	},
 	{
 		"zh": "逢妻光",
@@ -2189,7 +2185,7 @@
 	},
 	{
 		"zh": "少女前线:利贝罗勒",
-		"en": "Girls' Frontline:Ribeyrolles"
+		"en": "Girls' Frontline: Ribeyrolles"
 	},
 	{
 		"zh": "少女前线:PKP",
@@ -2262,10 +2258,6 @@
 	{
 		"zh": "少女终末旅行",
 		"en": "Girl's Last Tour"
-	},
-	{
-		"zh": "Skull Face",
-		"en": "Paz Ortega Andrade"
 	},
 	{
 		"zh": "赛马娘 Pretty Derby",
@@ -2391,7 +2383,7 @@
 		"en": "Magical Number"
 	},
 	{
-		"zh": "勇气在哪?在你的内心!",
+		"zh": "勇气在哪？在你的内心！",
 		"en": "Yuuki wa Doko ni? Kimi no Mune ni!"
 	},
 	{
@@ -2496,7 +2488,7 @@
 	},
 	{
 		"zh": "空想世界的某一天",
-		"en": "空想世界的某一天"
+		"en": "Some Days of the Utopian World"
 	},
 	{
 		"zh": "奥特曼:贝利亚",
@@ -2591,7 +2583,7 @@
 		"en": "Whenever There Are Meteors Across the Night Sky"
 	},
 	{
-		"zh": "杰斯提斯",
+		"zh": "奥特曼:杰斯提斯",
 		"en": "Ultraman Justice"
 	},
 	{
@@ -2685,7 +2677,7 @@
 	},
 	{
 		"zh": "Sing",
-		"en": "Sing"
+		"en": "Sing (Hatsune Miku)"
 	},
 	{
 		"zh": "Tessellate",
@@ -2932,10 +2924,6 @@
 		"en": "Superman"
 	},
 	{
-		"zh": "胧月(初音未来)",
-		"en": "Shinkai Shōjo"
-	},
-	{
 		"zh": "高咲侑",
 		"en": "Takasaki Yu"
 	},
@@ -3110,7 +3098,7 @@
 	},
 	{
 		"zh": "A·ZU·NA",
-		"en": "A·ZU·NA"
+		"en": "A・ZU・NA"
 	},
 	{
 		"zh": "QU4RTZ",
@@ -3294,7 +3282,7 @@
 	},
 	{
 		"zh": "秋蒂",
-		"en": "Judy (VTuber)"
+		"en": "Qutie"
 	},
 	{
 		"zh": "DON'T STAND SO CLOSE",
@@ -3302,7 +3290,7 @@
 	},
 	{
 		"zh": "琼(拳皇)",
-		"en": "King (The King of Fighters' charactor)"
+		"en": "King (The King of Fighters' character)"
 	},
 	{
 		"zh": "Wheelpower And Go!",
@@ -3330,7 +3318,7 @@
 	},
 	{
 		"zh": "MONSTER(KIRA)",
-		"en": "MONSTER(KIRA)"
+		"en": "MONSTER (KIRA)"
 	},
 	{
 		"zh": "面对面",
@@ -3560,11 +3548,6 @@
 		"en": "Shiki"
 	},
 	{
-		"zh": "少女前线/动画",
-		"en": "Girls' Frontline",
-		"ja": "ドールズフロントライン"
-	},
-	{
 		"zh": "怒号Uru",
 		"en": "Dogou Uru"
 	},
@@ -3687,7 +3670,7 @@
 	},
 	{
 		"zh": "Thunderbird",
-		"en": "Thunderbird"
+		"en": "Thunderbird (Rainbow Six)"
 	},
 	{
 		"zh": "Dance Tonight",
@@ -3767,7 +3750,7 @@
 	},
 	{
 		"zh": "紫嫣",
-		"en": "Violet"
+		"en": "Violet (virtual idol)"
 	},
 	{
 		"zh": "Threads",
@@ -3879,7 +3862,7 @@
 	},
 	{
 		"zh": "小雨(喜羊羊与灰太狼)",
-		"en": "Xiao Yu(Pleasant Goat and Big Big Wolf)"
+		"en": "Xiao Yu"
 	},
 	{
 		"zh": "小雷(喜羊羊与灰太狼)",
@@ -3947,7 +3930,7 @@
 	},
 	{
 		"zh": "征服高山",
-		"en": "Conquering the Mountian"
+		"en": "Conquering the Mountain"
 	},
 	{
 		"zh": "湿地游乐园",
@@ -4015,10 +3998,6 @@
 		"en": "Huang Junming"
 	},
 	{
-		"zh": "阴阳师手游:为崽而战",
-		"ja": "陰陽師 (ゲーム)"
-	},
-	{
 		"zh": "纳克鲁斯",
 		"en": "Knuckles the Echidna"
 	},
@@ -4028,11 +4007,11 @@
 	},
 	{
 		"zh": "古惑狼(角色)",
-		"en": "Crash Bandicoot"
+		"en": "Crash Bandicoot (character)"
 	},
 	{
 		"zh": "'Cause I'm a Liar",
-		"en": "'Cause I'm a Liar"
+		"en": "Cause I'm a Liar"
 	},
 	{
 		"zh": "变身器",
@@ -4057,10 +4036,6 @@
 	{
 		"zh": "星瞳",
 		"en": "Xingtong"
-	},
-	{
-		"zh": "魂斗罗系列",
-		"en": "Contra"
 	},
 	{
 		"zh": "迫水真吾",
@@ -4245,7 +4220,11 @@
 	},
 	{
 		"zh": "日本麻将",
-		"en": "Riichi Mahjong"
+		"en": "Japanese mahjong"
+	},
+	{
+		"zh": "麻将/番种/平和",
+		"en": "Riichi Mahjong:Pinfu"
 	},
 	{
 		"zh": "Crush",
@@ -4344,10 +4323,6 @@
 		"en": "X-Venture"
 	},
 	{
-		"zh": "平八郎",
-		"en": "Goro"
-	},
-	{
 		"zh": "霜戌蕾娜",
 		"en": "Shimoinu Reina"
 	},
@@ -4375,5 +4350,13 @@
 	{
 		"zh": "幻想乡",
 		"ja": "幻想郷"
+	},
+	{
+		"zh": "布迷",
+		"en": "BOOMi"
+	},
+	{
+		"zh": "MonsterZ MATE",
+		"en": "MonsterZ MATE"
 	}
 ]

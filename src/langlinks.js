@@ -27,7 +27,7 @@ Parser.config = './config/moegirl';
 
 const getLangLinks = async (source, c = {}) => {
 	const sourceApi = apis[source],
-		q = await sourceApi.get({...sourceParams, ...c, lllang: source === 'ja' ? 'zh' : 'ja'}),
+		q = await sourceApi.get({...sourceParams, ...c, lllang: source === 'en' ? 'zh' : 'en'}),
 		pages = q.query.pages.map(({title, langlinks}) => ({
 			title,
 			langlinks: langlinks
@@ -67,7 +67,7 @@ const targetMain = async target => {
 	if (!titles.length) {
 		return;
 	}
-	const {query} = await targetApi.post({titles, ...targetParams, lllang: target === 'ja' ? 'zh' : 'ja'}),
+	const {query} = await targetApi.post({titles, ...targetParams, lllang: target === 'en' ? 'zh' : 'en'}),
 		conversion = [...query.converted ?? [], ...query.redirects ?? []];
 	for (const {from, to} of conversion) {
 		const converted = newLinks
@@ -126,7 +126,7 @@ const editMain = async wiki => {
 			record = {[wiki]: title};
 		}
 		for (const {target, to} of corrections[wiki].filter(({title: thatTitle}) => title === thatTitle)) {
-			root.querySelector(`link[interwiki=${target}]`)?.setLangLink(target, to);
+			root.querySelector(`link[interwiki=${target}]:not(':contains(:${target})')`)?.setLangLink(target, to);
 			record[target] = to;
 		}
 		list.push([pageid, content, root.toString(), timestamp, curtimestamp]);
@@ -138,15 +138,18 @@ const editMain = async wiki => {
 };
 
 const main = async () => {
-	for (const source of ['ja', 'zh']) {
+	for (const source of ['en', 'zh']) {
 		await sourceMain(source);
 	}
+	console.log(newLinks.map(({source, title, links}) => ({
+		source, title, ...Object.fromEntries(links.map(({lang, title: t}) => [lang, t])),
+	})));
 	info('第一步：检查所有跨语言链接页面执行完毕。');
-	for (const target of ['ja', 'zh']) {
+	for (const target of ['en', 'zh']) {
 		await targetMain(target);
 	}
 	info('第二步：检查待修改的跨语言链接页面执行完毕。');
-	for (const wiki of ['ja', 'zh']) {
+	for (const wiki of ['en', 'zh']) {
 		await editMain(wiki);
 	}
 	await save('../config/langlinks.json', records);
