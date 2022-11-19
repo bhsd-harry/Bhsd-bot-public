@@ -12,7 +12,7 @@ const Api = require('../lib/api'),
 		zh: {url, pin, name: '中', summary: '添加或修正跨语言链接'},
 	},
 	sourceParams = {
-		generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 'max',
+		generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 500,
 		gapfilterlanglinks: 'withlanglinks', prop: 'langlinks', lllimit: 'max',
 	},
 	targetParams = {
@@ -27,7 +27,7 @@ Parser.config = './config/moegirl';
 
 const getLangLinks = async (source, c = {}) => {
 	const sourceApi = apis[source],
-		q = await sourceApi.get({...sourceParams, ...c, lllang: source === 'en' ? 'zh' : 'en'}),
+		q = await sourceApi.get({...sourceParams, ...c}),
 		pages = q.query.pages.map(({title, langlinks}) => ({
 			title,
 			langlinks: langlinks
@@ -67,7 +67,7 @@ const targetMain = async target => {
 	if (!titles.length) {
 		return;
 	}
-	const {query} = await targetApi.post({titles, ...targetParams, lllang: target === 'en' ? 'zh' : 'en'}),
+	const {query} = await targetApi.post({titles, ...targetParams}),
 		conversion = [...query.converted ?? [], ...query.redirects ?? []];
 	for (const {from, to} of conversion) {
 		const converted = newLinks
@@ -138,18 +138,18 @@ const editMain = async wiki => {
 };
 
 const main = async () => {
-	for (const source of ['en', 'zh']) {
+	for (const source of ['ja', 'en', 'zh']) {
 		await sourceMain(source);
 	}
 	console.log(newLinks.map(({source, title, links}) => ({
 		source, title, ...Object.fromEntries(links.map(({lang, title: t}) => [lang, t])),
 	})));
 	info('第一步：检查所有跨语言链接页面执行完毕。');
-	for (const target of ['en', 'zh']) {
+	for (const target of ['ja', 'en', 'zh']) {
 		await targetMain(target);
 	}
 	info('第二步：检查待修改的跨语言链接页面执行完毕。');
-	for (const wiki of ['en', 'zh']) {
+	for (const wiki of ['ja', 'en', 'zh']) {
 		await editMain(wiki);
 	}
 	await save('../config/langlinks.json', records);

@@ -41,10 +41,6 @@
 		"en": "Kagamine Rin & Len"
 	},
 	{
-		"zh": "巡音流歌",
-		"en": "Megurine Luka"
-	},
-	{
 		"zh": "帕秋莉·诺蕾姬",
 		"en": "Patchouli Knowledge"
 	},
@@ -240,15 +236,6 @@
 	{
 		"zh": "阿卡林",
 		"en": "Akkarin"
-	},
-	{
-		"zh": "二次元",
-		"en": "Nijigen",
-		"ja": "二次元"
-	},
-	{
-		"zh": "玛丽苏",
-		"en": "Mary Sue"
 	},
 	{
 		"zh": "Comic Market",
@@ -546,11 +533,6 @@
 		"ja": "ドイツ整骨"
 	},
 	{
-		"zh": "二次元禁断综合征",
-		"en": "Nijikon",
-		"ja": "二次元コンプレックス"
-	},
-	{
 		"zh": "彩虹小马",
 		"en": "My Little Pony: Friendship Is Magic"
 	},
@@ -587,10 +569,6 @@
 		"en": "Singer"
 	},
 	{
-		"zh": "五大流氓",
-		"ja": "五大無頼"
-	},
-	{
 		"zh": "栗山未来",
 		"en": "Kuriyama Mirai"
 	},
@@ -621,11 +599,6 @@
 	{
 		"zh": "国耻画谱",
 		"en": "Guochi huapu"
-	},
-	{
-		"zh": "北方铁道萌化部",
-		"en": "Moe North Railway",
-		"ja": "萌え北鉄道"
 	},
 	{
 		"zh": "不知火舞",
@@ -817,10 +790,6 @@
 		"en": "Africans"
 	},
 	{
-		"zh": "科技树",
-		"en": "Technology tree"
-	},
-	{
 		"zh": "嫣汐",
 		"en": "Yanxi"
 	},
@@ -854,11 +823,6 @@
 		"en": "Yōkai"
 	},
 	{
-		"zh": "Oo流",
-		"en": "OoStream",
-		"ja": "Oo流"
-	},
-	{
 		"zh": "用爱发电",
 		"en": "Love and energy"
 	},
@@ -881,10 +845,6 @@
 	{
 		"zh": "Gold(RWBY)",
 		"en": "Gold"
-	},
-	{
-		"zh": "连衣裙",
-		"en": "Dress"
 	},
 	{
 		"zh": "Endless night",
@@ -964,10 +924,6 @@
 		"en": "The Years Became Monuments"
 	},
 	{
-		"zh": "赛车未来",
-		"en": "Racing Miku"
-	},
-	{
 		"zh": "另类名字",
 		"ja": "キラキラネーム"
 	},
@@ -1012,11 +968,7 @@
 		"ja": "篠咲える"
 	},
 	{
-		"zh": "超长袖",
-		"en": "Sleeves past fingers"
-	},
-	{
-		"zh": "你的名字",
+		"zh": "你的名字。",
 		"ja": "君の名は。"
 	},
 	{
@@ -1055,10 +1007,6 @@
 	{
 		"zh": "喜羊羊与灰太狼之羊羊快乐的一年",
 		"en": "Joys of Seasons"
-	},
-	{
-		"zh": "Happy Tree Friends",
-		"en": "Happy Tree Friends"
 	},
 	{
 		"zh": "少女编号",
@@ -1108,10 +1056,6 @@
 		"en": "Ye Wenjie"
 	},
 	{
-		"zh": "头文字D",
-		"en": "Initial D"
-	},
-	{
 		"zh": "少女前线:M14",
 		"en": "Girls' Frontline: M14",
 		"ja": "ドールズフロントライン:M14"
@@ -1146,10 +1090,6 @@
 		"en": "Grow Slowly"
 	},
 	{
-		"zh": "战争迷雾",
-		"en": "Fog of war"
-	},
-	{
 		"zh": "少女前线:M60",
 		"ja": "ドールズフロントライン:M60"
 	},
@@ -1160,11 +1100,6 @@
 	{
 		"zh": "少女前线:汉阳造88式",
 		"ja": "ドールズフロントライン:漢陽88式"
-	},
-	{
-		"zh": "猫武士",
-		"en": "Warriors (novel series)",
-		"ja": "ウォーリアーズ"
 	},
 	{
 		"zh": "别看我只是一只羊",
@@ -1565,7 +1500,8 @@
 	},
 	{
 		"zh": "少女前线:灰熊MKV",
-		"en": "Girls' Frontline: Grizzly"
+		"en": "Girls' Frontline: Grizzly",
+		"ja": "ドールズフロントライン:グリズリー Mk V"
 	},
 	{
 		"zh": "少女前线:UMP9",
@@ -1734,7 +1670,8 @@
 	},
 	{
 		"zh": "那年那兔那些事儿",
-		"en": "Year Hare Affair"
+		"en": "Year Hare Affair",
+		"ja": "その時、そのウサギ、その出来事"
 	},
 	{
 		"zh": "少女前线:UMP45",
@@ -1880,10 +1817,6 @@
 		"en": "Zenzenzense"
 	},
 	{
-		"zh": "Lame Uncomfortable Laugh",
-		"en": "Lame Uncomfortable Laugh"
-	},
-	{
 		"zh": "CHOCOLAT",
 		"en": "CHOCOLAT"
 	},
@@ -1918,11 +1851,6 @@
 	{
 		"zh": "妖怪百姬",
 		"ja": "妖怪百姫たん"
-	},
-	{
-		"zh": "Paprika",
-		"en": "Paprika",
-		"ja": "パプリカ"
 	},
 	{
 		"zh": "狐之工作室",
@@ -1966,10 +1894,6 @@
 		"en": "Kiri"
 	},
 	{
-		"zh": "3D眩晕症",
-		"en": "Virtual reality sickness"
-	},
-	{
 		"zh": "国标麻将",
 		"en": "Mahjong Competition Rules"
 	},
@@ -1995,7 +1919,7 @@
 	},
 	{
 		"zh": "我爱灰太狼(歌曲)",
-		"en": "I Love Wolffy(song)"
+		"en": "I Love Wolffy (song)"
 	},
 	{
 		"zh": "爱哭鬼",
@@ -2144,7 +2068,7 @@
 	},
 	{
 		"zh": "少女前线:Saiga-12",
-		"ja": "ドールズフロントライン:Saiga-12"
+		"ja": "ドールズフロントライン:サイガ-12"
 	},
 	{
 		"zh": "兽娘动物园:貉",
@@ -2377,10 +2301,6 @@
 	{
 		"zh": "Neon",
 		"en": "Neon"
-	},
-	{
-		"zh": "魔法数字",
-		"en": "Magical Number"
 	},
 	{
 		"zh": "勇气在哪？在你的内心！",
@@ -2623,11 +2543,6 @@
 		"en": "Love Live! School idol festival/Song List"
 	},
 	{
-		"zh": "中国文具萌化社",
-		"en": "Stationery Moe China",
-		"ja": "中国文房具萌え化社"
-	},
-	{
 		"zh": "Rigel Theatre",
 		"en": "Rigël Theatre"
 	},
@@ -2646,10 +2561,6 @@
 	{
 		"zh": "史强",
 		"en": "Shi Qiang"
-	},
-	{
-		"zh": "装甲战争",
-		"en": "Armored Warfare"
 	},
 	{
 		"zh": "索尼克",
@@ -3117,10 +3028,6 @@
 		"en": "BlueArc Ultraman copyright controversy"
 	},
 	{
-		"zh": "永远都想对战游戏的切蒲英",
-		"en": "Endless Gamers"
-	},
-	{
 		"zh": "Hero for a Day",
 		"en": "Hero for a Day"
 	},
@@ -3159,10 +3066,6 @@
 	{
 		"zh": "素还真",
 		"en": "Su Huan-Jen"
-	},
-	{
-		"zh": "银翼杀手:2022大停电",
-		"en": "Blade Runner"
 	},
 	{
 		"zh": "玫瑰公主(猪猪侠)",
@@ -3599,10 +3502,6 @@
 	{
 		"zh": "沙赞",
 		"en": "Captain Marvel (DC Comics)"
-	},
-	{
-		"zh": "塞赫麦特",
-		"en": "Sekhmet"
 	},
 	{
 		"zh": "豹姐",
@@ -4143,16 +4042,8 @@
 		"en": "Dofus"
 	},
 	{
-		"zh": "雷蒂丽·达古露萝德",
-		"en": "雷蒂丽·坦格罗德"
-	},
-	{
 		"zh": "QQfamily",
 		"en": "QQfamily"
-	},
-	{
-		"zh": "西西",
-		"en": "Judy (VTuber)"
 	},
 	{
 		"zh": "塞尔维亚",
@@ -4231,10 +4122,6 @@
 		"en": "Crush (WL.S)"
 	},
 	{
-		"zh": "Beyond the Sky",
-		"en": "Beyond the Sky"
-	},
-	{
 		"zh": "Aura",
 		"en": "Aura"
 	},
@@ -4247,10 +4134,6 @@
 		"en": "Drifting Soul"
 	},
 	{
-		"zh": "量子少年",
-		"en": "量子少年"
-	},
-	{
 		"zh": "馅蜜椿",
 		"en": "Anmitsu Tsubaki"
 	},
@@ -4261,10 +4144,6 @@
 	{
 		"zh": "夜兰",
 		"en": "Yelan"
-	},
-	{
-		"zh": "长平传",
-		"en": "The Legend of Princess ChangPing"
 	},
 	{
 		"zh": "雷鸟特攻队",
@@ -4303,10 +4182,6 @@
 		"en": "Alan Tracy (2015)"
 	},
 	{
-		"zh": "维吉尔·特雷西(2015)",
-		"en": "Virgil Tracy (2015)"
-	},
-	{
 		"zh": "紫罗兰(植物)",
 		"en": "Violet (plant)"
 	},
@@ -4331,17 +4206,9 @@
 		"en": "Hudson Soft"
 	},
 	{
-		"zh": "交织的Aestivum",
-		"en": "交織的Aestivum"
-	},
-	{
 		"zh": "APOKI",
 		"en": "APOKI",
 		"ja": "APOKI"
-	},
-	{
-		"zh": "熊出没之怪兽计划2",
-		"en": "Bonnie Bears:Monster Plan 2"
 	},
 	{
 		"zh": "The History of Burning Drafts",
@@ -4358,5 +4225,21 @@
 	{
 		"zh": "MonsterZ MATE",
 		"en": "MonsterZ MATE"
+	},
+	{
+		"zh": "11区",
+		"ja": "エリア11"
+	},
+	{
+		"zh": "学园偶像(LoveLive!)",
+		"ja": "スクールアイドル"
+	},
+	{
+		"zh": "少女前线:蟒蛇",
+		"ja": "ドールズフロントライン:コルト・パイソン"
+	},
+	{
+		"zh": "津边爱香",
+		"ja": "津辺愛香"
 	}
 ]
