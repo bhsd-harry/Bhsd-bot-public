@@ -11,7 +11,6 @@ const {user, pin, url} = require('../config/user'),
 		'wrongInternal',
 		'css',
 		'doc',
-		'http',
 	];
 
 const api = new Api(user, pin, url);

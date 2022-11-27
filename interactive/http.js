@@ -8,23 +8,24 @@ const Api = require('../lib/api'),
 	{runMode, save} = require('../lib/dev'),
 	{run, dry} = require('../config/abuse32'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
-const main = async (api = new Api(user, pin, url)) => {
-	const mode = module.parent ? 'dry' : runMode('sort');
-	if (mode === 'sort') {
+(async (api = new Api(user, pin, url)) => {
+	let mode = runMode('sort');
+	if (mode === 'run') {
+		mode = 'dry';
+	} else if (mode === 'sort') {
 		sort();
 		return;
-	} else if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
-			if (!dry) {
-				throw new Error('没有保存的dry run！');
-			}
-			await Promise.all([
-				api.massEdit(null, mode, '自动修复http链接'),
-				save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
-			]);
-			return;
+	}
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	if (mode === 'rerun') {
+		if (!dry) {
+			throw new Error('没有保存的dry run！');
 		}
+		await Promise.all([
+			api.massEdit(null, mode, '自动修复http链接'),
+			save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
+		]);
+		return;
 	}
 	const last = new Date(run),
 		now = new Date().toISOString(),
@@ -38,10 +39,4 @@ const main = async (api = new Api(user, pin, url)) => {
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
 		save('../config/abuse32.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);
-};
-
-if (!module.parent) {
-	main();
-}
-
-module.exports = main;
+})();
