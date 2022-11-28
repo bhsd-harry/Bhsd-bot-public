@@ -104,18 +104,19 @@ const targetMain = async target => {
 			const sourceLink = langlinks?.find(({lang}) => lang === source)?.title;
 			if (!sourceLink) {
 				appendtext += `[[${source}:${sourceTitle}]]`;
-				const record = records.find(r => r[target] === title || r[source] === sourceTitle);
-				if (record) {
-					record[target] = title;
-					record[source] = sourceTitle;
-				} else {
-					records.push({[target]: title, [source]: sourceTitle});
-				}
 			} else if (Parser.normalizeTitle(sourceLink).title !== sourceTitle) {
 				const sourceName = config[source].name;
 				error(`${name}萌页面 ${pageid} 的${sourceName}萌链接 [[${
 					sourceLink
 				}]] 与${sourceName}萌页面 [[${sourceTitle}]] 不匹配！预计将于第三步修正。`);
+				corrections[target].push({title, target: source, from: sourceLink, to: sourceTitle});
+			}
+			const record = records.find(r => r[target] === title || r[source] === sourceTitle);
+			if (record) {
+				record[target] = title;
+				record[source] = sourceTitle;
+			} else {
+				records.push({[target]: title, [source]: sourceTitle});
 			}
 		}
 		if (appendtext) {
@@ -139,6 +140,7 @@ const editMain = async wiki => {
 		let record = records.find(r => r[wiki] === title);
 		if (!record) {
 			record = {[wiki]: title};
+			records.push(record);
 		}
 		for (const {target, to} of corrections[wiki].filter(({title: thatTitle}) => title === thatTitle)) {
 			root.querySelector(`link[interwiki=${target}]:not(':contains(:${target})')`)?.setLangLink(target, to);

@@ -2025,7 +2025,7 @@
 	},
 	{
 		"zh": "少女前线:Saiga-12",
-		"ja": "ドールズフロントライン:サイガ-12"
+		"ja": "ドールズフロントライン:Saiga-12"
 	},
 	{
 		"zh": "兽娘动物园:貉",
@@ -2089,7 +2089,7 @@
 		"en": "U-tan"
 	},
 	{
-		"zh": "带着智能手机闯荡异世界",
+		"zh": "带着智能手机闯荡异世界。",
 		"en": "In Another World With My Smartphone"
 	},
 	{
@@ -3360,7 +3360,7 @@
 		"en": "Folk Song Duet"
 	},
 	{
-		"zh": "我爱你,灰太狼",
+		"zh": "我爱你，灰太狼",
 		"en": "I Love You, Wolffy"
 	},
 	{
@@ -4189,5 +4189,33 @@
 	{
 		"zh": "Fate系列",
 		"ja": "Fateシリーズ"
+	},
+	{
+		"zh": "京音Ron",
+		"en": "Keine Ron"
+	},
+	{
+		"zh": "宙暮",
+		"en": "Zhou Mu"
+	},
+	{
+		"zh": "IA",
+		"en": "IA"
+	},
+	{
+		"zh": "LoveLiver",
+		"ja": "ラブライバー"
+	},
+	{
+		"zh": "LoveLive!系列",
+		"ja": "ラブライブ！シリーズ"
+	},
+	{
+		"zh": "这就是I",
+		"en": "I am you"
+	},
+	{
+		"zh": "消灭证据，少女纯洁",
+		"en": "Virgin birth"
 	}
 ]
