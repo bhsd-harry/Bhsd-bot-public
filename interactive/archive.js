@@ -5,7 +5,8 @@ const {promises} = require('fs'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
-	{user, pin, url} = require('../config/user');
+	{user, pin, url} = require('../config/user'),
+	archive = require('../config/archive');
 Parser.config = './config/moegirl';
 
 (async () => {
@@ -24,10 +25,10 @@ Parser.config = './config/moegirl';
 		return;
 	}
 	let pages, c;
-	if (titles) {
+	if (titles && isNaN(titles)) {
 		pages = await api.revisions({titles});
 	} else {
-		const response = await api.categorymembers('带有失效链接的条目', require('../config/archive'), 5);
+		const response = await api.categorymembers('带有失效链接的条目', archive, Number(titles) || 5);
 		[pages, c] = response;
 		[pages] = response;
 	}
@@ -39,7 +40,7 @@ Parser.config = './config/moegirl';
 			const {previousElementSibling} = token;
 			if (previousElementSibling?.type === 'free-extlink') {
 				previousElementSibling.dead = token;
-			} else if (previousElementSibling.type === 'ext-link') {
+			} else if (previousElementSibling?.type === 'ext-link') {
 				previousElementSibling.firstChild.dead = token;
 			}
 		}
