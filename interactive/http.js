@@ -6,8 +6,7 @@ const Api = require('../lib/api'),
 	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user'),
 	{exturl, sort} = require('../lib/exturl'),
-	{runMode, save} = require('../lib/dev'),
-	{run, dry} = require('../config/abuse32'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+	{runMode, save} = require('../lib/dev');
 
 const api = new Api(user, pin, url),
 	chat = new Interface();
@@ -20,6 +19,11 @@ const api = new Api(user, pin, url),
 		sort();
 		return;
 	}
+	let run = new Date(),
+		dry;
+	try {
+		({run, dry} = require('../config/abuse32'));
+	} catch {}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	if (mode === 'rerun') {
 		if (!dry) {

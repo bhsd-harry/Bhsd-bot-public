@@ -13,9 +13,13 @@ const Api = require('../lib/api'),
 
 	const urlRegex = /\/index_\d+\.html$/,
 		textRegex = /(av\d+)\/index_(\d+)\.html/g;
+	let params = {};
+	try {
+		params = require('../config/bilibili');
+	} catch {}
 	const {query: {exturlusage}, continue: c} = await api.get({
 		list: 'exturlusage', eulimit: 'max', eunamespace: '0|10|12|14|828', euprotocol: 'https',
-		euquery: 'www.bilibili.com/video/av', ...require('../config/bilibili'),
+		euquery: 'www.bilibili.com/video/av', ...params,
 	});
 	info(c === undefined ? '已全部检查完毕！' : `下次检查从 ${c.euoffset} 开始。`);
 	const pageids = [...new Set(exturlusage.filter(({url}) => urlRegex.test(url)).map(({pageid}) => pageid))],

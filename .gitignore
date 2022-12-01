@@ -9,6 +9,7 @@ config/
 !config/exturl.json
 !config/photrans.json
 !config/langlinks.json
+dry.json
 interactive/lyrics
 interactive/ruby-*
 interactive/*llwiki.js

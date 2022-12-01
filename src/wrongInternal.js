@@ -2,8 +2,7 @@
 const Api = require('../lib/api'),
 	{runMode, save, urlRegex} = require('../lib/dev'),
 	WikiUrl = require('../lib/url'),
-	{user, pin, url} = require('../config/user'),
-	{run, dry} = require('../config/abuse15'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
+	{user, pin, url} = require('../config/user');
 
 const protectedPages = [
 	923, 100877, 110168, 177974, 261864, 264550, 359506, 364986, 401150, 404396, 424973, 428291, 438304, 450196,
@@ -12,6 +11,11 @@ const protectedPages = [
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
+	let run = new Date(),
+		dry;
+	try {
+		({run, dry} = require('../config/abuse15'));
+	} catch {}
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {

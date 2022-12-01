@@ -25,7 +25,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (!module.parent) {
 		await api[mode.endsWith('dry') ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
-			await api.massEdit(null, 'rerun', '自动维护模板文档分类');
+			await api.massEdit(null, mode, '自动维护模板文档分类');
 			return;
 		}
 	}

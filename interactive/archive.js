@@ -5,8 +5,7 @@ const {promises} = require('fs'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
-	{user, pin, url} = require('../config/user'),
-	archive = require('../config/archive');
+	{user, pin, url} = require('../config/user');
 Parser.config = './config/moegirl';
 
 (async () => {
@@ -24,7 +23,10 @@ Parser.config = './config/moegirl';
 		await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
 		return;
 	}
-	let pages, c;
+	let pages, c, archive;
+	try {
+		archive = require('../config/archive');
+	} catch {}
 	if (titles && isNaN(titles)) {
 		pages = await api.revisions({titles});
 	} else {

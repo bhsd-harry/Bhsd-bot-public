@@ -3,13 +3,13 @@
 const Api = require('../lib/api'),
 	{runMode, save} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
-	{dry, run} = require('../config/abuse8'),
 	Parser = require('wikiparser-node');
 Parser.config = './config/moegirl';
 Parser.warning = false;
 
 const skip = [535567],
-	pageids = [];
+	pageids = [],
+	api = new Api(user, pin, url);
 
 const findBrackets = text => {
 	const brackets = [],
@@ -32,7 +32,7 @@ const findBrackets = text => {
 	return brackets;
 };
 
-const main = async (api = new Api(user, pin, url)) => {
+(async () => {
 	let mode = runMode();
 	if (mode === 'run') {
 		mode = 'dry';
@@ -40,15 +40,21 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api.massEdit(null, mode);
 		return;
 	}
-	if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
-			await Promise.all([
-				api.massEdit(null, mode, '自动修复不匹配的方括号'),
-				save('../config/abuse8.json', {run: dry}), // 将上一次dry run转化为实际执行
-			]);
-			return;
+	let run = new Date(),
+		dry;
+	try {
+		({dry, run} = require('../config/abuse8'));
+	} catch {}
+	await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	if (mode === 'rerun') {
+		if (!dry) {
+			throw new Error('没有保存的dry run！');
 		}
+		await Promise.all([
+			api.massEdit(null, mode, '自动修复不匹配的方括号'),
+			save('../config/abuse8.json', {run: dry}), // 将上一次dry run转化为实际执行
+		]);
+		return;
 	}
 	const last = new Date(run),
 		now = new Date().toISOString(),
@@ -82,10 +88,4 @@ const main = async (api = new Api(user, pin, url)) => {
 			? null
 			: save('../config/abuse8.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);
-};
-
-if (!module.parent) {
-	main();
-}
-
-module.exports = main;
+})();

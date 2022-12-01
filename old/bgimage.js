@@ -4,7 +4,6 @@ const Api = require('../lib/api'),
 	Parser = require('../../parser-node/token'),
 	{contentLength, info, error, save} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
-	known = require('../config/bgimage'),
 	api = new Api(user, pin, url);
 Parser.warning = false;
 
@@ -88,6 +87,10 @@ const _analyze = page => {
 	const unknown = pages.filter(({imgUrl}) => imgUrl === undefined),
 		unknownPages = await api.revisions({pageids: unknown.map(({pageid}) => pageid)});
 	unknownPages.forEach(_analyze);
+	let known = {};
+	try {
+		known = require('../config/bgimage');
+	} catch {}
 	const exPages = [...pages, ...unknownPages].filter(({imgUrl}) => imgUrl),
 		exImage = [...new Set(exPages.map(({imgUrl}) => imgUrl))],
 		responses = (await Promise.allSettled(exImage.map(async imgUrl => {
