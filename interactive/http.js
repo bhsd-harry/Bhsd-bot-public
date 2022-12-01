@@ -3,12 +3,16 @@
  */
 'use strict';
 const Api = require('../lib/api'),
+	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user'),
 	{exturl, sort} = require('../lib/exturl'),
 	{runMode, save} = require('../lib/dev'),
 	{run, dry} = require('../config/abuse32'); // 一个是上一次实际执行的时间，一个是上一次dry run的时间
 
-(async (api = new Api(user, pin, url)) => {
+const api = new Api(user, pin, url),
+	chat = new Interface();
+
+(async () => {
 	let mode = runMode('sort');
 	if (mode === 'run') {
 		mode = 'dry';
@@ -34,7 +38,7 @@ const Api = require('../lib/api'),
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1天
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
 			.filter(({content}) => content.includes('http://'));
-	const edits = pages.length > 0 ? await exturl(pages) : [];
+	const edits = pages.length > 0 ? await exturl(pages, chat) : [];
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
 		save('../config/abuse32.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
