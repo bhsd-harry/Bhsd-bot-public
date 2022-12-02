@@ -90,7 +90,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 		}
 		const text = root.toString();
-		return text === content ? null : [pageid, content, text, timestamp, curtimestamp];
+		return text !== content && [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(edits, mode, '自动移除超时的[[template:施工中|施工中]]模板');
 };

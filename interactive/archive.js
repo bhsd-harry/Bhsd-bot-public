@@ -49,7 +49,7 @@ Parser.config = './config/moegirl';
 		const [text, nBroken, nArchived] = await broken({
 			content: parsed, pageid, timestamp, curtimestamp,
 		}, chat, true);
-		return text === content ? null : [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived];
+		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived];
 	}))).filter(page => page);
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	try {

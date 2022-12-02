@@ -152,7 +152,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			return [pageid, wikitext, null];
 		}
 		const text = _analyze(wikitext, repeated, pageid, title);
-		return text === wikitext ? null : [pageid, wikitext, text];
+		return text !== wikitext && [pageid, wikitext, text];
 	}))).filter(page => page);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
 };

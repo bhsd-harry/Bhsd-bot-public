@@ -68,6 +68,34 @@ const sourceMain = async source => {
 	}
 };
 
+// 调整跨语言链接的位置；不再使用
+const arrangeZh = async () => { // eslint-disable-line no-unused-vars
+	const newZh = newLinks.filter(({source, title}) => source === 'zh' && !records.some(({zh}) => zh === title)),
+		api = apis.zh;
+	if (newZh.length) {
+		const pages = await api.revisions({titles: newZh.map(({title}) => title)}),
+			list = pages.map(({pageid, title, content, timestamp, curtimestamp}) => {
+				const root = Parser.parse(content, false, 6),
+					{links} = newZh.find(({title: t}) => t === title);
+				for (const {lang} of links) {
+					const token = root.querySelector(`link[interwiki=${lang}]:not(':contains(:${lang})')`),
+						index = token?.getAbsoluteIndex();
+					if (index <= 500 && content.length > 3 * index
+						|| token?.offsetTop < 10 && root.offsetHeight > 20
+					) {
+						root.appendChild(token);
+					}
+				}
+				const text = root.toString();
+				return text !== content && [pageid, content, text, timestamp, curtimestamp];
+			}).filter(page => page);
+		if (mode !== 'dry' && list.length) {
+			await api.csrfToken();
+		}
+		await api.massEdit(list, mode, '调整跨语言链接的位置');
+	}
+};
+
 const targetMain = async target => {
 	const targetApi = apis[target],
 		{name} = config[target],
@@ -146,7 +174,10 @@ const editMain = async wiki => {
 			root.querySelector(`link[interwiki=${target}]:not(':contains(:${target})')`)?.setLangLink(target, to);
 			record[target] = to;
 		}
-		list.push([pageid, content, root.toString(), timestamp, curtimestamp]);
+		const text = root.toString();
+		if (content !== text) {
+			list.push([pageid, content, text, timestamp, curtimestamp]);
+		}
 	}
 	if (mode !== 'dry' && list.length) {
 		await api.csrfToken();
