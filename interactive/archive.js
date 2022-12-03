@@ -46,10 +46,10 @@ Parser.config = './config/moegirl';
 				previousElementSibling.firstChild.dead = token;
 			}
 		}
-		const [text, nBroken, nArchived] = await broken({
+		const [text, nBroken, nArchived, nFailed] = await broken({
 			content: parsed, pageid, timestamp, curtimestamp,
 		}, chat, true);
-		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived];
+		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(page => page);
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	try {

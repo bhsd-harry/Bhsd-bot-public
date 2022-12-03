@@ -35,7 +35,8 @@ const main = async (api = new Api(user, pin, url)) => {
 				token.fix();
 			} catch {}
 		}
-		return [pageid, content, root.toString(), timestamp, curtimestamp];
+		const text = root.toString();
+		return text !== content && [pageid, content, text, timestamp, curtimestamp];
 	}).filter(page => page);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');
 };
