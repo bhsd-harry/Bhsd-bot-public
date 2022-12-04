@@ -19,8 +19,12 @@ Parser.config = './config/moegirl';
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
-	if (mode === 'rerun' || mode === 'redry') {
-		await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
+	if (mode === 'redry') {
+		await api.massEdit(null, mode);
+	} else if (mode === 'rerun') {
+		const newtimestamps = await api.massEdit(null, mode, '自动添加网页存档或标记失效链接'),
+			archived = require('../config/broken');
+		await save('../config/broken.json', {...archived, ...newtimestamps});
 		return;
 	}
 	let pages, c, archive;

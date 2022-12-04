@@ -23,10 +23,15 @@ const api = new Api(user, pin, url),
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
-	if (mode === 'rerun' || mode === 'redry') {
+	if (mode === 'redry') {
+		await api.massEdit(null, mode);
+		return;
+	} else if (mode === 'rerun') {
+		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接'),
+			archived = require('../config/broken');
 		await Promise.all([
-			api.massEdit(null, mode, '自动修复http链接'),
-			mode === 'rerun' && dry ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
+			save('../config/broken.json', {...archived, ...newtimestamps}),
+			dry ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
 		]);
 		return;
 	}

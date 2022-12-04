@@ -29,8 +29,10 @@ const api = new Api(user, pin, url),
 		if (!dry) {
 			throw new Error('没有保存的dry run！');
 		}
+		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接'),
+			archived = require('../config/broken');
 		await Promise.all([
-			api.massEdit(null, mode, '自动修复http链接'),
+			save('../config/broken.json', {...archived, ...newtimestamps}),
 			save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
 		]);
 		return;
