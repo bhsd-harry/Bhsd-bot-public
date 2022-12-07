@@ -44,7 +44,7 @@ Parser.config = './config/moegirl';
 				.map(name => `template#Template:${name}`).join();
 		for (const token of parsed.querySelectorAll(selectors)) {
 			const {previousElementSibling} = token;
-			if (previousElementSibling?.type === 'free-extlink') {
+			if (previousElementSibling?.type === 'free-ext-link') {
 				previousElementSibling.dead = token;
 			} else if (previousElementSibling?.type === 'ext-link') {
 				previousElementSibling.firstChild.dead = token;

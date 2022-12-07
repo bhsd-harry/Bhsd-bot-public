@@ -50,9 +50,13 @@ const main = async (api = new Api(user, pin, url)) => {
 		}, '/'),
 		regex = new RegExp(`\\[{2}((?:https?:)?//${urlRegex}+)(.*?)]{1,2}`, 'gi'),
 		edits = pages.map(({content, pageid, timestamp, curtimestamp}) =>
-			[pageid, content, wikiUrl.replace(content.replace(regex, (_, p1, p2) => {
-				return `[${p1}${p2.replace(/^\s*\|/, p => p.length === 1 ? ' ' : p.slice(0, -1))}]`;
-			}), pageid), timestamp, curtimestamp],
+			[
+				pageid, content,
+				wikiUrl.replace(content.replace(regex, (_, p1, p2) => {
+					return `[${p1}${p2.replace(/^\s*\|/, p => p.length === 1 ? ' ' : p.slice(0, -1))}]`;
+				}), pageid),
+				timestamp, curtimestamp,
+			],
 		).filter(page => page).filter(([, content, text]) => content !== text);
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复误写作外链的内链') : null,
