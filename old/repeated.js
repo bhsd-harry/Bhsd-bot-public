@@ -61,7 +61,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		regexParam = /(?<=<code>\|)[\s\S]*?(?=<\/code>)/,
 		failed = {}; // 避免重复失败的尝试
 	let text = wikitext;
-	repeated.forEach(warning => {
+	for (const warning of repeated) {
 		const page = decodeHtml(warning.match(regexPage)[0]);
 		if (page !== title) {
 			error(`请人工检查 ${page}`);
@@ -93,6 +93,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		}
 		const curScope = pScope.filter((_, i) => tScope[i] === target),
 			candidates = curScope.map(p => _findEnds(scope, target, p)),
+			// eslint-disable-next-line no-loop-func
 			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
 			entries = [...values.entries()], // filter时保留原有index
 			empty = entries.filter(([, val]) => val === ''),
@@ -104,10 +105,10 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 			...new Set([...empty, ...identical].map(([i]) => i)),
 		].sort((a, b) => b - a); // 除重后倒序排列
 		if (redundant.length) { // 修复情形1：空参数或重复参数值
-			redundant.forEach(index => {
+			for (const index of redundant) {
 				const [start, end] = candidates[index];
 				text = `${text.slice(0, start)}${text.slice(end)}`;
-			});
+			}
 		} else if (template === 'Template:Timeline' && /in(?:\d+年)?\d+月(?:\d+日)?/.test(param)) { // 修复情形2：{{Timeline}}
 			const [, [start, end]] = candidates,
 				newText = text.slice(start, end).replace(param, `${param}#2`);
@@ -116,7 +117,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 			error(`页面 ${pageid} 中重复的模板参数 ${param} 均非空，无法简单修复！`);
 			failed[param] = [...lastTry, target];
 		}
-	});
+	}
 	return text;
 };
 

@@ -50,10 +50,10 @@ const _analyze = (wikitext, pageid, ns) => {
 							attempt(arg);
 						}
 					};
-					[...token.getArgs(key)].slice(1).forEach(arg => {
+					for (const arg of [...token.getArgs(key)].slice(1)) {
 						attempt(arg);
 						i++;
-					});
+					}
 					keys.delete(key);
 				}
 			}

@@ -63,9 +63,9 @@ const main = async (api = new Api(user, pin, url)) => {
 				}
 				let text = content;
 				if (mode !== 'noreferer') {
-					urls.forEach(imgUrl => {
+					for (const imgUrl of urls) {
 						text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
-					});
+					}
 				}
 				const parsed = Parser.parse(text, false, 2);
 				if (!parsed.querySelector(norefererTemplates)) {

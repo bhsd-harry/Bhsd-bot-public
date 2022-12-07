@@ -16,7 +16,7 @@ const findBrackets = text => {
 		root = Parser.parse(text, false, 8);
 	for (const token of root.querySelectorAll(':visible')) {
 		let index;
-		for (const [i, child] of token.childNodes.entries()) {
+		token.childNodes.forEach((child, i) => {
 			if (typeof child === 'string' && /[[\]]/.test(child)) {
 				index = index ?? token.getAbsoluteIndex();
 				const bracket = root.posFromIndex(index + token.getRelativeIndex(i)),
@@ -27,7 +27,7 @@ const findBrackets = text => {
 				}
 				brackets.push({...bracket, line: root.getLine(bracket.top)});
 			}
-		}
+		});
 	}
 	return brackets;
 };
