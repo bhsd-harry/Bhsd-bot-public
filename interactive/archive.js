@@ -39,19 +39,8 @@ Parser.config = './config/moegirl';
 		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
-		const parsed = Parser.parse(content, false, 9),
-			selectors = ['Dead link', 'Deadlink', '死链', '死鏈', '失效链接', '失效鏈接']
-				.map(name => `template#Template:${name}`).join();
-		for (const token of parsed.querySelectorAll(selectors)) {
-			const {previousElementSibling} = token;
-			if (previousElementSibling?.type === 'free-ext-link') {
-				previousElementSibling.dead = token;
-			} else if (previousElementSibling?.type === 'ext-link') {
-				previousElementSibling.firstChild.dead = token;
-			}
-		}
 		const [text, nBroken, nArchived, nFailed] = await broken({
-			content: parsed, pageid, timestamp, curtimestamp,
+			content, pageid, timestamp, curtimestamp,
 		}, chat, true);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(page => page);
