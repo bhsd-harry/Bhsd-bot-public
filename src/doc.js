@@ -70,6 +70,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		uncat = pages.filter(({title, categories}) => !categories && regex.test(title)),
 		edits = uncat.map(({pageid, content, timestamp, curtimestamp}) => {
 			const root = Parser.parse(content, false, 1);
+			if (root.querySelector('template#Template:即将删除, template#Template:即將刪除')) {
+				return null;
+			}
 			insertCategory(root);
 			return [pageid, content, root.toString(), timestamp, curtimestamp];
 		}).filter(edit => edit);
