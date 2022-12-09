@@ -23,6 +23,8 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = (await Promise.all([
 			api.search('insource:"https://http"', params),
 			api.search('insource:"http://http"', params),
+			api.search('insource:"https://https"', params),
+			api.search('insource:"http://https"', params),
 		])).flat(),
 		edits = [...new Set(pages.map(({pageid}) => pageid))].map(pageid => {
 			const {content, timestamp, curtimestamp} = pages.find(({pageid: id}) => id === pageid);
