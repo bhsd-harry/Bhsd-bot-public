@@ -35,7 +35,6 @@ const _ucfirst = str => str[0].toUpperCase() + str.slice(1);
 		reference = success.at(-1)?.value;
 	for (const {value} of success.slice(0, -1)) {
 		console.log(`比较 ${_ucfirst(value)} 和 ${_ucfirst(reference)} ：`);
-		// eslint-disable-next-line no-await-in-loop
 		console.log(await dev.diff(`ruby-${value}`, `ruby-${reference}`) || '无差异\n');
 	}
 	for (const {reason} of promises.filter(({status}) => status === 'rejected')) {

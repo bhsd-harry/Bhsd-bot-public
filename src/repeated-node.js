@@ -92,7 +92,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 	if (templateOnly) {
 		// 先只检查模板，防止大量嵌入
 		pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: mode === 'user' ? 2 : 10});
-		templateOnly &&= pages.length > 0; // eslint-disable-line no-param-reassign
+		templateOnly &&= pages.length > 0;
 	}
 	if (!templateOnly && mode !== 'user') {
 		pages = (await api.categorymembers('调用重复模板参数的页面'))

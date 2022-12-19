@@ -10,7 +10,7 @@ const addCategory = async (api, mode, allPages = []) => {
 	const pages = allPages.filter(({categories}) => !categories);
 	if (mode !== 'dry') {
 		for (const {pageid, ns} of pages) {
-			await api.edit({ // eslint-disable-line no-await-in-loop
+			await api.edit({
 				pageid, appendtext: `\n/* [[分类:在${ns === 0 ? '主' : '模板'}名字空间下的CSS页面]] */`,
 				summary: '自动维护模板样式表分类',
 			});

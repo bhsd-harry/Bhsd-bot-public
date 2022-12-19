@@ -18,7 +18,7 @@ const findBrackets = text => {
 		let index;
 		token.childNodes.forEach((child, i) => {
 			if (typeof child === 'string' && /[[\]]/.test(child)) {
-				index = index ?? token.getAbsoluteIndex();
+				index ??= token.getAbsoluteIndex();
 				const bracket = root.posFromIndex(index + token.getRelativeIndex(i)),
 					newLines = child.match(/^\n*/)[0].length;
 				if (newLines) {

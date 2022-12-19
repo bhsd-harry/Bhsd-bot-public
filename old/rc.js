@@ -68,7 +68,7 @@ const _comment = {
 		return [comment, section];
 	},
 	findTool(comment) {
-		comment = comment.replace(/没有编辑摘要/, ''); // eslint-disable-line no-param-reassign
+		comment = comment.replace(/没有编辑摘要/, '');
 		for (const [key, val] of Object.entries(tools)) {
 			if (val.test(comment)) {
 				return [comment.replace(val, ''), key];
@@ -91,7 +91,7 @@ const convertTimeZone = time => {
 // 准备QQ消息
 const _msgTemplate = (title, summary, sizeDiff, user, timestamp, comment, link = '') => {
 	const time = convertTimeZone(timestamp);
-	comment = trim(comment); // eslint-disable-line no-param-reassign
+	comment = trim(comment);
 	return `${title}\n${summary} | ${sizeDiff}${sizeDiff && ' | '}${user} | ${time}\n${comment}\n${link}`
 		.replaceAll('\n\n', '\n').replace(/\n$/, '');
 };
@@ -407,7 +407,7 @@ class RecentChanges {
 				{query} = titles.length ? await this.#api.get({titles, converttitles: 1}) : {};
 			links.forEach((title, t) => {
 				if (specialPage.test(title)) {
-					title = title.replace(specialPage, 'special:'); // eslint-disable-line no-param-reassign
+					title = title.replace(specialPage, 'special:');
 					this.#qq.sendMsg(`${this.#url}/${encodeURIComponent(title)}`, t, this.#gid);
 					return;
 				}

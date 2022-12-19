@@ -32,6 +32,6 @@ const _execute = async script => {
 	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	for (const script of scripts) {
-		await _execute(script); // eslint-disable-line no-await-in-loop
+		await _execute(script);
 	}
 })();

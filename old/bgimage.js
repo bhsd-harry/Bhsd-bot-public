@@ -79,7 +79,6 @@ const _analyze = page => {
 	await api.login();
 	let pages = [];
 	for (const str of [...new Set(names.map(s => s.toLowerCase()))]) {
-		// eslint-disable-next-line no-await-in-loop
 		pages.push(await _searchAll({srsearch: `hastemplate:"背景图片" insource:"${str}"`}));
 	}
 	pages = [...new Set(pages)];
@@ -96,7 +95,7 @@ const _analyze = page => {
 		responses = (await Promise.allSettled(exImage.map(async imgUrl => {
 			const path = imgUrl.replace(/^https?:\/\//i, '').toLowerCase();
 			if (!(path in known)) {
-				known[path] = await contentLength(imgUrl); // eslint-disable-line require-atomic-updates
+				known[path] = await contentLength(imgUrl);
 			}
 			return known[path];
 		}))).map((response, i) => ({
