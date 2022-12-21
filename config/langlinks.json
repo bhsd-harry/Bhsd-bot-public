@@ -2545,7 +2545,7 @@
 	},
 	{
 		"zh": "Sing",
-		"en": "Sing (Hatsune Miku)"
+		"en": "Sing"
 	},
 	{
 		"zh": "Tessellate",
@@ -4221,5 +4221,13 @@
 	{
 		"en": "Xin Hua",
 		"zh": "心华"
+	},
+	{
+		"en": "Tabun",
+		"zh": "或许"
+	},
+	{
+		"en": "Two Apostrophes",
+		"zh": "双引号"
 	}
 ]
