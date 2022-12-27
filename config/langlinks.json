@@ -4229,5 +4229,282 @@
 	{
 		"en": "Two Apostrophes",
 		"zh": "双引号"
+	},
+	{
+		"zh": "Category:分类",
+		"en": "Category:Categories",
+		"ja": "カテゴリ:カテゴリ"
+	},
+	{
+		"zh": "Category:含有受损文件链接的页面",
+		"en": "Category:Pages with broken file links",
+		"ja": "カテゴリ:壊れたファイルへのリンクがあるページ"
+	},
+	{
+		"zh": "Category:即将删除的页面",
+		"en": "Category:Pages awaiting deletion",
+		"ja": "カテゴリ:削除依頼中のページ"
+	},
+	{
+		"zh": "Category:模板页的模板",
+		"en": "Category:Template page templates",
+		"ja": "カテゴリ:テンプレート用テンプレート"
+	},
+	{
+		"en": "Category:Category page templates",
+		"ja": "カテゴリ:カテゴリページ用テンプレート",
+		"zh": "Category:分类页模板"
+	},
+	{
+		"zh": "Category:导航模板",
+		"ja": "カテゴリ:ナビゲーションテンプレート"
+	},
+	{
+		"zh": "Category:元模板",
+		"ja": "カテゴリ:メタテンプレート"
+	},
+	{
+		"zh": "Category:使用VOCALOID的歌曲",
+		"ja": "カテゴリ:VOCALOIDを用いている楽曲"
+	},
+	{
+		"zh": "Category:作品",
+		"ja": "カテゴリ:作品"
+	},
+	{
+		"zh": "Category:讨论模板",
+		"ja": "カテゴリ:トークテンプレート"
+	},
+	{
+		"zh": "Category:复杂模板",
+		"ja": "カテゴリ:複雑なテンプレート"
+	},
+	{
+		"zh": "Category:LoveLive!系列",
+		"ja": "カテゴリ:ラブライブ！シリーズ"
+	},
+	{
+		"zh": "Category:模板文档",
+		"ja": "カテゴリ:テンプレート文書"
+	},
+	{
+		"en": "Category:Da Capo",
+		"zh": "Category:初音岛"
+	},
+	{
+		"en": "Category:Music",
+		"zh": "Category:音乐"
+	},
+	{
+		"en": "Category:Moe countries",
+		"zh": "Category:国家地区拟人"
+	},
+	{
+		"en": "Category:VOCALOID",
+		"zh": "Category:VOCALOID"
+	},
+	{
+		"en": "Category:Moe Subjects",
+		"zh": "Category:学科拟人"
+	},
+	{
+		"en": "Category:Moe Realistic peoples",
+		"zh": "Category:现实人物萌娘化"
+	},
+	{
+		"en": "Category:Functional templates",
+		"zh": "Category:功能模板"
+	},
+	{
+		"en": "Category:Templates",
+		"zh": "Category:模板"
+	},
+	{
+		"en": "Category:Moegirlpedia pages",
+		"zh": "Category:萌娘百科页面"
+	},
+	{
+		"en": "Category:Birthday Index",
+		"zh": "Category:按生日分类"
+	},
+	{
+		"en": "Category:Virtual Characters",
+		"zh": "Category:虚拟人物"
+	},
+	{
+		"en": "Category:Characters",
+		"zh": "Category:人物"
+	},
+	{
+		"en": "Category:Websites",
+		"zh": "Category:网站"
+	},
+	{
+		"en": "Category:Realistic Characters",
+		"zh": "Category:现实人物"
+	},
+	{
+		"en": "Category:Singing software synthesizers",
+		"zh": "Category:歌声合成软件"
+	},
+	{
+		"en": "Category:Magazines published in China",
+		"zh": "Category:中国漫画杂志"
+	},
+	{
+		"en": "Category:Aries",
+		"zh": "Category:白羊座"
+	},
+	{
+		"en": "Category:Sagittarius",
+		"zh": "Category:射手座"
+	},
+	{
+		"en": "Category:Capricorn",
+		"zh": "Category:摩羯座"
+	},
+	{
+		"en": "Category:Aquarius",
+		"zh": "Category:水瓶座"
+	},
+	{
+		"en": "Category:Cancer",
+		"zh": "Category:巨蟹座"
+	},
+	{
+		"en": "Category:Gemini",
+		"zh": "Category:双子座"
+	},
+	{
+		"en": "Category:Pisces",
+		"zh": "Category:双鱼座"
+	},
+	{
+		"en": "Category:Taurus",
+		"zh": "Category:金牛座"
+	},
+	{
+		"en": "Category:Scorpio",
+		"zh": "Category:天蝎座"
+	},
+	{
+		"en": "Category:Libra",
+		"zh": "Category:天秤座"
+	},
+	{
+		"en": "Category:Virgo",
+		"zh": "Category:处女座"
+	},
+	{
+		"en": "Category:Characters by Constellations",
+		"zh": "Category:按星座分类"
+	},
+	{
+		"en": "Category:Leo",
+		"zh": "Category:狮子座"
+	},
+	{
+		"en": "Category:Songs by Kano",
+		"zh": "Category:鹿乃歌曲"
+	},
+	{
+		"en": "Category:Moe Geographic Units",
+		"zh": "Category:地理单位拟人娘化"
+	},
+	{
+		"en": "Category:Yamato nadeshiko",
+		"zh": "Category:大和抚子"
+	},
+	{
+		"en": "Category:VTubers",
+		"zh": "Category:虚拟UP主"
+	},
+	{
+		"en": "Category:Japanese works navigational templates",
+		"zh": "Category:日本作品导航模板"
+	},
+	{
+		"en": "Category:UTAU characters",
+		"zh": "Category:UTAU角色"
+	},
+	{
+		"en": "Category:Music information templates",
+		"zh": "Category:音乐信息模板"
+	},
+	{
+		"en": "Category:Works navigational templates",
+		"zh": "Category:作品导航模板"
+	},
+	{
+		"en": "Category:Works navigational templates by genre",
+		"zh": "Category:各类作品导航模板"
+	},
+	{
+		"en": "Category:Music templates",
+		"zh": "Category:音乐模板"
+	},
+	{
+		"en": "Category:VOCALOID templates",
+		"zh": "Category:VOCALOID模板"
+	},
+	{
+		"en": "Category:Singing software synthesizers works",
+		"zh": "Category:歌声合成软件作品"
+	},
+	{
+		"en": "Category:Activities",
+		"zh": "Category:活动"
+	},
+	{
+		"en": "Category:Rankings",
+		"zh": "Category:排行"
+	},
+	{
+		"en": "Category:Formatting templates",
+		"zh": "Category:格式模板"
+	},
+	{
+		"en": "Category:Templates by singers",
+		"zh": "Category:歌手模板"
+	},
+	{
+		"en": "Category:Characters by singing software synthesizers",
+		"zh": "Category:按歌声合成软件分类"
+	},
+	{
+		"en": "Category:VOCALOID characters",
+		"zh": "Category:VOCALOID角色"
+	},
+	{
+		"en": "Category:VOICEROID",
+		"zh": "Category:VOICEROID"
+	},
+	{
+		"en": "Category:Templates changing page content",
+		"zh": "Category:影响页面内容的模板"
+	},
+	{
+		"zh": "Category:UTAU",
+		"en": "Category:UTAU"
+	},
+	{
+		"zh": "Category:各地作品导航模板",
+		"en": "Category:Works navigational templates by country"
+	},
+	{
+		"zh": "Category:按功能分类的模板",
+		"en": "Category:Templates by function"
+	},
+	{
+		"zh": "Category:周刊VOCAL Character & UTAU排行榜",
+		"en": "Category:VOCARAN"
+	},
+	{
+		"en": "OverThink",
+		"zh": "OverThink"
+	},
+	{
+		"en": "Weekly MikuMiku Ranking1",
+		"zh": "周刊MikuMiku排行榜1"
 	}
 ]

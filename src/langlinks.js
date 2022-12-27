@@ -20,17 +20,23 @@ const Api = require('../lib/api'),
 	newLinks = [],
 	apis = {},
 	corrections = {ja: [], en: [], zh: []},
-	mode = runMode();
+	mode = runMode(),
+	protectedPages = {zh: ['Category:即将删除的页面']};
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const getLangLinks = async (source, c = {}, titles = []) => {
+const normalizeTitle = (title, lang) => {
+	const normalized = Parser.normalizeTitle(title);
+	return normalized.ns === 14 && lang === 'ja' ? `カテゴリ:${normalized.main}` : normalized.title;
+};
+
+const getLangLinks = async (source, gapnamespace, c = {}, titles = []) => {
 	const sourceApi = apis[source],
-		q = await sourceApi.get({...sourceParams, ...c}),
+		q = await sourceApi.get({...sourceParams, ...c, gapnamespace}),
 		pages = q.query.pages.map(({title, langlinks}) => ({
 			title,
 			langlinks: langlinks
-				?.map(({lang, title: target}) => ({lang, title: Parser.normalizeTitle(target).title})),
+				?.map(({lang, title: target}) => ({lang, title: normalizeTitle(target, lang)})),
 		})).filter(({langlinks}) => langlinks?.length);
 	titles.push(...pages.map(({title}) => title));
 	for (const {title, langlinks} of pages) {
@@ -39,25 +45,27 @@ const getLangLinks = async (source, c = {}, titles = []) => {
 			newLinks.push({source, title, links: langlinks});
 			continue;
 		}
-		const newLangLinks = langlinks.filter(({lang, title: target}) => record[lang] !== target);
+		const newLangLinks = langlinks.filter(
+			({lang, title: target}) => record[lang] !== target && !protectedPages[lang]?.includes(target),
+		);
 		if (newLangLinks.length) {
 			newLinks.push({source, title, links: newLangLinks});
 		}
 	}
 	info(`已检查${config[source].name}萌的 ${pages.length} 个含跨语言链接的页面。`);
-	return q.continue ? getLangLinks(source, q.continue, titles) : titles;
+	return q.continue ? getLangLinks(source, gapnamespace, q.continue, titles) : titles;
 };
 
 const sourceMain = async source => {
 	const sourceApi = new Api(user, config[source].pin, config[source].url);
 	apis[source] = sourceApi;
 	await sourceApi.login();
-	const titles = await getLangLinks(source),
+	const titles = (await Promise.all([getLangLinks(source, 0), getLangLinks(source, 14)])).flat(),
 		missing = records.filter(({[source]: src}) => src && !titles.includes(src));
 	if (missing.length) {
 		info(`${config[source].name}萌可能缺失跨语言链接的页面：`);
 		console.log(missing);
-		for (const missingRecord of missing) {
+		for (const missingRecord of missing.filter(({[source]: src}) => !protectedPages[source]?.includes(src))) {
 			for (const [lang, title] of Object.entries(missingRecord)) {
 				if (lang !== source) {
 					newLinks.push({source: lang, title, links: [{lang: source, title: missingRecord[source]}]});
@@ -125,13 +133,13 @@ const targetMain = async target => {
 	for (const {pageid, title, langlinks} of pages) {
 		let appendtext = '';
 		const relevantLinks = newLinks.filter(({links}) =>
-			links.some(({lang, title: link}) => lang === target && Parser.normalizeTitle(link).title === title),
+			links.some(({lang, title: link}) => lang === target && link === title),
 		);
 		for (const {source, title: sourceTitle} of relevantLinks) {
 			const sourceLink = langlinks?.find(({lang}) => lang === source)?.title;
 			if (!sourceLink) {
 				appendtext += `[[${source}:${sourceTitle}]]`;
-			} else if (Parser.normalizeTitle(sourceLink).title !== sourceTitle) {
+			} else if (sourceLink !== sourceTitle) {
 				const sourceName = config[source].name;
 				error(`${name}萌页面 ${pageid} 的${sourceName}萌链接 [[${
 					sourceLink
