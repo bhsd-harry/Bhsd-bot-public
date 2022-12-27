@@ -4257,11 +4257,13 @@
 	},
 	{
 		"zh": "Category:导航模板",
-		"ja": "カテゴリ:ナビゲーションテンプレート"
+		"ja": "カテゴリ:ナビゲーションテンプレート",
+		"en": "Category:Navigational templates"
 	},
 	{
 		"zh": "Category:元模板",
-		"ja": "カテゴリ:メタテンプレート"
+		"ja": "カテゴリ:メタテンプレート",
+		"en": "Category:Meta templates"
 	},
 	{
 		"zh": "Category:使用VOCALOID的歌曲",
@@ -4269,11 +4271,13 @@
 	},
 	{
 		"zh": "Category:作品",
-		"ja": "カテゴリ:作品"
+		"ja": "カテゴリ:作品",
+		"en": "Category:Works"
 	},
 	{
 		"zh": "Category:讨论模板",
-		"ja": "カテゴリ:トークテンプレート"
+		"ja": "カテゴリ:トークテンプレート",
+		"en": "Category:Discussion templates"
 	},
 	{
 		"zh": "Category:复杂模板",
@@ -4285,7 +4289,8 @@
 	},
 	{
 		"zh": "Category:模板文档",
-		"ja": "カテゴリ:テンプレート文書"
+		"ja": "カテゴリ:テンプレート文書",
+		"en": "Category:Template documentation"
 	},
 	{
 		"en": "Category:Da Capo",
@@ -4313,15 +4318,18 @@
 	},
 	{
 		"en": "Category:Functional templates",
-		"zh": "Category:功能模板"
+		"zh": "Category:功能模板",
+		"ja": "カテゴリ:機能テンプレート"
 	},
 	{
 		"en": "Category:Templates",
-		"zh": "Category:模板"
+		"zh": "Category:模板",
+		"ja": "カテゴリ:テンプレート"
 	},
 	{
 		"en": "Category:Moegirlpedia pages",
-		"zh": "Category:萌娘百科页面"
+		"zh": "Category:萌娘百科页面",
+		"ja": "カテゴリ:萌えっ娘百科事典ページ"
 	},
 	{
 		"en": "Category:Birthday Index",
@@ -4333,7 +4341,8 @@
 	},
 	{
 		"en": "Category:Characters",
-		"zh": "Category:人物"
+		"zh": "Category:人物",
+		"ja": "カテゴリ:人物"
 	},
 	{
 		"en": "Category:Websites",
@@ -4461,7 +4470,8 @@
 	},
 	{
 		"en": "Category:Formatting templates",
-		"zh": "Category:格式模板"
+		"zh": "Category:格式模板",
+		"ja": "カテゴリ:フォーマットテンプレート"
 	},
 	{
 		"en": "Category:Templates by singers",
@@ -4493,7 +4503,8 @@
 	},
 	{
 		"zh": "Category:按功能分类的模板",
-		"en": "Category:Templates by function"
+		"en": "Category:Templates by function",
+		"ja": "カテゴリ:機能別のテンプレート"
 	},
 	{
 		"zh": "Category:周刊VOCAL Character & UTAU排行榜",
