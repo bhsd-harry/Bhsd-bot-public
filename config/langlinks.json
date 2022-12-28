@@ -4517,5 +4517,105 @@
 	{
 		"en": "Weekly MikuMiku Ranking1",
 		"zh": "周刊MikuMiku排行榜1"
+	},
+	{
+		"en": "Category:Prompt templates",
+		"zh": "Category:提示模板",
+		"ja": "カテゴリ:提示するテンプレート"
+	},
+	{
+		"zh": "Category:按用途分类的模板",
+		"en": "Category:Templates by purpose",
+		"ja": "カテゴリ:用途別テンプレート"
+	},
+	{
+		"zh": "Category:页顶提示模板",
+		"ja": "カテゴリ:最上部に提示するテンプレート"
+	},
+	{
+		"zh": "Category:消歧义导航模板",
+		"ja": "カテゴリ:曖昧性回避ナビゲーションテンプレート"
+	},
+	{
+		"zh": "Category:条目警告模板",
+		"ja": "カテゴリ:記事の警告テンプレート"
+	},
+	{
+		"zh": "Category:消歧义模板",
+		"en": "Category:Disambiguation templates",
+		"ja": "カテゴリ:曖昧さ回避テンプレート"
+	},
+	{
+		"zh": "Category:辅助模板",
+		"en": "Category:Auxiliary templates"
+	},
+	{
+		"zh": "Category:语言模板",
+		"ja": "カテゴリ:言語テンプレート"
+	},
+	{
+		"zh": "Category:视频模板",
+		"ja": "カテゴリ:動画テンプレート"
+	},
+	{
+		"zh": "Category:链接模板",
+		"ja": "カテゴリ:リンクテンプレート"
+	},
+	{
+		"zh": "Category:内部链接模板",
+		"ja": "カテゴリ:内部リンクテンプレート"
+	},
+	{
+		"zh": "Category:讨论区格式模板",
+		"ja": "カテゴリ:議論の場のフォーマットテンプレート"
+	},
+	{
+		"zh": "Category:欢迎信息模板",
+		"ja": "カテゴリ:歓迎メッセージテンプレート"
+	},
+	{
+		"zh": "Category:投票模板",
+		"en": "Category:Voting templates"
+	},
+	{
+		"zh": "Category:作品导航模板",
+		"en": "Category:Works navigational templates"
+	},
+	{
+		"zh": "Category:各地作品导航模板",
+		"en": "Category:Works navigational templates by country"
+	},
+	{
+		"zh": "Category:日本作品导航模板",
+		"en": "Category:Japanese works navigational templates"
+	},
+	{
+		"zh": "Category:中国作品导航模板",
+		"ja": "カテゴリ:中国作品ナビゲーションテンプレート"
+	},
+	{
+		"zh": "Category:以公司归纳的中国动漫导航模板",
+		"ja": "カテゴリ:企業別の中国アニメテンプレート"
+	},
+	{
+		"zh": "Category:以时段归纳的中国动漫导航模板",
+		"ja": "カテゴリ:時間別の中国アニメテンプレート"
+	},
+	{
+		"zh": "Category:信息模板",
+		"en": "Category:Informational templates",
+		"ja": "カテゴリ:情報テンプレート"
+	},
+	{
+		"zh": "Category:通用信息模板",
+		"ja": "カテゴリ:汎用情報テンプレート"
+	},
+	{
+		"zh": "Category:人物信息模板",
+		"en": "Category:Character information templates"
+	},
+	{
+		"zh": "Category:音乐信息模板",
+		"en": "Category:Music information templates"
 	}
 ]
