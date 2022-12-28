@@ -24,7 +24,7 @@ const api = new Api(user, pin, url);
 	const list = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 		const template = content.match(regex1);
 		let text;
-		if (regex2.test(content)) { // 错误模板用法
+		if (new RegExp(regex2, '').test(content)) { // 错误模板用法
 			text = content.replace(regex2, '');
 		} else if (!template) { // 未知原因
 			error(`页面 ${pageid} 未找到直接引用的背景图片模板！`);

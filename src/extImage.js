@@ -18,6 +18,7 @@ const regexHttp = new RegExp(
 	`http://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
 	'gi',
 );
+const testRegex = new RegExp(regexHttp, 'i');
 const norefererTemplates = [
 	'NoReferer', 'Producer Song', 'Producer Music', 'VOCALOID & UTAU Ranking', 'VOCALOID Ranking', 'WUGTop',
 ].map(str => `template#Template:${str}`).join();
@@ -35,9 +36,9 @@ const main = async (api = new Api(user, pin, url)) => {
 	const _searchHttps = site => api.search(`insource:"https://${site}"`),
 		_searchHttp = site => api.search(`insource:"http://${site}"`),
 		_insert = parsed => {
-			const [token] = parsed.sections().find(section => regexHttp.test($(section).text())),
+			const [token] = parsed.sections().find(section => testRegex.test($(section).text())),
 				{firstChild} = Parser.parse('{{noReferer}}', false, 2);
-			regexHttp.lastIndex = 0;
+			testRegex.lastIndex = 0;
 			if (typeof token === 'object' && token.matches(':header')) {
 				token.after('\n', firstChild);
 			} else {

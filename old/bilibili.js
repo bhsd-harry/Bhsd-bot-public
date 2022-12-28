@@ -25,7 +25,7 @@ const Api = require('../lib/api'),
 	const pageids = [...new Set(exturlusage.filter(({url}) => urlRegex.test(url)).map(({pageid}) => pageid))],
 		pages = await api.revisions({pageids});
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		if (!textRegex.test(content)) {
+		if (!new RegExp(textRegex, '').test(content)) {
 			error(`页面 ${pageid} 找不到错误的bilibili视频分页链接！`);
 			return null;
 		}
