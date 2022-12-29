@@ -3,6 +3,7 @@
 *.swp
 */*.swp
 .DS_Store
+.vscode/
 data/
 config/
 !config/example_user.json
