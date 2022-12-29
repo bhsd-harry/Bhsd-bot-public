@@ -32,7 +32,7 @@ const Api = require('../lib/api'),
 	).map(({pageid, content, timestamp, curtimestamp, categories}) =>
 		[
 			pageid, content,
-			content.replace(/\n\[\[Category:带有失效视频的条目]]/g, '')
+			content.replace(/\n\[\[Category:带有失效视频的条目\]\]/g, '')
 				+ (mistake === 403 && categories.length === 1 ? '\n[[Category:带有受限视频的条目]]' : ''),
 			timestamp, curtimestamp,
 		],

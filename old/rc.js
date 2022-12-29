@@ -11,14 +11,14 @@ const Api = require('../lib/api'),
 	tools = {Wikiplus: /\/\/ (?:使用Wikiplus小工具快速编辑|Edit via Wikiplus)/,
 		Inspector: /\/\/使用页面\/文本对比查看器快速编辑/,
 		HotDefaultSort: /使用HotDefaultSort小工具/,
-		HotCat: /(?:使用HotCat小工具|——HotCat)/,
+		HotCat: /(?:使用HotCat小工具|—{2}HotCat)/,
 		Mainpage: /使用Mainpage小工具快速编辑/,
 		Definitions: /使用definitions小工具编辑/,
 		CodeMirror: /使用CodeMirror快速编辑/,
 		批量回退: /^批量回退：/,
 		'Cat-a-lot': /使用Cat-a-lot小工具/,
 		mobileBlock: /使用mobileBlock小工具创建/,
-		InPageEdit: /\[InPageEdit]/,
+		InPageEdit: /\[InPageEdit\]/,
 	},
 	// 日志类型
 	actions = {upload: '上传', overwrite: '上传新版本', revert: '文件回退', delete: '删除', restore: '还原',
@@ -58,7 +58,7 @@ const Api = require('../lib/api'),
 
 // 各种工具函数
 const _comment = {
-	replaceLinks: comment => comment.replace(/\[\[[\s\u200e]*:?(?:[^[\]{}]+?\|)?(.+?)\|?]]/g, '$1'),
+	replaceLinks: comment => comment.replace(/\[\[[\s\u200e]*:?(?:[^[\]{}]+?\|)?(.+?)\|?\]\]/g, '$1'),
 	findSection(str) {
 		let section = '';
 		const comment = str.replace(/\/\*\s*(.+?)\s*\*\//, (_, hash) => {
@@ -248,15 +248,15 @@ class RecentChanges {
 		}
 
 		// 3. 修正被标记为编辑的保护和内容模型更改
-		if (/^已保护“\[\[.+?]]”（\[编辑=/.test(comment)) {
+		if (/^已保护“\[\[.+?\]\]”（\[编辑=/.test(comment)) {
 			rc.type = 'log';
 			rc.logtype = 'protect';
 			rc.logaction = 'protect';
-		} else if (/^已从“\[\[.+?]]”移除保护/.test(comment)) {
+		} else if (/^已从“\[\[.+?\]\]”移除保护/.test(comment)) {
 			rc.type = 'log';
 			rc.logtype = 'protect';
 			rc.logaction = 'unprotect';
-		} else if (/^已更改“\[\[.+?]]”的保护等级/.test(comment)) {
+		} else if (/^已更改“\[\[.+?\]\]”的保护等级/.test(comment)) {
 			rc.type = 'log';
 			rc.logtype = 'protect';
 			rc.logaction = 'modify';
@@ -440,8 +440,8 @@ class RecentChanges {
 
 	// 解析内链
 	static wikilink = text => {
-		const link = [...text.matchAll(/\[\[[\s\u200e]*:?(.+?)(?:#.*?)?(?:\|.*?)?]]/g)].map(([, page]) => trim(page)),
-			embed = [...text.matchAll(/{{[\s\u200e]*(:?.+?)(?:\|.*?)?}}/g)].map(([, page]) => {
+		const link = [...text.matchAll(/\[\[[\s\u200e]*:?(.+?)(?:#.*?)?(?:\|.*?)?\]\]/g)].map(([, page]) => trim(page)),
+			embed = [...text.matchAll(/\{\{[\s\u200e]*(:?.+?)(?:\|.*?)?\}\}/g)].map(([, page]) => {
 				if (page.startsWith(':')) {
 					return trim(page.slice(1));
 				}

@@ -56,8 +56,8 @@ const _findEnds = (scope, template, param) => {
 };
 
 const _analyze = (wikitext, repeated, pageid, title) => {
-	const regexPage = /(?<=页面【\[\[:).+?(?=]]】)/,
-		regexTemplate = /(?<=模板【\[\[:).+?(?=]]】)/, // 仅用于判断是不是{{Timeline}}
+	const regexPage = /(?<=页面【\[\[:).+?(?=\]\]】)/,
+		regexTemplate = /(?<=模板【\[\[:).+?(?=\]\]】)/, // 仅用于判断是不是{{Timeline}}
 		regexParam = /(?<=<code>\|)[\s\S]*?(?=<\/code>)/,
 		failed = {}; // 避免重复失败的尝试
 	let text = wikitext;
@@ -143,7 +143,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const list = (await Promise.all(pageids.map(async ({pageid, title}, t) => {
 		await sleep(t);
 		const [wikitext, parsewarnings] = await api.parse({pageid});
-		if (/{{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(wikitext)) {
+		if (/\{\{[\s\u200e]*(?:[Ii]nuse|施工中|[编編][辑輯]中)/.test(wikitext)) {
 			error(`已跳过施工中的页面 ${pageid} ！`);
 			return null;
 		}

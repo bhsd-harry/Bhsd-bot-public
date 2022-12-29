@@ -8,8 +8,8 @@ const _ucfirst = str => str[0].toUpperCase() + str.slice(1);
 	// 1. 将模板替换为占位符
 	const lyrics = fs.readFileSync('lyrics', 'utf8');
 	let templates = [
-		...lyrics.matchAll(/<ref([\s\xa0].+?)?>.+?<\/ref>/g),
-		...lyrics.matchAll(/{{.+?}}/g),
+		...lyrics.matchAll(/<ref(\s.+?)?>.+?<\/ref>/g),
+		...lyrics.matchAll(/\{\{.+?\}\}/g),
 	].sort(({index: i}, {index: j}) => j - i); // 注意倒序替换
 	templates = templates.filter(({0: word, index: i}) => {
 		return !templates.some(({0: wrap, index: j}) => j < i && j + wrap.length > i + word.length);

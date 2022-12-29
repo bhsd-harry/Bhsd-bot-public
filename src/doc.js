@@ -12,7 +12,7 @@ const getCategories = root => root.getCategories().map(([cat]) => cat);
 
 const insertCategory = root => {
 	const noinclude = root.querySelectorAll('noinclude')
-		.find(token => /<\/noinclude(?:\s+[^>]*)?>/i.test(token.toString()));
+		.find(token => /<\/noinclude(?:\s[^>]*)?>/i.test(token.toString()));
 	if (noinclude) {
 		noinclude.before('[[分类:模板文档]]');
 	} else {

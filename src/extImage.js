@@ -33,16 +33,20 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 
-	const _searchHttps = site => api.search(`insource:"https://${site}"`),
-		_searchHttp = site => api.search(`insource:"http://${site}"`),
+	const _searchHttps = site => api.search(`insource:"https://${site}"`, {
+			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
+		}),
+		_searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
+			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
+		}),
 		_insert = parsed => {
-			const [token] = parsed.sections().find(section => testRegex.test($(section).text())),
-				{firstChild} = Parser.parse('{{noReferer}}', false, 2);
-			testRegex.lastIndex = 0;
-			if (typeof token === 'object' && token.matches(':header')) {
-				token.after('\n', firstChild);
+			const token = parsed.sections().find(section => testRegex.test($(section).text()))?.[0];
+			if (token === undefined) {
+				//
+			} else if (typeof token === 'object' && token.matches(':header')) {
+				token.after('\n{{noReferer}}');
 			} else {
-				parsed.prepend(firstChild, '\n');
+				parsed.prepend('{{noReferer}}\n');
 			}
 		};
 
@@ -75,7 +79,7 @@ const main = async (api = new Api(user, pin, url)) => {
 					return null;
 				}
 				return [pageid, content, parsed.toString(), timestamp, curtimestamp];
-			}).filter(edit => edit);
+			}).filter(edit => edit && edit[1] !== edit[2]);
 	await api.massEdit(edits, mode === 'noreferer' ? 'dry' : mode, mode === 'noreferer'
 		? '自动添加{{[[template:noReferer|noReferer]]}}模板'
 		: '自动修复引自bilibili或新浪的图片外链',

@@ -15,9 +15,9 @@ const api = new Api(user, pin, url);
 		await api.massEdit(null, mode, '自动修复被大家族模板覆盖的背景图片');
 		return;
 	}
-	const regex1 = /{{[\s\u200e]*背景[圖图]片[\s\u200e]*\|([\s\S]+?)}}/, // 捕获定制的背景图片
-		regex2 = /{{[\s\u200e]*背景[圖图]片[\s\u200e]*\|?[\s\u200e]*}}/g, // 错误模板用法
-		regex3 = /{{[\s\u200e]*空洞[骑騎]士[\s\u200e]*(?:\|[\s\S]*?)?(?=}})/, // 匹配大家族模板（不含右半}}）
+	const regex1 = /\{\{[\s\u200e]*背景[圖图]片[\s\u200e]*\|([\s\S]+?)\}\}/, // 捕获定制的背景图片
+		regex2 = /\{\{[\s\u200e]*背景[圖图]片[\s\u200e]*(?:\|[\s\u200e]*)?\}\}/g, // 错误模板用法
+		regex3 = /\{\{[\s\u200e]*空洞[骑騎]士[\s\u200e]*(?:\|[\s\S]*?)?(?=\}\})/, // 匹配大家族模板（不含右半}}）
 		// 匹配无效的背景图片参数
 		regex4 = /\|\s*logo-(?:url|size)\s*=[\s\S]*(?=\||$)/g,
 		pages = await api.search('hastemplate:"空洞骑士" insource:"背景图片"');

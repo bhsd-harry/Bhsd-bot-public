@@ -73,10 +73,10 @@ const findBrackets = text => {
 			edits.push([
 				pageid, content,
 				content.replace(/\[ (?=(?:https?:)?\/\/)/gi, '[')
-					.replace(/(?<!\[)(https?:\/\/[^[\]]+]|\[[^[\]]+]])(?!])/gi, '[$1')
-					.replace(/\[\[[^[\]]+](?!])/g, '$&]')
+					.replace(/(?<!\[)(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/gi, '[$1')
+					.replace(/\[\[[^[\]]+\](?!\])/g, '$&]')
 					.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/gi, '$&]')
-					.replace(/\[(?:https?:)?\/\/[^\]]+]/gi, p => p.replaceAll('\n', ' ')),
+					.replace(/\[(?:https?:)?\/\/[^\]]+\]/gi, p => p.replaceAll('\n', ' ')),
 				timestamp, curtimestamp,
 			]);
 		}

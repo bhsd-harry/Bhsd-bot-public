@@ -53,7 +53,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const root = Parser.parse(content, false, 1),
 			noinclude = root.querySelectorAll('noinclude')
-				.find(token => /<\/noinclude(?:\s+[^>]*)?>/i.test(token.toString()));
+				.find(token => /<\/noinclude(?:\s[^>]*)?>/i.test(token.toString()));
 		if (noinclude) {
 			noinclude.before('[[分类:使用模板样式的模板]]');
 		} else {
