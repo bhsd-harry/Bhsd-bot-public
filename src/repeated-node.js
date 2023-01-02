@@ -95,7 +95,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 		templateOnly &&= pages.length > 0;
 	}
 	if (!templateOnly && mode !== 'user') {
-		pages = (await api.categorymembers('调用重复模板参数的页面'))
+		pages = (await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: '0|1|3|9|11|12|13|14|15|275|829'}))
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	}
 	const list = pages.map(({pageid, ns, content, title, timestamp, curtimestamp}) => {
