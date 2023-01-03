@@ -43,7 +43,7 @@ const main = async (api = new Api(user, pin, url)) => {
 						repeatedCats = noincludeCats.filter(cat => includeCats.includes(cat));
 					if (repeatedCats.length) {
 						for (const cat of repeatedCats) {
-							const token = root.querySelector(`category#${cat}`),
+							const token = root.querySelector(`category[name="${cat}"]`),
 								tag = cat === 'Category:模板文档' ? 'noinclude' : 'includeonly';
 							token.before(`<${tag}>`);
 							token.after(`</${tag}>`);
@@ -64,15 +64,12 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 
 	const pages = await api.search(
-			'intitle:doc -intitle:sandbox -intitle:沙盒 -incategory:模板文档',
+			'intitle:doc -intitle:sandbox -intitle:沙盒 -incategory:模板文档 -incategory:即将删除的页面',
 			{gsrnamespace: 10, prop: 'categories|revisions', cllimit: 'max', clshow: '!hidden'},
 		),
 		uncat = pages.filter(({title, categories}) => !categories && regex.test(title)),
 		edits = uncat.map(({pageid, content, timestamp, curtimestamp}) => {
 			const root = Parser.parse(content, false, 1);
-			if (root.querySelector('template#Template:即将删除, template#Template:即將刪除')) {
-				return null;
-			}
 			insertCategory(root);
 			return [pageid, content, root.toString(), timestamp, curtimestamp];
 		}).filter(edit => edit);

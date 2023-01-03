@@ -27,7 +27,9 @@ Parser.config = './config/moegirl';
 
 const normalizeTitle = (title, lang) => {
 	const normalized = Parser.normalizeTitle(title);
-	return normalized.ns === 14 && lang === 'ja' ? `カテゴリ:${normalized.main}` : normalized.title;
+	return normalized.ns === 14 && lang === 'ja'
+		? `カテゴリ:${normalized.main}`
+		: normalized.title.replaceAll('_', ' ');
 };
 
 const getLangLinks = async (source, gapnamespace, c = {}, titles = []) => {

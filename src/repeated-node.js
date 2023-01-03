@@ -14,9 +14,9 @@ const ignorePages = [];
 const _analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
 	const comments = root.querySelectorAll('comment[closed=true]')
-		.filter(({firstChild}) => firstChild.includes('<!--'));
+		.filter(({firstChild: {data}}) => data.includes('<!--'));
 	for (const comment of comments) {
-		comment.replaceWith(`${comment.firstChild}-->`);
+		comment.replaceWith(`${String(comment.firstChild)}-->`);
 	}
 	root = Parser.parse(root.toString(), ns === 10, 2);
 	let found = false;

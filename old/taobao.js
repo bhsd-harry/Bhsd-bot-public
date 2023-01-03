@@ -35,7 +35,7 @@ const remove = (href, token) => {
 			j = childNodes.indexOf(previousElementSibling);
 		token.remove();
 		if (previousElementSibling?.type === 'list'
-			&& (eof || typeof nextSibling === 'string' && nextSibling.startsWith('\n'))
+			&& (eof || nextSibling?.type === 'text' && String(nextSibling).startsWith('\n'))
 		) {
 			if (!eof) {
 				parentNode.setText(nextSibling.slice(1), i);
@@ -71,7 +71,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			edits = pages.filter(({pageid}, i) => pages.findLastIndex(({pageid: id}) => id === pageid) === i)
 				.map(({pageid, content, timestamp, curtimestamp}) => {
 					const root = Parser.parse(content, false, 10);
-					for (const template of root.querySelectorAll('template#Template:Cite web')) {
+					for (const template of root.querySelectorAll('template#Template\\:Cite_web')) {
 						const val = template.getValue('url');
 						if (val) {
 							try {

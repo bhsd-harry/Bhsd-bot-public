@@ -20,8 +20,8 @@ const regexHttp = new RegExp(
 );
 const testRegex = new RegExp(regexHttp, 'i');
 const norefererTemplates = [
-	'NoReferer', 'Producer Song', 'Producer Music', 'VOCALOID & UTAU Ranking', 'VOCALOID Ranking', 'WUGTop',
-].map(str => `template#Template:${str}`).join();
+	'NoReferer', 'Producer_Song', 'Producer_Music', 'VOCALOID_&_UTAU_Ranking', 'VOCALOID_Ranking', 'WUGTop',
+].map(str => `template#Template\\:${str}`).join();
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode('noreferer');

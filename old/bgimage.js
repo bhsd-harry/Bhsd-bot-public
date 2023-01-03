@@ -7,7 +7,7 @@ const Api = require('../lib/api'),
 	api = new Api(user, pin, url);
 Parser.warning = false;
 
-const _generateSelector = titles => titles.map(str => `template#Template:${str}`).join();
+const _generateSelector = titles => titles.map(str => `template#Template\\:${str}`).join();
 
 const names = ['背景图片', '背景圖片'],
 	selector = _generateSelector(names),

@@ -16,11 +16,11 @@ const findBrackets = text => {
 		root = Parser.parse(text, false, 8);
 	for (const token of root.querySelectorAll(':visible')) {
 		let index;
-		token.childNodes.forEach((child, i) => {
-			if (typeof child === 'string' && /[[\]]/.test(child)) {
+		token.childNodes.forEach(({type, data}, i) => {
+			if (type === 'text' && /[[\]]/.test(data)) {
 				index ??= token.getAbsoluteIndex();
 				const bracket = root.posFromIndex(index + token.getRelativeIndex(i)),
-					newLines = child.match(/^\n*/)[0].length;
+					newLines = data.match(/^\n*/)[0].length;
 				if (newLines) {
 					bracket.top += newLines;
 					bracket.left = 0;

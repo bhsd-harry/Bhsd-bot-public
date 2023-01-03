@@ -8,7 +8,7 @@ Parser.config = './config/moegirl';
 
 const protectedPages = [9658, 33803, 44832],
 	age = 1000 * 86400 * 7, // 一周
-	inuse = ['Inuse', '施工中', '编辑中', '編輯中'].map(str => `template#Template:${str}`).join(),
+	inuse = ['Inuse', '施工中', '编辑中', '編輯中'].map(str => `template#Template\\:${str}`).join(),
 	zhnum = {半: '.5', 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 兩: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9},
 	unit = {天: 1440, 日: 1440, 小时: 60, 小時: 60, 时: 60, 時: 60, 钟头: 60, 鐘頭: 60, 分钟: 1, 分鐘: 1, 分: 1};
 
