@@ -4637,5 +4637,93 @@
 	{
 		"en": "Zhang Chuchu",
 		"zh": "章楚楚"
+	},
+	{
+		"en": "Category:Touhou Project",
+		"zh": "Category:东方Project"
+	},
+	{
+		"en": "Category:Girls' Frontline",
+		"zh": "Category:少女前线"
+	},
+	{
+		"en": "Category:Pages using invalid self-closed HTML tags",
+		"zh": "Category:使用无效自封闭HTML标签的页面"
+	},
+	{
+		"en": "Category:Kemono Friends",
+		"zh": "Category:兽娘动物园"
+	},
+	{
+		"en": "Category:Pages with reference errors",
+		"zh": "Category:有参考文献错误的页面"
+	},
+	{
+		"en": "Category:Pages using duplicate arguments in template calls",
+		"zh": "Category:调用重复模板参数的页面"
+	},
+	{
+		"en": "Weekly MikuMiku Ranking2",
+		"zh": "周刊MikuMiku排行榜2"
+	},
+	{
+		"en": "Category:Hidden categories",
+		"zh": "Category:隐藏分类"
+	},
+	{
+		"zh": "Category:积压工作",
+		"en": "Category:To-Do"
+	},
+	{
+		"zh": "Category:追踪分类",
+		"en": "Category:Tracking Categories"
+	},
+	{
+		"en": "Category:Pages using displaytitle",
+		"zh": "Category:使用标题替换的页面"
+	},
+	{
+		"en": "Category:Tsundere",
+		"zh": "Category:傲娇"
+	},
+	{
+		"en": "Category:Undertale",
+		"zh": "Category:Undertale"
+	},
+	{
+		"en": "Category:Pages with script errors",
+		"zh": "Category:有脚本错误的页面"
+	},
+	{
+		"en": "Category:Characters by Moe Anthropomorphism Object",
+		"zh": "Category:按拟人化娘化对象分类"
+	},
+	{
+		"en": "Category:Works by country",
+		"zh": "Category:各地区作品"
+	},
+	{
+		"en": "Category:Umamusume: Pretty Derby",
+		"zh": "Category:赛马娘 Pretty Derby"
+	},
+	{
+		"en": "Category:Indexed pages",
+		"zh": "Category:已索引页面"
+	},
+	{
+		"en": "Category:Noindexed pages",
+		"zh": "Category:不可索引页面"
+	},
+	{
+		"en": "Category:Characters by features",
+		"zh": "Category:按角色特征分类"
+	},
+	{
+		"en": "Category:Works from America",
+		"zh": "Category:美国作品"
+	},
+	{
+		"zh": "Category:有过多高开销解析器函数调用的页面",
+		"en": "Category:Pages with too many expensive parser function calls"
 	}
 ]
