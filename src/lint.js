@@ -1,16 +1,25 @@
 'use strict';
 
-const Parser = require('wikiparser-node'),
+const path = require('path'),
+	Parser = require('wikiparser-node'),
 	Api = require('../lib/api'),
-	{save, runMode} = require('../lib/dev'),
+	{save, runMode, error, info} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
 Parser.warning = false;
-Parser.config = './config/moegirl';
+Parser.config = Parser.minConfig
+	? require(path.join(path.dirname(require.resolve('wikiparser-node')), 'config', 'moegirl'))
+	: './config/moegirl';
 
-const generateErrors = pages => {
+const generateErrors = (pages, errorOnly) => {
 	for (const {ns, pageid, title, content} of pages) {
-		const errors = Parser.parse(content, ns === 10 && !title.endsWith('/doc')).lint();
+		let errors;
+		try {
+			errors = Parser.parse(content, ns === 10 && !title.endsWith('/doc')).lint();
+		} catch (e) {
+			error(`页面 ${pageid} 解析或语法检查失败！`, e);
+			continue;
+		}
 		if (title.startsWith('三国杀')) {
 			for (let i = errors.length - 1; i > 0; i--) {
 				const {message: right, startLine: rightLine, startCol: rightStart, endCol: rightEnd} = errors[i],
@@ -22,6 +31,9 @@ const generateErrors = pages => {
 				}
 			}
 		}
+		if (errorOnly) {
+			errors = errors.filter(({severity}) => severity !== 'warning');
+		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
 		} else {
@@ -31,34 +43,52 @@ const generateErrors = pages => {
 };
 
 (async (api = new Api(user, pin, url)) => {
-	const mode = runMode('upload');
+	const mode = runMode(['upload', 'all']);
 	await api[mode === 'upload' ? 'csrfToken' : 'login']();
 	if (mode === 'upload' || mode === 'dry') {
-		const pages = await api.revisions({pageids: Object.keys(lintErrors)});
-		generateErrors(pages);
-		const text = `{|class=wikitable\n!页面!!错误类型!!位置\n|-\n${
-			Object.values(lintErrors).filter(({errors}) => errors.some(({severity}) => severity === 'error'))
+		if (mode === 'dry') {
+			const pages = await api.revisions({pageids: Object.keys(lintErrors)});
+			generateErrors(pages);
+		}
+		const text = `==可能的语法错误==\n{|class=wikitable\n!页面!!错误类型!!位置!!源代码摘录\n|-\n${
+			Object.values(lintErrors).filter(({errors}) => errors.some(({severity}) => severity !== 'warning'))
 				.map(({title, errors}) => {
-					errors = errors.filter(({severity}) => severity === 'error').sort((a, b) =>
+					errors = errors.filter(({severity}) => severity !== 'warning').sort((a, b) =>
 						a.startLine - b.startLine || a.startCol - b.startCol
 						|| a.endLine - b.endLine || a.endCol - b.endCol);
-					return `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[${title}]]|${
-						errors.map(({message, startLine, startCol, endLine, endCol}) =>
+					return `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[${title}]]\n${
+						errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
 							`|${
-								message
-							}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列`)
+								message.replaceAll('<', '&lt;')
+							}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
+								excerpt
+							}</pre>`)
 							.join('\n|-\n')
 					}`;
 				}).join('\n|-\n')
 		}\n|}`;
 		if (mode === 'upload') {
-			await api.edit({title: 'User:Bhsd-bot/可能存在语法错误的条目', text});
+			await api.edit({title: 'User:Bhsd-bot/可能存在语法错误的条目', text, section: 1, summary: '自动更新语法错误'});
 		} else {
 			console.log(text);
 		}
+	} else if (mode === 'all') {
+		const gapcontinue = require('../config/allpages'),
+			qs = {
+				generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 400,
+				prop: 'revisions', rvprop: 'content|contentmodel', ...gapcontinue,
+			},
+			{query: {pages}, continue: apcontinue} = await api.get(qs);
+		info(`已获取 ${pages.length} 个页面的源代码`);
+		generateErrors(
+			pages.filter(({revisions}) => revisions && revisions[0]?.contentmodel === 'wikitext')
+				.map(page => ({...page, content: page.revisions[0].content})),
+			true,
+		);
+		await save('../config/allpages.json', apcontinue);
 	} else {
 		const qs = {
-				generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',
+				generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 400, grctype: 'edit|new',
 				grcexcludeuser: 'Bhsd', grcend: new Date(Date.now() - 3600 * 1000).toISOString(),
 			},
 			pages = await api.revisions(qs);
