@@ -17,7 +17,7 @@ const Api = require('../lib/api'),
 		return;
 	}
 	const {query: {usercontribs}} = await api.get({
-		list: 'usercontribs', uclimit: 'max', ucuser: 'AnnAngela-abot', ucnamespace: 0, ucprop: 'ids|comment',
+		list: 'usercontribs', uclimit: 400, ucuser: 'AnnAngela-abot', ucnamespace: 0, ucprop: 'ids|comment',
 		uctag: '发现失效视频',
 	});
 	const uc = usercontribs

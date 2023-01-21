@@ -56,7 +56,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode !== 'rerun') {
-			const params = {geuquery, geulimit: 500, geuexpandurl: 1},
+			const params = {geuquery, geulimit: 400, geuexpandurl: 1},
 				pages = [
 					...(await api.extSearch({...params, geuprotocol: 'http'}))[0],
 					...(await api.extSearch({...params, geuprotocol: 'https'}))[0],

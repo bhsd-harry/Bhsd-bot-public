@@ -11,7 +11,7 @@ const Api = require('../lib/api'),
 		zh: {url, pin, name: '中', summary: '添加或修正跨语言链接'},
 	},
 	sourceParams = {
-		generator: 'allpages', gapfilterlanglinks: 'withlanglinks', gapfilterredir: 'nonredirects', gaplimit: 500,
+		generator: 'allpages', gapfilterlanglinks: 'withlanglinks', gapfilterredir: 'nonredirects', gaplimit: 400,
 		prop: 'langlinks', lllimit: 'max',
 	},
 	targetParams = {

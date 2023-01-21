@@ -10,7 +10,6 @@ config/
 !config/exturl.json
 !config/photrans.json
 !config/langlinks.json
-!config/lintErrors.json
 dry.json
 interactive/lyrics
 interactive/ruby-*
