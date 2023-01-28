@@ -33,7 +33,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	const {query} = await api.get({
-		generator: 'search', gsrlimit: 400, gsrnamespace: '0|10', prop: 'categories', cllimit: 'max',
+		generator: 'search', gsrlimit: 500, gsrnamespace: '0|10', prop: 'categories', cllimit: 'max',
 		gsrsearch: 'contentmodel:"sanitized-css" -intitle:sandbox -intitle:沙盒'
 			+ ' -incategory:在模板名字空间下的CSS页面 -incategory:在主名字空间下的CSS页面'
 			+ ' -incategory:偶像大师模板CSS -incategory:"赛马娘 Pretty Derby模板CSS"',

@@ -25,7 +25,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	const edits = (await Promise.all(pages.map(({content, pageid, ns, timestamp, curtimestamp}) => {
 		const parsed = Parser.parse(content, ns === 10, 4);
 		let warned = false;
-		for (const token of parsed.querySelectorAll('html-attr[cellspacing], table-attr[cellspacing]')) {
+		for (const token of parsed.querySelectorAll('html-attrs[cellspacing], table-attrs[cellspacing]')) {
 			if (token.querySelector('arg, template, magic-word')) {
 				if (!warned) {
 					error(`页面 ${pageid} 中出现了复杂HTML属性，请人工检查！`);

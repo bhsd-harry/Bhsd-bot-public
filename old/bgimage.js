@@ -20,7 +20,7 @@ const names = ['背景图片', '背景圖片'],
 
 const _searchAll = async params => {
 	const {query: {search}, continue: c} = await api.get({
-		list: 'search', srlimit: 400, srnamespace: 0, srinfo: '', srprop: 'snippet', ...params,
+		list: 'search', srlimit: 'max', srnamespace: 0, srinfo: '', srprop: 'snippet', ...params,
 	});
 	if (!c) {
 		return search;
