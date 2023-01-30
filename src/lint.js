@@ -60,7 +60,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (mode === 'upload' || mode === 'dry') {
 		if (mode === 'dry') {
 			const pageids = Object.keys(lintErrors),
-				batch = 400;
+				batch = 350;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
 				generateErrors(pages);
@@ -94,7 +94,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			await api.edit({title: '萌娘百科:可能存在语法错误的条目', text, section: 1, summary: '自动更新语法错误'});
 			return;
 		}
-		console.log(text);
+		// console.log(text);
 	} else if (mode === 'all') {
 		const qs = {
 				generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 500,
