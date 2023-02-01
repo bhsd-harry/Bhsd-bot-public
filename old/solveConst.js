@@ -24,7 +24,10 @@ Parser.config = './config/moegirl';
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 2);
 		root.solveConst();
-		edits.push([pageid, content, String(root), timestamp, curtimestamp]);
+		const text = String(root);
+		if (content !== text) {
+			edits.push([pageid, content, String(root), timestamp, curtimestamp]);
+		}
 	}
 	await api.massEdit(edits, mode, '自动移除不应出现的模板参数');
 })();
