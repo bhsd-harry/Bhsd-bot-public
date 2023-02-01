@@ -60,7 +60,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (mode === 'upload' || mode === 'dry') {
 		if (mode === 'dry') {
 			const pageids = Object.keys(lintErrors),
-				batch = 350;
+				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
 				generateErrors(pages);
