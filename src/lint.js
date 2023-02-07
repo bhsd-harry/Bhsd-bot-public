@@ -1,37 +1,39 @@
 'use strict';
 
-const path = require('path'),
-	Parser = require('wikiparser-node'),
+const Parser = require('wikiparser-node'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
 Parser.warning = false;
-Parser.config = Parser.minConfig
-	? require(path.join(path.dirname(require.resolve('wikiparser-node')), 'config', 'moegirl'))
-	: './config/moegirl';
+Parser.config = Parser.minConfig ? Parser.getConfig('./config/moegirl') : './config/moegirl';
 
 const mode = runMode(['upload', 'all']),
 	hasArg = new Set();
 let gapcontinue = require('../config/allpages');
 
-const generateErrors = (pages, errorOnly) => {
+const trTemplate = ['Ptl', 'Template Repeat', 'Kiraraf广播'],
+	trTemplateRegex = new RegExp(`^\\s*(?:<[Tt][Rr][\\s/>]|\\{\\{\\s*(?:!!\\s*\\}\\}|(?:${
+		trTemplate.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
+			.join('|')
+	})\\s*\\|))`, 'u');
+
+const generateErrors = (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
 		let errors;
 		try {
 			errors = Parser.parse(content, ns === 10 && !title.endsWith('/doc')).lint()
-				.filter(({message}) => message !== '重复参数');
+				.filter(
+					({message, excerpt}) => message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt),
+				);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
 		}
 		if (title.startsWith('三国杀')) {
 			for (let i = errors.length - 1; i > 0; i--) {
-				const {message: right, startLine: rightLine, startCol: rightStart, endCol: rightEnd} = errors[i],
-					{message: left, startLine: leftLine, startCol: leftStart, endCol: leftEnd} = errors[i - 1];
-				if (right === '孤立的"}"' && left === '孤立的"{"' && leftLine === rightLine
-					&& rightEnd - rightStart === 1 && leftEnd - leftStart === 1
-				) {
+				const {message} = errors[i];
+				if (message === '孤立的"}"' || message === '孤立的"{"') {
 					errors.splice(--i, 2);
 				}
 			}
@@ -70,10 +72,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 			Object.values(lintErrors).map(({title, errors}) => {
 				errors = errors.filter(
-					({severity, message, startCol, endCol, excerpt}) =>
+					({severity, message, startCol, endCol}) =>
 						severity !== 'warning' && message !== '未匹配的闭合标签' && message !== '孤立的"}"'
-						&& !(message === '孤立的"{"' && endCol - startCol === 1)
-						&& !(message === '将被移出表格的内容' && /^\s*\{\{\s*(?:!!\s*\}\}|ptl\s*\|)/u.test(excerpt)),
+						&& !(message === '孤立的"{"' && endCol - startCol === 1),
 				).sort((a, b) =>
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
@@ -81,9 +82,10 @@ const main = async (api = new Api(user, pin, url)) => {
 					? `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[${title}]]\n${
 						errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
 							`|${
-								message.replace(/"([{}[\]|]|https?:)"/u, '"<nowiki>$1</nowiki>"').replace('<h1>', '&lt;h1&gt;')
+								message.replace(/<(\w+)>/u, '&lt;$1&gt;')
+									.replace(/"([{}[\]|]|https?:)"/u, '"<nowiki>$1</nowiki>"')
 							}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
-								excerpt
+								excerpt.replaceAll('<nowiki>', '&lt;nowiki&gt;').replaceAll('-{', '-&#123;')
 							}</pre>`)
 							.join('\n|-\n')
 					}`

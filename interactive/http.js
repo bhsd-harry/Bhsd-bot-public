@@ -40,8 +40,8 @@ const api = new Api(user, pin, url),
 	const last = new Date(run),
 		now = new Date().toISOString(),
 		yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
-	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1天
+	yesterday.setDate(yesterday.getDate() - 30);
+	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
 			.filter(({content}) => content.includes('http://'));
 	const edits = pages.length > 0 ? await exturl(pages, chat) : [];
