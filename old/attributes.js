@@ -16,11 +16,13 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		if (mode === 'rerun') {
 			await api.massEdit(null, mode, `自动替换废弃的HTML属性 ${Object.keys(dict).join('、')}`);
+			// await api.massEdit(null, mode, `自动移除无效的flashmp3属性 id`);
 			return;
 		}
 	}
 	const pages = (await Promise.all(
 		new Array(9).fill().map((_, i) => api.search(`insource:"cellspacing=${i + 1}"`)),
+		// [api.search(`insource:"flashmp3 id"`)],
 	)).flat();
 	const edits = (await Promise.all(pages.map(({content, pageid, ns, timestamp, curtimestamp}) => {
 		const parsed = Parser.parse(content, ns === 10, 4);
@@ -54,9 +56,13 @@ const main = async (api = new Api(user, pin, url)) => {
 				token.setAttr('style', style);
 			}
 		}
+		// for (const token of parsed.querySelectorAll('ext-attrs#flashmp3 > ext-attr#id')) {
+		// 	token.remove();
+		// }
 		return [pageid, content, parsed.toString(), timestamp, curtimestamp];
 	}))).filter(([, content, text]) => content !== text);
 	await api.massEdit(edits, mode, `自动替换废弃的HTML属性 ${Object.keys(dict).join('、')}`);
+	// await api.massEdit(edits, mode, `自动移除无效的flashmp3属性 id`);
 };
 
 if (!module.parent) {

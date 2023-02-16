@@ -37,10 +37,11 @@ Parser.config = './config/moegirl';
 			selector = keys.map(key => `image-parameter#${key}`).join(),
 			mistakes = [
 				['thumbnail', new Set(['缩略图thumb', '略缩图', 'tumb', 'thumn', 'thump'])],
-				['right', new Set(['rihgt', '居右', '右侧对齐', 'ringht', 'righ', 'Right', '靠右', 'reght', 'rigt', 'right]'])],
+				['right', new Set(['rihgt', '居右', '右侧对齐', 'ringht', 'righ', 'Right', '靠右', 'reght', 'rigt', 'right]', 'righft', 'risht', 'rigft'])],
 				['center', new Set(['中'])],
-				['none', new Set(['none]'])],
-				['left', new Set(['left]'])],
+				['none', new Set(['none]', 'no'])],
+				['left', new Set(['left]', 'Left'])],
+				['framed', new Set(['Frame'])],
 			];
 		for (const parameter of root.querySelectorAll(selector)) {
 			if (!root.contains(parameter)) {
