@@ -90,8 +90,8 @@ Parser.config = './config/moegirl';
 				}
 				continue;
 			}
-			const mt = /^(?:(\d*)\s*[*×]\s*(\d*)px|(?:px|宽度)=(x?\d+)(?:px)?|(x?\d+)(?:pp|(?:px){2,}|xppx))$/iu
-				.exec(curValue);
+			const mt = /^(?:(\d*)\s*(?:[*×]\s*(\d*))?px|(?:px|宽度)=(x?\d+)(?:px)?|(x?\d+)(?:pp|(?:px){2,}|xppx))$/iu
+				.exec(curValue.trim());
 			if (mt) {
 				if (type === 'gallery-image') {
 					parameter.remove();
