@@ -2,7 +2,7 @@
 
 const Parser = require('wikiparser-node'),
 	Api = require('../lib/api'),
-	{save, runMode, error, info} = require('../lib/dev'),
+	{save, runMode, error, info, diff} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint');
@@ -22,23 +22,31 @@ const trTemplate = [
 		'动画作品剧情模板',
 		'Album Infobox/Chronology',
 		'嵌入片段',
+		'KPL Runoff/Single',
+		'BestGirlContestEveryPerson',
 		':BanG Dream!少女乐团派对!/历史活动/EventInfo',
 		':D4DJ Groovy Mix/历史活动/EventInfo',
 	],
-	trTemplateRegex = new RegExp(`^\\s*(?:<[Tt][Rr][\\s/>]|\\{\\{\\s*(?:!!\\s*\\}\\}|#[Ii][Nn][Vv][Oo][Kk][Ee]:|(?:${
+	trTemplateRegex = new RegExp(`^\\s*(?:<[Tt][Rr][\\s/>]|\\{{3}|\\{{2}\\s*(?:!!\\s*\\}{2}|(?:${
 		trTemplate.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
 			.join('|')
-	})\\s*\\|))`, 'u');
+	})\\s*\\|))`, 'u'),
+	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
-const generateErrors = (pages, errorOnly = true) => {
+const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
 		let errors;
 		try {
-			errors = Parser.parse(content, ns === 10 && !title.endsWith('/doc')).lint()
-				.filter(({message, excerpt}) => !(
-					message === '将被移出表格的内容' && trTemplateRegex.test(excerpt)
-					|| message === '重复参数' && /^[^=]*\{\{\s*c\s*\}\}/iu.test(excerpt)
-				));
+			const root = Parser.parse(content, ns === 10),
+				text = String(root);
+			if (text !== content) {
+				error(`${pageid}在解析过程中修改了原始文本！`);
+				await diff(content, text);
+			}
+			errors = root.lint().filter(({message, excerpt}) => !(
+				message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt))
+				|| message === '重复参数' && /^[^=]*\{\{\s*c\s*\}\}/iu.test(excerpt)
+			));
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
@@ -74,16 +82,17 @@ const generateErrors = (pages, errorOnly = true) => {
 const main = async (api = new Api(user, pin, url)) => {
 	if (mode === 'upload' || mode === 'dry') {
 		if (mode === 'dry') {
-			const pageids = Object.keys(lintErrors),
+			const pageids = Object.entries(lintErrors).filter(([, {title}]) => !title.startsWith('Template:'))
+					.map(([pageid]) => pageid),
 				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
-				generateErrors(pages);
+				await generateErrors(pages);
 			}
 		}
 		const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
-			Object.values(lintErrors).map(({title, errors}) => {
+			Object.values(lintErrors).filter(({title}) => !title.startsWith('Template:')).map(({title, errors}) => {
 				errors = errors.filter(
 					({severity, message, startCol, endCol}) =>
 						severity === 'error' && message !== '孤立的"}"' && !(message === '孤立的"{"' && endCol - startCol === 1),
@@ -118,7 +127,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			pages = query?.pages;
 		info(`已获取 ${pages?.length ?? 0} 个页面的源代码`);
 		if (pages) {
-			generateErrors(
+			await generateErrors(
 				pages.filter(({revisions}) => revisions && revisions[0]?.contentmodel === 'wikitext')
 					.map(page => ({...page, content: page.revisions[0].content})),
 				true,
@@ -136,20 +145,23 @@ const main = async (api = new Api(user, pin, url)) => {
 				grcexcludeuser: 'Bhsd', grcend,
 			},
 			pages = await api.revisions(qs);
-		generateErrors(pages);
+		await generateErrors(pages);
 		await save('../config/lint.json', now);
 	}
 	if (hasArg.size > 0) {
 		info(`共 ${hasArg.size} 个页面包含未预期的模板参数。`);
-		const qs = {pageids: [...hasArg], prop: 'transcludedin', tinamespace: 0, tishow: '!redirect', tilimit: 1},
-			{query: {pages}} = await api.get(qs);
-		for (const {pageid, transcludedin} of pages) {
-			if (transcludedin) {
-				const page = lintErrors[pageid];
-				page.errors = page.errors.filter(({message}) => message !== '未预期的模板参数');
-				if (page.errors.length === 0) {
-					delete lintErrors[pageid];
-				}
+		const qs = {pageids: [...hasArg], prop: 'transcludedin', tinamespace: '*', tishow: '!redirect', tilimit: 'max'},
+			pageids = [];
+		let q;
+		do {
+			q = await api.get({...qs, ...q?.continue});
+			pageids.push(...q.query.pages.filter(({transcludedin}) => transcludedin).map(({pageid}) => pageid));
+		} while (q.continue);
+		for (const pageid of pageids) {
+			const page = lintErrors[pageid];
+			page.errors = page.errors.filter(({message}) => message !== '未预期的模板参数');
+			if (page.errors.length === 0) {
+				delete lintErrors[pageid];
 			}
 		}
 		hasArg.clear();
