@@ -35,6 +35,9 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
+		if (ns === 2) {
+			continue;
+		}
 		let errors;
 		try {
 			const root = Parser.parse(content, ns === 10),
@@ -82,8 +85,7 @@ const generateErrors = async (pages, errorOnly = true) => {
 const main = async (api = new Api(user, pin, url)) => {
 	if (mode === 'upload' || mode === 'dry') {
 		if (mode === 'dry') {
-			const pageids = Object.entries(lintErrors).filter(([, {title}]) => !title.startsWith('Template:'))
-					.map(([pageid]) => pageid),
+			const pageids = Object.keys(lintErrors),
 				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
@@ -92,7 +94,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
-			Object.values(lintErrors).filter(({title}) => !title.startsWith('Template:')).map(({title, errors}) => {
+			Object.values(lintErrors).filter(({title}) => !/^(?:Template|Help):/u.test(title)).map(({title, errors}) => {
 				errors = errors.filter(
 					({severity, message, startCol, endCol}) =>
 						severity === 'error' && message !== '孤立的"}"' && !(message === '孤立的"{"' && endCol - startCol === 1),

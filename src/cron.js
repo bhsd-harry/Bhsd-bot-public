@@ -12,6 +12,7 @@ const {user, pin, url} = require('../config/user'),
 		'css',
 		'doc',
 		'bracket',
+		'br',
 	];
 
 const api = new Api(user, pin, url);
