@@ -18,21 +18,21 @@ Parser.config = './config/moegirl';
 		await api.massEdit(null, mode, '自动修复未闭合的表格');
 		return;
 	}
-	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message, excerpt}) => message === '未闭合的表格' && excerpt?.startsWith('\n|-}'),
-		)),
+	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的表格')),
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 4);
 		for (const table of root.querySelectorAll('table[closed=false]')) {
-			const tr = table.lastChild,
-				str = String(tr);
-			if (str.startsWith('\n|-}')) {
+			const {length, lastChild} = table,
+				str = String(lastChild);
+			if (length === 2 || length === 3 && (str === '\n|-' || !str.trim())) {
+				table.remove();
+			} else if (str.startsWith('\n|-}')) {
 				Parser.run(() => {
 					table.close('\n|}');
 				});
-				tr.remove();
+				lastChild.remove();
 				table.after(str.slice(4));
 			}
 		}

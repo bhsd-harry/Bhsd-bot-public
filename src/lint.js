@@ -94,7 +94,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
-			Object.values(lintErrors).filter(({title}) => !/^(?:Template|Help):/u.test(title)).map(({title, errors}) => {
+			Object.values(lintErrors).map(({title, errors}) => {
 				errors = errors.filter(
 					({severity, message, startCol, endCol}) =>
 						severity === 'error' && message !== '孤立的"}"' && !(message === '孤立的"{"' && endCol - startCol === 1),
@@ -102,7 +102,7 @@ const main = async (api = new Api(user, pin, url)) => {
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
 				return errors.length
-					? `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[${title}]]\n${
+					? `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[:${title}]]\n${
 						errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
 							`|${
 								message.replace(/<(\w+)>/u, '&lt;$1&gt;')
