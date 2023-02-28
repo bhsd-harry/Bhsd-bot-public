@@ -89,8 +89,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				}
 				continue;
 			}
-			const mt = /^(?:(\d*)\s*(?:[*×]\s*(\d*))?px|(?:px|宽度)=(x?\d+)(?:px)?|(x?\d+)(?:pp|(?:px){2,}|xppx))$/iu
-				.exec(curValue.trim());
+			const mt = /^(?:(\d+)\s*(?:[*×x]\s*(\d+))?(?:p[px]|xp)+|(?:px|宽度)=(x?\d+)(?:px)?)$/iu.exec(curValue.trim());
 			if (mt) {
 				if (type === 'gallery-image') {
 					parameter.remove();
@@ -98,7 +97,7 @@ const main = async (api = new Api(user, pin, url)) => {
 					if (mt[1]) {
 						parameter.setText(`${mt[1]}x${mt[2]}px`);
 					} else {
-						parameter.setText(`${mt[3] ?? mt[4]}px`.toLowerCase());
+						parameter.setText(`${mt[3]}px`.toLowerCase());
 					}
 				}
 			}
