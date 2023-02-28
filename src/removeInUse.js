@@ -10,7 +10,11 @@ const protectedPages = [9658, 33803, 44832],
 	age = 1000 * 86400 * 7, // 一周
 	inuse = ['Inuse', '施工中', '编辑中', '編輯中'].map(str => `template#Template\\:${str}`).join(),
 	zhnum = {半: '.5', 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 兩: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9},
-	unit = {天: 1440, 日: 1440, 小时: 60, 小時: 60, 时: 60, 時: 60, 钟头: 60, 鐘頭: 60, 分钟: 1, 分鐘: 1, 分: 1};
+	unit = {
+		天: 1440, 日: 1440, d: 1440,
+		小时: 60, 小時: 60, 时: 60, 時: 60, 钟头: 60, 鐘頭: 60, h: 60,
+		分钟: 1, 分鐘: 1, 分: 1, m: 1, min: 1,
+	};
 
 const _parseTime = token => {
 	const fallback = 2 * 1440,
@@ -22,7 +26,7 @@ const _parseTime = token => {
 	const last = token.getValue('持续时间') ?? token.getValue(1) ?? '2小时',
 		lapse = last.replace(/[\s个個]/g, '').replace(/[半零〇一二两兩三四五六七八九]/g, m => zhnum[m])
 			.replace(/(\d?)十(\d?)/g, (_, p1, p2) => `${p1 || 1}${p2 || 0}`),
-		args = [...lapse.matchAll(/([\d.]+)(\D+)/g)];
+		args = [...lapse.matchAll(/(?<![\d.])([\d.]+)\s*([^\d\s.]+)/g)];
 	if (args.map(([m]) => m).join('') !== lapse) {
 		error(`无法解析的参数：持续 ${lapse}`);
 		return fallback;

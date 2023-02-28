@@ -6,6 +6,7 @@ const Parser = require('wikiparser-node'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint');
+Parser.i18n = './i18n/zh-hans';
 Parser.warning = false;
 Parser.config = Parser.minConfig ? Parser.getConfig('./config/moegirl') : './config/moegirl';
 

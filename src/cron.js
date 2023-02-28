@@ -13,6 +13,7 @@ const {user, pin, url} = require('../config/user'),
 		'doc',
 		'bracket',
 		'br',
+		'repeated-image-parameter',
 	];
 
 const api = new Api(user, pin, url);

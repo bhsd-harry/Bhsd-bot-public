@@ -8,9 +8,8 @@ const Api = require('../lib/api'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-(async () => {
-	const api = new Api(user, pin, url),
-		mode = runMode();
+const main = async (api = new Api(user, pin, url)) => {
+	const mode = runMode();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
@@ -110,4 +109,10 @@ Parser.config = './config/moegirl';
 		}
 	}
 	await api.massEdit(edits, mode, '自动移除重复的图片参数');
-})();
+};
+
+if (!module.parent) {
+	main();
+}
+
+module.exports = main;
