@@ -52,7 +52,9 @@ const main = async (api = new Api(user, pin, url)) => {
 				i = childNodes.indexOf(parameter),
 				repeated = childNodes.slice(i + 1).filter(({name}) => name === curName);
 			if (curName === 'invalid') {
-				parameter.remove();
+				if (type === 'gallery-image') {
+					parameter.remove();
+				}
 				continue;
 			} else if (repeated.length === 0) {
 				continue;
