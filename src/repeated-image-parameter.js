@@ -18,7 +18,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		return;
 	}
 	const regex = /^重复的图片[a-z]+参数$/u,
-		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(({message}) => regex.test(message))),
+		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+			({message}) => message === '无效的图库图片参数' || regex.test(message),
+		)),
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)}),
 		width = new RegExp(
@@ -30,7 +32,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		);
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 6),
-			keys = [...new Set(
+			keys = ['invalid', ...new Set(
 				lintErrors[pageid].errors.filter(({message}) => regex.test(message)).map(({message}) => message.slice(5, -2)),
 			)],
 			selector = keys.map(key => `image-parameter#${key}`).join(),
@@ -49,7 +51,9 @@ const main = async (api = new Api(user, pin, url)) => {
 			const {parentNode: {childNodes, type}, name: curName, value: curValue} = parameter,
 				i = childNodes.indexOf(parameter),
 				repeated = childNodes.slice(i + 1).filter(({name}) => name === curName);
-			if (repeated.length === 0) {
+			if (curName === 'invalid') {
+				parameter.remove();
+			} else if (repeated.length === 0) {
 				continue;
 			} else if (repeated.some(({value}) => value === curValue)) {
 				parameter.remove();
@@ -82,7 +86,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 			const key = mistakes.find(([, candidates]) => candidates.has(curValue))?.[0];
 			if (key) {
-				if (childNodes.some(({name}) => name === key)) {
+				if (type === 'gallery-image' || childNodes.some(({name}) => name === key)) {
 					parameter.remove();
 				} else {
 					parameter.setText(key);

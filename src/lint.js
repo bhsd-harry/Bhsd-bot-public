@@ -47,8 +47,9 @@ const generateErrors = async (pages, errorOnly = true) => {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text);
 			}
-			errors = root.lint().filter(({message, excerpt}) => !(
-				message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt))
+			errors = root.lint().filter(({message, severity, excerpt}) => !(
+				severity === 'warning'
+				|| message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt))
 				|| message === '重复参数' && /^[^=]*\{\{\s*c\s*\}\}/iu.test(excerpt)
 			));
 		} catch (e) {
@@ -63,11 +64,10 @@ const generateErrors = async (pages, errorOnly = true) => {
 				}
 			}
 		}
-		if (errorOnly) {
-			errors = errors.filter(({severity}) => severity === 'error');
-		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
+		} else if (errorOnly && !errors.some(({message}) => message === '无效的图库图片参数')) {
+			continue;
 		} else {
 			for (const e of errors) {
 				if (!Number.isNaN(e.startIndex)) {
@@ -107,7 +107,7 @@ const main = async (api = new Api(user, pin, url)) => {
 						errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
 							`|${
 								message.replace(/<(\w+)>/u, '&lt;$1&gt;')
-									.replace(/"([{}[\]|]|https?:)"/u, '"<nowiki>$1</nowiki>"')
+									.replace(/"([{}[\]|]|https?:\/\/)"/u, '"<nowiki>$1</nowiki>"')
 							}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
 								excerpt.replaceAll('<nowiki>', '&lt;nowiki&gt;').replaceAll('-{', '-&#123;')
 							}</pre>`)
