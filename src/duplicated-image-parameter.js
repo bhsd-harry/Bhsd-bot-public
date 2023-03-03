@@ -53,6 +53,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				repeated = childNodes.slice(i + 1).filter(({name}) => name === curName);
 			if (curName === 'invalid') {
 				parameter.remove();
+				continue;
 			} else if (repeated.length === 0) {
 				continue;
 			} else if (repeated.some(({value}) => value === curValue)) {

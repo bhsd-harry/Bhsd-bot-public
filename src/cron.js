@@ -3,7 +3,7 @@ const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	scripts = [
-		'repeated-node',
+		'duplicated',
 		'tag',
 		'extImage',
 		'wrongUrl',
@@ -13,7 +13,7 @@ const {user, pin, url} = require('../config/user'),
 		'doc',
 		'bracket',
 		'br',
-		'repeated-image-parameter',
+		'duplicated-image-parameter',
 	];
 
 const api = new Api(user, pin, url);
