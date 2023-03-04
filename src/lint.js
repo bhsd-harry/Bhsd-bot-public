@@ -32,7 +32,8 @@ const trTemplate = [
 		trTemplate.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
 			.join('|')
 	})\\s*\\|))`, 'u'),
-	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
+	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu,
+	messages = new Set(['URL中的全角标点', '内链中不必要的URL编码', '孤立的"<"']);
 
 const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
@@ -47,11 +48,11 @@ const generateErrors = async (pages, errorOnly = true) => {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text);
 			}
-			errors = root.lint().filter(({message, severity, excerpt}) => !(
-				severity === 'warning'
-				|| message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt))
-				|| message === '重复参数' && /^[^=]*\{\{\s*c\s*\}\}/iu.test(excerpt)
-			));
+			errors = root.lint().filter(({message, severity, excerpt}) =>
+				severity === 'error' && message !== '重复参数'
+				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
+				|| message === 'URL中的全角标点',
+			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
@@ -66,7 +67,7 @@ const generateErrors = async (pages, errorOnly = true) => {
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
-		} else if (errorOnly && !errors.some(({message}) => message === '无效的图库图片参数')) {
+		} else if (errorOnly && !errors.some(({message}) => messages.has(message))) {
 			continue;
 		} else {
 			for (const e of errors) {
