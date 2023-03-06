@@ -21,6 +21,7 @@ Parser.config = './config/moegirl';
 	}
 	if (mode === 'redry') {
 		await api.massEdit(null, mode);
+		return;
 	} else if (mode === 'rerun') {
 		const newtimestamps = await api.massEdit(null, mode, '自动添加网页存档或标记失效链接'),
 			archived = require('../config/broken');
@@ -31,7 +32,8 @@ Parser.config = './config/moegirl';
 	try {
 		archive = require('../config/archive');
 	} catch {}
-	if (titles && isNaN(titles)) {
+	const incomplete = titles && isNaN(titles);
+	if (incomplete) {
 		pages = await api.revisions(titles.split('|').every(pageid => !isNaN(pageid)) ? {pageids: titles} : {titles});
 	} else {
 		const response = await api.categorymembers('带有失效链接的条目', archive, Number(titles) || 5);
@@ -41,7 +43,7 @@ Parser.config = './config/moegirl';
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
 		const [text, nBroken, nArchived, nFailed] = await broken({
 			content, pageid, timestamp, curtimestamp,
-		}, chat, true);
+		}, chat, true, incomplete);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(page => page);
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');

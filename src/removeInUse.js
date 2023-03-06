@@ -68,7 +68,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		.filter(({pageid}) => !protectedPages.includes(pageid))
 		.map(async ({pageid}) => {
 			const {query: {pages: [{revisions: [{timestamp}]}]}, curtimestamp} = await api.get({
-				pageids: pageid, prop: 'revisions', rvdir: 'newer', rvlimit: 1, rvprop: 'timestamp', curtimestamp: 1,
+				pageids: pageid, prop: 'revisions', rvprop: 'timestamp', curtimestamp: 1,
 			});
 			if (new Date(curtimestamp).getTime() - new Date(timestamp).getTime() > age) {
 				return pageid;

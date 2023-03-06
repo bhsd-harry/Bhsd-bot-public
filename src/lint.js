@@ -33,7 +33,7 @@ const trTemplate = [
 			.join('|')
 	})\\s*\\|))`, 'u'),
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu,
-	messages = new Set(['内链中不必要的URL编码', '孤立的"<"']);
+	messages = /孤立的"[{}[\]]"/u;
 
 const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
@@ -50,7 +50,8 @@ const generateErrors = async (pages, errorOnly = true) => {
 			}
 			errors = root.lint().filter(({message, severity, excerpt}) =>
 				severity === 'error' && message !== '重复参数'
-				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt)),
+				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
+				|| message === 'URL中的全角标点',
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
@@ -66,7 +67,9 @@ const generateErrors = async (pages, errorOnly = true) => {
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
-		} else if (errorOnly && !errors.some(({message}) => messages.has(message))) {
+		} else if (errorOnly && !errors.some(
+			({message, startIndex, endIndex}) => messages.test(message) && endIndex - startIndex === 1,
+		)) {
 			continue;
 		} else {
 			for (const e of errors) {
