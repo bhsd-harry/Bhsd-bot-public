@@ -32,8 +32,7 @@ const trTemplate = [
 		trTemplate.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
 			.join('|')
 	})\\s*\\|))`, 'u'),
-	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu,
-	messages = /孤立的"[{}[\]]"/u;
+	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
 const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content} of pages) {
@@ -51,7 +50,7 @@ const generateErrors = async (pages, errorOnly = true) => {
 			errors = root.lint().filter(({message, severity, excerpt}) =>
 				severity === 'error' && message !== '重复参数'
 				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
-				|| message === 'URL中的全角标点',
+				|| message === 'URL中的全角标点' || message === 'URL中的"|"',
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
@@ -67,8 +66,9 @@ const generateErrors = async (pages, errorOnly = true) => {
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
-		} else if (errorOnly && !errors.some(
-			({message, startIndex, endIndex}) => messages.test(message) && endIndex - startIndex === 1,
+		} else if (errorOnly && !errors.some(({message, excerpt}) =>
+			message === '孤立的"{"' && excerpt.startsWith('-{') || message === '孤立的"}"' && excerpt.endsWith('}-')
+			|| message === 'URL中的"|"',
 		)) {
 			continue;
 		} else {
@@ -101,7 +101,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			Object.values(lintErrors).map(({title, errors}) => {
 				errors = errors.filter(
 					({severity, message, startCol, endCol}) =>
-						severity === 'error' && message !== '孤立的"}"' && !(message === '孤立的"{"' && endCol - startCol === 1),
+						severity === 'error' || message === 'URL中的全角标点' || message === 'URL中的"|"',
 				).sort((a, b) =>
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
