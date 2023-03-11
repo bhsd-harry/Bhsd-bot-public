@@ -100,8 +100,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 			Object.values(lintErrors).map(({title, errors}) => {
 				errors = errors.filter(
-					({severity, message, startCol, endCol}) =>
-						severity === 'error' || message === 'URL中的全角标点' || message === 'URL中的"|"',
+					({severity, message, excerpt, startCol, endCol}) =>
+						severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
+						|| message === 'URL中的全角标点' || message === 'URL中的"|"',
 				).sort((a, b) =>
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
@@ -144,7 +145,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	} else {
 		const last = rcend && new Date(rcend),
 			now = new Date().toISOString(),
-			yesterday = new Date(Date.now() - 3600 * 1000),
+			yesterday = new Date(Date.now() - 3600 * 1000 * 24),
 			grcend = (last > yesterday ? last : yesterday).toISOString(),
 			qs = {
 				generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',

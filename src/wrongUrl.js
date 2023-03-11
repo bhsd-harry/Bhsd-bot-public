@@ -29,7 +29,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		edits = [...new Set(pages.map(({pageid}) => pageid))].map(pageid => {
 			const {content, timestamp, curtimestamp} = pages.find(({pageid: id}) => id === pageid);
 			if (!testRegex.test(content)) {
-				error(`页面 ${pageid} 找不到错误URL！`);
+				// error(`页面 ${pageid} 找不到错误URL！`);
 				return false;
 			}
 			const text = content.replace(replaceRegex, 'http://');

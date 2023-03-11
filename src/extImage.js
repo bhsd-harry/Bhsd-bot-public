@@ -63,7 +63,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			.map(({pageid, content, timestamp, curtimestamp}) => {
 				const urls = content.match(regex);
 				if (!urls) {
-					error(`页面 ${pageid} 找不到图片链接！`);
+					// error(`页面 ${pageid} 找不到图片链接！`);
 					return null;
 				}
 				let text = content;

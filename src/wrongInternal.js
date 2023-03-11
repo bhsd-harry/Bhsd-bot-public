@@ -45,7 +45,6 @@ const main = async (api = new Api(user, pin, url)) => {
 	// 2. 再进行修复
 	const wikiUrl = new WikiUrl({
 			'zh.moegirl.org.cn': '',
-			'mzh.moegirl.org.cn': '',
 			'commons.moegirl.org.cn': 'cm:',
 		}, '/'),
 		regex = new RegExp(`\\[{2}((?:https?:)?//${urlRegex}+)(.*?)]{1,2}`, 'gi'),
