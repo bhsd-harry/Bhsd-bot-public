@@ -18,6 +18,9 @@ const api = new Api(user, pin, url),
 	} else if (mode === 'sort') {
 		sort();
 		return;
+	} else if (mode === 'redry') {
+		await api.massEdit(null, mode, '自动修复http链接');
+		return;
 	}
 	let run = new Date(),
 		dry;
@@ -37,6 +40,7 @@ const api = new Api(user, pin, url),
 		]);
 		return;
 	}
+	// 以下`mode === 'dry'`
 	const last = new Date(run),
 		now = new Date().toISOString(),
 		yesterday = new Date();
@@ -47,6 +51,6 @@ const api = new Api(user, pin, url),
 	const edits = pages.length > 0 ? await exturl(pages, chat) : [];
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
-		save('../config/abuse32.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
+		save('../config/abuse32.json', edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);
 })();

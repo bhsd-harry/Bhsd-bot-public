@@ -4,9 +4,9 @@
 'use strict';
 const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
-	{error, runMode} = require('../lib/dev');
+	{runMode} = require('../lib/dev');
 
-const testRegex = /https?:?\/{0,2}https?:\/{0,2}/, // 用于test时不能有g修饰符
+const testRegex = /https?:?\/{0,2}(https?:)\/{0,2}/, // 用于test时不能有g修饰符
 	replaceRegex = new RegExp(testRegex, 'g');
 
 const main = async (api = new Api(user, pin, url)) => {
@@ -32,7 +32,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				// error(`页面 ${pageid} 找不到错误URL！`);
 				return false;
 			}
-			const text = content.replace(replaceRegex, 'http://');
+			const text = content.replace(replaceRegex, '$1//');
 			return text !== content && [pageid, content, text, timestamp, curtimestamp];
 		}).filter(edit => edit);
 	await api.massEdit(edits, mode, '自动修复错误格式的外链');

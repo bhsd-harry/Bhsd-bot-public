@@ -8,7 +8,7 @@ const Parser = require('wikiparser-node'),
 	rcend = require('../config/lint');
 Parser.i18n = './i18n/zh-hans';
 Parser.warning = false;
-Parser.config = Parser.minConfig ? Parser.getConfig('./config/moegirl') : './config/moegirl';
+Parser.config = './config/moegirl';
 
 const mode = runMode(['upload', 'all']),
 	hasArg = new Set();
@@ -35,9 +35,9 @@ const trTemplate = [
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
 const generateErrors = async (pages, errorOnly = true) => {
-	for (const {ns, pageid, title, content} of pages) {
-		if (ns === 2) {
-			continue;
+	for (const {ns, pageid, title, content, missing} of pages) {
+		if (missing || ns === 2) {
+			delete lintErrors[pageid];
 		}
 		let errors;
 		try {
@@ -47,10 +47,12 @@ const generateErrors = async (pages, errorOnly = true) => {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text);
 			}
-			errors = root.lint().filter(({message, severity, excerpt}) =>
+			errors = root.lint().filter(({message, severity, excerpt, startCol, endCol}) =>
 				severity === 'error' && message !== '重复参数'
 				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
-				|| message === 'URL中的全角标点' || message === 'URL中的"|"',
+				&& (message !== '孤立的"["' || endCol - startCol > 1 || !/<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
+				|| message === 'URL中的全角标点' || message === 'URL中的"|"'
+				|| message === '内链目标包含模板' && !/\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt),
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
@@ -66,10 +68,7 @@ const generateErrors = async (pages, errorOnly = true) => {
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
-		} else if (errorOnly && !errors.some(({message, excerpt}) =>
-			message === '孤立的"{"' && excerpt.startsWith('-{') || message === '孤立的"}"' && excerpt.endsWith('}-')
-			|| message === 'URL中的"|"',
-		)) {
+		} else if (errorOnly && !errors.some(({message}) => message === '内链目标包含模板')) {
 			continue;
 		} else {
 			for (const e of errors) {
@@ -100,9 +99,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 			Object.values(lintErrors).map(({title, errors}) => {
 				errors = errors.filter(
-					({severity, message, excerpt, startCol, endCol}) =>
+					({severity, message, excerpt}) =>
 						severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-						|| message === 'URL中的全角标点' || message === 'URL中的"|"',
+						|| message === 'URL中的全角标点' || message === 'URL中的"|"' || message === '内链目标包含模板',
 				).sort((a, b) =>
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
