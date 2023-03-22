@@ -36,8 +36,9 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = true) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
-		if (missing || ns === 2) {
+		if (missing || ns === 2 || title.startsWith('Template:Sandbox/')) {
 			delete lintErrors[pageid];
+			continue;
 		}
 		let errors;
 		try {
@@ -47,12 +48,11 @@ const generateErrors = async (pages, errorOnly = true) => {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text);
 			}
-			errors = root.lint().filter(({message, severity, excerpt, startCol, endCol}) =>
-				severity === 'error' && message !== '重复参数'
+			errors = root.lint().filter(({message, excerpt, startCol, endCol}) =>
+				message !== '重复参数'
 				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
 				&& (message !== '孤立的"["' || endCol - startCol > 1 || !/<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
-				|| message === 'URL中的全角标点' || message === 'URL中的"|"'
-				|| message === '内链目标包含模板' && !/\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt),
+				&& (message !== '内链目标包含模板' || !/\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt)),
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
@@ -69,7 +69,7 @@ const generateErrors = async (pages, errorOnly = true) => {
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
 		} else if (errorOnly && !errors.some(({message}) => message === '内链目标包含模板')) {
-			continue;
+			//
 		} else {
 			for (const e of errors) {
 				if (!Number.isNaN(e.startIndex)) {
