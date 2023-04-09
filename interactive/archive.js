@@ -1,12 +1,10 @@
 'use strict';
 const {promises} = require('fs'),
 	Api = require('../lib/api'),
-	Parser = require('wikiparser-node'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user');
-Parser.config = './config/moegirl';
 
 (async () => {
 	const [,,, titles] = process.argv,

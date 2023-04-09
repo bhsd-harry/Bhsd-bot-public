@@ -2276,7 +2276,7 @@
 		"en": "Ultraman Zero"
 	},
 	{
-		"zh": "Legends Never Die",
+		"zh": "传奇永不熄灭",
 		"en": "Legends Never Die"
 	},
 	{
@@ -4353,10 +4353,6 @@
 		"zh": "Category:现实人物"
 	},
 	{
-		"en": "Category:Singing software synthesizers",
-		"zh": "Category:歌声合成软件"
-	},
-	{
 		"en": "Category:Magazines published in China",
 		"zh": "Category:中国漫画杂志"
 	},
@@ -4457,7 +4453,7 @@
 		"zh": "Category:VOCALOID模板"
 	},
 	{
-		"en": "Category:Singing software synthesizers works",
+		"en": "Category:Voice synthesis software works",
 		"zh": "Category:歌声合成软件作品"
 	},
 	{
@@ -4474,7 +4470,7 @@
 		"ja": "カテゴリ:フォーマットテンプレート"
 	},
 	{
-		"en": "Category:Templates by singers",
+		"en": "Category:Singer templates",
 		"zh": "Category:歌手模板"
 	},
 	{
@@ -4769,5 +4765,13 @@
 	{
 		"zh": "数码宝贝系列",
 		"en": "Digimon (series)"
+	},
+	{
+		"zh": "孙悟空(龙珠)",
+		"en": "Goku (Dragon Ball)"
+	},
+	{
+		"zh": "咚奇刚",
+		"en": "Donkey Kong"
 	}
 ]

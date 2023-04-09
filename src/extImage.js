@@ -4,7 +4,6 @@
 'use strict';
 const Api = require('../lib/api'),
 	Parser = require('wikiparser-node'),
-	$ = Parser.getTool(),
 	{user, pin, url} = require('../config/user'),
 	{runMode, urlRegex} = require('../lib/dev');
 Parser.warning = false;
@@ -40,7 +39,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
 		_insert = parsed => {
-			const token = parsed.sections().find(section => testRegex.test($(section).text()))?.[0];
+			const token = parsed.sections().find(section => testRegex.test(section.map(ele => ele.text()).join('')))?.[0];
 			if (token === undefined) {
 				//
 			} else if (typeof token === 'object' && token.matches(':header')) {
