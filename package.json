@@ -1,38 +1,38 @@
 {
-  "name": "Bhsd-bot-public",
-  "version": "0.0.0",
-  "description": "Source codes for Node.js-based bots on MoegirlPedia",
-  "keywords": [
-    "mediawiki",
-    "mediawiki-bot"
-  ],
-  "homepage": "https://github.com/bhsd-harry/Bhsd-bot-public",
-  "bugs": {
-    "url": "https://github.com/bhsd-harry/Bhsd-bot-public/issues"
-  },
-  "license": "GPL-3.0",
-  "author": "Bhsd",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bhsd-harry/Bhsd-bot-public.git"
-  },
-  "scripts": {
-    "test": "echo 'Error: no test specified' && exit 1"
-  },
-  "private": true,
-  "engines": {
-    "node": "^18.4.0"
-  },
-  "dependencies": {
-    "request": "^2.88.2",
-    "wayback-machine": "^0.2.1",
-    "wikiparser-node": "^0.3.0"
-  },
-  "devDependencies": {
-    "@types/node": "^17.0.23",
-    "eslint": "^8.30.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-n": "^15.6.0",
-    "eslint-plugin-regexp": "^1.11.0"
-  }
+	"name": "Bhsd-bot-public",
+	"version": "0.0.0",
+	"description": "Source codes for Node.js-based bots on MoegirlPedia",
+	"keywords": [
+		"mediawiki",
+		"mediawiki-bot"
+	],
+	"homepage": "https://github.com/bhsd-harry/Bhsd-bot-public",
+	"bugs": {
+		"url": "https://github.com/bhsd-harry/Bhsd-bot-public/issues"
+	},
+	"license": "GPL-3.0",
+	"author": "Bhsd",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bhsd-harry/Bhsd-bot-public.git"
+	},
+	"scripts": {
+		"test": "echo 'Error: no test specified' && exit 1"
+	},
+	"private": true,
+	"engines": {
+		"node": "^18.4.0"
+	},
+	"dependencies": {
+		"request": "^2.88.2",
+		"wayback-machine": "^0.2.1",
+		"wikiparser-node": "^0.3.0"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.23",
+		"eslint": "^8.30.0",
+		"eslint-plugin-promise": "^6.1.1",
+		"eslint-plugin-n": "^15.6.0",
+		"eslint-plugin-regexp": "^1.11.0"
+	}
 }
