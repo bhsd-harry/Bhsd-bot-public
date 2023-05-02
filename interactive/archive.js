@@ -4,7 +4,8 @@ const {promises} = require('fs'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
-	{user, pin, url} = require('../config/user');
+	{user, pin, url} = require('../config/user'),
+	skip = [1546];
 
 (async () => {
 	const [,,, titles] = process.argv,
@@ -39,6 +40,9 @@ const {promises} = require('fs'),
 		[pages] = response;
 	}
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
+		if (skip.includes(pageid)) {
+			return false;
+		}
 		const [text, nBroken, nArchived, nFailed] = await broken({
 			content, pageid, timestamp, curtimestamp,
 		}, chat, true, incomplete);
