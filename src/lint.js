@@ -34,7 +34,7 @@ const trTemplate = [
 	})\\s*\\|))`, 'u'),
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
-const generateErrors = async (pages, errorOnly = true) => {
+const generateErrors = async (pages, errorOnly = false) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
 		if (missing || ns === 2 || title.startsWith('Template:Sandbox/')) {
 			delete lintErrors[pageid];
