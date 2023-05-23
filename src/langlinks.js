@@ -21,7 +21,8 @@ const Api = require('../lib/api'),
 	apis = {},
 	corrections = {ja: [], en: [], zh: []},
 	mode = runMode(),
-	protectedPages = {zh: ['Category:即将删除的页面']};
+	protectedPages = {zh: ['Category:即将删除的页面']},
+	langs = ['en', 'zh'];
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
@@ -195,7 +196,7 @@ const editMain = async wiki => {
 };
 
 const main = async () => {
-	for (const source of ['ja', 'en', 'zh']) {
+	for (const source of langs) {
 		await sourceMain(source);
 	}
 	if (newLinks.length) {
@@ -205,11 +206,11 @@ const main = async () => {
 		})));
 	}
 	info('第一步：检查所有跨语言链接页面执行完毕。');
-	for (const target of ['ja', 'en', 'zh']) {
+	for (const target of langs) {
 		await targetMain(target);
 	}
 	info('第二步：检查待修改的跨语言链接页面执行完毕。');
-	for (const wiki of ['ja', 'en', 'zh']) {
+	for (const wiki of langs) {
 		await editMain(wiki);
 	}
 	await save('../config/langlinks.json', records);

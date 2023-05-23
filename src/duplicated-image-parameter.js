@@ -37,7 +37,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			)],
 			selector = keys.map(key => `image-parameter#${key}`).join(),
 			mistakes = [
-				['thumbnail', new Set(['缩略图thumb', '略缩图', 'tumb', 'thumn', 'thump'])],
+				['thumbnail', new Set(['缩略图thumb', '略缩图', 'tumb', 'thumn', 'thump', 'thmub'])],
 				['right', new Set(['rihgt', '居右', '右侧对齐', 'ringht', 'righ', 'Right', '靠右', 'reght', 'rigt', 'right]', 'righft', 'risht', 'rigft'])],
 				['center', new Set(['中'])],
 				['none', new Set(['none]', 'no'])],
