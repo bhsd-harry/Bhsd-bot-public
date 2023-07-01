@@ -101,7 +101,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				errors = errors.filter(
 					({severity, message, excerpt}) =>
 						severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-						|| message === '未闭合的引号' || message === 'URL中的"|"' || message === '内链目标包含模板',
+						|| message === 'URL中的"|"' || message === '内链目标包含模板',
 				).sort((a, b) =>
 					a.startLine - b.startLine || a.startCol - b.startCol
 					|| a.endLine - b.endLine || a.endCol - b.endCol);
