@@ -4437,7 +4437,7 @@
 		"zh": "Category:作品导航模板"
 	},
 	{
-		"en": "Category:Works navigational templates by genre",
+		"en": "Category:Works navigational templates by category",
 		"zh": "Category:各类作品导航模板"
 	},
 	{
@@ -4801,5 +4801,9 @@
 	{
 		"zh": "虚拟世界",
 		"en": "Virtual world"
+	},
+	{
+		"en": "Category:Works by category",
+		"zh": "Category:作品类型"
 	}
 ]

@@ -5,12 +5,13 @@ const Parser = require('wikiparser-node'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
-	rcend = require('../config/lint');
+	rcend = require('../config/lint'),
+	skipped = new Set([282144, 291562, 388572]);
 Parser.i18n = './i18n/zh-hans';
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const mode = runMode(['upload', 'all']),
+const mode = runMode(['upload', 'all', 'search']),
 	hasArg = new Set();
 let gapcontinue = require('../config/allpages');
 
@@ -20,6 +21,9 @@ const trTemplate = [
 		'Kiraraf广播',
 		'舰C任务模板',
 		'音游曲信息/musync',
+		'音游曲信息/CHUNITHM',
+		'音游曲信息/太鼓',
+		'音游曲信息/synchronica',
 		'动画作品剧情模板',
 		'Album Infobox/Chronology',
 		'嵌入片段',
@@ -36,7 +40,7 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = false) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
-		if (missing || ns === 2 || title.startsWith('Template:Sandbox/')) {
+		if (missing || ns === 2 || skipped.has(pageid) || title.startsWith('Template:Sandbox/')) {
 			delete lintErrors[pageid];
 			continue;
 		}
@@ -141,6 +145,15 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		await save('../config/allpages.json', apcontinue ?? {});
 		gapcontinue = apcontinue; // eslint-disable-line require-atomic-updates
+	} else if (mode === 'search') {
+		let {argv: [,,, q]} = process;
+		if (!q) {
+			throw new RangeError('缺失搜索字符串！');
+		}
+		q = q.replaceAll('"', '');
+		info(`搜索字符串：${q}`);
+		const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0});
+		await generateErrors(pages);
 	} else {
 		const last = rcend && new Date(rcend),
 			now = new Date().toISOString(),
