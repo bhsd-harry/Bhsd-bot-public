@@ -17,6 +17,10 @@ const _analyze = (wikitext, pageid, ns) => {
 		.filter(({firstChild: {data}}) => data.includes('<!--'));
 	for (const comment of comments) {
 		comment.replaceWith(`${String(comment.firstChild)}-->`);
+		const {previousSibling} = comment;
+		if (previousSibling?.data?.endsWith(' • ')) {
+			previousSibling.deleteData(-3, 3);
+		}
 	}
 	root = Parser.parse(root.toString(), ns === 10, 2);
 	let found = false;

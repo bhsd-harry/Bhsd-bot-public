@@ -6,7 +6,10 @@ const Parser = require('wikiparser-node'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint'),
-	skipped = new Set([282144, 291562, 388572]);
+	skipped = new Set([
+		12047, 36417, 110496, 116564, 127733, 152762, 282144, 291562, 306168, 316878, 324442, 343842, 375376, 388572, 428339,
+		429558, 435825, 436541, 436830, 436832, 437916, 463871, 473730, 478783, 539875, 562221, 570954, 573334, 573665,
+	]);
 Parser.i18n = './i18n/zh-hans';
 Parser.warning = false;
 Parser.config = './config/moegirl';
@@ -24,6 +27,7 @@ const trTemplate = [
 		'音游曲信息/CHUNITHM',
 		'音游曲信息/太鼓',
 		'音游曲信息/synchronica',
+		'音游曲信息/maimai',
 		'动画作品剧情模板',
 		'Album Infobox/Chronology',
 		'嵌入片段',
@@ -53,22 +57,19 @@ const generateErrors = async (pages, errorOnly = false) => {
 				await diff(content, text);
 			}
 			errors = root.lint().filter(({message, excerpt, startCol, endCol}) =>
-				message !== '重复参数'
-				&& (message !== '将被移出表格的内容' || !trTemplateRegex.test(excerpt) && !magicWord.test(excerpt))
-				&& (message !== '孤立的"["' || endCol - startCol > 1 || !/<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
-				&& (message !== '内链目标包含模板' || !/\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt)),
+				!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt)))
+				&& !(message === '孤立的"["' && endCol - startCol === 1 && /<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
+				&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
+				&& !(message === '多余的fragment' && excerpt.endsWith('#')),
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
 		}
 		if (title.startsWith('三国杀')) {
-			for (let i = errors.length - 1; i > 0; i--) {
-				const {message} = errors[i];
-				if (message === '孤立的"}"' || message === '孤立的"{"') {
-					errors.splice(--i, 2);
-				}
-			}
+			errors = errors.filter(
+				({severity, message}) => message !== '孤立的"}"' && (severity === 'error' || message !== '孤立的"{"'),
+			);
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];

@@ -523,7 +523,7 @@
 	},
 	{
 		"zh": "光环系列",
-		"en": "Halo"
+		"en": "Halo (series)"
 	},
 	{
 		"zh": "德国骨科",
@@ -4437,7 +4437,7 @@
 		"zh": "Category:作品导航模板"
 	},
 	{
-		"en": "Category:Works navigational templates by category",
+		"en": "Category:Works navigational templates by medium",
 		"zh": "Category:各类作品导航模板"
 	},
 	{
@@ -4522,7 +4522,8 @@
 	},
 	{
 		"zh": "Category:页顶提示模板",
-		"ja": "カテゴリ:最上部に提示するテンプレート"
+		"ja": "カテゴリ:最上部に提示するテンプレート",
+		"en": "Category:Article-only page-top templates"
 	},
 	{
 		"zh": "Category:消歧义导航模板",
@@ -4805,5 +4806,21 @@
 	{
 		"en": "Category:Works by category",
 		"zh": "Category:作品类型"
+	},
+	{
+		"en": "Category:Moegirlpedia policies",
+		"zh": "Category:萌娘百科政策文件"
+	},
+	{
+		"en": "Category:Basic site information",
+		"zh": "Category:站点基本信息"
+	},
+	{
+		"en": "Category:Page-top templates",
+		"zh": "Category:页顶模板"
+	},
+	{
+		"en": "Category:Navbox templates",
+		"zh": "Category:大家族模板"
 	}
 ]

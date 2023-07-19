@@ -142,6 +142,9 @@ const targetMain = async target => {
 			const sourceLink = langlinks?.find(({lang}) => lang === source)?.title;
 			if (!sourceLink) {
 				appendtext += `[[${source}:${sourceTitle}]]`;
+				if (appendtext === '[[en:Donkey Kong]]' && target === 'zh' && pageid === 566996) {
+					appendtext = '';
+				}
 			} else if (sourceLink !== sourceTitle) {
 				const sourceName = config[source].name;
 				error(`${name}萌页面 ${pageid} 的${sourceName}萌链接 [[${
