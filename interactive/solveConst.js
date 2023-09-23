@@ -9,8 +9,11 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 (async () => {
-	const api = new Api(user, pin, url),
-		mode = runMode();
+	const api = new Api(user, pin, url);
+	let mode = runMode();
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}

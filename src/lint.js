@@ -7,8 +7,9 @@ const Parser = require('wikiparser-node'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint'),
 	skipped = new Set([
-		12047, 36417, 110496, 116564, 127733, 152762, 282144, 291562, 306168, 316878, 324442, 343842, 375376, 388572, 428339,
-		429558, 435825, 436541, 436830, 436832, 437916, 463871, 473730, 478783, 539875, 562221, 570954, 573334, 573665,
+		12047, 29447, 36417, 110496, 116564, 127733, 152762, 167743, 269336, 270094, 278812, 282144, 291562, 306168, 316878,
+		324442, 329782, 343842, 368772, 375376, 386222, 388572, 400978, 404396, 428339, 429558, 435825, 436541, 436830, 436832,
+		437916, 463871, 473730, 478783, 506704, 529969, 539875, 562221, 569667, 570954, 573334, 573665,
 	]);
 Parser.i18n = './i18n/zh-hans';
 Parser.warning = false;
@@ -28,6 +29,9 @@ const trTemplate = [
 		'音游曲信息/太鼓',
 		'音游曲信息/synchronica',
 		'音游曲信息/maimai',
+		'音游曲信息/Muse Dash',
+		'BangdreamSongGai/Game',
+		'D4DJSongGai/Game',
 		'动画作品剧情模板',
 		'Album Infobox/Chronology',
 		'嵌入片段',
@@ -44,7 +48,7 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = false) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
-		if (missing || ns === 2 || skipped.has(pageid) || title.startsWith('Template:Sandbox/')) {
+		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒)\//.test(title)) {
 			delete lintErrors[pageid];
 			continue;
 		}
@@ -60,7 +64,8 @@ const generateErrors = async (pages, errorOnly = false) => {
 				!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt)))
 				&& !(message === '孤立的"["' && endCol - startCol === 1 && /<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
 				&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
-				&& !(message === '多余的fragment' && excerpt.endsWith('#')),
+				&& !(message === '多余的fragment' && excerpt.endsWith('#'))
+				&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
 			);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);

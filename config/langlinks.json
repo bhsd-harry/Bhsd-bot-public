@@ -2166,8 +2166,7 @@
 	},
 	{
 		"zh": "荷兹",
-		"en": "HeZ",
-		"ja": "HeZ"
+		"en": "HeZ"
 	},
 	{
 		"zh": "少女前线:PzB39",
@@ -3230,7 +3229,7 @@
 		"en": "Someone New"
 	},
 	{
-		"zh": "Crystalline",
+		"zh": "Crystalline(Crusher-P)",
 		"en": "Crystalline"
 	},
 	{
@@ -3521,7 +3520,7 @@
 		"en": "Whispering My Love"
 	},
 	{
-		"zh": "Milky Way",
+		"zh": "Milky Way(CAROLE & TUESDAY)",
 		"en": "Milky Way"
 	},
 	{
@@ -4313,7 +4312,7 @@
 		"zh": "Category:现实人物萌娘化"
 	},
 	{
-		"en": "Category:Functional templates",
+		"en": "Category:Function templates",
 		"zh": "Category:功能模板",
 		"ja": "カテゴリ:機能テンプレート"
 	},
@@ -4332,7 +4331,7 @@
 		"zh": "Category:按生日分类"
 	},
 	{
-		"en": "Category:Virtual Characters",
+		"en": "Category:Fictional characters",
 		"zh": "Category:虚拟人物"
 	},
 	{
@@ -4397,7 +4396,7 @@
 		"zh": "Category:处女座"
 	},
 	{
-		"en": "Category:Characters by Constellations",
+		"en": "Category:Characters by zodiac sign",
 		"zh": "Category:按星座分类"
 	},
 	{
@@ -4470,7 +4469,7 @@
 		"zh": "Category:歌手模板"
 	},
 	{
-		"en": "Category:Characters by singing software synthesizers",
+		"en": "Category:Characters by voice synthesis software",
 		"zh": "Category:按歌声合成软件分类"
 	},
 	{
@@ -4822,5 +4821,25 @@
 	{
 		"en": "Category:Navbox templates",
 		"zh": "Category:大家族模板"
+	},
+	{
+		"zh": "旭日之心",
+		"en": "Raising Heart"
+	},
+	{
+		"en": "Mesugaki",
+		"zh": "雌小鬼"
+	},
+	{
+		"en": "Category:Works templates",
+		"zh": "Category:作品模板"
+	},
+	{
+		"en": "Category:Girls' Frontline templates",
+		"zh": "Category:少女前线模板"
+	},
+	{
+		"zh": "雷光战斧",
+		"en": "Bardiche"
 	}
 ]

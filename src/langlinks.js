@@ -22,7 +22,7 @@ const Api = require('../lib/api'),
 	corrections = {ja: [], en: [], zh: []},
 	mode = runMode(),
 	protectedPages = {zh: ['Category:即将删除的页面']},
-	langs = ['en', 'zh'];
+	langs = ['ja', 'en', 'zh'];
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
