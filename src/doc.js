@@ -16,7 +16,7 @@ const insertCategory = root => {
 	if (noinclude) {
 		noinclude.before('[[分类:模板文档]]');
 	} else {
-		root.appendChild('<noinclude>[[分类:模板文档]]</noinclude>');
+		root.append('<noinclude>[[分类:模板文档]]</noinclude>');
 	}
 };
 

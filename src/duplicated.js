@@ -13,7 +13,7 @@ const ignorePages = [];
 
 const _analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
-	const comments = root.querySelectorAll('comment[closed=true]')
+	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed=true]')
 		.filter(({firstChild: {data}}) => data.includes('<!--'));
 	for (const comment of comments) {
 		comment.replaceWith(`${String(comment.firstChild)}-->`);

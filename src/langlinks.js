@@ -93,7 +93,7 @@ const arrangeZh = async () => { // eslint-disable-line no-unused-vars
 					if (index <= 500 && content.length > 3 * index
 						|| token?.offsetTop < 10 && root.offsetHeight > 20
 					) {
-						root.appendChild(token);
+						root.append(token);
 					}
 				}
 				const text = root.toString();

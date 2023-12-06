@@ -57,7 +57,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		if (noinclude) {
 			noinclude.before('[[分类:使用模板样式的模板]]');
 		} else {
-			root.appendChild('<noinclude>[[分类:使用模板样式的模板]]</noinclude>');
+			root.append('<noinclude>[[分类:使用模板样式的模板]]</noinclude>');
 		}
 		return [pageid, content, root.toString(), timestamp, curtimestamp];
 	}).filter(edit => edit);

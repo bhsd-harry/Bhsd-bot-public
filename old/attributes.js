@@ -6,8 +6,8 @@ const {runMode, error} = require('../lib/dev'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-// const target = 'cellspacing';
-const target = 'flashmp3';
+const target = 'cellspacing';
+// const target = 'flashmp3';
 
 const dict = {
 	cellspacing: 'border-collapse:separate;border-spacing',

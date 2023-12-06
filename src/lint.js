@@ -1,11 +1,12 @@
 'use strict';
 
-const Parser = require('wikiparser-node'),
+const imported = require('wikiparser-node'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint'),
+	Parser = global.Parser ?? imported,
 	skipped = new Set([
 		12047, 29447, 36417, 110496, 116564, 127733, 152762, 167743, 269336, 270094, 278812, 282144, 291562, 306168, 316878,
 		324442, 329782, 343842, 368772, 375376, 386222, 388572, 400978, 404396, 428339, 429558, 435825, 436541, 436830, 436832,
