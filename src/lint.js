@@ -12,9 +12,9 @@ const imported = require('wikiparser-node'),
 		324442, 329782, 343842, 368772, 375376, 386222, 388572, 400978, 404396, 428339, 429558, 435825, 436541, 436830, 436832,
 		437916, 463871, 473730, 478783, 506704, 529969, 539875, 562221, 569667, 570954, 573334, 573665,
 	]);
-Parser.i18n = './i18n/zh-hans';
+Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
-Parser.config = './config/moegirl';
+Parser.config = require('wikiparser-node/config/moegirl');
 
 const mode = runMode(['upload', 'all', 'search']),
 	hasArg = new Set();
