@@ -31,6 +31,8 @@ const main = async (api = new Api(user, pin, url)) => {
 				attr.close();
 				if (value.endsWith("''")) {
 					attr.value = value.slice(0, -2);
+				} else if (/[”"']$/.test(value)) {
+					attr.value = value.slice(0, -1);
 				}
 			}
 		}
