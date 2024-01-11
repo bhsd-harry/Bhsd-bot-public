@@ -61,7 +61,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				text = String(root);
 			if (text !== content) {
 				error(`${pageid}在解析过程中修改了原始文本！`);
-				await diff(content, text);
+				await diff(content, text, true);
 			}
 			errors = root.lint().filter(({message, excerpt, startCol, endCol}) =>
 				!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt)))

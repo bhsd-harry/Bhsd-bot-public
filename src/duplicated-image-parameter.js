@@ -1,6 +1,7 @@
 'use strict';
 
-const Api = require('../lib/api'),
+const damerauLevenshtein = require('talisman/metrics/damerau-levenshtein'),
+	Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
@@ -36,13 +37,13 @@ const main = async (api = new Api(user, pin, url)) => {
 				lintErrors[pageid].errors.filter(({message}) => regex.test(message)).map(({message}) => message.slice(5, -2)),
 			)],
 			selector = keys.map(key => `image-parameter#${key}`).join(),
-			mistakes = [
-				['thumbnail', new Set(['缩略图thumb', '略缩图', 'tumb', 'thumn', 'thump', 'thmub', '缩略*图', '縮圖'])],
-				['right', new Set(['rihgt', '居右', '右侧对齐', 'ringht', 'righ', 'Right', '靠右', 'reght', 'rigt', 'right]', 'righft', 'risht', 'rigft', 'cright'])],
-				['center', new Set(['中'])],
-				['none', new Set(['none]', 'no'])],
-				['left', new Set(['left]', 'Left'])],
-				['framed', new Set(['Frame'])],
+			/** @type {[string, string[]][]} */ mistakes = [
+				['thumbnail', ['thumbnail', 'thumb', '缩略图', '縮圖']],
+				['right', ['right', '右']],
+				['center', ['center', 'centre', '居中', '置中']],
+				['none', ['none', '无', '無']],
+				['left', ['left', '左']],
+				['framed', ['framed', 'enframed', 'frame', '有框']],
 			];
 		for (const parameter of root.querySelectorAll(selector)) {
 			if (!root.contains(parameter)) {
@@ -85,7 +86,10 @@ const main = async (api = new Api(user, pin, url)) => {
 				}
 				continue;
 			}
-			const key = mistakes.find(([, candidates]) => candidates.has(curValue))?.[0];
+			const lcValue = curValue.toLowerCase(),
+				key = mistakes.find(
+					([, candidates]) => candidates.some(candidate => damerauLevenshtein(candidate, lcValue) <= 1),
+				)?.[0];
 			if (key) {
 				if (type === 'gallery-image' || childNodes.some(({name}) => name === key)) {
 					parameter.remove();
