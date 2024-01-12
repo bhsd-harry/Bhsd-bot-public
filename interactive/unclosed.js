@@ -11,7 +11,7 @@ Parser.warning = false;
 const main = async (api = new Api(user, pin, url)) => {
 	const regex = /^<(?:center|font|code|ins|h\d|del|strike|strong|em|cite|sup|sub|[sbiu])[\s>]/iu,
 		selectedErrors = Object.entries(lintErrors).filter(([, {errors}]) => errors.filter(
-			({message, excerpt}) => message === '未闭合的标签' && regex.test(excerpt),
+			({message, excerpt}) => message === '未闭合的标签' && regex.test(excerpt.slice(-70)),
 		).length > 1);
 	if (selectedErrors.length === 0) {
 		return;

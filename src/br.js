@@ -18,8 +18,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		return;
 	}
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message, excerpt}) => message === '包含无效属性' && excerpt?.trim() === '/'
-				|| message === '同时闭合和自封闭的标签' && /^<\/br\s*>$/iu.test(excerpt),
+			({message}) => message === '包含无效属性' || message === '同时闭合和自封闭的标签',
 		)),
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});

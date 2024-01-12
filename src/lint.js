@@ -63,13 +63,14 @@ const generateErrors = async (pages, errorOnly = false) => {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text, true);
 			}
-			errors = root.lint().filter(({message, excerpt, startCol, endCol}) =>
-				!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt) || magicWord.test(excerpt)))
-				&& !(message === '孤立的"["' && endCol - startCol === 1 && /<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
-				&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
-				&& !(message === '多余的fragment' && excerpt.endsWith('#'))
-				&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
-			);
+			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
+				.filter(({message, excerpt, startCol, endCol}) =>
+					!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
+					&& !(message === '孤立的"["' && endCol - startCol === 1 && /<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
+					&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
+					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
+					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
+				);
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
