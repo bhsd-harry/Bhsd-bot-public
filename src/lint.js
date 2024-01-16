@@ -16,7 +16,7 @@ Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
 
-const mode = runMode(['upload', 'all', 'search']),
+const mode = runMode(['upload', 'all', 'search', 'dry-upload']),
 	hasArg = new Set();
 let gapcontinue = require('../config/allpages');
 
@@ -64,9 +64,9 @@ const generateErrors = async (pages, errorOnly = false) => {
 				await diff(content, text, true);
 			}
 			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
-				.filter(({message, excerpt, startCol, endCol}) =>
+				.filter(({message, excerpt, severity}) =>
 					!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
-					&& !(message === '孤立的"["' && endCol - startCol === 1 && /<nowiki>\]<\/nowiki>|&#93;/u.test(excerpt))
+					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
 					&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
@@ -100,82 +100,92 @@ const generateErrors = async (pages, errorOnly = false) => {
 };
 
 const main = async (api = new Api(user, pin, url)) => {
-	if (mode === 'upload' || mode === 'dry') {
-		if (mode === 'dry') {
+	switch (mode) {
+		case 'dry': {
 			const pageids = Object.keys(lintErrors),
 				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
 				await generateErrors(pages);
 			}
+			break;
 		}
-		const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
-		+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
-			Object.values(lintErrors).map(({title, errors}) => {
-				errors = errors.filter(
-					({severity, message, excerpt}) =>
-						severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-						|| message === 'URL中的"|"' || message === '内链目标包含模板',
-				).sort((a, b) =>
-					a.startLine - b.startLine || a.startCol - b.startCol
-					|| a.endLine - b.endLine || a.endCol - b.endCol);
-				return errors.length
-					? `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[:${title}]]\n${
-						errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
-							`|${
-								message.replace(/<(\w+)>/u, '&lt;$1&gt;')
-									.replace(/"([{}[\]|]|https?:\/\/)"/u, '"<nowiki>$1</nowiki>"')
-							}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
-								excerpt.replaceAll('<nowiki>', '&lt;nowiki&gt;').replaceAll('-{', '-&#123;')
-							}</pre>`)
-							.join('\n|-\n')
-					}`
-					: false;
-			}).filter(Boolean).join('\n|-\n')
-		}\n|}\n\n[[Category:积压工作]]\n[[Category:萌娘百科数据报告]]`;
-		if (mode === 'upload') {
-			await api.edit({title: '萌娘百科:可能存在语法错误的条目', text, section: 1, summary: '自动更新语法错误'});
+		case 'dry-upload':
+		case 'upload': {
+			const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
+			+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
+				Object.values(lintErrors).map(({title, errors}) => {
+					errors = errors.filter(
+						({severity, message, excerpt}) =>
+							severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
+							|| message === 'URL中的"|"' || message === '内链目标包含模板',
+					).sort((a, b) =>
+						a.startLine - b.startLine || a.startCol - b.startCol
+						|| a.endLine - b.endLine || a.endCol - b.endCol);
+					return errors.length
+						? `|${errors.length > 1 ? `rowspan=${errors.length}|` : ''}[[:${title}]]（[{{fullurl:${title}|action=edit}} 编辑]）\n${
+							errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
+								`|${
+									message.replace(/<(\w+)>/u, '&lt;$1&gt;')
+										.replace(/"([{}[\]|]|https?:\/\/)"/u, '"<nowiki>$1</nowiki>"')
+								}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
+									excerpt.replaceAll('<nowiki>', '&lt;nowiki&gt;').replaceAll('-{', '-&#123;')
+								}</pre>`)
+								.join('\n|-\n')
+						}`
+						: false;
+				}).filter(Boolean).join('\n|-\n')
+			}\n|}\n\n[[Category:积压工作]]\n[[Category:萌娘百科数据报告]]`;
+			if (mode === 'upload') {
+				await api.edit({title: '萌娘百科:可能存在语法错误的条目', text, section: 1, summary: '自动更新语法错误'});
+			} else {
+				console.log(text);
+			}
 			return;
 		}
-		// console.log(text);
-	} else if (mode === 'all') {
-		const qs = {
-				generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 500,
-				prop: 'revisions', rvprop: 'content|contentmodel', ...gapcontinue,
-			},
-			{query, continue: apcontinue} = await api.get(qs),
-			pages = query?.pages;
-		info(`已获取 ${pages?.length ?? 0} 个页面的源代码`);
-		if (pages) {
-			await generateErrors(
-				pages.filter(({revisions}) => revisions && revisions[0]?.contentmodel === 'wikitext')
-					.map(page => ({...page, content: page.revisions[0].content})),
-				true,
-			);
+		case 'all': {
+			const qs = {
+					generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 500,
+					prop: 'revisions', rvprop: 'content|contentmodel', ...gapcontinue,
+				},
+				{query, continue: apcontinue} = await api.get(qs),
+				pages = query?.pages;
+			info(`已获取 ${pages?.length ?? 0} 个页面的源代码`);
+			if (pages) {
+				await generateErrors(
+					pages.filter(({revisions}) => revisions && revisions[0]?.contentmodel === 'wikitext')
+						.map(page => ({...page, content: page.revisions[0].content})),
+					true,
+				);
+			}
+			await save('../config/allpages.json', apcontinue ?? {});
+			gapcontinue = apcontinue; // eslint-disable-line require-atomic-updates
+			break;
 		}
-		await save('../config/allpages.json', apcontinue ?? {});
-		gapcontinue = apcontinue; // eslint-disable-line require-atomic-updates
-	} else if (mode === 'search') {
-		let {argv: [,,, q]} = process;
-		if (!q) {
-			throw new RangeError('缺失搜索字符串！');
+		case 'search': {
+			let {argv: [,,, q]} = process;
+			if (!q) {
+				throw new RangeError('缺失搜索字符串！');
+			}
+			q = q.replaceAll('"', '');
+			info(`搜索字符串：${q}`);
+			const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0});
+			await generateErrors(pages);
+			break;
 		}
-		q = q.replaceAll('"', '');
-		info(`搜索字符串：${q}`);
-		const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0});
-		await generateErrors(pages);
-	} else {
-		const last = rcend && new Date(rcend),
-			now = new Date().toISOString(),
-			yesterday = new Date(Date.now() - 3600 * 1000 * 24 * 30),
-			grcend = (last > yesterday ? last : yesterday).toISOString(),
-			qs = {
-				generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',
-				grcexcludeuser: 'Bhsd', grcend,
-			},
-			pages = await api.revisions(qs);
-		await generateErrors(pages);
-		await save('../config/lint.json', now);
+		default: {
+			const last = rcend && new Date(rcend),
+				now = new Date().toISOString(),
+				yesterday = new Date(Date.now() - 3600 * 1000 * 24 * 30),
+				grcend = (last > yesterday ? last : yesterday).toISOString(),
+				qs = {
+					generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',
+					grcexcludeuser: 'Bhsd', grcend,
+				},
+				pages = await api.revisions(qs);
+			await generateErrors(pages);
+			await save('../config/lint.json', now);
+		}
 	}
 	if (hasArg.size > 0) {
 		info(`共 ${hasArg.size} 个页面包含未预期的模板参数。`);
@@ -200,7 +210,9 @@ const main = async (api = new Api(user, pin, url)) => {
 
 (async () => {
 	const api = new Api(user, pin, url);
-	await api[mode === 'upload' ? 'csrfToken' : 'login']();
+	if (mode !== 'dry-upload') {
+		await api[mode === 'upload' ? 'csrfToken' : 'login']();
+	}
 	if (mode === 'all') {
 		while (gapcontinue) { // eslint-disable-line no-unmodified-loop-condition
 			console.log(gapcontinue);
