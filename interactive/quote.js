@@ -26,6 +26,9 @@ const main = async (api = new Api(user, pin, url)) => {
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 4);
 		for (const attr of root.querySelectorAll('ext-attr, html-attr, table-attr')) {
+			if (attr.value === true) {
+				continue;
+			}
 			const value = attr.value.replace(/(?<=\S)\s+$/u, '');
 			if (!attr.balanced && !value.includes('=')) {
 				attr.close();
