@@ -71,22 +71,24 @@ const generateErrors = async (pages, errorOnly = false) => {
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
 				);
-			for (const token of root.links ?? []) {
-				if (token.type === 'ext-link' || token.type === 'free-ext-link') {
-					continue;
-				}
-				const {link} = token;
-				if (typeof link === 'object' && link.title === title) {
-					const {top, left, height, width} = token.getBoundingClientRect();
-					errors.push({
-						message: '自身链接',
-						severity: 'error',
-						startLine: top,
-						startCol: left,
-						endLine: top + height - 1,
-						endCol: height === 1 ? left + width : width,
-						excerpt: String(token),
-					});
+			if (ns !== 10) {
+				for (const token of root.links ?? []) {
+					if (token.type === 'ext-link' || token.type === 'free-ext-link') {
+						continue;
+					}
+					const {link} = token;
+					if (typeof link === 'object' && link.title === title) {
+						const {top, left, height, width} = token.getBoundingClientRect();
+						errors.push({
+							message: '自身链接',
+							severity: 'error',
+							startLine: top,
+							startCol: left,
+							endLine: top + height - 1,
+							endCol: height === 1 ? left + width : width,
+							excerpt: String(token),
+						});
+					}
 				}
 			}
 		} catch (e) {
