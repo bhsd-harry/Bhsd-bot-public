@@ -2,10 +2,10 @@
  * @Function: 用于修复引自bilibili的图片
  */
 'use strict';
-const Api = require('../lib/api'),
-	Parser = require('wikiparser-node'),
-	{user, pin, url} = require('../config/user'),
-	{runMode, urlRegex} = require('../lib/dev');
+import Parser = require('wikiparser-node');
+import Api = require('../lib/api');
+import {runMode, urlRegex} from '../lib/dev';
+const {user, pin, url} = require('../config/user');
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
@@ -38,7 +38,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		_searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
-		_insert = parsed => {
+		_insert = (parsed: Parser.Token) => {
 			const token = parsed.sections().find(section => testRegex.test(section.map(ele => ele.text()).join('')))?.[0];
 			if (token === undefined) {
 				//
@@ -53,9 +53,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		regex = mode === 'noreferer' ? regexHttp : regexHttps;
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
 	const pages = (await Promise.all([
-		...new Array(3).fill().map((_, i) => _search(`i${i}.hdslb.com`)),
-		...new Array(4).fill().map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),
-		...new Array(4).fill().map((_, i) => _search(`wx${i + 1}.sinaimg.cn`)),
+		...new Array(3).fill(undefined).map((_, i) => _search(`i${i}.hdslb.com`)),
+		...new Array(4).fill(undefined).map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),
+		...new Array(4).fill(undefined).map((_, i) => _search(`wx${i + 1}.sinaimg.cn`)),
 	])).flat();
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid))

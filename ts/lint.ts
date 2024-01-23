@@ -1,12 +1,12 @@
 'use strict';
 
-const imported = require('wikiparser-node'),
-	Api = require('../lib/api'),
-	{save, runMode, error, info, diff} = require('../lib/dev'),
-	{user, pin, url} = require('../config/user'),
+import imported = require('wikiparser-node');
+import Api = require('../lib/api');
+import {save, runMode, error, info, diff} from '../lib/dev';
+const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	rcend = require('../config/lint'),
-	Parser = global.Parser ?? imported,
+	Parser: imported = global.Parser ?? imported,
 	skipped = new Set([
 		12047, 29447, 36417, 110496, 116564, 127733, 152762, 167743, 269336, 270094, 278812, 282144, 291562, 306168, 316878,
 		324442, 329782, 343842, 368772, 375376, 386222, 388572, 400978, 404396, 428339, 429558, 435825, 436541, 436830, 436832,
@@ -64,32 +64,29 @@ const generateErrors = async (pages, errorOnly = false) => {
 				await diff(content, text, true);
 			}
 			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
-				.filter(({rule, message, excerpt, severity}) =>
-					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
+				.filter(({message, excerpt, severity}) =>
+					!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
 					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
-					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
+					&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
-					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
-					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'bold-header' || rule === 'table-layout'),
+					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
 				);
-			if (ns !== 10) {
-				for (const token of root.links ?? []) {
-					if (token.type === 'ext-link' || token.type === 'free-ext-link') {
-						continue;
-					}
-					const {link, type} = token;
-					if (type !== 'link' && typeof link === 'object' && !link.fragment && link.title === title) {
-						const {top, left, height, width} = token.getBoundingClientRect();
-						errors.push({
-							message: '自身链接',
-							severity: 'error',
-							startLine: top,
-							startCol: left,
-							endLine: top + height - 1,
-							endCol: height === 1 ? left + width : width,
-							excerpt: String(token),
-						});
-					}
+			for (const token of root.links ?? []) {
+				if (token.type === 'ext-link' || token.type === 'free-ext-link') {
+					continue;
+				}
+				const {link} = token;
+				if (typeof link === 'object' && link.title === title) {
+					const {top, left, height, width} = token.getBoundingClientRect();
+					errors.push({
+						message: '自身链接',
+						severity: 'error',
+						startLine: top,
+						startCol: left,
+						endLine: top + height - 1,
+						endCol: height === 1 ? left + width : width,
+						excerpt: String(token),
+					});
 				}
 			}
 		} catch (e) {
@@ -111,9 +108,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 					delete e.startIndex;
 					delete e.endIndex;
 				}
-				delete e.rule;
-				delete e.fix;
-				delete e.suggestions;
 			}
 			lintErrors[pageid] = {title, errors};
 			if (errors.some(({message}) => message === '未预期的模板参数')) {
@@ -153,7 +147,7 @@ const main = async (api = new Api(user, pin, url)) => {
 									message.replace(/<(\w+)>/u, '&lt;$1&gt;')
 										.replace(/"([{}[\]|]|https?:\/\/)"/u, '"<nowiki>$1</nowiki>"')
 								}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${endLine + 1} 行第 ${endCol + 1} 列\n|<pre>${
-									excerpt.replace(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;').replaceAll('-{', '-&#123;')
+									excerpt.replaceAll('<nowiki>', '&lt;nowiki&gt;').replaceAll('-{', '-&#123;')
 								}</pre>`)
 								.join('\n|-\n')
 						}`
