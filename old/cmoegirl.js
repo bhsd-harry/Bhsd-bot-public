@@ -1,6 +1,4 @@
-/**
- * @Function: 仅用于生成萌娘共享需要的Rc对象
- */
+/** @file 仅用于生成萌娘共享需要的Rc对象 */
 'use strict';
 const Api = require('../lib/api'),
 	QQ = require('../lib/qq'),

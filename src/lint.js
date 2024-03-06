@@ -33,6 +33,7 @@ const trTemplate = [
 		'音游曲信息/Muse Dash',
 		'音游曲信息/sdvx',
 		'音游曲信息/音击',
+		'音游曲信息/Groove Coaster',
 		'BangdreamSongGai/Game',
 		'D4DJSongGai/Game',
 		'动画作品剧情模板',
@@ -70,7 +71,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
-					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'bold-header' || rule === 'table-layout'),
+					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'table-layout'),
 				);
 			if (ns !== 10) {
 				for (const token of root.links ?? []) {

@@ -1,6 +1,4 @@
-/**
- * @Function: 分析RecentChanges数据，并生成消息发送至QQ
- */
+/** @file 分析RecentChanges数据，并生成消息发送至QQ */
 'use strict';
 const Api = require('../lib/api'),
 	QQ = require('./qq'),

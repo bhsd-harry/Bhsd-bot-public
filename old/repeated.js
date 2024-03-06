@@ -1,6 +1,4 @@
-/**
- * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
- */
+/** @file 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复 */
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),

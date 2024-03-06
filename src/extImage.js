@@ -1,6 +1,4 @@
-/**
- * @Function: 用于修复引自bilibili的图片
- */
+/** @file 用于修复引自bilibili的图片 */
 'use strict';
 const Api = require('../lib/api'),
 	Parser = require('wikiparser-node'),

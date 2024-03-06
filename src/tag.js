@@ -1,6 +1,4 @@
-/**
- * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
- */
+/** @file 检查[[Category:使用无效自封闭HTML标签的页面]]并修复 */
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
@@ -25,7 +23,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		{html: [tags]} = Parser.getConfig();
 	const list = pages.map(({pageid, ns, content, timestamp, curtimestamp}) => {
 		const root = Parser.parse(content, ns === 10, 3),
-			tokens = root.querySelectorAll('html[selfClosing=true]').filter(({name}) => tags.includes(name));
+			tokens = root.querySelectorAll('html[selfClosing]').filter(({name}) => tags.includes(name));
 		if (tokens.length === 0) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);
 			return null;

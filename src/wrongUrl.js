@@ -1,6 +1,4 @@
-/**
- * @Function: 用于修复形如http://http://或类似的错误URL
- */
+/** @file 用于修复形如http://http://或类似的错误URL */
 'use strict';
 const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),

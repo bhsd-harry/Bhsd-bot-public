@@ -1,6 +1,4 @@
-/**
- * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
- */
+/** @file 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复 */
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
@@ -13,7 +11,7 @@ const ignorePages = [];
 
 const _analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
-	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed=true]')
+	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed]')
 		.filter(({firstChild: {data}}) => data.includes('<!--'));
 	for (const comment of comments) {
 		comment.replaceWith(`${String(comment.firstChild)}-->`);

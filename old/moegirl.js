@@ -1,6 +1,4 @@
-/**
- * @Function: 仅用于临时代替葫芦bot，生成萌娘百科需要的Rc对象
- */
+/** @file 仅用于临时代替葫芦bot，生成萌娘百科需要的Rc对象 */
 'use strict';
 const Api = require('../lib/api'),
 	QQ = require('../lib/qq'),

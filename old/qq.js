@@ -1,6 +1,4 @@
-/**
- * @Function: 仅用于发送QQ消息
- */
+/** @file 仅用于发送QQ消息 */
 'use strict';
 const {createClient} = require('oicq'),
 	{info, error} = require('../lib/dev');

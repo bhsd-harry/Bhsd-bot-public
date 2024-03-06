@@ -1,6 +1,4 @@
-/**
- * @Function: 用于修复http链接
- */
+/** @file 用于修复http链接 */
 'use strict';
 const Api = require('../lib/api'),
 	Interface = require('../lib/interface'),

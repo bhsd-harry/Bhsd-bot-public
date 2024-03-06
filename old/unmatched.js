@@ -34,7 +34,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, ns === 10, 3),
 			tags = [...new Set(lintErrors[pageid].errors.map(({tag}) => tag).filter(Boolean))];
-		for (const html of root.querySelectorAll(tags.map(tag => `html#${tag}[closing=true]`).join())) {
+		for (const html of root.querySelectorAll(tags.map(tag => `html#${tag}[closing]`).join())) {
 			if (String(html).length !== html.name.length + 3 || !root.contains(html)) {
 				continue;
 			}
