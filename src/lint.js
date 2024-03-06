@@ -78,8 +78,8 @@ const generateErrors = async (pages, errorOnly = false) => {
 					if (token.type === 'ext-link' || token.type === 'free-ext-link') {
 						continue;
 					}
-					const {link, type} = token;
-					if (type !== 'link' && typeof link === 'object' && !link.fragment && link.title === title) {
+					const {link} = token;
+					if (typeof link === 'object' && !link.fragment && link.title === title) {
 						const {top, left, height, width} = token.getBoundingClientRect();
 						errors.push({
 							message: '自身链接',
