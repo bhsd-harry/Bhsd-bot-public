@@ -8,11 +8,18 @@ const Api = require('../lib/api'),
 Parser.config = './config/moegirl';
 Parser.warning = false;
 
+const nestable = new Set(['span', 'big', 'small']);
+
 const main = async (api = new Api(user, pin, url)) => {
-	const regex = /^<(?:center|font|code|ins|h\d|del|strike|strong|em|cite|sup|sub|[sbiu])[\s>]/iu,
-		selectedErrors = Object.entries(lintErrors).filter(([, {errors}]) => errors.filter(
+	const regex = new RegExp(
+			`^<(?:center|font|code|ins|h\\d|del|strike|strong|em|cite|sup|sub|[sbiu]|${
+				[...nestable].join('|')
+			})[\\s>]`,
+			'iu',
+		),
+		selectedErrors = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 			({message, excerpt}) => message === '未闭合的标签' && regex.test(excerpt.slice(-70)),
-		).length > 1);
+		));
 	if (selectedErrors.length === 0) {
 		return;
 	}
@@ -31,8 +38,8 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = await api.revisions({pageids}),
 		edits = [];
 	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 3),
-			/** @type {WeakMap<Parser.Token, Record<string, boolean>>} */ unclosed = new WeakMap();
+		const root = Parser.parse(content, ns === 10, 8),
+			/** @type {Map<Parser.Token, Record<string, Parser.HtmlToken | true>>} */ unclosed = new Map();
 		for (const html of root.querySelectorAll('html[closing=false][selfClosing=false]')) {
 			const {parentNode, name} = html;
 			if (!regex.test(`<${name}>`)) {
@@ -48,12 +55,46 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 			const cur = unclosed.get(parentNode);
 			if (!cur) {
-				unclosed.set(parentNode, {[name]: true});
+				unclosed.set(parentNode, {[name]: html});
 			} else if (cur[name]) {
-				cur[name] = false;
-				html.closing = true;
+				if (nestable.has(name)) {
+					cur[name] = true;
+				} else {
+					delete cur[name];
+					if (Object.keys(cur).length === 0) {
+						unclosed.delete(parentNode);
+					}
+					html.closing = true;
+				}
 			} else {
-				cur[name] = true;
+				cur[name] = html;
+			}
+		}
+		for (const [parentNode, cur] of unclosed) {
+			const keys = Object.keys(cur),
+				[key] = keys;
+			if (keys.length === 1) {
+				const html = cur[key];
+				if (html === true) {
+					continue;
+				}
+				let /** @type {{nextSibling: Parser.AstText}} */ {nextSibling} = html;
+				while (nextSibling && !(nextSibling.type === 'text' && nextSibling.data.includes('\n'))) {
+					({nextSibling} = nextSibling);
+				}
+				if (!nextSibling) {
+					if (!html.nextSibling) {
+						html.remove();
+					} else {
+						parentNode.append(`</${key}>`);
+					}
+				} else if (key !== 'center' || !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')) {
+					if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
+						html.remove();
+					} else {
+						nextSibling.replaceData(nextSibling.data.replace(/(?<=\S)[^\S\n]*\n/u, `</${key}>$&`));
+					}
+				}
 			}
 		}
 		const text = String(root);
