@@ -113,7 +113,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const text = String(root);
 		if (content !== text) {
-			edits.push([pageid, content, String(root), timestamp, curtimestamp]);
+			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
 	await api.massEdit(edits, mode, '自动移除重复的图片参数');

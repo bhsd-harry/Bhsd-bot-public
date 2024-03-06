@@ -14,22 +14,26 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
 	if (mode === 'rerun' || mode === 'redry') {
-		await api.massEdit(null, mode, '自动修复语法错误的HTML标签');
+		await api.massEdit(null, mode, '自动移除重复的分类');
 		return;
 	}
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message}) => message === '包含无效属性' || message === '同时闭合和自封闭的标签',
+			({message}) => message === '重复的分类',
 		)),
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 3);
-		for (const br of root.querySelectorAll<Parser.HtmlToken>('html#br')) {
-			br.closing = false;
-			const {firstChild} = br;
-			if (String(firstChild).trim() === '/') {
-				firstChild.sanitize();
-				br.selfClosing = true;
+		const root = Parser.parse(content, false, 6);
+		for (const cat of root.querySelectorAll<Parser.CategoryToken>('category')) {
+			if (!root.contains(cat)) {
+				continue;
+			}
+			const {parentNode: {childNodes}} = cat,
+				otherCats = childNodes.filter(
+					(node): node is Parser.CategoryToken => node.type === 'category' && node.name === cat.name && node !== cat,
+				);
+			for (const otherCat of otherCats) {
+				(otherCat.length === 1 ? otherCat : cat).remove();
 			}
 		}
 		const text = String(root);
@@ -37,7 +41,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
-	await api.massEdit(edits, mode, '自动修复语法错误的HTML标签');
+	await api.massEdit(edits, mode, '自动移除重复的分类');
 };
 
 if (!module.parent) {
@@ -45,4 +49,3 @@ if (!module.parent) {
 }
 
 module.exports = main;
-

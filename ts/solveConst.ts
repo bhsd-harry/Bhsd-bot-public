@@ -4,7 +4,7 @@ import Parser = require('wikiparser-node');
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user'),
-	lintErrors: Record<number, {errors: Parser.LintError[]}> = require('../config/lintErrors');
+	lintErrors: Record<number, {errors: Pick<Parser.LintError, 'message'>[]}> = require('../config/lintErrors');
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
@@ -29,7 +29,7 @@ Parser.config = './config/moegirl';
 		root.solveConst();
 		const text = String(root);
 		if (content !== text) {
-			edits.push([pageid, content, String(root), timestamp, curtimestamp]);
+			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
 	await api.massEdit(edits, mode, '自动移除不应出现的模板参数');

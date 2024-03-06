@@ -5,7 +5,7 @@ import Parser = require('wikiparser-node');
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user'),
-	lintErrors: Record<number, {errors: Parser.LintError[]}> = require('../config/lintErrors');
+	lintErrors: Record<number, {errors: Pick<Parser.LintError, 'message'>[]}> = require('../config/lintErrors');
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
@@ -113,7 +113,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const text = String(root);
 		if (content !== text) {
-			edits.push([pageid, content, String(root), timestamp, curtimestamp]);
+			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
 	await api.massEdit(edits, mode, '自动移除重复的图片参数');

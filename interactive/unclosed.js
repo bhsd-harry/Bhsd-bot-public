@@ -31,7 +31,8 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = await api.revisions({pageids}),
 		edits = [];
 	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 3);
+		const root = Parser.parse(content, ns === 10, 3),
+			/** @type {WeakMap<Parser.Token, Record<string, boolean>>} */ unclosed = new WeakMap();
 		for (const html of root.querySelectorAll('html[closing=false][selfClosing=false]')) {
 			const {parentNode, name} = html;
 			if (!regex.test(`<${name}>`)) {
@@ -45,12 +46,14 @@ const main = async (api = new Api(user, pin, url)) => {
 					continue;
 				}
 			}
-			if (parentNode.unclosed?.[name]) {
-				parentNode.unclosed[name] = false;
+			const cur = unclosed.get(parentNode);
+			if (!cur) {
+				unclosed.set(parentNode, {[name]: true});
+			} else if (cur[name]) {
+				cur[name] = false;
 				html.closing = true;
 			} else {
-				parentNode.unclosed ||= {};
-				parentNode.unclosed[name] = true;
+				cur[name] = true;
 			}
 		}
 		const text = String(root);

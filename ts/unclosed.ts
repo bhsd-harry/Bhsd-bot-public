@@ -4,7 +4,7 @@ import Parser = require('wikiparser-node');
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user'),
-	lintErrors: Record<number, {errors: (Parser.LintError & {excerpt: string})[]}> = require('../config/lintErrors');
+	lintErrors: Record<number, {errors: (Pick<Parser.LintError, 'message'> & {excerpt: string})[]}> = require('../config/lintErrors');
 Parser.config = './config/moegirl';
 Parser.warning = false;
 
