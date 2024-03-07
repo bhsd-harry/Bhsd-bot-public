@@ -52,7 +52,7 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = false) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
-		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒)\//.test(title)) {
+		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒)\//u.test(title)) {
 			delete lintErrors[pageid];
 			continue;
 		}
@@ -69,9 +69,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
 					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
 					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
-					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
+					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
-					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'table-layout'),
+					&& !(rule === 'table-layout' && /(?:row|col)span\s*=.+\s\{\{n\/a(?:\||\}\})/iu.test(excerpt))
+					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);
 			if (ns !== 10) {
 				for (const token of root.links ?? []) {
@@ -117,7 +118,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				delete e.suggestions;
 			}
 			lintErrors[pageid] = {title, errors};
-			if (errors.some(({message}) => message === '未预期的模板参数')) {
+			if (errors.some(({message}) => message === '未预期的模板参数' || message === '自身链接')) {
 				hasArg.add(pageid);
 			}
 		}
@@ -213,7 +214,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	if (hasArg.size > 0) {
-		info(`共 ${hasArg.size} 个页面包含未预期的模板参数。`);
+		info(`共 ${hasArg.size} 个页面包含未预期的模板参数或自身链接。`);
 		const qs = {pageids: [...hasArg], prop: 'transcludedin', tinamespace: '*', tishow: '!redirect', tilimit: 'max'},
 			pageids = [];
 		let q;
@@ -223,7 +224,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		} while (q.continue);
 		for (const pageid of pageids) {
 			const page = lintErrors[pageid];
-			page.errors = page.errors.filter(({message}) => message !== '未预期的模板参数');
+			page.errors = page.errors.filter(({message}) => message !== '未预期的模板参数' && message !== '自身链接');
 			if (page.errors.length === 0) {
 				delete lintErrors[pageid];
 			}

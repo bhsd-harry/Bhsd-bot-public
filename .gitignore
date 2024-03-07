@@ -11,3 +11,4 @@ dry.json
 /interactive/ruby-*
 /interactive/*llwiki.js
 /interactive/cache/
+/src/lint-ll.js
