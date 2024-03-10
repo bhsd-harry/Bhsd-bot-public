@@ -52,7 +52,7 @@ const trTemplate = [
 
 const generateErrors = async (pages, errorOnly = false) => {
 	for (const {ns, pageid, title, content, missing} of pages) {
-		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒)\//u.test(title)) {
+		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)) {
 			delete lintErrors[pageid];
 			continue;
 		}

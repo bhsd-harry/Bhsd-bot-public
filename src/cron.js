@@ -14,6 +14,9 @@ const {user, pin, url} = require('../config/user'),
 		'bracket',
 		'br',
 		'duplicated-image-parameter',
+		'bold',
+		'duplicated-category',
+		'selflink',
 	];
 
 const api = new Api(user, pin, url);
@@ -24,6 +27,9 @@ const _execute = async script => {
 		console.log(`${script}.js已执行！`);
 	} catch (e) {
 		console.log(`${script}.js执行过程中发生错误！`);
+		if (e.message === '请求超时！') {
+			throw e;
+		}
 		console.error(e);
 	}
 };

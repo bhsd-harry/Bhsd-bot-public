@@ -92,7 +92,7 @@ const main = async (api = new Api(user, pin, url)) => {
 					if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
 						html.remove();
 					} else {
-						nextSibling.replaceData(nextSibling.data.replace(/(?<=\S)[^\S\n]*\n/u, `</${key}>$&`));
+						nextSibling.replaceData(nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`));
 					}
 				}
 			}
