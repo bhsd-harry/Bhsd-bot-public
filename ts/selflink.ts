@@ -1,6 +1,7 @@
 'use strict';
 
 import Parser = require('wikiparser-node');
+import {sify} from 'chinese-conv';
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user'),
@@ -32,7 +33,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				continue;
 			}
 			const {link, type} = token;
-			if (typeof link === 'object' && !link.fragment && link.title === title) {
+			if (typeof link === 'object' && !link.fragment && sify(link.title) === title) {
 				if (type === 'image-parameter') {
 					token.setValue('');
 				} else if (type === 'link') {

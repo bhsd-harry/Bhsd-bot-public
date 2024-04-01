@@ -1,5 +1,5 @@
 {
-	"name": "Bhsd-bot-public",
+	"name": "bhsd-bot-public",
 	"version": "0.0.0",
 	"description": "Source codes for Node.js-based bots on MoegirlPedia",
 	"keywords": [
@@ -25,6 +25,7 @@
 	},
 	"dependencies": {
 		"@cypress/request": "^3.0.1",
+		"chinese-conv": "^1.1.0",
 		"talisman": "^1.1.4",
 		"wayback-machine": "^0.2.1",
 		"wikiparser-node": "^1.5.5"
