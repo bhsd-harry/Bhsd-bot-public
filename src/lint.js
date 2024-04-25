@@ -73,6 +73,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
 					&& !(rule === 'table-layout' && /(?:row|col)span\s*=.+\s\{\{n\/a(?:\||\}\})/iu.test(excerpt))
+					&& !(rule === 'unknown-page' && /\{\{\s*少女歌[剧劇]\/角色信息\s*\|/u.test(excerpt))
 					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);
 			if (ns !== 10) {
@@ -126,7 +127,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 	}
 };
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async api => {
 	switch (mode) {
 		case 'dry': {
 			const pageids = Object.keys(lintErrors),
@@ -134,6 +135,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
 				await generateErrors(pages);
+				await save('../config/lintErrors.json', lintErrors);
 			}
 			break;
 		}

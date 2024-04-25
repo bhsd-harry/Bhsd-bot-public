@@ -32,7 +32,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			const value = attr.value.replace(/(?<=\S)\s+$/u, '');
 			if (!attr.balanced && !value.includes('=')) {
 				attr.close();
-				if (value.endsWith("''")) {
+				if (value.endsWith("''") || value.endsWith('‘‘')) {
 					attr.value = value.slice(0, -2);
 				} else if (/[”"']$/.test(value)) {
 					attr.value = value.slice(0, -1);
