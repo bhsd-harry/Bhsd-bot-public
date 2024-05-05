@@ -52,10 +52,14 @@ const trTemplate = [
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
 const generateErrors = async (pages, errorOnly = false) => {
-	for (const {ns, pageid, title, content, missing} of pages) {
+	for (const {ns, pageid, title, content, missing, redirects = []} of pages) {
 		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)) {
 			delete lintErrors[pageid];
 			continue;
+		}
+		Parser.redirects.clear();
+		for (const {title: t} of redirects) {
+			Parser.redirects.set(t, title);
 		}
 		let errors;
 		try {
@@ -68,14 +72,18 @@ const generateErrors = async (pages, errorOnly = false) => {
 			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(({rule, message, excerpt, severity}) =>
 					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
-					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
-					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
+					&& !((message === '孤立的"["' || message === '孤立的"]"' || title.startsWith('三国杀') && message === '孤立的"{"') && severity === 'warning')
+					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
 					&& !(rule === 'table-layout' && /(?:row|col)span\s*=.+\s\{\{n\/a(?:\||\}\})/iu.test(excerpt))
-					&& !(rule === 'unknown-page' && /\{\{\s*少女歌[剧劇]\/角色信息\s*\|/u.test(excerpt))
+					&& !(title.startsWith('三国杀') && message === '孤立的"}"')
+					&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);
+			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
+				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
+			}
 			if (ns !== 10) {
 				for (const token of root.links ?? []) {
 					if (token.type === 'ext-link' || token.type === 'free-ext-link') {
@@ -111,10 +119,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 			//
 		} else {
 			for (const e of errors) {
-				if (!Number.isNaN(e.startIndex)) {
-					delete e.startIndex;
-					delete e.endIndex;
-				}
 				delete e.rule;
 				delete e.fix;
 				delete e.suggestions;
@@ -128,12 +132,18 @@ const generateErrors = async (pages, errorOnly = false) => {
 };
 
 const main = async api => {
+	const qsRedirects = {
+		prop: 'revisions|redirects',
+		rdprop: 'title',
+		rdshow: '!fragment',
+		rdlimit: 'max',
+	};
 	switch (mode) {
 		case 'dry': {
 			const pageids = Object.keys(lintErrors),
 				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
-				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch)});
+				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch), ...qsRedirects});
 				await generateErrors(pages);
 				await save('../config/lintErrors.json', lintErrors);
 			}
@@ -175,7 +185,7 @@ const main = async api => {
 		case 'all': {
 			const qs = {
 					generator: 'allpages', gapnamespace: 0, gapfilterredir: 'nonredirects', gaplimit: 500,
-					prop: 'revisions', rvprop: 'content|contentmodel', ...gapcontinue,
+					rvprop: 'content|contentmodel', ...gapcontinue, ...qsRedirects,
 				},
 				{query, continue: apcontinue} = await api.get(qs),
 				pages = query?.pages;
@@ -198,7 +208,7 @@ const main = async api => {
 			}
 			q = q.replaceAll('"', '');
 			info(`搜索字符串：${q}`);
-			const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0});
+			const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0, ...qsRedirects});
 			await generateErrors(pages);
 			break;
 		}
@@ -209,7 +219,7 @@ const main = async api => {
 				grcend = (last > yesterday ? last : yesterday).toISOString(),
 				qs = {
 					generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',
-					grcexcludeuser: 'Bhsd', grcend,
+					grcexcludeuser: 'Bhsd', grcend, ...qsRedirects,
 				},
 				pages = await api.revisions(qs);
 			await generateErrors(pages);

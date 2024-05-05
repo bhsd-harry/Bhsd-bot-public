@@ -50,10 +50,14 @@ const trTemplate = [
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
 const generateErrors = async (pages, errorOnly = false) => {
-	for (const {ns, pageid, title, content, missing} of pages) {
+	for (const {ns, pageid, title, content, missing, redirects = []} of pages) {
 		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒)\//.test(title)) {
 			delete lintErrors[pageid];
 			continue;
+		}
+		Parser.redirects.clear();
+		for (const {title: t} of redirects) {
+			Parser.redirects.set(t, title);
 		}
 		let errors;
 		try {
@@ -64,12 +68,16 @@ const generateErrors = async (pages, errorOnly = false) => {
 				await diff(content, text, true);
 			}
 			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
-				.filter(({message, excerpt, severity}) =>
-					!(message === '将被移出表格的内容' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
-					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
-					&& !(message === '内链目标包含模板' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix)\|/u.test(excerpt))
+				.filter(({rule, message, excerpt, severity}) =>
+					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
+					&& !((message === '孤立的"["' || message === '孤立的"]"' || title.startsWith('三国杀') && message === '孤立的"{"') && severity === 'warning')
+					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/.test(excerpt))
-					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt)),
+					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
+					&& !(rule === 'table-layout' && /(?:row|col)span\s*=.+\s\{\{n\/a(?:\||\}\})/iu.test(excerpt))
+					&& !(title.startsWith('三国杀') && message === '孤立的"}"')
+					&& !(message === 'URL中的全角标点' && excerpt.includes('魔法纪录中文Wiki'))
+					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);
 			for (const token of root.links ?? []) {
 				if (token.type === 'ext-link' || token.type === 'free-ext-link') {

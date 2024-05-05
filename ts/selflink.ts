@@ -25,8 +25,18 @@ const main = async (api = new Api(user, pin, url)) => {
 			({message}) => message === '自身链接',
 		)),
 		edits = [],
-		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {title, pageid, content, timestamp, curtimestamp} of pages) {
+		pages = await api.revisions({
+			pageids: targets.map(([pageid]) => pageid),
+			prop: 'revisions|redirects',
+			rdprop: 'title',
+			rdshow: '!fragment',
+			rdlimit: 'max',
+		});
+	for (const {title, pageid, content, timestamp, curtimestamp, redirects = []} of pages) {
+		Parser.redirects.clear();
+		for (const {title: t} of redirects) {
+			Parser.redirects.set(t, title);
+		}
 		const root = Parser.parse(content, false, 6);
 		for (const token of root.links ?? []) {
 			if (token.type === 'ext-link' || token.type === 'free-ext-link') {
