@@ -25,14 +25,13 @@ const main = async (api = new Api(user, pin, url)) => {
 		pages = await api.revisions({
 			pageids: targets.map(([pageid]) => pageid),
 			prop: 'revisions|redirects',
-			rdprop: 'title',
-			rdshow: '!fragment',
+			rdprop: 'title|fragment',
 			rdlimit: 'max',
 		});
 	for (const {title, pageid, content, timestamp, curtimestamp, redirects = []} of pages) {
 		Parser.redirects.clear();
-		for (const {title: t} of redirects) {
-			Parser.redirects.set(t, title);
+		for (const {title: t, fragment = ''} of redirects) {
+			Parser.redirects.set(t, title + (fragment && `#${fragment}`));
 		}
 		const root = Parser.parse(content, false, 6);
 		for (const token of root.links ?? []) {
@@ -41,10 +40,16 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 			const {link, type} = token;
 			if (typeof link === 'object' && !link.fragment && sify(link.title) === title) {
+				const [, fragment = ''] = String(link).split('#', 2);
 				if (type === 'image-parameter') {
-					token.setValue('');
+					token.setValue(fragment && `#${fragment}`);
 				} else if (type === 'link') {
-					token.replaceWith(token.innerText);
+					if (fragment) {
+						token.setLinkText(token.innerText);
+						token.setTarget(`#${fragment}`);
+					} else {
+						token.replaceWith(token.innerText);
+					}
 				}
 			}
 		}

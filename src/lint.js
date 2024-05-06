@@ -135,7 +135,6 @@ const main = async api => {
 	const qsRedirects = {
 		prop: 'revisions|redirects',
 		rdprop: 'title',
-		rdshow: '!fragment',
 		rdlimit: 'max',
 	};
 	switch (mode) {
