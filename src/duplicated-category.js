@@ -23,14 +23,17 @@ const main = async (api = new Api(user, pin, url)) => {
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 6);
-		for (const cat of root.querySelectorAll('category:not(":has(comment)")')) {
+		const root = Parser.parse(content, false, 6),
+			/** @type {Parser.CategoryToken[]} */ cats = root.querySelectorAll('category:not(":has(comment)")');
+		for (const cat of cats) {
 			if (!root.contains(cat)) {
 				continue;
 			}
-			const {parentNode: {childNodes}} = cat,
-				otherCats = childNodes.filter(
-					node => node.type === 'category' && node.name === cat.name && node !== cat,
+			const {parentNode: {childNodes}, length, sortkey} = cat,
+				/** @type {Parser.CategoryToken[]} */ otherCats = childNodes.filter(
+					/** @param node {Parser.CategoryToken} */
+					node => node.type === 'category' && node.name === cat.name && node !== cat
+						&& (length === 1 || node.length === 1 || node.sortkey === sortkey),
 				);
 			for (const otherCat of otherCats) {
 				const target = otherCat.length === 1 ? otherCat : cat,
@@ -42,6 +45,9 @@ const main = async (api = new Api(user, pin, url)) => {
 					nextSibling.replaceData(nextSibling.data.replace(/^[^\S\n]*\n/u, ''));
 				}
 				target.remove();
+				if (target === cat) {
+					break;
+				}
 			}
 		}
 		const text = String(root);
