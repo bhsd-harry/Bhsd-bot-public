@@ -61,28 +61,41 @@ const generateErrors = async (pages, errorOnly = false) => {
 		for (const {title: t} of redirects) {
 			Parser.redirects.set(t, title);
 		}
+		Parser.redirects.set('Template:N/a', 'Template:N/A');
 		let errors;
 		try {
-			const root = Parser.parse(content, ns === 10),
-				text = String(root);
+			const root = Parser.parse(content, ns === 10);
+			let text = String(root);
 			if (text !== content) {
 				error(`${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text, true);
 			}
-			errors = root.lint().map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
+			const rawErrors = root.lint(),
+				nas = root.querySelectorAll('template[name=Template:N/A]');
+			errors = rawErrors.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(({rule, message, excerpt, severity}) =>
 					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
-					&& !((message === '孤立的"["' || message === '孤立的"]"' || title.startsWith('三国杀') && message === '孤立的"{"') && severity === 'warning')
+					&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
 					&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt))
 					&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 					&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
-					&& !(rule === 'table-layout' && /(?:row|col)span\s*=.+\s\{\{n\/a(?:\||\}\})/iu.test(excerpt))
-					&& !(title.startsWith('三国杀') && message === '孤立的"}"')
+					&& !(rule === 'table-layout' && nas.length > 0)
+					&& !(title.startsWith('三国杀') && (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning'))
 					&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 					&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
+			}
+			if (nas.length > 0 && rawErrors.some(({rule}) => rule === 'table-layout')) {
+				for (const na of nas) {
+					na.after('{{!}} ');
+				}
+				text = String(root); // eslint-disable-line require-atomic-updates
+				errors.push(
+					...Parser.parse(text, ns === 10, 4).lint().filter(({rule}) => rule === 'table-layout')
+						.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)})),
+				);
 			}
 			if (ns !== 10) {
 				for (const token of root.links ?? []) {
@@ -107,11 +120,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 		} catch (e) {
 			error(`页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
-		}
-		if (title.startsWith('三国杀')) {
-			errors = errors.filter(
-				({severity, message}) => message !== '孤立的"}"' && (severity === 'error' || message !== '孤立的"{"'),
-			);
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
