@@ -36,8 +36,9 @@ const main = async (api = new Api(user, pin, url)) => {
 		_searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
-		_insert = parsed => {
-			const token = parsed.sections().find(section => testRegex.test(section.map(ele => ele.text()).join('')))?.[0];
+		_insert = /** @param parsed {Parser.Token} */ parsed => {
+			const token = parsed.sections()
+				.find(section => testRegex.test(section.extractContents().map(ele => ele.text()).join('')))?.[0];
 			if (token === undefined) {
 				//
 			} else if (token.type !== 'text' && token.matches(':header')) {

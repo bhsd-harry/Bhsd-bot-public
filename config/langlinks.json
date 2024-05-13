@@ -61,7 +61,7 @@
 		"en": "Flandre Scarlet"
 	},
 	{
-		"zh": "小恶魔",
+		"zh": "小恶魔(东方Project)",
 		"en": "Koakuma"
 	},
 	{
@@ -574,7 +574,7 @@
 		"en": "Dragon Raja"
 	},
 	{
-		"zh": "漫画会",
+		"zh": "漫画会(团体)",
 		"en": "Shanghai Cartoon Association"
 	},
 	{
@@ -777,10 +777,6 @@
 	{
 		"zh": "权御天下",
 		"en": "Sun Quan the Emperor"
-	},
-	{
-		"zh": "非洲人",
-		"en": "Africans"
 	},
 	{
 		"zh": "嫣汐",
@@ -4155,7 +4151,8 @@
 	},
 	{
 		"zh": "幻想乡",
-		"ja": "幻想郷"
+		"ja": "幻想郷",
+		"en": "Gensokyo"
 	},
 	{
 		"zh": "布迷",
@@ -4344,7 +4341,7 @@
 		"zh": "Category:网站"
 	},
 	{
-		"en": "Category:Realistic Characters",
+		"en": "Category:Real people",
 		"zh": "Category:现实人物"
 	},
 	{
@@ -4396,7 +4393,7 @@
 		"zh": "Category:处女座"
 	},
 	{
-		"en": "Category:Characters by zodiac sign",
+		"en": "Category:Zodiac sign index",
 		"zh": "Category:按星座分类"
 	},
 	{

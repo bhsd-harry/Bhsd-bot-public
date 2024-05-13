@@ -2,7 +2,8 @@
  * @Function: 检查[[Category:使用无效自封闭HTML标签的页面]]并修复
  */
 'use strict';
-import Parser = require('wikiparser-node');
+
+import Parser from 'wikiparser-node';
 import Api = require('../lib/api');
 import {error, runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user');

@@ -1,6 +1,6 @@
 'use strict';
 
-import Parser = require('wikiparser-node');
+import Parser from 'wikiparser-node';
 import {sify} from 'chinese-conv';
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';

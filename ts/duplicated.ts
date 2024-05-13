@@ -2,7 +2,8 @@
  * @Function: 检查[[Category:调用重复模板参数的页面]]，如果可以则进行修复
  */
 'use strict';
-import Parser = require('wikiparser-node');
+
+import Parser from 'wikiparser-node';
 import Api = require('../lib/api');
 import {error, runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user');

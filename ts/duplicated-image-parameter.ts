@@ -1,7 +1,7 @@
 'use strict';
 
 import * as damerauLevenshtein from 'talisman/metrics/damerau-levenshtein';
-import Parser = require('wikiparser-node');
+import Parser from 'wikiparser-node';
 import Api = require('../lib/api');
 import {runMode} from '../lib/dev';
 const {user, pin, url} = require('../config/user'),

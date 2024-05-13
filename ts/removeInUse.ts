@@ -1,5 +1,6 @@
 'use strict';
-import Parser = require('wikiparser-node');
+
+import Parser from 'wikiparser-node';
 import Api = require('../lib/api');
 import {runMode, error, info} from '../lib/dev';
 const {user, pin, url} = require('../config/user');

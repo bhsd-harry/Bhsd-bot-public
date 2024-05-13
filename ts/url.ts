@@ -1,5 +1,6 @@
 'use strict';
-import Parser = require('wikiparser-node');
+
+import Parser from 'wikiparser-node';
 import {urlRegex, escapeRegExp, error, isObject} from './dev';
 Parser.config = './config/moegirl';
 

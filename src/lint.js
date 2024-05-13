@@ -1,6 +1,7 @@
 'use strict';
 
-const imported = require('wikiparser-node'),
+const {performance} = require('perf_hooks'),
+	imported = require('wikiparser-node'),
 	{sify} = require('chinese-conv'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
@@ -51,27 +52,36 @@ const trTemplate = [
 	})\\s*\\|))`, 'u'),
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
 
+let worst;
 const generateErrors = async (pages, errorOnly = false) => {
-	for (const {ns, pageid, title, content, missing, redirects = []} of pages) {
+	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
+		process.stdout.write(`\x1B[K${i} ${title}\r`);
 		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)) {
 			delete lintErrors[pageid];
 			continue;
 		}
-		Parser.redirects.clear();
-		for (const {title: t} of redirects) {
-			Parser.redirects.set(t, title);
+		if (Parser.redirects) {
+			Parser.redirects.clear();
+			for (const {title: t} of redirects) {
+				Parser.redirects.set(t, title);
+			}
+			Parser.redirects.set('Template:N/a', 'Template:N/A');
 		}
-		Parser.redirects.set('Template:N/a', 'Template:N/A');
 		let errors;
 		try {
-			const root = Parser.parse(content, ns === 10);
+			const start = performance.now(),
+				root = Parser.parse(content, ns === 10);
 			let text = String(root);
 			if (text !== content) {
-				error(`${pageid}在解析过程中修改了原始文本！`);
+				error(`\n${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text, true);
 			}
 			const rawErrors = root.lint(),
-				nas = root.querySelectorAll('template[name=Template:N/A]');
+				duration = performance.now() - start;
+			if (!worst || duration > worst.duration) {
+				worst = {title, duration};
+			}
+			const nas = root.querySelectorAll('template[name=Template:N/A]');
 			errors = rawErrors.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(({rule, message, excerpt, severity}) =>
 					!(rule === 'fostered-content' && (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70))))
@@ -118,7 +128,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				}
 			}
 		} catch (e) {
-			error(`页面 ${pageid} 解析或语法检查失败！`, e);
+			error(`\n页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
 		}
 		if (errors.length === 0) {
@@ -137,6 +147,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 			}
 		}
 	}
+	console.log();
 };
 
 const main = async api => {
@@ -164,7 +175,7 @@ const main = async api => {
 					errors = errors.filter(
 						({severity, message, excerpt}) =>
 							severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-							|| message === 'URL中的"|"' || message === '内链目标包含模板',
+							|| message === 'URL中的"|"' || message === '内链目标包含模板' || message === '段落标题中的粗体',
 					).sort((a, b) =>
 						a.startLine - b.startLine || a.startCol - b.startCol
 						|| a.endLine - b.endLine || a.endCol - b.endCol);
@@ -226,7 +237,7 @@ const main = async api => {
 				grcend = (last > yesterday ? last : yesterday).toISOString(),
 				qs = {
 					generator: 'recentchanges', grcnamespace: '0|10|12|14', grclimit: 500, grctype: 'edit|new',
-					grcexcludeuser: 'Bhsd', grcend, ...qsRedirects,
+					grcend, ...qsRedirects,
 				},
 				pages = await api.revisions(qs);
 			await generateErrors(pages);
@@ -252,6 +263,9 @@ const main = async api => {
 		hasArg.clear();
 	}
 	await save('../config/lintErrors.json', lintErrors);
+	if (worst) {
+		info(`最耗时页面：${worst.title} (${worst.duration.toFixed(3)}ms)`);
+	}
 };
 
 (async () => {

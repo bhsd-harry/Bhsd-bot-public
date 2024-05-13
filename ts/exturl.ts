@@ -2,8 +2,9 @@
  * @Function: 提供一个标准函数，用于修复指定文本中的http链接
  */
 'use strict';
+
 import {promises} from 'fs';
-import Parser = require('wikiparser-node');
+import Parser from 'wikiparser-node';
 import {ping, save, error, info, urlRegex, wayback} from '../lib/dev';
 const {regexSource} = require('../config/exturl'); // 仅手动更新
 Parser.config = './config/moegirl';
