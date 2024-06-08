@@ -25,8 +25,8 @@
 	},
 	"dependencies": {
 		"@cypress/request": "^3.0.1",
-		"chinese-conv": "^1.1.0",
 		"talisman": "^1.1.4",
+		"tongwen-dict": "^1.0.1",
 		"wayback-machine": "^0.2.1",
 		"wikiparser-node": "^1.9.0"
 	},

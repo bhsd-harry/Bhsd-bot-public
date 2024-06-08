@@ -2,7 +2,7 @@
 
 const {performance} = require('perf_hooks'),
 	imported = require('wikiparser-node'),
-	{sify} = require('chinese-conv'),
+	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
@@ -113,7 +113,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 						continue;
 					}
 					const {link} = token;
-					if (typeof link === 'object' && !link.fragment && sify(link.title) === title) {
+					if (typeof link === 'object' && !link.fragment && t2s(link.title) === title) {
 						const {top, left, height, width} = token.getBoundingClientRect();
 						errors.push({
 							message: '自身链接',
