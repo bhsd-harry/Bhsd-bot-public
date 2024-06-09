@@ -6,13 +6,13 @@ const Api = require('../lib/api'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const regex = /\/doc(?:$|\/)/;
+const regex = /\/doc(?:$|\/)/u;
 
 const getCategories = root => root.getCategories().map(([cat]) => cat);
 
 const insertCategory = root => {
 	const noinclude = root.querySelectorAll('noinclude')
-		.find(token => /<\/noinclude(?:\s[^>]*)?>/i.test(token.toString()));
+		.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(token.toString()));
 	if (noinclude) {
 		noinclude.before('[[分类:模板文档]]');
 	} else {
@@ -37,11 +37,11 @@ const main = async (api = new Api(user, pin, url)) => {
 			)).filter(({title}) => regex.test(title)),
 			edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
 				const includeCats = getCategories(Parser.parse(content, true, 6));
-				if (includeCats.length) {
+				if (includeCats.length > 0) {
 					const root = Parser.parse(content, false, 6),
 						noincludeCats = getCategories(root),
 						repeatedCats = noincludeCats.filter(cat => includeCats.includes(cat));
-					if (repeatedCats.length) {
+					if (repeatedCats.length > 0) {
 						for (const cat of repeatedCats) {
 							const token = root.querySelector(`category[name="${cat}"]`),
 								tag = cat === 'Category:模板文档' ? 'noinclude' : 'includeonly';
@@ -52,13 +52,16 @@ const main = async (api = new Api(user, pin, url)) => {
 							insertCategory(root);
 						}
 						return [
-							pageid, content, root.toString().replaceAll('</includeonly><includeonly>', ''),
-							timestamp, curtimestamp,
+							pageid,
+							content,
+							root.toString().replaceAll('</includeonly><includeonly>', ''),
+							timestamp,
+							curtimestamp,
 						];
 					}
 				}
 				return null;
-			}).filter(edit => edit);
+			}).filter(Boolean);
 		await api.massEdit(edits, 'dry', '自动维护模板文档分类');
 		return;
 	}
@@ -72,7 +75,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			const root = Parser.parse(content, false, 1);
 			insertCategory(root);
 			return [pageid, content, root.toString(), timestamp, curtimestamp];
-		}).filter(edit => edit);
+		}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动维护模板文档分类');
 };
 

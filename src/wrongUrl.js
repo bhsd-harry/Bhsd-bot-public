@@ -4,8 +4,8 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{runMode} = require('../lib/dev');
 
-const testRegex = /https?:?\/{0,2}(https?:)\/{0,2}/, // 用于test时不能有g修饰符
-	replaceRegex = new RegExp(testRegex, 'g');
+const testRegex = /https?:?\/{0,2}(https?:)\/{0,2}/u, // 用于test时不能有g修饰符
+	replaceRegex = new RegExp(testRegex, 'gu');
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode();
@@ -32,7 +32,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 			const text = content.replace(replaceRegex, '$1//');
 			return text !== content && [pageid, content, text, timestamp, curtimestamp];
-		}).filter(edit => edit);
+		}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动修复错误格式的外链');
 };
 

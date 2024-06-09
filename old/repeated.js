@@ -71,8 +71,8 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		if (lastTry === true) { // true表示可以跳过
 			return;
 		}
-		const regex = new RegExp(`\\|\\s*${escapeRegExp(param)}\\s*=`, 'g'),
-			regexStart = new RegExp(`^\\|\\s*${escapeRegExp(param)}\\s*=`), // 只用于模板参数子串
+		const regex = new RegExp(String.raw`\|\s*${escapeRegExp(param)}\s*=`, 'g'),
+			regexStart = new RegExp(String.raw`^\|\s*${escapeRegExp(param)}\s*=`), // 只用于模板参数子串
 			occurrence = [...text.matchAll(regex)]; // 只考虑命名参数写法
 		if (occurrence.length <= 1) {
 			error(`页面 ${pageid} 中重复的模板参数 ${param} 仅出现 ${occurrence.length} 次！`);

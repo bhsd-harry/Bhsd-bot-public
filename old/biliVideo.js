@@ -21,7 +21,7 @@ const Api = require('../lib/api'),
 		uctag: '发现失效视频',
 	});
 	const uc = usercontribs
-			.filter(({comment}) => new RegExp(`^发现失效视频：(?:\\w+: ${mistakes[mistake]}、?)+$`).test(comment)),
+			.filter(({comment}) => new RegExp(String.raw`^发现失效视频：(?:\w+: ${mistakes[mistake]}、?)+$`).test(comment)),
 		pageids = uc.map(({pageid}) => pageid);
 	const pages = await api.revisions({
 		pageids, prop: 'categories|revisions', cllimit: 'max',

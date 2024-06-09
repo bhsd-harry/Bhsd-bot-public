@@ -11,14 +11,16 @@ const api = new Api(user, pin, url),
 
 (async () => {
 	let mode = runMode('sort');
-	if (mode === 'run') {
-		mode = 'dry';
-	} else if (mode === 'sort') {
-		sort();
-		return;
-	} else if (mode === 'redry') {
-		await api.massEdit(null, mode, '自动修复http链接');
-		return;
+	switch (mode) {
+		case 'sort':
+			sort();
+			return;
+		case 'redry':
+			await api.massEdit(null, mode, '自动修复http链接');
+			return;
+		case 'run':
+			mode = 'dry';
+		// no default
 	}
 	let run = new Date(),
 		dry;
@@ -30,8 +32,8 @@ const api = new Api(user, pin, url),
 		if (!dry) {
 			throw new Error('没有保存的dry run！');
 		}
-		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接'),
-			archived = require('../config/broken');
+		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接');
+		const archived = require('../config/broken');
 		await Promise.all([
 			save('../config/broken.json', {...archived, ...newtimestamps}),
 			save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行

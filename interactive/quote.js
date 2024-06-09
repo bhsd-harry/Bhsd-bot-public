@@ -8,7 +8,7 @@ const Api = require('../lib/api'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const main = async (api = new Api(user, pin, url)) => {
+(async (api = new Api(user, pin, url)) => {
 	let mode = runMode('redry');
 	if (mode === 'run') {
 		mode = 'dry';
@@ -20,7 +20,8 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api.massEdit(null, mode, '自动闭合引号');
 		return;
 	}
-	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的引号')),
+	const targets = Object.entries(lintErrors)
+			.filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的引号')),
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
@@ -34,7 +35,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				attr.close();
 				if (value.endsWith("''") || value.endsWith('‘‘')) {
 					attr.value = value.slice(0, -2);
-				} else if (/[”"']$/.test(value)) {
+				} else if (/[”"']$/u.test(value)) {
 					attr.value = value.slice(0, -1);
 				}
 			}
@@ -45,10 +46,4 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	await api.massEdit(edits, mode, '自动闭合引号');
-};
-
-if (!module.parent) {
-	main();
-}
-
-module.exports = main;
+})();

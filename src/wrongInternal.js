@@ -5,8 +5,23 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user');
 
 const protectedPages = [
-	923, 100877, 110168, 177974, 261864, 264550, 359506, 364986, 401150, 404396, 424973, 428291, 438304, 450196,
-	453450, 464940, 479074,
+	923,
+	100_877,
+	110_168,
+	177_974,
+	261_864,
+	264_550,
+	359_506,
+	364_986,
+	401_150,
+	404_396,
+	424_973,
+	428_291,
+	438_304,
+	450_196,
+	453_450,
+	464_940,
+	479_074,
 ];
 
 const main = async (api = new Api(user, pin, url)) => {
@@ -47,16 +62,20 @@ const main = async (api = new Api(user, pin, url)) => {
 			'zh.moegirl.org.cn': '',
 			'commons.moegirl.org.cn': 'cm:',
 		}, '/'),
-		regex = new RegExp(`\\[{2}((?:https?:)?//${urlRegex}+)(.*?)]{1,2}`, 'gi'),
-		edits = pages.map(({content, pageid, timestamp, curtimestamp}) =>
-			[
-				pageid, content,
-				wikiUrl.replace(content.replace(regex, (_, p1, p2) => {
-					return `[${p1}${p2.replace(/^\s*\|/, p => p.length === 1 ? ' ' : p.slice(0, -1))}]`;
-				}), pageid),
-				timestamp, curtimestamp,
-			],
-		).filter(page => page).filter(([, content, text]) => content !== text);
+		regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)]{1,2}`, 'giu'),
+		edits = pages.map(
+			({content, pageid, timestamp, curtimestamp}) =>
+				[
+					pageid,
+					content,
+					wikiUrl.replace(content.replace(
+						regex,
+						(_, p1, p2) => `[${p1}${p2.replace(/^\s*\|/u, p => p.length === 1 ? ' ' : p.slice(0, -1))}]`,
+					), pageid),
+					timestamp,
+					curtimestamp,
+				],
+		).filter(Boolean).filter(([, content, text]) => content !== text);
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复误写作外链的内链') : null,
 		save('../config/abuse15.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),

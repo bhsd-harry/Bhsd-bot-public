@@ -25,17 +25,22 @@ const main = async (api = new Api(user, pin, url)) => {
 		edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)}),
 		width = new RegExp(
-			`^\\d*(?:x\\d*)?(?:${
-				Object.entries(Parser.getConfig().img).filter(([, key]) => key === 'width').map(([syntax]) => syntax.slice(2))
+			String.raw`^\d*(?:x\d*)?(?:${
+				Object.entries(Parser.getConfig().img).filter(([, key]) => key === 'width')
+					.map(([syntax]) => syntax.slice(2))
 					.join('|')
 			})$`,
 			'u',
 		);
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 6),
-			keys = ['invalid', ...new Set(
-				lintErrors[pageid].errors.filter(({message}) => regex.test(message)).map(({message}) => message.slice(5, -2)),
-			)],
+			keys = [
+				'invalid',
+				...new Set(
+					lintErrors[pageid].errors.filter(({message}) => regex.test(message))
+						.map(({message}) => message.slice(5, -2)),
+				),
+			],
 			selector = keys.map(key => `image-parameter#${key}`).join(),
 			/** @type {[string, string[]][]} */ mistakes = [
 				['thumbnail', ['thumbnail', 'thumb', '缩略图', '縮圖']],

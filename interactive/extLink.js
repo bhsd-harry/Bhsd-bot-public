@@ -5,12 +5,12 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{info, save, runMode} = require('../lib/dev'),
 	{exturl} = require('../lib/exturl'),
-	{run, dry} = require('../config/extLink'),
-	{geuquery} = run;
+	{run, dry} = require('../config/extLink');
+const {geuquery} = run;
 
 const api = new Api(user, pin, url),
 	chat = new Interface(),
-	protectedPages = [923, 270566],
+	protectedPages = [923, 270_566],
 	[,,, geulimit] = process.argv;
 
 (async () => {
@@ -25,8 +25,8 @@ const api = new Api(user, pin, url),
 		await api.massEdit(null, mode);
 		return;
 	} else if (mode === 'rerun') {
-		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接'),
-			archived = require('../config/broken');
+		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接');
+		const archived = require('../config/broken');
 		await Promise.all([
 			save('../config/broken.json', {...archived, ...newtimestamps}),
 			dry ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
@@ -49,6 +49,9 @@ const api = new Api(user, pin, url),
 		if (mode === 'dry') {
 			info(`下次检查从 ${c.geuoffset} 开始。`);
 		}
-		await save('../config/extLink.json', mode === 'dry' && edits.length ? {run, dry: c} : {run: {geuquery, ...c}});
+		await save(
+			'../config/extLink.json',
+			mode === 'dry' && edits.length > 0 ? {run, dry: c} : {run: {geuquery, ...c}},
+		);
 	}
 })();

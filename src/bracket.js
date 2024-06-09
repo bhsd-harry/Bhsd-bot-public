@@ -4,7 +4,7 @@ const Api = require('../lib/api'),
 	{runMode, save} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user');
 
-const skip = [535567],
+const skip = [535_567],
 	pageids = [];
 
 const main = async (api = new Api(user, pin, url)) => {
@@ -30,26 +30,28 @@ const main = async (api = new Api(user, pin, url)) => {
 		yesterday = new Date();
 	yesterday.setDate(yesterday.getDate() - 30);
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
-		pages = await (pageids.length ? api.revisions({pageids}) : api.taggedRecentChanges('方括号不配对', date));
+		pages = await (pageids.length > 0 ? api.revisions({pageids}) : api.taggedRecentChanges('方括号不配对', date));
 	let edits = [];
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		if (skip.includes(pageid)) {
 			continue;
 		}
 		edits.push([
-			pageid, content,
-			content.replace(/\[ (?=(?:https?:)?\/\/)/gi, '[')
-				.replace(/(?<!\[)(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/gi, '[$1')
-				.replace(/\[\[[^[\]]+\](?!\])/g, '$&]')
-				.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/gi, '$&]')
-				.replace(/\[(?:https?:)?\/\/[^\]]+\]/gi, p => p.replaceAll('\n', ' ')),
-			timestamp, curtimestamp,
+			pageid,
+			content,
+			content.replace(/\[ (?=(?:https?:)?\/\/)/giu, '[')
+				.replace(/(?<!\[)(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/giu, '[$1')
+				.replace(/\[\[[^[\]]+\](?!\])/gu, '$&]')
+				.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/giu, '$&]')
+				.replace(/\[(?:https?:)?\/\/[^\]]+\]/giu, p => p.replaceAll('\n', ' ')),
+			timestamp,
+			curtimestamp,
 		]);
 	}
 	edits = edits.filter(([, content, text]) => content !== text);
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复不匹配的方括号') : null,
-		pageids.length
+		pageids.length > 0
 			? null
 			: save('../config/abuse8.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
 	]);

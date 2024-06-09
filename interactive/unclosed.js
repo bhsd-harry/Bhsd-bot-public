@@ -10,11 +10,11 @@ Parser.warning = false;
 
 const nestable = new Set(['span', 'big', 'small']);
 
-const main = async (api = new Api(user, pin, url)) => {
+(async (api = new Api(user, pin, url)) => {
 	const regex = new RegExp(
-			`^<(?:center|font|code|ins|h\\d|del|strike|strong|em|cite|sup|sub|[sbiu]|${
+			String.raw`^<(?:center|font|code|ins|h\d|del|strike|strong|em|cite|sup|sub|[sbiu]|${
 				[...nestable].join('|')
-			})[\\s>]`,
+			})[\s>]`,
 			'iu',
 		),
 		selectedErrors = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
@@ -83,10 +83,10 @@ const main = async (api = new Api(user, pin, url)) => {
 					({nextSibling} = nextSibling);
 				}
 				if (!nextSibling) {
-					if (!html.nextSibling) {
-						html.remove();
-					} else {
+					if (html.nextSibling) {
 						parentNode.append(`</${key}>`);
+					} else {
+						html.remove();
 					}
 				} else if (key !== 'center' || !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')) {
 					if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
@@ -103,10 +103,4 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 	await api.massEdit(edits, mode, '自动修复未闭合的HTML标签');
-};
-
-if (!module.parent) {
-	main();
-}
-
-module.exports = main;
+})();

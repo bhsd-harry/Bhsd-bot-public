@@ -71,7 +71,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			edits = pages.filter(({pageid}, i) => pages.findLastIndex(({pageid: id}) => id === pageid) === i)
 				.map(({pageid, content, timestamp, curtimestamp}) => {
 					const root = Parser.parse(content, false, 10);
-					for (const template of root.querySelectorAll('template#Template\\:Cite_web')) {
+					for (const template of root.querySelectorAll(String.raw`template#Template\:Cite_web`)) {
 						const val = template.getValue('url');
 						if (val) {
 							try {

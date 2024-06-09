@@ -1,27 +1,27 @@
 'use strict';
 const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
-	{runMode} = require('../lib/dev'),
-	scripts = [
-		'duplicated',
-		'tag',
-		'extImage',
-		'wrongUrl',
-		'removeInUse',
-		'wrongInternal',
-		'css',
-		'doc',
-		'bracket',
-		'br',
-		'duplicated-image-parameter',
-		'bold',
-		'duplicated-category',
-		'selflink',
-	];
+	{runMode} = require('../lib/dev');
+const scripts = [
+	'duplicated',
+	'tag',
+	'extImage',
+	'wrongUrl',
+	'removeInUse',
+	'wrongInternal',
+	'css',
+	'doc',
+	'bracket',
+	'br',
+	'duplicated-image-parameter',
+	'bold',
+	'duplicated-category',
+	'selflink',
+];
 
 const api = new Api(user, pin, url);
 
-const _execute = async script => {
+const execute = async script => {
 	try {
 		await require(`./${script}`)(api);
 		console.log(`${script}.js已执行！`);
@@ -41,6 +41,6 @@ const _execute = async script => {
 	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	for (const script of scripts) {
-		await _execute(script);
+		await execute(script);
 	}
 })();

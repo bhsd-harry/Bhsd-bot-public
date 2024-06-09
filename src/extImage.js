@@ -8,17 +8,24 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const regexHttps = new RegExp(
-	`https://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
-	'gi',
+	String.raw`https://(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)/${
+		urlRegex
+	}+\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
+	'giu',
 );
 const regexHttp = new RegExp(
-	`http://(?:i\\d\\.hdslb\\.com|w[wx]\\d\\.sinaimg\\.cn)/${urlRegex}+\\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
-	'gi',
+	String.raw`http://(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)/${urlRegex}+\.(?:jpe?g|png|gif|tiff|bmp)(?!${urlRegex})`,
+	'giu',
 );
-const testRegex = new RegExp(regexHttp, 'i');
+const testRegex = new RegExp(regexHttp, 'iu');
 const norefererTemplates = [
-	'NoReferer', 'Producer_Song', 'Producer_Music', 'VOCALOID_&_UTAU_Ranking', 'VOCALOID_Ranking', 'WUGTop',
-].map(str => `template#Template\\:${str}`).join();
+	'NoReferer',
+	'Producer_Song',
+	'Producer_Music',
+	'VOCALOID_&_UTAU_Ranking',
+	'VOCALOID_Ranking',
+	'WUGTop',
+].map(str => String.raw`template#Template\:${str}`).join();
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode('noreferer');
@@ -30,13 +37,13 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 
-	const _searchHttps = site => api.search(`insource:"https://${site}"`, {
+	const searchHttps = site => api.search(`insource:"https://${site}"`, {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
-		_searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
+		searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
-		_insert = /** @param parsed {Parser.Token} */ parsed => {
+		insert = /** @param parsed {Parser.Token} */ parsed => {
 			const token = parsed.sections()
 				.find(section => testRegex.test(section.extractContents().map(ele => ele.text()).join('')))?.[0];
 			if (token === undefined) {
@@ -48,11 +55,11 @@ const main = async (api = new Api(user, pin, url)) => {
 			}
 		};
 
-	const _search = mode === 'noreferer' ? _searchHttp : _searchHttps,
+	const search = mode === 'noreferer' ? searchHttp : searchHttps,
 		regex = mode === 'noreferer' ? regexHttp : regexHttps;
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
-	const pages = (await Promise.all([
-		...new Array(3).fill().map((_, i) => _search(`i${i}.hdslb.com`)),
+	const pages = (await Promise.all([ // eslint-disable-line unicorn/no-useless-spread
+		...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
 
 		// ...new Array(4).fill().map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),
 
@@ -74,15 +81,18 @@ const main = async (api = new Api(user, pin, url)) => {
 				}
 				const parsed = Parser.parse(text, false, 2);
 				if (!parsed.querySelector(norefererTemplates)) {
-					_insert(parsed);
+					insert(parsed);
 				} else if (mode === 'noreferer') {
 					return null;
 				}
 				return [pageid, content, parsed.toString(), timestamp, curtimestamp];
 			}).filter(edit => edit && edit[1] !== edit[2]);
-	await api.massEdit(edits, mode === 'noreferer' ? 'dry' : mode, mode === 'noreferer'
-		? '自动添加{{[[template:noReferer|noReferer]]}}模板'
-		: '自动修复引自bilibili或新浪的图片外链',
+	await api.massEdit(
+		edits,
+		mode === 'noreferer' ? 'dry' : mode,
+		mode === 'noreferer'
+			? '自动添加{{[[template:noReferer|noReferer]]}}模板'
+			: '自动修复引自bilibili或新浪的图片外链',
 	);
 };
 

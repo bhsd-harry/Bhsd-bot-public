@@ -9,7 +9,7 @@ Parser.config = './config/moegirl';
 
 const ignorePages = [];
 
-const _analyze = (wikitext, pageid, ns) => {
+const analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
 	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed]')
 		.filter(({firstChild: {data}}) => data.includes('<!--'));
@@ -42,7 +42,7 @@ const _analyze = (wikitext, pageid, ns) => {
 			continue;
 		} else if (token.name === 'Template:Timeline') {
 			for (const key of keys) {
-				if (/^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/.test(key)) {
+				if (/^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/u.test(key)) {
 					let i = 2;
 					const attempt = arg => {
 						try {
@@ -61,14 +61,27 @@ const _analyze = (wikitext, pageid, ns) => {
 			}
 		}
 		for (const key of keys) {
-			error(`页面 ${pageid} 中模板 ${token.name} 的重复参数 ${key.replaceAll('\n', '\\n')} 均非空！`);
+			error(`页面 ${pageid} 中模板 ${token.name} 的重复参数 ${key.replaceAll('\n', String.raw`\n`)} 均非空！`);
 		}
 	}
-	for (const token of templates.filter(({name}) => /^Template:彩虹社信息[栏欄]$/.test(name))) {
+	for (const token of templates.filter(({name}) => /^Template:彩虹社信息[栏欄]$/u.test(name))) {
 		found = true;
 		for (const key of [
-			'本名', '昵称', '发色', '瞳色', '身高', '体重', '年龄', '生日', '星座', '血型', '种族', '出身地区', '语言',
-			'萌点', '个人状态',
+			'本名',
+			'昵称',
+			'发色',
+			'瞳色',
+			'身高',
+			'体重',
+			'年龄',
+			'生日',
+			'星座',
+			'血型',
+			'种族',
+			'出身地区',
+			'语言',
+			'萌点',
+			'个人状态',
 		]) {
 			token.getArg(`基本信息-${key}`)?.rename(key);
 		}
@@ -101,7 +114,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 			.filter(({pageid}) => !ignorePages.includes(pageid));
 	}
 	const list = pages.map(({pageid, ns, content, title, timestamp, curtimestamp}) => {
-		const [text, found] = _analyze(content, pageid, ns);
+		const [text, found] = analyze(content, pageid, ns);
 		if (text === content) {
 			if (!found) {
 				error(`页面 ${pageid} ${title.replaceAll(' ', '_')} 找不到重复的模板参数！`);

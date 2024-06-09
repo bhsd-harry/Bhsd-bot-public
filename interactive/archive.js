@@ -4,8 +4,8 @@ const {promises} = require('fs'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
-	{user, pin, url} = require('../config/user'),
-	skip = [1546];
+	{user, pin, url} = require('../config/user');
+const skip = [1546];
 
 (async () => {
 	const [,,, titles] = process.argv,
@@ -22,8 +22,8 @@ const {promises} = require('fs'),
 		await api.massEdit(null, mode);
 		return;
 	} else if (mode === 'rerun') {
-		const newtimestamps = await api.massEdit(null, mode, '自动添加网页存档或标记失效链接'),
-			archived = require('../config/broken');
+		const newtimestamps = await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
+		const archived = require('../config/broken');
 		await save('../config/broken.json', {...archived, ...newtimestamps});
 		return;
 	}
@@ -47,10 +47,10 @@ const {promises} = require('fs'),
 			content, pageid, timestamp, curtimestamp,
 		}, chat, true, incomplete);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
-	}))).filter(page => page);
+	}))).filter(Boolean);
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	try {
-		const temp = require('../config/broken-temp');
+		const temp = require('../config/broken-temp'); // eslint-disable-line n/no-missing-require
 		await Promise.all([
 			save('../config/broken.json', temp),
 			promises.unlink('../config/broken-temp.json'),
