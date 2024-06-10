@@ -49,7 +49,7 @@ const nestable = new Set(['span', 'big', 'small']);
 				html.findMatchingTag();
 				continue;
 			} catch ({message}) {
-				if (!message.startsWith('unclosed tag: ')) {
+				if (!message.startsWith('Unclosed tag: ')) {
 					continue;
 				}
 			}

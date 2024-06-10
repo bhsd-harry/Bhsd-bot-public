@@ -62,7 +62,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			'zh.moegirl.org.cn': '',
 			'commons.moegirl.org.cn': 'cm:',
 		}, '/'),
-		regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)]{1,2}`, 'giu'),
+		regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)\]{1,2}`, 'giu'),
 		edits = pages.map(
 			({content, pageid, timestamp, curtimestamp}) =>
 				[
