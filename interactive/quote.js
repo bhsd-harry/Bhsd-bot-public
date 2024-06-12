@@ -9,6 +9,11 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 (async (api = new Api(user, pin, url)) => {
+	const targets = Object.entries(lintErrors)
+		.filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的引号'));
+	if (targets.length === 0) {
+		return;
+	}
 	let mode = runMode('redry');
 	if (mode === 'run') {
 		mode = 'dry';
@@ -20,9 +25,7 @@ Parser.config = './config/moegirl';
 		await api.massEdit(null, mode, '自动闭合引号');
 		return;
 	}
-	const targets = Object.entries(lintErrors)
-			.filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的引号')),
-		edits = [],
+	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 4);

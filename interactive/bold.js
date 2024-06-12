@@ -9,7 +9,16 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
+	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+		({message}) => message === '段落标题中的粗体',
+	));
+	if (targets.length === 0) {
+		return;
+	}
+	let mode = runMode();
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
@@ -17,21 +26,18 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api.massEdit(null, mode, '自动移除标题中的加粗');
 		return;
 	}
-	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message}) => message === '段落标题中的粗体',
-		)),
-		edits = [],
+	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 7);
-		for (const quote of root.querySelectorAll('heading-title > quote[bold]')) {
+		for (const quote of root.querySelectorAll('heading-title quote[bold]')) {
 			if (quote.italic) {
 				quote.setText("''");
 			} else {
 				quote.remove();
 			}
 		}
-		for (const html of root.querySelectorAll('heading-title > html:is(#b, #strong)')) {
+		for (const html of root.querySelectorAll('heading-title html:is(#b, #strong)')) {
 			html.remove();
 		}
 		const text = String(root);

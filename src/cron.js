@@ -14,7 +14,6 @@ const scripts = [
 	'bracket',
 	'br',
 	'duplicated-image-parameter',
-	'bold',
 	'duplicated-category',
 	'selflink',
 ];

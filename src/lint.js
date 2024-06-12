@@ -44,6 +44,7 @@ const Parser = global.Parser ?? imported,
 		463_871,
 		473_730,
 		478_783,
+		501_059,
 		506_704,
 		529_969,
 		539_875,
@@ -86,6 +87,7 @@ const trTemplate = [
 		'BestGirlContestEveryPerson',
 		':BanG Dream!少女乐团派对!/历史活动/EventInfo',
 		':D4DJ Groovy Mix/历史活动/EventInfo',
+		'星穹铁道遗器表格',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -204,7 +206,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 	console.log();
 };
 
-const main = async api => {
+const main = /** @param {Api} api */ async api => {
 	const qsRedirects = {
 		prop: 'revisions|redirects',
 		rdprop: 'title',
