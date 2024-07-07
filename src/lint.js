@@ -143,6 +143,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							title.startsWith('三国杀')
 							&& (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning')
 						)
+						&& !(title.startsWith('幻书启世录:') && message === '未闭合的标签' && severity === 'warning')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 						&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
 				);

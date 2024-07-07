@@ -10,6 +10,13 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url)) => {
+	const regex = /^重复的图片[a-z]+参数$/u,
+		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+			({message}) => message === '无效的图库图片参数' || regex.test(message),
+		));
+	if (targets.length === 0) {
+		return;
+	}
 	const mode = runMode();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
@@ -18,11 +25,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api.massEdit(null, mode, '自动移除重复的图片参数');
 		return;
 	}
-	const regex = /^重复的图片[a-z]+参数$/u,
-		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message}) => message === '无效的图库图片参数' || regex.test(message),
-		)),
-		edits = [],
+	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)}),
 		width = new RegExp(
 			String.raw`^\d*(?:x\d*)?(?:${

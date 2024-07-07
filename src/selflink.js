@@ -10,6 +10,12 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url)) => {
+	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+		({message}) => message === '自身链接',
+	));
+	if (targets.length === 0) {
+		return;
+	}
 	const mode = runMode();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
@@ -18,10 +24,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		await api.massEdit(null, mode, '自动修复自身链接');
 		return;
 	}
-	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message}) => message === '自身链接',
-		)),
-		edits = [],
+	const edits = [],
 		pages = await api.revisions({
 			pageids: targets.map(([pageid]) => pageid),
 			prop: 'revisions|redirects',
@@ -47,6 +50,8 @@ const main = async (api = new Api(user, pin, url)) => {
 					if (fragment) {
 						token.setLinkText(token.innerText);
 						token.setTarget(`#${fragment}`);
+					} else if (token.parentNode?.type === 'imagemap-link') {
+						token.parentNode.remove();
 					} else {
 						token.replaceWith(token.innerText);
 					}
