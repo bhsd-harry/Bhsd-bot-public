@@ -12,7 +12,7 @@ Parser.config = './config/moegirl';
 const main = async (api = new Api(user, pin, url)) => {
 	const regex = /^重复的图片[a-z]+参数$/u,
 		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message}) => message === '无效的图库图片参数' || regex.test(message),
+			({message}) => message === '无效的图片参数' || regex.test(message),
 		));
 	if (targets.length === 0) {
 		return;

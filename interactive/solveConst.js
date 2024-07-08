@@ -28,9 +28,8 @@ Parser.config = './config/moegirl';
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 2);
-		root.solveConst();
-		const text = String(root);
+		const root = Parser.parse(content, false, 2),
+			text = String(root.solveConst());
 		if (content !== text) {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}

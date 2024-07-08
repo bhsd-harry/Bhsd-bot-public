@@ -25,15 +25,17 @@ const protectedPages = [
 ];
 
 const main = async (api = new Api(user, pin, url)) => {
-	const mode = runMode();
-	let run = new Date(),
+	let mode = runMode('mzh'),
+		run = new Date(),
 		dry;
 	try {
 		({run, dry} = require('../config/abuse15'));
 	} catch {}
 	if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' || mode === 'mzh' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await Promise.all([
 				api.massEdit(null, mode, '自动修复误写作外链的内链'),
 				save('../config/abuse15.json', {run: dry}), // 将上一次dry run转化为实际执行
@@ -48,21 +50,33 @@ const main = async (api = new Api(user, pin, url)) => {
 		yesterday = new Date();
 	yesterday.setDate(yesterday.getDate() - 30);
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
-		queries = await Promise.all([
-			api.taggedRecentChanges('内外链误写', date),
-			api.search('insource:"zh.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
-			api.search('insource:"commons.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
-		]),
+		queries = await Promise.all(
+			mode === 'mzh'
+				? [api.search('insource:"mzh.moegirl.org.cn"', {gsrnamespace: '0|10|14'})]
+				: [
+					api.taggedRecentChanges('内外链误写', date),
+					api.search('insource:"zh.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
+					api.search('insource:"commons.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
+				],
+		),
 		pageids = queries[1].map(({pageid}) => pageid);
 	queries[0] = queries[0].filter(({pageid}) => !pageids.includes(pageid));
 	const pages = queries.flat().filter(({pageid}) => !protectedPages.includes(pageid));
 
 	// 2. 再进行修复
-	const wikiUrl = new WikiUrl({
-			'zh.moegirl.org.cn': '',
-			'commons.moegirl.org.cn': 'cm:',
-		}, '/'),
-		regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)\]{1,2}`, 'giu'),
+	const wikiUrl = new WikiUrl(
+		mode === 'mzh'
+			? {'mzh.moegirl.org.cn': ''}
+			: {
+				'zh.moegirl.org.cn': '',
+				'commons.moegirl.org.cn': 'cm:',
+			},
+		'/',
+	);
+	if (mode === 'mzh') {
+		mode = 'dry';
+	}
+	const regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)\]{1,2}`, 'giu'),
 		edits = pages.map(
 			({content, pageid, timestamp, curtimestamp}) =>
 				[
