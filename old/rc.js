@@ -81,9 +81,9 @@ const _group = (groups = []) => groups.join('、') || '（无）';
 const convertTimeZone = time => {
 	const date = new Date(time),
 		timeZone = 'asia/shanghai';
-	// eslint-disable-next-line prefer-template
-	return date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'}).replace('/', '.')
-		+ ` ${date.toLocaleTimeString('ia', {timeZone, hour: 'numeric', minute: '2-digit', hour12: false})}`;
+	return `${date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'}).replace('/', '.')} ${
+		date.toLocaleTimeString('ia', {timeZone, hour: 'numeric', minute: '2-digit', hour12: false})
+	}`;
 };
 
 // 准备QQ消息

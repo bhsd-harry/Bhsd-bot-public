@@ -91,7 +91,6 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 		}
 		const curScope = pScope.filter((_, i) => tScope[i] === target),
 			candidates = curScope.map(p => _findEnds(scope, target, p)),
-			// eslint-disable-next-line no-loop-func
 			values = candidates.map(([start, end]) => trim(text.slice(start, end).replace(regexStart, ''))),
 			entries = [...values.entries()], // filter时保留原有index
 			empty = entries.filter(([, val]) => val === ''),

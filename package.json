@@ -16,9 +16,6 @@
 		"type": "git",
 		"url": "git+https://github.com/bhsd-harry/Bhsd-bot-public.git"
 	},
-	"scripts": {
-		"test": "echo 'Error: no test specified' && exit 1"
-	},
 	"private": true,
 	"engines": {
 		"node": "^20.9.0"
@@ -31,6 +28,7 @@
 		"wikiparser-node": "^1.9.0"
 	},
 	"devDependencies": {
+		"@bhsd/common": "^0.0.0",
 		"@types/node": "^20.11.6",
 		"@types/request": "^2.48.12"
 	}

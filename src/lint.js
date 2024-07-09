@@ -135,7 +135,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 							&& (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70)))
 						)
 						&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
-						&& !(rule === 'unknown-page' && /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt))
+						&& !(
+							rule === 'unknown-page'
+							&& /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt)
+						)
 						&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 						&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
 						&& !(rule === 'table-layout' && nas.length > 0)
