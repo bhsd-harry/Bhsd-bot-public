@@ -42,18 +42,21 @@ const main = async (api = new Api(user, pin, url)) => {
 				continue;
 			}
 			const {link, type} = token;
-			if (typeof link === 'object' && !link.fragment && t2s(link.title) === title) {
-				const [, fragment = ''] = String(link).split('#', 2);
-				if (type === 'image-parameter') {
-					token.setValue(fragment && `#${fragment}`);
-				} else if (type === 'link') {
-					if (fragment) {
-						token.setLinkText(token.innerText);
-						token.setTarget(`#${fragment}`);
-					} else if (token.parentNode?.type === 'imagemap-link') {
-						token.parentNode.remove();
-					} else {
-						token.replaceWith(token.innerText);
+			if (typeof link === 'object') {
+				const [isRedirect, target] = link.getRedirection();
+				if ((isRedirect || !link.fragment) && t2s(target) === title) {
+					const [, fragment = ''] = String(link).split('#', 2);
+					if (type === 'image-parameter') {
+						token.setValue(fragment && `#${fragment}`);
+					} else if (type === 'link') {
+						if (fragment) {
+							token.setLinkText(token.innerText);
+							token.setTarget(`#${fragment}`);
+						} else if (token.parentNode?.type === 'imagemap-link') {
+							token.parentNode.remove();
+						} else {
+							token.replaceWith(token.innerText);
+						}
 					}
 				}
 			}

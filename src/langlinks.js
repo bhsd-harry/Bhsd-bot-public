@@ -22,7 +22,7 @@ const config = {
 		action: 'query', prop: 'langlinks', lllimit: 'max', redirects: true, converttitles: true,
 	},
 	newLinks = [],
-	apis = {},
+	/** @type {Record<string, Api>} */ apis = {},
 	corrections = {ja: [], en: [], zh: []},
 	mode = runMode(),
 	protectedPages = {zh: ['Category:即将删除的页面']},
@@ -121,6 +121,8 @@ const targetMain = async target => {
 	if (titles.length === 0) {
 		return;
 	}
+	targetApi.logout();
+	await targetApi.login();
 	const {query} = await targetApi.post({titles, ...targetParams}),
 		conversion = [...query.converted ?? [], ...query.redirects ?? []];
 	for (const {from, to} of conversion) {
@@ -181,8 +183,10 @@ const targetMain = async target => {
 };
 
 const editMain = async wiki => {
-	const api = apis[wiki],
-		pages = await api.revisions({titles: corrections[wiki].map(({title}) => title)}),
+	const api = apis[wiki];
+	api.logout();
+	await api.login();
+	const pages = await api.revisions({titles: corrections[wiki].map(({title}) => title)}),
 		list = [];
 	for (const {pageid, title, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 6);

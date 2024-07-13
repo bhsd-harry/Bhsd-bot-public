@@ -169,21 +169,20 @@ const generateErrors = async (pages, errorOnly = false) => {
 						continue;
 					}
 					const {link} = token;
-					if (
-						typeof link === 'object'
-						&& !link.fragment
-						&& t2s(link.title) === title
-					) {
-						const {top, left, height, width} = token.getBoundingClientRect();
-						errors.push({
-							message: '自身链接',
-							severity: 'error',
-							startLine: top,
-							startCol: left,
-							endLine: top + height - 1,
-							endCol: height === 1 ? left + width : width,
-							excerpt: String(token),
-						});
+					if (typeof link === 'object') {
+						const [isRedirect, target] = link.getRedirection();
+						if ((isRedirect || !link.fragment) && t2s(target) === title) {
+							const {top, left, height, width} = token.getBoundingClientRect();
+							errors.push({
+								message: '自身链接',
+								severity: 'error',
+								startLine: top,
+								startCol: left,
+								endLine: top + height - 1,
+								endCol: height === 1 ? left + width : width,
+								excerpt: String(token),
+							});
+						}
 					}
 				}
 			}

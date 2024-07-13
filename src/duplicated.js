@@ -123,7 +123,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 			return null;
 		}
 		return [pageid, content, text, timestamp, curtimestamp];
-	}).filter(page => page && !(templateOnly && page[1] === page[2]));
+	}).filter(Boolean);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
 	if (templateOnly && mode === 'run') {
 		main(api, false);
