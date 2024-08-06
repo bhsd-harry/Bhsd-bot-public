@@ -39,6 +39,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		const root = Parser.parse(content, false, 6),
 			keys = [
 				'invalid',
+				'framed',
 				...new Set(
 					lintErrors[pageid].errors.filter(({message}) => regex.test(message))
 						.map(({message}) => message.slice(5, -2)),
@@ -57,10 +58,17 @@ const main = async (api = new Api(user, pin, url)) => {
 			if (!root.contains(parameter)) {
 				continue;
 			}
-			const {parentNode: {childNodes, type}, name: curName, value: curValue} = parameter,
+			const {parentNode, name: curName, value: curValue} = parameter,
+				{childNodes, type} = parentNode,
 				i = childNodes.indexOf(parameter),
 				repeated = childNodes.slice(i + 1).filter(({name}) => name === curName);
 			if (curName === 'invalid') {
+				parameter.remove();
+				continue;
+			} else if (curName === 'framed' && childNodes.some(({name}) => name === 'width')) {
+				if (!childNodes.some(({name}) => name === 'thumbnail')) {
+					parentNode.setValue('thumbnail', true);
+				}
 				parameter.remove();
 				continue;
 			} else if (repeated.length === 0) {
