@@ -20,7 +20,7 @@ const analyze = (wikitext, pageid, ns) => {
 			previousSibling.deleteData(-3, 3);
 		}
 	}
-	root = Parser.parse(root.toString(), ns === 10, 2);
+	root = Parser.parse(String(root), ns === 10, 2);
 	let found = false;
 	const templates = root.querySelectorAll('template, magic-word#invoke');
 	for (let token of templates) {
@@ -90,7 +90,7 @@ const analyze = (wikitext, pageid, ns) => {
 			token.getArg(`相关人士-${key}`)?.rename(key);
 		}
 	}
-	const text = root.toString();
+	const text = String(root);
 	return [text, found];
 };
 

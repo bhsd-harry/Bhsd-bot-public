@@ -85,7 +85,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				} else if (mode === 'noreferer') {
 					return null;
 				}
-				return [pageid, content, parsed.toString(), timestamp, curtimestamp];
+				return [pageid, content, String(parsed), timestamp, curtimestamp];
 			}).filter(edit => edit && edit[1] !== edit[2]);
 	await api.massEdit(
 		edits,

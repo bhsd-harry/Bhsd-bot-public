@@ -58,13 +58,13 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 		const root = Parser.parse(content, false, 1),
 			noinclude = root.querySelectorAll('noinclude')
-				.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(token.toString()));
+				.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(String(token)));
 		if (noinclude) {
 			noinclude.before('[[分类:使用模板样式的模板]]');
 		} else {
 			root.append('<noinclude>[[分类:使用模板样式的模板]]</noinclude>');
 		}
-		return [pageid, content, root.toString(), timestamp, curtimestamp];
+		return [pageid, content, String(root), timestamp, curtimestamp];
 	}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动维护使用模板样式表的模板分类');
 };

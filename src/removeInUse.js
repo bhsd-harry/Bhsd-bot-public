@@ -106,7 +106,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				error(`${pageid}: 施工持续 ${format(time)}，还剩 ${format(remain)}`);
 			}
 		}
-		const text = root.toString();
+		const text = String(root);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp];
 	}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动移除超时的[[template:施工中|施工中]]模板');

@@ -42,10 +42,13 @@ const main = async (api = new Api(user, pin, url)) => {
 				const target = otherCat.length === 1 ? otherCat : cat,
 					{previousSibling, nextSibling} = target;
 				if (
-					previousSibling?.type === 'text' && nextSibling?.type === 'text'
-					&& /\n[^\S\n]*$/u.test(previousSibling.data) && /^[^\S\n]*\n/u.test(nextSibling.data)
+					previousSibling?.type === 'text'
+					&& nextSibling?.type !== 'category'
+					&& /\n[^\S\n]*$/u.test(previousSibling.data)
 				) {
-					nextSibling.replaceData(nextSibling.data.replace(/^[^\S\n]*\n/u, ''));
+					const {data} = previousSibling,
+						l = data.trimEnd().length;
+					previousSibling.deleteData(l + data.slice(l).indexOf('\n'));
 				}
 				target.remove();
 				if (target === cat) {

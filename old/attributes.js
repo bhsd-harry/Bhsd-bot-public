@@ -68,7 +68,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				token.remove();
 			}
 		}
-		return [pageid, content, parsed.toString(), timestamp, curtimestamp];
+		return [pageid, content, String(parsed), timestamp, curtimestamp];
 	}))).filter(([, content, text]) => content !== text);
 	await api.massEdit(edits, mode, message);
 };

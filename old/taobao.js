@@ -21,6 +21,10 @@ const spams = [
 	skip = [196275, 321048, 347990];
 let geuquery = spams.at(index);
 
+/**
+ * @param {URL} href 
+ * @param {Parser.Token} token 
+ */
 const remove = (href, token) => {
 	const {host, pathname} = href;
 	if (host.endsWith(geuquery) && (!targetPath || targetPath.test(pathname))) {
@@ -96,7 +100,7 @@ const main = async (api = new Api(user, pin, url)) => {
 							remove(href, imgParam);
 						} catch {}
 					}
-					return [pageid, content, root.toString(), timestamp, curtimestamp];
+					return [pageid, content, String(root), timestamp, curtimestamp];
 				}).filter(([, content, text]) => text !== content);
 		}
 	}

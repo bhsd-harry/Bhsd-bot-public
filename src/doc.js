@@ -8,11 +8,13 @@ Parser.config = './config/moegirl';
 
 const regex = /\/doc(?:$|\/)/u;
 
+/** @param {Parser.Token} root */
 const getCategories = root => root.getCategories().map(([cat]) => cat);
 
+/** @param {Parser.Token} root */
 const insertCategory = root => {
 	const noinclude = root.querySelectorAll('noinclude')
-		.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(token.toString()));
+		.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(String(token)));
 	if (noinclude) {
 		noinclude.before('[[分类:模板文档]]');
 	} else {
@@ -54,7 +56,7 @@ const main = async (api = new Api(user, pin, url)) => {
 						return [
 							pageid,
 							content,
-							root.toString().replaceAll('</includeonly><includeonly>', ''),
+							String(root).replaceAll('</includeonly><includeonly>', ''),
 							timestamp,
 							curtimestamp,
 						];
@@ -74,7 +76,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		edits = uncat.map(({pageid, content, timestamp, curtimestamp}) => {
 			const root = Parser.parse(content, false, 1);
 			insertCategory(root);
-			return [pageid, content, root.toString(), timestamp, curtimestamp];
+			return [pageid, content, String(root), timestamp, curtimestamp];
 		}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动维护模板文档分类');
 };

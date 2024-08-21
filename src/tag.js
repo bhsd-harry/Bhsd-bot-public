@@ -33,7 +33,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				token.fix();
 			} catch {}
 		}
-		const text = root.toString();
+		const text = String(root);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp];
 	}).filter(Boolean);
 	await api.massEdit(list, mode, '自动修复无效自封闭的HTML标签');

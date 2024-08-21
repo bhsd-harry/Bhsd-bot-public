@@ -100,7 +100,7 @@ const arrangeZh = async () => { // eslint-disable-line no-unused-vars
 						root.append(token);
 					}
 				}
-				const text = root.toString();
+				const text = String(root);
 				return text !== content && [pageid, content, text, timestamp, curtimestamp];
 			}).filter(Boolean);
 		if (mode !== 'dry' && list.length > 0) {
@@ -199,7 +199,7 @@ const editMain = async wiki => {
 			root.querySelector(`link[interwiki=${target}]:not(':contains(:${target})')`)?.setLangLink(target, to);
 			record[target] = to;
 		}
-		const text = root.toString();
+		const text = String(root);
 		if (content !== text) {
 			list.push([pageid, content, text, timestamp, curtimestamp]);
 		}
