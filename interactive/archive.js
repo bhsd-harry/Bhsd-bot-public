@@ -45,7 +45,7 @@ const skip = [1546];
 		}
 		const [text, nBroken, nArchived, nFailed] = await broken({
 			content, pageid, timestamp, curtimestamp,
-		}, chat, true, incomplete);
+		}, chat, true, api);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(Boolean);
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
