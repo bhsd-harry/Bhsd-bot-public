@@ -40,7 +40,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			pageid,
 			content,
 			content.replace(/\[ (?=(?:https?:)?\/\/)/giu, '[')
-				.replace(/(?<!\[)(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/giu, '[$1')
+				.replace(/(?<![[/])(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/giu, '[$1')
 				.replace(/\[\[[^[\]]+\](?!\])/gu, '$&]')
 				.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/giu, '$&]')
 				.replace(/\[(?:https?:)?\/\/[^\]]+\]/giu, p => p.replaceAll('\n', ' ')),

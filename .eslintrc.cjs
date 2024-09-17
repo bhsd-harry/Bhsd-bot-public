@@ -1,11 +1,8 @@
-/* eslint @stylistic/array-bracket-newline: [2, {minItems: 1}] */
 'use strict';
 
 const config = require('@bhsd/common/eslintrc.node.cjs');
 const {rules, overrides} = config,
-	[
-		json,
-	] = overrides;
+	[json] = overrides;
 
 for (const key in rules) {
 	if (key.startsWith('jsdoc/')) {
@@ -16,17 +13,13 @@ for (const key in rules) {
 module.exports = {
 	...config,
 	plugins: config.plugins.slice(0, -1),
-	ignorePatterns: [
-		'old',
-	],
+	ignorePatterns: ['old'],
 	rules: {
 		...rules,
 		camelcase: [
 			2,
 			{
-				allow: [
-					'surface_form',
-				],
+				allow: ['surface_form'],
 			},
 		],
 		'no-param-reassign': 0,
@@ -51,9 +44,7 @@ module.exports = {
 	settings: {
 		n: {
 			...config.settings.n,
-			allowModules: [
-				'request',
-			],
+			allowModules: ['request'],
 		},
 	},
 };

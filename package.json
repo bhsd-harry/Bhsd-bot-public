@@ -25,10 +25,10 @@
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.1",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.9.0"
+		"wikiparser-node": "^1.12.7"
 	},
 	"devDependencies": {
-		"@bhsd/common": "^0.0.0",
+		"@bhsd/common": "^0.1.1",
 		"@types/node": "^20.11.6",
 		"@types/request": "^2.48.12"
 	}
