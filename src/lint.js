@@ -165,7 +165,8 @@ const generateErrors = async (pages, errorOnly = false) => {
 			}
 			if (ns !== 10) {
 				for (const token of root.links ?? []) {
-					if (token.type === 'ext-link' || token.type === 'free-ext-link') {
+					const {type} = token;
+					if (type === 'ext-link' || type === 'free-ext-link' || type === 'redirect-target') {
 						continue;
 					}
 					const {link} = token;
@@ -301,7 +302,7 @@ const main = /** @param {Api} api */ async api => {
 		default: {
 			const last = rcend && new Date(rcend),
 				now = new Date().toISOString(),
-				yesterday = new Date(Date.now() - 3600 * 1000 * 24 * 30),
+				yesterday = new Date(Date.now() - 3600 * 1000 * 24 * 7),
 				grcend = (last > yesterday ? last : yesterday).toISOString(),
 				qs = {
 					generator: 'recentchanges',

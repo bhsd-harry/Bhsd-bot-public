@@ -2523,7 +2523,7 @@
 		"en": "TID"
 	},
 	{
-		"zh": "命令与征服:红色警戒2",
+		"zh": "命令与征服：红色警戒2",
 		"en": "Command & Conquer: Red Alert 2"
 	},
 	{
@@ -4830,5 +4830,392 @@
 	{
 		"zh": "Category:原型",
 		"en": "Category:Archetypes"
+	},
+	{
+		"ja": "ネコ",
+		"en": "Cat",
+		"zh": "猫"
+	},
+	{
+		"ja": "ダニー・フェントン",
+		"en": "Danny Fenton",
+		"zh": "丹尼·芬顿"
+	},
+	{
+		"ja": "ベン・テニソン",
+		"en": "Ben Tennyson",
+		"zh": "田小班"
+	},
+	{
+		"en": "PLAVE",
+		"ja": "PLAVE"
+	},
+	{
+		"en": "Whisper (Yo-kai Watch)",
+		"zh": "维斯帕"
+	},
+	{
+		"zh": "呆毛",
+		"en": "Ahoge"
+	},
+	{
+		"zh": "双马尾",
+		"en": "Twintails"
+	},
+	{
+		"zh": "马尾",
+		"en": "Ponytail"
+	},
+	{
+		"zh": "麻花辫",
+		"en": "Braid"
+	},
+	{
+		"zh": "丸子头",
+		"en": "Hair bun"
+	},
+	{
+		"zh": "姬发式",
+		"en": "Hime cut"
+	},
+	{
+		"zh": "短发",
+		"en": "Short hair"
+	},
+	{
+		"zh": "遮眼发",
+		"en": "Eye-covering bangs"
+	},
+	{
+		"zh": "哥布林",
+		"en": "Goblin"
+	},
+	{
+		"zh": "妹妹头",
+		"en": "Bob (hairstyle)"
+	},
+	{
+		"zh": "中长发",
+		"en": "Medium-length hair"
+	},
+	{
+		"zh": "高额头",
+		"en": "Odeko"
+	},
+	{
+		"zh": "齐刘海",
+		"en": "Straight bangs"
+	},
+	{
+		"zh": "尾扎长发",
+		"en": "Low-tied long hair"
+	},
+	{
+		"zh": "小仙子",
+		"en": "Fairy"
+	},
+	{
+		"zh": "卷发",
+		"en": "Curly hair"
+	},
+	{
+		"zh": "长发",
+		"en": "Long hair"
+	},
+	{
+		"zh": "Half-up",
+		"en": "Half-up"
+	},
+	{
+		"zh": "死亡发型",
+		"en": "Loose side-tail"
+	},
+	{
+		"zh": "猫又",
+		"en": "Nekomata"
+	},
+	{
+		"zh": "进气口发型",
+		"en": "Intake"
+	},
+	{
+		"zh": "另类发型",
+		"en": "Alternative hairstyle"
+	},
+	{
+		"zh": "大熊猫",
+		"en": "Panda"
+	},
+	{
+		"zh": "虎",
+		"en": "Tiger"
+	},
+	{
+		"zh": "狗",
+		"en": "Dog"
+	},
+	{
+		"zh": "猪",
+		"en": "Pig"
+	},
+	{
+		"zh": "罗马卷",
+		"en": "Roman curls"
+	},
+	{
+		"zh": "光头",
+		"en": "Bald head"
+	},
+	{
+		"zh": "Omnitrix",
+		"en": "Omnitrix"
+	},
+	{
+		"zh": "鹦鹉",
+		"en": "Parrot"
+	},
+	{
+		"zh": "水獭",
+		"en": "Otter"
+	},
+	{
+		"zh": "长鬓角",
+		"en": "Long side bangs"
+	},
+	{
+		"zh": "梦境",
+		"en": "Dream world"
+	},
+	{
+		"zh": "雪貂",
+		"en": "Ferret"
+	},
+	{
+		"zh": "电蜥",
+		"en": "Feedback"
+	},
+	{
+		"zh": "迪多",
+		"en": "Ditto (Ben 10)"
+	},
+	{
+		"zh": "变形怪(Ben 10)",
+		"en": "Upgrade (Ben 10)"
+	},
+	{
+		"zh": "超巨人",
+		"en": "Way Big"
+	},
+	{
+		"zh": "乱发",
+		"en": "Messy hair"
+	},
+	{
+		"zh": "小波波",
+		"en": "Echo Echo"
+	},
+	{
+		"zh": "𫚉人",
+		"en": "Jetray"
+	},
+	{
+		"zh": "大钢牙",
+		"en": "Ripjaws"
+	},
+	{
+		"zh": "四手霸王",
+		"en": "Four Arms"
+	},
+	{
+		"zh": "钻石战神",
+		"en": "Cannonbolt"
+	},
+	{
+		"zh": "野魔藤",
+		"en": "Wildvine"
+	},
+	{
+		"zh": "超能兽",
+		"en": "Wildmutt"
+	},
+	{
+		"zh": "爆炸头",
+		"en": "Afro"
+	},
+	{
+		"zh": "狼",
+		"en": "Wolf"
+	},
+	{
+		"zh": "狐狸",
+		"en": "Fox"
+	},
+	{
+		"zh": "仓鼠",
+		"en": "Squirrel"
+	},
+	{
+		"zh": "鹿",
+		"en": "Deer"
+	},
+	{
+		"zh": "飞机头",
+		"en": "Regent (hairstyle)"
+	},
+	{
+		"zh": "大背头",
+		"en": "Pompadour"
+	},
+	{
+		"zh": "刺猬头",
+		"en": "Spiky hair"
+	},
+	{
+		"zh": "熊",
+		"en": "Bear"
+	},
+	{
+		"zh": "蔷薇花",
+		"en": "Rose (plant)"
+	},
+	{
+		"zh": "鼠",
+		"en": "Mouse"
+	},
+	{
+		"zh": "海豹",
+		"en": "Seal"
+	},
+	{
+		"zh": "狮",
+		"en": "Lion"
+	},
+	{
+		"zh": "浣熊",
+		"en": "Raccoon"
+	},
+	{
+		"zh": "羊",
+		"en": "Sheep"
+	},
+	{
+		"zh": "羚羊",
+		"en": "Antelope"
+	},
+	{
+		"zh": "豹",
+		"en": "Leopard"
+	},
+	{
+		"zh": "美洲豹",
+		"en": "Jaguar"
+	},
+	{
+		"zh": "蜥蜴",
+		"en": "Lizard"
+	},
+	{
+		"zh": "红豆(植物)",
+		"en": "Adzuki bean"
+	},
+	{
+		"zh": "地缚猫",
+		"en": "Jibanyan"
+	},
+	{
+		"zh": "M形刘海",
+		"en": "M-shaped bangs"
+	},
+	{
+		"zh": "火焰人(Ben 10)",
+		"en": "Heatblast"
+	},
+	{
+		"zh": "长刘海",
+		"en": "Long bangs"
+	},
+	{
+		"zh": "滑翔金刚",
+		"en": "Stinkfly"
+	},
+	{
+		"zh": "电子游戏分级制度",
+		"en": "Video game rating system"
+	},
+	{
+		"zh": "玉桂狗",
+		"en": "Cinnamoroll"
+	},
+	{
+		"zh": "小奇兵",
+		"en": "Grey Matter"
+	},
+	{
+		"zh": "莫霍克发型",
+		"en": "Mohawk"
+	},
+	{
+		"zh": "蘑菇头",
+		"en": "Bowl cut"
+	},
+	{
+		"zh": "短刘海",
+		"en": "Short bangs"
+	},
+	{
+		"zh": "地中海发型",
+		"en": "Receding hairline"
+	},
+	{
+		"zh": "蜜蜂",
+		"en": "Bee"
+	},
+	{
+		"zh": "小熊猫",
+		"en": "Red panda"
+	},
+	{
+		"zh": "鳄鱼",
+		"en": "Crocodile"
+	},
+	{
+		"zh": "螃蟹",
+		"en": "Crab"
+	},
+	{
+		"zh": "啄木鸟",
+		"en": "Woodpecker"
+	},
+	{
+		"zh": "袋鼠",
+		"en": "Kangaroo"
+	},
+	{
+		"zh": "盘发",
+		"en": "Updo"
+	},
+	{
+		"zh": "遮耳发",
+		"en": "Ear-covering hair"
+	},
+	{
+		"zh": "水母头",
+		"en": "Jellyfish hair"
+	},
+	{
+		"zh": "桃",
+		"en": "Peach"
+	},
+	{
+		"zh": "田小玟",
+		"en": "Gwen Tennyson"
+	},
+	{
+		"zh": "天然卷",
+		"en": "Tennen perma"
+	},
+	{
+		"zh": "快闪之星",
+		"en": "XLR8"
 	}
 ]
