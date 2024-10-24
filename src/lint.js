@@ -94,9 +94,85 @@ const trTemplate = [
 			.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
 			.join('|')
 	})\s*\|))`, 'u'),
-	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu;
+	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu,
+	/** @link https://github.com/lihaohong6/MGP-bots/blob/master/bots/link_adjust.py */
+	ytParams = ['feature', 'ab_channel'],
+	bbParams = [
+		'from',
+		'seid',
+		'spm_id_from',
+		'vd_source',
+		'from_spmid',
+		'referfrom',
+		'bilifrom',
+		'share_source',
+		'share_medium',
+		'share_plat',
+		'share_session_id',
+		'share_tag',
+		'share_times',
+		'timestamp',
+		'bbid',
+		'ts',
+		'from_source',
+		'broadcast_type',
+		'is_room_feed',
+		'msource',
+		'noTitleBar',
+		'hasBack',
+		'jumpLinkType',
+		'timestamp',
+		'unique_k',
+		'goFrom',
+		'ftype',
+		'otype',
+		'ctype',
+		'share_from',
+		'is_story_h5',
+		'mid',
+		'native.theme',
+		'night',
+		'a_id',
+		's_id',
+		'buvid',
+		'up_id',
+		'plat_id',
+		'rt',
+		'tdsourcetag',
+		'accept_quality',
+		'current_qn',
+		'current_quality',
+		'playurl_h264',
+		'playurl_h265',
+		'quality_description',
+		'network',
+		'network_status',
+		'platform_network_status',
+		'p2p_type',
+		'visit_id',
+		'bsource',
+		'spm',
+		'hotRank',
+		'-Arouter',
+		'type',
+		'session_id',
+		'theme',
+		'spmid',
+	];
 
 let worst;
+const push = (errors, token, message, severity) => {
+	const {top, left, height, width} = token.getBoundingClientRect();
+	errors.push({
+		message,
+		severity,
+		startLine: top,
+		startCol: left,
+		endLine: top + height - 1,
+		endCol: height === 1 ? left + width : width,
+		excerpt: String(token),
+	});
+};
 const generateErrors = async (pages, errorOnly = false) => {
 	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
 		process.stdout.write(`\x1B[K${i} ${title}\r`);
@@ -163,27 +239,37 @@ const generateErrors = async (pages, errorOnly = false) => {
 						.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)})),
 				);
 			}
-			if (ns !== 10) {
-				for (const token of root.links ?? []) {
-					const {type} = token;
-					if (type === 'ext-link' || type === 'free-ext-link' || type === 'redirect-target') {
-						continue;
-					}
-					const {link} = token;
-					if (typeof link === 'object') {
-						const [isRedirect, target] = link.getRedirection();
-						if ((isRedirect || !link.fragment) && t2s(target) === title) {
-							const {top, left, height, width} = token.getBoundingClientRect();
-							errors.push({
-								message: '自身链接',
-								severity: 'error',
-								startLine: top,
-								startCol: left,
-								endLine: top + height - 1,
-								endCol: height === 1 ? left + width : width,
-								excerpt: String(token),
-							});
+			for (const token of root.links ?? []) {
+				const {type} = token;
+				if (type === 'ext-link' || type === 'free-ext-link') {
+					try {
+						const /** @type {URL} */ uri = token.getUrl(),
+							{hostname, pathname, searchParams} = uri,
+							bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
+						if (
+							hostname === 'b23.tv' || hostname === 'youtu.be'
+							|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
+						) {
+							push(errors, token, '待修正的链接', 'warning');
+							Parser.error('待修正的链接', uri.toString());
+						} else if (
+							pathname === '/watch'
+							&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
+							&& ytParams.some(p => searchParams.has(p))
+							|| bilibili && bbParams.some(p => searchParams.has(p))
+						) {
+							push(errors, token, '无用的链接参数', 'warning');
+							Parser.error('无用的链接参数', uri.toString());
 						}
+					} catch {}
+				} else if (ns === 10 || type === 'redirect-target') {
+					continue;
+				}
+				const {link} = token;
+				if (typeof link === 'object') {
+					const [isRedirect, target] = link.getRedirection();
+					if ((isRedirect || !link.fragment) && t2s(target) === title) {
+						push(errors, token, '自身链接', 'error');
 					}
 				}
 			}
