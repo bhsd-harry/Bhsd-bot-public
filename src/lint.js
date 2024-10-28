@@ -159,18 +159,23 @@ const trTemplate = [
 		'theme',
 		'spmid',
 	],
-	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'];
+	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'],
+	linkSelector = 'link,redirect-target,ext-link,free-ext-link,magic-link,image-parameter#link';
 
 let worst;
-const push = (errors, token, message, severity) => {
-	const {top, left, height, width} = token.getBoundingClientRect();
+const push = /** @param {imported.Token} token */ (errors, token, message, severity) => {
+	const startIndex = token.getAbsoluteIndex(),
+		endIndex = startIndex + String(token).length,
+		{top, left, height, width} = token.getBoundingClientRect();
 	errors.push({
 		message,
 		severity,
 		startLine: top,
 		startCol: left,
+		startIndex,
 		endLine: top + height - 1,
 		endCol: height === 1 ? left + width : width,
+		endIndex,
 		excerpt: String(token),
 	});
 };
@@ -272,7 +277,11 @@ const generateErrors = async (pages, errorOnly = false) => {
 							}
 						}
 					} catch {}
+					continue;
 				} else if (ns === 10 || type === 'redirect-target') {
+					continue;
+				} else if (type === 'magic-link' && token.protocol === 'ISBN') {
+					push(errors, token, '无效的ISBN', 'warning');
 					continue;
 				}
 				const {link} = token;
@@ -281,6 +290,25 @@ const generateErrors = async (pages, errorOnly = false) => {
 					if ((isRedirect || !link.fragment) && t2s(target) === title) {
 						push(errors, token, '自身链接', 'error');
 					}
+				}
+			}
+			const isbn = /** @type {string} */(content).matchAll(/ISBN[\p{Zs}\t\-:：]?(?:\d[\p{Zs}\t-]?){4,}[\dXx]/gu);
+			for (const {index, 0: excerpt} of isbn) {
+				const ele = root.elementFromIndex(index).parentNode;
+				if (!ele.matches(linkSelector) && !ele.closest(linkSelector)) {
+					const {top, left} = root.posFromIndex(index);
+					errors.push({
+						message: '无效的ISBN',
+						severity: 'warning',
+						startLine: top,
+						startCol: left,
+						startIndex: index,
+						endLine: top,
+						endCol: left + excerpt.length,
+						endIndex: index + excerpt.length,
+						excerpt,
+					});
+					Parser.error('无效的ISBN', excerpt);
 				}
 			}
 		} catch (e) {
