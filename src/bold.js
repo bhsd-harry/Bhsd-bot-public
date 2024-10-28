@@ -15,9 +15,10 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (targets.length === 0) {
 		return;
 	}
+	// eslint-disable-next-line prefer-const
 	let mode = runMode();
 	if (mode === 'run') {
-		mode = 'dry';
+		// mode = 'dry';
 	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
@@ -31,14 +32,18 @@ const main = async (api = new Api(user, pin, url)) => {
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 7);
 		for (const quote of root.querySelectorAll('heading-title quote[bold]')) {
-			if (quote.italic) {
+			if (quote.closest('heading-title,ext').type === 'ext') {
+				continue;
+			} else if (quote.italic) {
 				quote.setText("''");
 			} else {
 				quote.remove();
 			}
 		}
 		for (const html of root.querySelectorAll('heading-title html:is(#b, #strong)')) {
-			html.remove();
+			if (html.closest('heading-title,ext').type === 'heading-title') {
+				html.remove();
+			}
 		}
 		const text = String(root);
 		if (content !== text) {

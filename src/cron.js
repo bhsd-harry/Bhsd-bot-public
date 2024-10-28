@@ -16,6 +16,9 @@ const scripts = [
 	'duplicated-image-parameter',
 	'duplicated-category',
 	'selflink',
+	'bold',
+	'quote',
+	'solveConst',
 ];
 
 const api = new Api(user, pin, url);

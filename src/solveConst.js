@@ -8,15 +8,16 @@ const Api = require('../lib/api'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-(async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url)) => {
 	const targets = Object.entries(lintErrors)
 		.filter(([, {errors}]) => errors.some(({message}) => message === '未预期的模板参数'));
 	if (targets.length === 0) {
 		return;
 	}
+	// eslint-disable-next-line prefer-const
 	let mode = runMode();
 	if (mode === 'run') {
-		mode = 'dry';
+		// mode = 'dry';
 	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
@@ -35,4 +36,10 @@ Parser.config = './config/moegirl';
 		}
 	}
 	await api.massEdit(edits, mode, '自动移除不应出现的模板参数');
-})();
+};
+
+if (!module.parent) {
+	main();
+}
+
+module.exports = main;
