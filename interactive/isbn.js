@@ -33,11 +33,15 @@ const main = async (api = new Api(user, pin, url)) => {
 		// eslint-disable-next-line eqeqeq
 		const errors = targets.find(([id]) => id == pageid)[1].errors.filter(({message}) => message === '无效的ISBN')
 			.sort((a, b) => b.startIndex - a.startIndex);
-		for (const e of errors) {
-			const [raw, delimiter, isbn] = /ISBN([\p{Zs}\t\-:：]?)((?:\d[\p{Zs}\t-]?){4,}[\dXx])/u.exec(e.excerpt);
-			text = `${text.slice(0, e.startIndex)}{{ISBN|${isbn}${
-				/[-:：]/u.test(delimiter) ? `|${raw}` : ''
-			}}}${text.slice(e.endIndex)}`;
+		for (const {startIndex, endIndex, excerpt} of errors) {
+			if (content.slice(startIndex, endIndex) !== excerpt) {
+				continue;
+			}
+			const [, prefix, isbn] = /(ISBN[\p{Zs}\t\-:：]?)((?:\d[\p{Zs}\t-]?){4,}[\dXx])/u.exec(excerpt),
+				preserve = /[-:：]$/u.test(prefix);
+			text = `${text.slice(0, startIndex)}${preserve ? prefix : ''}{{ISBN|${isbn}${
+				preserve ? `|${isbn}` : ''
+			}}}${text.slice(endIndex)}`;
 		}
 		if (content !== text) {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);

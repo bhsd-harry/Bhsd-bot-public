@@ -192,6 +192,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				Parser.redirects.set(t, title);
 			}
 			Parser.redirects.set('Template:N/a', 'Template:N/A');
+			Parser.redirects.set('Template:Isbn', 'Template:ISBN');
 		}
 		let errors;
 		try {
@@ -280,8 +281,13 @@ const generateErrors = async (pages, errorOnly = false) => {
 					continue;
 				} else if (ns === 10 || type === 'redirect-target') {
 					continue;
-				} else if (type === 'magic-link' && token.protocol === 'ISBN') {
+				} else if (
+					type === 'magic-link'
+					&& token.protocol === 'ISBN'
+					&& !token.closest('template#Template:ISBN')
+				) {
 					push(errors, token, '无效的ISBN', 'warning');
+					Parser.error('无效的ISBN', String(token));
 					continue;
 				}
 				const {link} = token;
@@ -295,7 +301,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 			const isbn = /** @type {string} */(content).matchAll(/ISBN[\p{Zs}\t\-:：]?(?:\d[\p{Zs}\t-]?){4,}[\dXx]/gu);
 			for (const {index, 0: excerpt} of isbn) {
 				const ele = root.elementFromIndex(index).parentNode;
-				if (!ele.matches(linkSelector) && !ele.closest(linkSelector)) {
+				if (!ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)) {
 					const {top, left} = root.posFromIndex(index);
 					errors.push({
 						message: '无效的ISBN',
