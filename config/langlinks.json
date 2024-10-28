@@ -4564,7 +4564,8 @@
 	},
 	{
 		"zh": "Category:中国作品导航模板",
-		"ja": "カテゴリ:中国作品ナビゲーションテンプレート"
+		"ja": "カテゴリ:中国作品ナビゲーションテンプレート",
+		"en": "Category:Chinese works navigational templates"
 	},
 	{
 		"zh": "Category:以公司归纳的中国动漫导航模板",
@@ -5028,7 +5029,7 @@
 	},
 	{
 		"zh": "钻石战神",
-		"en": "Cannonbolt"
+		"en": "Diamondhead"
 	},
 	{
 		"zh": "野魔藤",
@@ -5217,5 +5218,9 @@
 	{
 		"zh": "快闪之星",
 		"en": "XLR8"
+	},
+	{
+		"zh": "Category:韩国作品导航模板",
+		"en": "Category:South Korean works navigational templates"
 	}
 ]

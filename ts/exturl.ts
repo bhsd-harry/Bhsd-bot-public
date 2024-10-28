@@ -159,7 +159,7 @@ const broken = async ({content, pageid, timestamp, curtimestamp}, chat, force, i
 	}
 	let urls = [],
 		deadUrls = [];
-	for (const token of parsed.querySelectorAll<Parser.ExtLinkToken | Parser.MagicLinkToken>('ext-link-url, free-ext-link')) {
+	for (const token of parsed.querySelectorAll<Parser.ExtLinkToken | Parser.MagicLinkToken>('ext-link-url,free-ext-link')) {
 		if (token.type === 'free-ext-link' && token.isParamValue()) {
 			continue;
 		}

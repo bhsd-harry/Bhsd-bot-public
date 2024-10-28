@@ -26,7 +26,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 4);
-		for (const attr of root.querySelectorAll<Parser.AttributeToken>('ext-attr, html-attr, table-attr')) {
+		for (const attr of root.querySelectorAll<Parser.AttributeToken>('ext-attr,html-attr,table-attr')) {
 			if (attr.value === true) {
 				continue;
 			}

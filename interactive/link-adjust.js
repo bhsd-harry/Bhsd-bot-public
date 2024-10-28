@@ -96,7 +96,7 @@ const main = async (api = new Api(user, pin, url)) => {
 	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, ns === 10, 9),
 			/** @type {(Parser.ExtLinkToken | Parser.MagicLinkToken)[]} */
-			links = root.querySelectorAll('ext-link, free-ext-link');
+			links = root.querySelectorAll('ext-link,free-ext-link');
 		for (const token of links) {
 			try {
 				let /** @type {URL} */ uri = token.getUrl();

@@ -22,7 +22,7 @@ const analyze = (wikitext, pageid, ns) => {
 	}
 	root = Parser.parse(String(root), ns === 10, 2);
 	let found = false;
-	const templates = root.querySelectorAll('template, magic-word#invoke');
+	const templates = root.querySelectorAll('template,magic-word#invoke');
 	for (let token of templates) {
 		if (!token.hasDuplicatedArgs()) {
 			continue;

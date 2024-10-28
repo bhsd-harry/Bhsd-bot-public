@@ -158,7 +158,8 @@ const trTemplate = [
 		'session_id',
 		'theme',
 		'spmid',
-	];
+	],
+	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'];
 
 let worst;
 const push = (errors, token, message, severity) => {
@@ -244,7 +245,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				if (type === 'ext-link' || type === 'free-ext-link') {
 					try {
 						const /** @type {URL} */ uri = token.getUrl(),
-							{hostname, pathname, searchParams} = uri,
+							{hostname, pathname, searchParams, protocol} = uri,
 							bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
 						if (
 							hostname === 'b23.tv' || hostname === 'youtu.be'
@@ -260,6 +261,15 @@ const generateErrors = async (pages, errorOnly = false) => {
 						) {
 							push(errors, token, '无用的链接参数', 'warning');
 							Parser.error('无用的链接参数', uri.toString());
+						} else if (/^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
+							push(errors, token, '引自bilibili的图片外链', 'warning');
+						} else if (hostname === 'http' || hostname === 'https') {
+							push(errors, token, '错误格式的外链', 'warning');
+						} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
+							const action = searchParams.get('action');
+							if (!(action && actions.includes(action) || searchParams.has('useskin'))) {
+								push(errors, token, '误写作外链的内链', 'warning');
+							}
 						}
 					} catch {}
 				} else if (ns === 10 || type === 'redirect-target') {

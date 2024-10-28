@@ -2,6 +2,7 @@
 const Api = require('../lib/api'),
 	{runMode, save, urlRegex} = require('../lib/dev'),
 	WikiUrl = require('../lib/url'),
+	lintErrors = require('../config/lintErrors'),
 	{user, pin, url} = require('../config/user');
 
 const protectedPages = [
@@ -45,22 +46,27 @@ const main = async (api = new Api(user, pin, url)) => {
 	}
 
 	// 1. 先获取页面
-	const last = new Date(run),
-		now = new Date().toISOString(),
+	// const last = new Date(run);
+	const now = new Date().toISOString(),
 		yesterday = new Date();
 	yesterday.setDate(yesterday.getDate() - 30);
-	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
-		queries = await Promise.all(
-			mode === 'mzh'
-				? [api.search('insource:"mzh.moegirl.org.cn"', {gsrnamespace: '0|10|14'})]
-				: [
-					api.taggedRecentChanges('内外链误写', date),
-					api.search('insource:"zh.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
-					api.search('insource:"commons.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
-				],
-		),
-		pageids = queries[1].map(({pageid}) => pageid);
-	queries[0] = queries[0].filter(({pageid}) => !pageids.includes(pageid));
+	// const date = (last > yesterday ? last : yesterday).toISOString(); // 不追溯超过1个月
+	const queries = await Promise.all(
+		mode === 'mzh'
+			? [api.search('insource:"mzh.moegirl.org.cn"', {gsrnamespace: '0|10|14'})]
+			: [
+				// api.taggedRecentChanges('内外链误写', date),
+				// api.search('insource:"zh.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
+				// api.search('insource:"commons.moegirl.org.cn"', {gsrnamespace: '0|10|14'}),
+				api.revisions({
+					pageids: Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+						({message}) => message === '误写作外链的内链',
+					)).map(([pageid]) => pageid),
+				}),
+			],
+	);
+	// pageids = queries[1].map(({pageid}) => pageid);
+	// queries[0] = queries[0].filter(({pageid}) => !pageids.includes(pageid));
 	const pages = queries.flat().filter(({pageid}) => !protectedPages.includes(pageid));
 
 	// 2. 再进行修复

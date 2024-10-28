@@ -84,7 +84,7 @@ const main = async (api = new Api(user, pin, url)) => {
 							} catch {}
 						}
 					}
-					for (const extlink of root.querySelectorAll('ext-link, free-ext-link')) {
+					for (const extlink of root.querySelectorAll('ext-link,free-ext-link')) {
 						const href = extlink.getUrl();
 						remove(href, extlink);
 					}

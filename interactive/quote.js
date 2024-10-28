@@ -27,9 +27,9 @@ Parser.config = './config/moegirl';
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 4);
-		for (const attr of root.querySelectorAll('ext-attr, html-attr, table-attr')) {
+	for (const {ns, pageid, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, ns === 10, 4);
+		for (const attr of root.querySelectorAll('ext-attr,html-attr,table-attr')) {
 			if (attr.value === true) {
 				continue;
 			}

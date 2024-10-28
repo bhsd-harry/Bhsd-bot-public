@@ -3,6 +3,7 @@
 const Api = require('../lib/api'),
 	Parser = require('wikiparser-node'),
 	{user, pin, url} = require('../config/user'),
+	lintErrors = require('../config/lintErrors'),
 	{runMode, urlRegex} = require('../lib/dev');
 Parser.warning = false;
 Parser.config = './config/moegirl';
@@ -37,7 +38,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		}
 	}
 
-	const searchHttps = site => api.search(`insource:"https://${site}"`, {
+	const searchHttps = site => api.search(`insource:"https://${site}"`, { // eslint-disable-line no-unused-vars
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
 		searchHttp = site => api.search(`insource:"http://${site}" !hastemplate:"noReferer"`, {
@@ -58,13 +59,20 @@ const main = async (api = new Api(user, pin, url)) => {
 	const search = mode === 'noreferer' ? searchHttp : searchHttps,
 		regex = mode === 'noreferer' ? regexHttp : regexHttps;
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
-	const pages = (await Promise.all([ // eslint-disable-line unicorn/no-useless-spread
-		...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
+	// const pages = (await Promise.all([ // eslint-disable-line unicorn/no-useless-spread
+	// ...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
 
-		// ...new Array(4).fill().map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),
+	// ...new Array(4).fill().map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),
+	// ...new Array(4).fill().map((_, i) => _search(`wx${i + 1}.sinaimg.cn`)),
 
-		// ...new Array(4).fill().map((_, i) => _search(`wx${i + 1}.sinaimg.cn`)),
-	])).flat();
+	// ])).flat();
+	const pages = mode === 'noreferer'
+		? (await Promise.all(new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)))).flat()
+		: await api.revisions({
+			pageids: Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+				({message}) => message === '引自bilibili的图片外链',
+			)).map(([pageid]) => pageid),
+		});
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid))
 			.map(({pageid, content, timestamp, curtimestamp}) => {

@@ -25,7 +25,7 @@ const _analyze = (wikitext, pageid, ns) => {
 	}
 	root = Parser.parse(root.toString(), ns === 10, 2);
 	let found = false;
-	const templates = root.querySelectorAll<Parser.TranscludeToken>('template, magic-word#invoke');
+	const templates = root.querySelectorAll<Parser.TranscludeToken>('template,magic-word#invoke');
 	for (let token of templates) {
 		if (!token.hasDuplicatedArgs()) {
 			continue;
