@@ -5,8 +5,10 @@ const {performance} = require('perf_hooks'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
+	{update} = require('../interactive/boilerplate'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
+	boilerplates = require('../config/boilerplate'),
 	rcend = require('../config/lint');
 const Parser = global.Parser ?? imported,
 	skipped = new Set([
@@ -180,6 +182,16 @@ const push = /** @param {imported.Token} token */ (errors, token, message, sever
 	});
 };
 const generateErrors = async (pages, errorOnly = false) => {
+	const boilerplatePages = pages.filter(({title}) => /^Template:页面格式\/(?:.(?!\/doc$))+$/u.test(title));
+	for (const {title, content, missing} of boilerplatePages) {
+		if (missing) {
+			delete boilerplates[title];
+		} else {
+			boilerplates[title] = update(content);
+		}
+	}
+	save('../config/boilerplate.json', boilerplates);
+	const residuals = new Set(Object.values(boilerplates).flat());
 	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
 		process.stdout.write(`\x1B[K${i} ${title}\r`);
 		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)) {
@@ -258,7 +270,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
 						) {
 							push(errors, token, '待修正的链接', 'warning');
-							Parser.error('待修正的链接', uri.toString());
+							error('待修正的链接', uri.toString());
 						} else if (
 							pathname === '/watch'
 							&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
@@ -266,7 +278,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							|| bilibili && bbParams.some(p => searchParams.has(p))
 						) {
 							push(errors, token, '无用的链接参数', 'warning');
-							Parser.error('无用的链接参数', uri.toString());
+							error('无用的链接参数', uri.toString());
 						} else if (/^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
 							push(errors, token, '引自bilibili的图片外链', 'warning');
 						} else if (hostname === 'http' || hostname === 'https') {
@@ -287,7 +299,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 					&& !token.closest('template#Template:ISBN')
 				) {
 					push(errors, token, '无效的ISBN', 'warning');
-					Parser.error('无效的ISBN', String(token));
+					error('无效的ISBN', String(token));
 					continue;
 				}
 				const {link} = token;
@@ -314,7 +326,19 @@ const generateErrors = async (pages, errorOnly = false) => {
 						endIndex: index + excerpt.length,
 						excerpt,
 					});
-					Parser.error('无效的ISBN', excerpt);
+					error('无效的ISBN', excerpt);
+				}
+			}
+			if (!content.includes('虚拟UP主')) {
+				let flag = false;
+				for (const token of root.querySelectorAll('comment')) {
+					if (residuals.has(token.innerText)) {
+						push(errors, token, '预加载残留', 'warning');
+						flag = true;
+					}
+				}
+				if (flag) {
+					error('预加载残留', pageid);
 				}
 			}
 		} catch (e) {
