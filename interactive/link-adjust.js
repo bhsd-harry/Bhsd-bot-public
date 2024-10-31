@@ -9,7 +9,7 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 /** @link https://github.com/lihaohong6/MGP-bots/blob/master/bots/link_adjust.py */
-const ytParams = ['feature', 'ab_channel'],
+const ytParams = ['feature', 'ab_channel', 'si'],
 	bbParams = [
 		'from',
 		'seid',
