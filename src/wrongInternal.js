@@ -6,23 +6,8 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user');
 
 const protectedPages = [
-	923,
 	100_877,
-	110_168,
-	177_974,
-	261_864,
-	264_550,
-	359_506,
-	364_986,
-	401_150,
 	404_396,
-	424_973,
-	428_291,
-	438_304,
-	450_196,
-	453_450,
-	464_940,
-	479_074,
 ];
 
 const main = async (api = new Api(user, pin, url)) => {

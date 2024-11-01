@@ -12,57 +12,15 @@ const {performance} = require('perf_hooks'),
 	rcend = require('../config/lint');
 const Parser = global.Parser ?? imported,
 	skipped = new Set([
-		12_047,
-		29_447,
-		36_417,
+		100_877,
 		110_496,
-		116_564,
-		127_733,
-		152_762,
-		167_743,
-		269_336,
-		270_094,
-		278_812,
-		282_144,
-		291_562,
-		306_168,
-		316_878,
-		324_442,
-		329_782,
-		343_842,
-		368_772,
-		375_376,
-		386_222,
-		388_572,
-		400_978,
 		404_396,
-		428_339,
-		429_558,
-		435_825,
-		436_541,
-		436_830,
-		436_832,
-		437_916,
-		463_871,
-		473_730,
-		478_783,
-		501_059,
-		506_704,
-		529_969,
-		539_875,
-		562_221,
-		569_667,
-		570_954,
-		573_334,
-		573_665,
-		574_319,
-		588_383,
 	]);
 Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
 
-const mode = runMode(['upload', 'all', 'search', 'dry-upload']),
+const mode = runMode(['upload', 'all', 'search', 'dry-upload', 'skipped']),
 	hasArg = new Set();
 let gapcontinue = require('../config/allpages');
 
@@ -162,6 +120,7 @@ const trTemplate = [
 		'spmid',
 	],
 	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'],
+	params = ['mobileaction', 'useskin', 'hidelinks'],
 	linkSelector = 'link,redirect-target,ext-link,free-ext-link,magic-link,image-parameter#link';
 
 let worst;
@@ -194,7 +153,12 @@ const generateErrors = async (pages, errorOnly = false) => {
 	const residuals = new Set(Object.values(boilerplates).flat());
 	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
 		process.stdout.write(`\x1B[K${i} ${title}\r`);
-		if (missing || ns === 2 || skipped.has(pageid) || /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)) {
+		if (
+			missing
+			|| ns === 2
+			|| mode !== 'skipped' && skipped.has(pageid)
+			|| /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)
+		) {
 			delete lintErrors[pageid];
 			continue;
 		}
@@ -285,7 +249,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 							push(errors, token, '错误格式的外链', 'warning');
 						} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
 							const action = searchParams.get('action');
-							if (!(action && actions.includes(action) || searchParams.has('useskin'))) {
+							if (!(
+								action && actions.includes(action)
+								|| params.some(param => searchParams.has(param))
+							)) {
 								push(errors, token, '误写作外链的内链', 'warning');
 							}
 						}
@@ -450,6 +417,11 @@ const main = /** @param {Api} api */ async api => {
 			q = q.replaceAll('"', '');
 			info(`搜索字符串：${q}`);
 			const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0, ...qsRedirects});
+			await generateErrors(pages);
+			break;
+		}
+		case 'skipped': {
+			const pages = await api.revisions({pageids: [...skipped], ...qsRedirects});
 			await generateErrors(pages);
 			break;
 		}

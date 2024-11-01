@@ -7,8 +7,6 @@ const {user, pin, url} = require('../config/user'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const ignorePages = [];
-
 const analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
 	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed]')
@@ -110,8 +108,7 @@ const main = async (api = new Api(user, pin, url), templateOnly = true) => {
 		templateOnly &&= pages.length > 0;
 	}
 	if (!templateOnly && mode !== 'user') {
-		pages = (await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: '0|1|3|9|11|12|13|14|15|275|829'}))
-			.filter(({pageid}) => !ignorePages.includes(pageid));
+		pages = await api.categorymembers('调用重复模板参数的页面', {gcmnamespace: '0|1|3|9|11|12|13|14|15|275|829'});
 	}
 	const list = pages.map(({pageid, ns, content, title, timestamp, curtimestamp}) => {
 		const [text, found] = analyze(content, pageid, ns);

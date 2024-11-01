@@ -19,6 +19,7 @@ const scripts = [
 	'bold',
 	'quote',
 	'solveConst',
+	'link-adjust',
 ];
 
 const api = new Api(user, pin, url);

@@ -21,17 +21,17 @@ const main = async (api = new Api(user, pin, url)) => {
 	if (mode === 'run') {
 		mode = 'dry';
 	}
+	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+		({message}) => message === '预加载残留',
+	));
+	if (mode !== 'update' && targets.length === 0) {
+		return;
+	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' || mode === 'update' ? 'login' : 'csrfToken']();
 	}
 	if (mode === 'rerun' || mode === 'redry') {
 		await api.massEdit(null, mode, '自动清理预加载残留');
-		return;
-	}
-	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-		({message}) => message === '预加载残留',
-	));
-	if (mode !== 'update' && targets.length === 0) {
 		return;
 	}
 	const edits = [],
