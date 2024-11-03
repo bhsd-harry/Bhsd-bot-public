@@ -48,10 +48,10 @@ const main = async (api = new Api(user, pin, url)) => {
 			selector = keys.map(key => `image-parameter#${key}`).join(),
 			/** @type {[string, string[]][]} */ mistakes = [
 				['thumbnail', ['thumbnail', 'thumb', '缩略图', '縮圖']],
-				['right', ['right', '右']],
+				['right', ['right', '右', '居右']],
 				['center', ['center', 'centre', '居中', '置中']],
 				['none', ['none', '无', '無']],
-				['left', ['left', '左']],
+				['left', ['left', '左', '居左']],
 				['framed', ['framed', 'enframed', 'frame', '有框']],
 			];
 		for (const parameter of root.querySelectorAll(selector)) {
@@ -103,9 +103,10 @@ const main = async (api = new Api(user, pin, url)) => {
 				continue;
 			}
 			const lcValue = curValue.toLowerCase(),
-				key = mistakes.find(
-					([, candidates]) => candidates.some(candidate => damerauLevenshtein(candidate, lcValue) <= 1),
-				)?.[0];
+				[[key]] = mistakes.map(
+					([k, candidates]) =>
+						[k, Math.min(...candidates.map(candidate => damerauLevenshtein(candidate, lcValue)))],
+				).sort((a, b) => a[1] - b[1]);
 			if (key) {
 				if (type === 'gallery-image' || childNodes.some(({name}) => name === key)) {
 					parameter.remove();

@@ -14,8 +14,10 @@ const Parser = global.Parser ?? imported,
 	skipped = new Set([
 		100_877,
 		110_496,
+		358_642,
 		404_396,
-	]);
+	]),
+	reISBN = /isbn[\p{Zs}\t\-:：]?(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
 Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
@@ -121,7 +123,15 @@ const trTemplate = [
 	],
 	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'],
 	params = ['mobileaction', 'useskin', 'hidelinks'],
-	linkSelector = 'link,redirect-target,ext-link,free-ext-link,magic-link,image-parameter#link';
+	linkSelector = 'link,redirect-target,ext-link,free-ext-link,magic-link,image-parameter#link',
+	norefererTemplates = [
+		'NoReferer',
+		'Producer_Song',
+		'Producer_Music',
+		'VOCALOID_&_UTAU_Ranking',
+		'VOCALOID_Ranking',
+		'WUGTop',
+	].map(str => String.raw`template#Template\:${str}`).join();
 
 let worst;
 const push = /** @param {imported.Token} token */ (errors, token, message, severity) => {
@@ -207,7 +217,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 						)
 						&& !(title.startsWith('幻书启世录:') && message === '未闭合的标签' && severity === 'warning')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
-						&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag'),
+						&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'table-layout'),
 				);
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
@@ -222,6 +232,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 						.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)})),
 				);
 			}
+			const noReferer = root.querySelector(norefererTemplates);
 			for (const token of root.links ?? []) {
 				const {type} = token;
 				if (type === 'ext-link' || type === 'free-ext-link') {
@@ -243,7 +254,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 						) {
 							push(errors, token, '无用的链接参数', 'warning');
 							error('无用的链接参数', uri.toString());
-						} else if (/^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
+						} else if (!noReferer && /^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
 							push(errors, token, '引自bilibili的图片外链', 'warning');
 						} else if (hostname === 'http' || hostname === 'https') {
 							push(errors, token, '错误格式的外链', 'warning');
@@ -277,10 +288,13 @@ const generateErrors = async (pages, errorOnly = false) => {
 					}
 				}
 			}
-			const isbn = /** @type {string} */(content).matchAll(/ISBN[\p{Zs}\t\-:：]?(?:\d[\p{Zs}\t-]?){4,}[\dXx]/gu);
+			const isbn = /** @type {string} */(content).matchAll(reISBN);
 			for (const {index, 0: excerpt} of isbn) {
 				const ele = root.elementFromIndex(index).parentNode;
-				if (!ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)) {
+				if (
+					excerpt.startsWith('ISBN')
+					&& !ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)
+				) {
 					const {top, left} = root.posFromIndex(index);
 					errors.push({
 						message: '无效的ISBN',

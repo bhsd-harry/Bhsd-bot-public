@@ -13,7 +13,10 @@ const update = content => {
 	const root = Parser.parse(content, true, 1),
 		/** @type {Parser.CommentToken[]} */
 		comments = root.querySelectorAll('comment');
-	return [...new Set(comments.map(({innerText}) => innerText).filter(text => !text.includes('保留这里的注释')))];
+	return [
+		...new Set(comments.map(({innerText}) => innerText)
+			.filter(text => text !== '默认立绘' && !text.includes('保留这里的注释'))),
+	];
 };
 
 const main = async (api = new Api(user, pin, url)) => {

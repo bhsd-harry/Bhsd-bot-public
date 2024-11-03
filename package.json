@@ -18,18 +18,18 @@
 	},
 	"private": true,
 	"engines": {
-		"node": "^20.9.0"
+		"node": "^22.11.0"
 	},
 	"dependencies": {
 		"@cypress/request": "^3.0.1",
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.1",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.12.7"
+		"wikiparser-node": "^1.13.2"
 	},
 	"devDependencies": {
-		"@bhsd/common": "^0.3.0",
-		"@types/node": "^20.11.6",
+		"@bhsd/common": "^0.4.4",
+		"@types/node": "^22.9.0",
 		"@types/request": "^2.48.12"
 	}
 }
