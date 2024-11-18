@@ -5,7 +5,7 @@ const {performance} = require('perf_hooks'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
-	{update} = require('../interactive/boilerplate'),
+	{update} = require('../src/boilerplate'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	boilerplates = require('../config/boilerplate'),
@@ -159,7 +159,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 			boilerplates[title] = update(content);
 		}
 	}
-	save('../config/boilerplate.json', boilerplates);
 	const residuals = new Set(Object.values(boilerplates).flat());
 	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
 		process.stdout.write(`\x1B[K${i} ${title}\r`);
@@ -183,8 +182,8 @@ const generateErrors = async (pages, errorOnly = false) => {
 		let errors;
 		try {
 			const start = performance.now(),
-				root = Parser.parse(content, ns === 10);
-			let text = String(root);
+				root = Parser.parse(content, ns === 10),
+				text = String(root);
 			if (text !== content) {
 				error(`\n${pageid}在解析过程中修改了原始文本！`);
 				await diff(content, text, true);
@@ -194,7 +193,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 			if (!worst || duration > worst.duration) {
 				worst = {title, duration};
 			}
-			const nas = root.querySelectorAll('template[name=Template:N/A]');
 			errors = rawErrors
 				.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(
@@ -210,7 +208,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 						)
 						&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 						&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
-						&& !(rule === 'table-layout' && nas.length > 0)
 						&& !(
 							title.startsWith('三国杀')
 							&& (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning')
@@ -221,16 +218,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 				);
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
-			}
-			if (nas.length > 0 && rawErrors.some(({rule}) => rule === 'table-layout')) {
-				for (const na of nas) {
-					na.after('{{!}} ');
-				}
-				text = String(root); // eslint-disable-line require-atomic-updates
-				errors.push(
-					...Parser.parse(text, ns === 10, 4).lint().filter(({rule}) => rule === 'table-layout')
-						.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)})),
-				);
 			}
 			const noReferer = root.querySelector(norefererTemplates);
 			for (const token of root.links ?? []) {
@@ -475,7 +462,10 @@ const main = /** @param {Api} api */ async api => {
 		}
 		hasArg.clear();
 	}
-	await save('../config/lintErrors.json', lintErrors);
+	await Promise.all([
+		save('../config/lintErrors.json', lintErrors),
+		save('../config/boilerplate.json', boilerplates),
+	]);
 	if (worst) {
 		info(`最耗时页面：${worst.title} (${worst.duration.toFixed(3)}ms)`);
 	}

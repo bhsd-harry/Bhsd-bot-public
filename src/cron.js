@@ -20,6 +20,7 @@ const scripts = [
 	'quote',
 	'solveConst',
 	'link-adjust',
+	'boilerplate',
 ];
 
 const api = new Api(user, pin, url);
