@@ -29,6 +29,7 @@ module.exports = {
 				builtinGlobals: false,
 			},
 		],
+		'unicorn/prefer-math-min-max': 0,
 	},
 	overrides: [
 		{

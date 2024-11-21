@@ -40,10 +40,10 @@ const main = async (api = new Api(user, pin, url)) => {
 		prop: 'categories',
 		cllimit: 'max',
 		gsrsearch: 'contentmodel:"sanitized-css" -intitle:sandbox -intitle:沙盒'
-		+ ' -incategory:在模板名字空间下的CSS页面 -incategory:在主名字空间下的CSS页面'
-		+ ' -incategory:偶像大师模板CSS -incategory:"赛马娘 Pretty Derby模板CSS"',
+			+ ' -incategory:在模板名字空间下的CSS页面 -incategory:在主名字空间下的CSS页面'
+			+ ' -incategory:偶像大师模板CSS -incategory:"赛马娘 Pretty Derby模板CSS"',
 		clcategories: 'Category:在模板名字空间下的CSS页面|Category:在主名字空间下的CSS页面'
-		+ '|Category:偶像大师模板CSS|Category:赛马娘 Pretty Derby模板CSS',
+			+ '|Category:偶像大师模板CSS|Category:赛马娘 Pretty Derby模板CSS',
 	});
 	let pages = query?.pages;
 	await addCategory(api, mode, pages);

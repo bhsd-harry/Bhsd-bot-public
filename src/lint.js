@@ -10,7 +10,7 @@ const {performance} = require('perf_hooks'),
 	lintErrors = require('../config/lintErrors'),
 	boilerplates = require('../config/boilerplate'),
 	rcend = require('../config/lint');
-const Parser = global.Parser ?? imported,
+const Parser = globalThis.Parser ?? imported,
 	skipped = new Set([
 		100_877,
 		110_496,

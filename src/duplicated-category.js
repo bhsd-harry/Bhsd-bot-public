@@ -36,7 +36,7 @@ const main = async (api = new Api(user, pin, url)) => {
 				/** @type {Parser.CategoryToken[]} */ otherCats = childNodes.filter(
 					/** @param node {Parser.CategoryToken} */
 					node => node.type === 'category' && node.name === cat.name && node !== cat
-					&& (length === 1 || node.length === 1 || node.sortkey === sortkey),
+						&& (length === 1 || node.length === 1 || node.sortkey === sortkey),
 				);
 			for (const otherCat of otherCats) {
 				const target = otherCat.length === 1 ? otherCat : cat,
