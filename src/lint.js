@@ -17,7 +17,7 @@ const Parser = globalThis.Parser ?? imported,
 		358_642,
 		404_396,
 	]),
-	reISBN = /isbn[\p{Zs}\t\-:：]?(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
+	reISBN = /isbn[-:：]?[\p{Zs}\t]?(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
 Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
@@ -271,7 +271,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				if (typeof link === 'object') {
 					const [isRedirect, target] = link.getRedirection();
 					if ((isRedirect || !link.fragment) && t2s(target) === title) {
-						push(errors, token, '自身链接', 'error');
+						push(errors, token, '自身链接', 'warning');
 					}
 				}
 			}
