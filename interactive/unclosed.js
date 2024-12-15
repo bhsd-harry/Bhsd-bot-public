@@ -84,7 +84,15 @@ const nestable = new Set(['span', 'big', 'small']);
 				}
 				if (!nextSibling) {
 					if (html.nextSibling) {
+						const {lastChild} = parentNode;
 						parentNode.append(`</${key}>`);
+						if (lastChild.type === 'text') {
+							const [trailing] = /(?<!\s)\s*$/u.exec(lastChild.data);
+							if (trailing) {
+								lastChild.deleteData(-trailing.length);
+								parentNode.append(trailing);
+							}
+						}
 					} else {
 						html.remove();
 					}

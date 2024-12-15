@@ -19,7 +19,7 @@
 		"wikiparser-node": "^1.14.0"
 	},
 	"devDependencies": {
-		"@bhsd/common": "^0.4.6",
+		"@bhsd/common": "^0.5.0",
 		"@stylistic/eslint-plugin": "^2.11.0",
 		"@stylistic/stylelint-plugin": "^3.1.1",
 		"@types/node": "^22.10.1",
