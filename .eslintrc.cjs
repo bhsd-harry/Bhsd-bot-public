@@ -1,7 +1,7 @@
 'use strict';
 
 const config = require('@bhsd/common/eslintrc.node.cjs');
-const {rules, overrides} = config,
+const {plugins, rules, overrides, settings} = config,
 	[json] = overrides;
 
 for (const key in rules) {
@@ -12,7 +12,7 @@ for (const key in rules) {
 
 module.exports = {
 	...config,
-	plugins: config.plugins.slice(0, -1),
+	plugins: plugins.filter(plugin => plugin !== 'jsdoc'),
 	ignorePatterns: ['old'],
 	rules: {
 		...rules,
@@ -43,8 +43,9 @@ module.exports = {
 		},
 	],
 	settings: {
+		...settings,
 		n: {
-			...config.settings.n,
+			...settings.n,
 			allowModules: ['request'],
 		},
 	},
