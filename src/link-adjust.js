@@ -101,7 +101,7 @@ const main = async (api = new Api(user, pin, url)) => {
 		for (const token of links) {
 			try {
 				let /** @type {URL} */ uri = token.getUrl();
-				if (uri.hostname === 'b23.tv' || uri.hostname === 'youtu.be') {
+				if (['b23.tv', 'bili2233.cn', 'youtu.be'].includes(uri.hostname)) {
 					try {
 						await ping(uri.toString());
 					} catch (e) {

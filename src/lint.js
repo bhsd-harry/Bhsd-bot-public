@@ -228,7 +228,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							{hostname, pathname, searchParams, protocol} = uri,
 							bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
 						if (
-							hostname === 'b23.tv' || hostname === 'youtu.be'
+							['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
 							|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
 						) {
 							push(errors, token, '待修正的链接', 'warning');
