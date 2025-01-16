@@ -29,6 +29,8 @@ const config = {
 	langs = ['ja', 'en', 'zh'];
 Parser.warning = false;
 Parser.config = './config/moegirl';
+Parser.getConfig();
+Parser.config.interwiki.push(...langs);
 
 const normalizeTitle = (title, lang) => {
 	const normalized = Parser.normalizeTitle(title);
