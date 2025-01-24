@@ -10,7 +10,7 @@ Parser.warning = false;
 
 const nestable = new Set(['span', 'big', 'small']);
 
-(async (api = new Api(user, pin, url)) => {
+(async (api = new Api(user, pin, url, true)) => {
 	const regex = new RegExp(
 			String.raw`^<(?:center|font|code|ins|h\d|del|strike|strong|em|cite|sup|sub|[sbiu]|${
 				[...nestable].join('|')

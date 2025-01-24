@@ -28,7 +28,7 @@ const norefererTemplates = [
 	'WUGTop',
 ].map(str => String.raw`template#Template\:${str}`).join();
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode('noreferer');
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

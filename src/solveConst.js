@@ -8,7 +8,7 @@ const Api = require('../lib/api'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors)
 		.filter(([, {errors}]) => errors.some(({message}) => message === '未预期的模板参数'));
 	if (targets.length === 0) {

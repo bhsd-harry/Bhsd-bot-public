@@ -73,7 +73,7 @@ const ytParams = ['feature', 'ab_channel', 'si'],
 		'spmid',
 	];
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 		({message}) => message === '无用的链接参数' || message === '待修正的链接',
 	));

@@ -67,7 +67,7 @@ const format = time => {
 	return `${day}天${hour - day * 24}小时${minute - hour * 60}分`;
 };
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

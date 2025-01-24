@@ -10,7 +10,7 @@ const protectedPages = [
 	404_396,
 ];
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	let mode = runMode('mzh'),
 		run = new Date(),
 		dry;

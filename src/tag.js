@@ -7,7 +7,7 @@ const {user, pin, url} = require('../config/user'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode('user');
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

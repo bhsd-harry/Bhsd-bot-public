@@ -8,7 +8,7 @@ const Api = require('../lib/api'),
 	{run, dry} = require('../config/extLink');
 const {geuquery} = run;
 
-const api = new Api(user, pin, url),
+const api = new Api(user, pin, url, true),
 	chat = new Interface(),
 	protectedPages = [923, 270_566],
 	[,,, geulimit] = process.argv;

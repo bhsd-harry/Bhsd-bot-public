@@ -9,7 +9,7 @@ const skip = [1546];
 
 (async () => {
 	const [,,, titles] = process.argv,
-		api = new Api(user, pin, url),
+		api = new Api(user, pin, url, true),
 		chat = new Interface();
 	let mode = runMode('redry');
 	if (mode === 'run') {

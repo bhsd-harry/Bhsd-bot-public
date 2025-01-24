@@ -6,7 +6,7 @@ const Api = require('../lib/api'),
 	{exturl, sort} = require('../lib/exturl'),
 	{runMode, save} = require('../lib/dev');
 
-const api = new Api(user, pin, url),
+const api = new Api(user, pin, url, true),
 	chat = new Interface();
 
 (async () => {

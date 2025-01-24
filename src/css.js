@@ -24,7 +24,7 @@ const addCategory = async (api, mode, allPages = []) => {
 	}
 };
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	if (!module.parent) {
 		await api[mode.endsWith('dry') ? 'login' : 'csrfToken']();

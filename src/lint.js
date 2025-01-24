@@ -472,7 +472,7 @@ const main = /** @param {Api} api */ async api => {
 };
 
 (async () => {
-	const api = new Api(user, pin, url);
+	const api = new Api(user, pin, url, true);
 	if (mode !== 'dry-upload') {
 		await api[mode === 'upload' ? 'csrfToken' : 'login']();
 	}

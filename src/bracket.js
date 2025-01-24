@@ -7,7 +7,7 @@ const Api = require('../lib/api'),
 const skip = [535_567],
 	pageids = [];
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	let run = new Date(),
 		dry;

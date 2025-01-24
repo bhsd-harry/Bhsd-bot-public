@@ -8,7 +8,7 @@ const Api = require('../lib/api'),
 const testRegex = /(?:https?:?|(?<=\[))\/{0,2}(https?:)\/{0,2}|(https?)(?::\/(?!\/)|\/{2})/u, // 用于test时不能有g修饰符
 	replaceRegex = new RegExp(testRegex, 'gu');
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	if (!module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

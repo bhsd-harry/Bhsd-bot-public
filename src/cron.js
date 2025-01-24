@@ -23,7 +23,7 @@ const scripts = [
 	'boilerplate',
 ];
 
-const api = new Api(user, pin, url);
+const api = new Api(user, pin, url, true);
 
 const execute = async script => {
 	try {

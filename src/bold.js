@@ -8,7 +8,7 @@ const {user, pin, url} = require('../config/user'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 		({message}) => message === '段落标题中的粗体',
 	));

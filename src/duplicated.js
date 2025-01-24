@@ -92,7 +92,7 @@ const analyze = (wikitext, pageid, ns) => {
 	return [text, found];
 };
 
-const main = async (api = new Api(user, pin, url), templateOnly = true) => {
+const main = async (api = new Api(user, pin, url, true), templateOnly = true) => {
 	const mode = runMode('user');
 	if (templateOnly && !module.parent) {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

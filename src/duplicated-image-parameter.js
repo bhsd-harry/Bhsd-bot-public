@@ -9,7 +9,7 @@ const damerauLevenshtein = require('talisman/metrics/damerau-levenshtein'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const main = async (api = new Api(user, pin, url)) => {
+const main = async (api = new Api(user, pin, url, true)) => {
 	const regex = /^重复的图片[a-z]+参数$/u,
 		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 			({message}) => message === '无效的图片参数' || regex.test(message),
