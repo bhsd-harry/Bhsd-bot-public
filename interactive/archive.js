@@ -39,6 +39,7 @@ const skip = [1546];
 		[pages, c] = response;
 		[pages] = response;
 	}
+	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
 		if (skip.includes(pageid)) {
 			return false;
@@ -48,7 +49,6 @@ const skip = [1546];
 		}, chat, true, api);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(Boolean);
-	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	try {
 		const temp = require('../config/broken-temp'); // eslint-disable-line n/no-missing-require
 		await Promise.all([
