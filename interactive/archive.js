@@ -33,7 +33,9 @@ const skip = [1546];
 	} catch {}
 	const incomplete = titles && isNaN(titles);
 	if (incomplete) {
-		pages = await api.revisions(titles.split('|').every(pageid => !isNaN(pageid)) ? {pageids: titles} : {titles});
+		pages = await api.revisions(
+			titles.split('|').every(pageid => !isNaN(pageid)) ? {pageids: titles} : {titles},
+		);
 	} else {
 		const response = await api.categorymembers('带有失效链接的条目', archive, Number(titles) || 5);
 		[pages, c] = response;

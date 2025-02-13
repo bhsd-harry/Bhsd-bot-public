@@ -16,10 +16,10 @@
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.16.1"
+		"wikiparser-node": "^1.16.6"
 	},
 	"devDependencies": {
-		"@bhsd/common": "^0.6.3",
+		"@bhsd/common": "^0.6.6",
 		"@stylistic/eslint-plugin": "^3.1.0",
 		"@stylistic/stylelint-plugin": "^3.1.2",
 		"@types/mocha": "^10.0.10",

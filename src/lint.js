@@ -53,8 +53,9 @@ const trTemplate = [
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
-			.map(template => `[${template[0]}${template[0].toLowerCase()}]${template.slice(1).replaceAll(' ', '[ _]')}`)
-			.join('|')
+			.map(template => `[${template[0]}${template[0].toLowerCase()}]${
+				template.slice(1).replaceAll(' ', '[ _]')
+			}`).join('|')
 	})\s*\|))`, 'u'),
 	magicWord = /^\s*\{\{\s*#(?:invoke|forargs|fornumargs|loop|if|ifeq|switch):/iu,
 	/** @link https://github.com/lihaohong6/MGP-bots/blob/master/bots/link_adjust.py */
@@ -211,7 +212,8 @@ const generateErrors = async (pages, errorOnly = false) => {
 						&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
 						&& !(
 							rule === 'unknown-page'
-							&& /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u.test(excerpt)
+							&& /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u
+								.test(excerpt)
 						)
 						&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
 						&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
@@ -375,7 +377,9 @@ const main = /** @param {Api} api */ async api => {
 						errors = errors.filter(
 							({severity, message, excerpt}) =>
 								severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-								|| message === 'URL中的"|"' || message === '内链目标包含模板' || message === '段落标题中的粗体',
+								|| message === 'URL中的"|"'
+								|| message === '内链目标包含模板'
+								|| message === '段落标题中的粗体',
 						).sort((a, b) =>
 							a.startLine - b.startLine || a.startCol - b.startCol
 							|| a.endLine - b.endLine || a.endCol - b.endCol);

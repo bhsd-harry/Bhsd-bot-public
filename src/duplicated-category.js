@@ -27,7 +27,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 6),
-			/** @type {Parser.CategoryToken[]} */ cats = root.querySelectorAll('category:not(":has(comment)")');
+			/** @type {Parser.CategoryToken[]} */
+			cats = root.querySelectorAll('category:not(":has(comment)")');
 		for (const cat of cats) {
 			if (!root.contains(cat)) {
 				continue;

@@ -96,11 +96,16 @@ const nestable = new Set(['span', 'big', 'small']);
 					} else {
 						html.remove();
 					}
-				} else if (key !== 'center' || !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')) {
+				} else if (
+					key !== 'center'
+					|| !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')
+				) {
 					if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
 						html.remove();
 					} else {
-						nextSibling.replaceData(nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`));
+						nextSibling.replaceData(
+							nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`),
+						);
 					}
 				}
 			}

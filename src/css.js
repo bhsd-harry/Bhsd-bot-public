@@ -48,7 +48,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	let pages = query?.pages;
 	await addCategory(api, mode, pages);
 	pages = (await api.search(
-		'insource:"templatestyles src" -intitle:sandbox -intitle:沙盒 -intitle:doc -incategory:使用模板样式的模板',
+		'insource:"templatestyles src" '
+		+ '-intitle:sandbox -intitle:沙盒 -intitle:doc -incategory:使用模板样式的模板',
 		{gsrnamespace: 10, prop: 'revisions|categories', cllimit: 'max', clcategories: 'Category:使用模板样式的模板'},
 	)).filter(({categories}) => !categories);
 	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {

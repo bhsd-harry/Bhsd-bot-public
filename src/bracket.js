@@ -30,7 +30,9 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		yesterday = new Date();
 	yesterday.setDate(yesterday.getDate() - 30);
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
-		pages = await (pageids.length > 0 ? api.revisions({pageids}) : api.taggedRecentChanges('方括号不配对', date));
+		pages = await (
+			pageids.length > 0 ? api.revisions({pageids}) : api.taggedRecentChanges('方括号不配对', date)
+		);
 	let edits = [];
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		if (skip.includes(pageid)) {
