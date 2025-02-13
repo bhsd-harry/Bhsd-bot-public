@@ -16,7 +16,7 @@
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.16.0"
+		"wikiparser-node": "^1.16.1"
 	},
 	"devDependencies": {
 		"@bhsd/common": "^0.6.3",

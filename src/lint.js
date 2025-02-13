@@ -131,7 +131,14 @@ const trTemplate = [
 		'VOCALOID_&_UTAU_Ranking',
 		'VOCALOID_Ranking',
 		'WUGTop',
-	].map(str => String.raw`template#Template\:${str}`).join();
+	].map(str => String.raw`template#Template\:${str}`).join(),
+	messages = new Set([
+		'段落标题中的粗体',
+		'同时闭合和自封闭的标签',
+		'重复的分类',
+		'无效的图片参数',
+		'未闭合的引号',
+	]);
 
 let worst;
 const push = /** @param {imported.Token} token */ (errors, token, message, severity) => {
@@ -219,7 +226,16 @@ const generateErrors = async (pages, errorOnly = false) => {
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
 			}
+			for (const e of errors) {
+				delete e.rule;
+				delete e.fix;
+				delete e.suggestions;
+				if (messages.has(e.message)) {
+					error(e.message, pageid);
+				}
+			}
 			const noReferer = root.querySelector(norefererTemplates);
+			let hasSelfLink = false;
 			for (const token of root.links ?? []) {
 				const {type} = token;
 				if (type === 'ext-link' || type === 'free-ext-link') {
@@ -243,8 +259,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 							error('无用的链接参数', uri.toString());
 						} else if (!noReferer && /^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
 							push(errors, token, '引自bilibili的图片外链', 'warning');
+							error('引自bilibili的图片外链', uri.toString());
 						} else if (hostname === 'http' || hostname === 'https') {
 							push(errors, token, '错误格式的外链', 'warning');
+							error('错误格式的外链', uri.toString());
 						} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
 							const action = searchParams.get('action');
 							if (!(
@@ -252,6 +270,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 								|| params.some(param => searchParams.has(param))
 							)) {
 								push(errors, token, '误写作外链的内链', 'warning');
+								error('误写作外链的内链', uri.toString());
 							}
 						}
 					} catch {}
@@ -272,8 +291,12 @@ const generateErrors = async (pages, errorOnly = false) => {
 					const [isRedirect, target] = link.getRedirection();
 					if ((isRedirect || !link.fragment) && t2s(target) === title) {
 						push(errors, token, '自身链接', 'warning');
+						hasSelfLink = true;
 					}
 				}
+			}
+			if (hasSelfLink) {
+				error('自身链接', pageid);
 			}
 			const isbn = /** @type {string} */(content).matchAll(reISBN);
 			for (const {index, 0: excerpt} of isbn) {
@@ -318,11 +341,6 @@ const generateErrors = async (pages, errorOnly = false) => {
 		} else if (errorOnly && !errors.some(({message}) => message === '内链目标包含模板')) {
 			//
 		} else {
-			for (const e of errors) {
-				delete e.rule;
-				delete e.fix;
-				delete e.suggestions;
-			}
 			lintErrors[pageid] = {title, errors};
 			if (errors.some(({message}) => message === '未预期的模板参数' || message === '自身链接')) {
 				hasArg.add(pageid);
