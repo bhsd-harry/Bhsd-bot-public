@@ -29,18 +29,34 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		const root = Parser.parse(content, false, 6),
 			/** @type {Parser.CategoryToken[]} */
 			cats = root.querySelectorAll('category:not(":has(comment)")');
-		for (const cat of cats) {
+		for (let i = 0; i < cats.length; i++) {
+			const cat = cats[i];
 			if (!root.contains(cat)) {
 				continue;
 			}
-			const {parentNode: {childNodes}, length, sortkey} = cat,
-				/** @type {Parser.CategoryToken[]} */ otherCats = childNodes.filter(
-					/** @param node {Parser.CategoryToken} */
-					node => node.type === 'category' && node.name === cat.name && node !== cat
-						&& (length === 1 || node.length === 1 || node.sortkey === sortkey),
-				);
-			for (const otherCat of otherCats) {
-				const target = otherCat.length === 1 ? otherCat : cat,
+			const {length, sortkey, parentNode} = cat,
+				ancestors = cat.getAncestors();
+			for (let j = i + 1; j < cats.length; j++) {
+				const otherCat = cats[j];
+				if (
+					!root.contains(otherCat)
+					|| otherCat.name !== cat.name
+					|| length === 2 && otherCat.length === 2 && otherCat.sortkey !== sortkey
+				) {
+					continue;
+				}
+				const commonAncestor = otherCat.getAncestors().findLast(
+						ancestor => ancestors.includes(ancestor),
+					),
+					catIsChild = parentNode === commonAncestor,
+					otherCatIsChild = otherCat.parentNode === commonAncestor;
+				if (
+					!catIsChild && (!otherCatIsChild || length > otherCat.length)
+					|| !otherCatIsChild && otherCat.length > length
+				) {
+					continue;
+				}
+				const target = !catIsChild || otherCatIsChild && otherCat.length > length ? cat : otherCat,
 					{previousSibling, nextSibling} = target;
 				if (
 					previousSibling?.type === 'text'
