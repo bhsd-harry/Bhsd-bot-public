@@ -7,7 +7,7 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const protectedPages = [9658, 33_803, 44_832],
-	age = 1000 * 86_400 * 7, // 一周
+	age = 1e3 * 86_400 * 7, // 一周
 	inuse = ['Inuse', '施工中', '编辑中', '編輯中'].map(str => String.raw`template#Template\:${str}`).join(),
 	zhnum = {半: '.5', 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 兩: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9},
 	unit = {
@@ -55,7 +55,7 @@ const parseTime = token => {
 };
 
 const format = time => {
-	const minute = Math.ceil(time / 1000 / 60);
+	const minute = Math.ceil(time / 1e3 / 60);
 	if (minute < 60) {
 		return `${minute}分`;
 	}
@@ -97,7 +97,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		const root = Parser.parse(content, false, 2),
 			templates = root.querySelectorAll(inuse);
 		for (const token of templates) {
-			const time = parseTime(token) * 60 * 1000,
+			const time = parseTime(token) * 60 * 1e3,
 				remain = new Date(timestamp).getTime() + time - new Date(curtimestamp).getTime();
 			if (remain < 0) {
 				info(`${pageid}: 施工持续 ${format(time)}，已超过 ${format(-remain)}`);

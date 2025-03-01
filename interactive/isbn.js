@@ -34,16 +34,19 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		const errors = targets.find(([id]) => id == pageid)[1].errors.filter(({message}) => message === '无效的ISBN')
 			.sort((a, b) => b.startIndex - a.startIndex);
 		for (const {startIndex, endIndex, excerpt} of errors) {
-			if (content.slice(startIndex, endIndex) !== excerpt) {
+			if (text.slice(startIndex, endIndex) !== excerpt) {
 				continue;
 			}
 			const mt = /^(ISBN[-:：]?[\p{Zs}\t]?)((?:\d[\p{Zs}\t-]?){4,}[\dXx])$/u.exec(excerpt);
 			if (mt) {
 				const [, prefix, isbn] = mt,
 					preserve = /[-:：]/u.test(prefix);
-				text = `${text.slice(0, startIndex)}${preserve ? prefix : ''}{{ISBN|${isbn}${
-					preserve ? `|${isbn}` : ''
-				}}}${text.slice(endIndex)}`;
+				text = text.slice(0, startIndex) + (
+					prefix === 'ISBN-'
+					&& /^(?:10 (?:\d[\p{Zs}\t-]?){9}[\dx]|13 (?:\d[\p{Zs}\t-]?){12}[\dx])$/iu.test(isbn)
+						? `{{ISBN|${isbn.slice(3)}|ISBN-${isbn}}}`
+						: `${preserve ? prefix : ''}{{ISBN|${isbn}${preserve ? `|${isbn}` : ''}}}`
+				) + text.slice(endIndex);
 			}
 		}
 		if (content !== text) {

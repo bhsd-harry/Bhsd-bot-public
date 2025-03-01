@@ -2,6 +2,7 @@
 
 const {performance} = require('perf_hooks'),
 	imported = require('wikiparser-node'),
+	{refreshStdout} = require('@bhsd/common'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
@@ -168,8 +169,9 @@ const generateErrors = async (pages, errorOnly = false) => {
 		}
 	}
 	const residuals = new Set(Object.values(boilerplates).flat());
-	for (const [i, {ns, pageid, title, content, missing, redirects = []}] of pages.entries()) {
-		process.stdout.write(`\x1B[K${i} ${title}\r`);
+	for (let i = 0; i < pages.length; i++) {
+		const {ns, pageid, title, content, missing, redirects = []} = pages[i];
+		refreshStdout(`${i} ${title}`);
 		if (
 			missing
 			|| ns === 2
@@ -229,10 +231,11 @@ const generateErrors = async (pages, errorOnly = false) => {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
 			}
 			for (const e of errors) {
+				const {rule} = e;
 				delete e.rule;
 				delete e.fix;
 				delete e.suggestions;
-				if (messages.has(e.message)) {
+				if (rule === 'invalid-css' || messages.has(e.message)) {
 					error(e.message, pageid);
 				}
 			}
@@ -375,8 +378,9 @@ const main = /** @param {Api} api */ async api => {
 				+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 					Object.values(lintErrors).map(({title, errors}) => {
 						errors = errors.filter(
-							({severity, message, excerpt}) =>
+							({severity, code, message, excerpt}) =>
 								severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
+								|| code
 								|| message === 'URL中的"|"'
 								|| message === '内链目标包含模板'
 								|| message === '段落标题中的粗体',
@@ -390,7 +394,7 @@ const main = /** @param {Api} api */ async api => {
 								errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
 									`|${
 										message.replace(/<(\w+)>/u, '&lt;$1&gt;')
-											.replace(/"([{}[\]|]|https?:\/\/)"/u, '"<nowiki>$1</nowiki>"')
+											.replace(/[{}[\]|]+|(?<=")https?:\/\/(?=")/u, '<nowiki>$&</nowiki>')
 									}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${
 										endLine + 1
 									} 行第 ${endCol + 1} 列\n|<pre>${
@@ -451,7 +455,7 @@ const main = /** @param {Api} api */ async api => {
 		default: {
 			const last = rcend && new Date(rcend),
 				now = new Date().toISOString(),
-				yesterday = new Date(Date.now() - 3600 * 1000 * 24 * 7),
+				yesterday = new Date(Date.now() - 3600 * 1e3 * 24 * 7),
 				grcend = (last > yesterday ? last : yesterday).toISOString(),
 				qs = {
 					generator: 'recentchanges',
