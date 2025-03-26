@@ -15,7 +15,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		return;
 	}
 	// eslint-disable-next-line prefer-const
-	let mode = runMode('redry');
+	let mode = runMode();
 	if (mode === 'run') {
 		// mode = 'dry';
 	}

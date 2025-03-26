@@ -231,11 +231,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
 			}
 			for (const e of errors) {
-				const {rule} = e;
 				delete e.rule;
 				delete e.fix;
 				delete e.suggestions;
-				if (rule === 'invalid-css' || messages.has(e.message)) {
+				if (messages.has(e.message)) {
 					error(e.message, pageid);
 				}
 			}

@@ -23,7 +23,7 @@ const nestable = new Set(['span', 'big', 'small']);
 	if (selectedErrors.length === 0) {
 		return;
 	}
-	let mode = runMode('redry');
+	let mode = runMode();
 	if (mode === 'run') {
 		mode = 'dry';
 	}

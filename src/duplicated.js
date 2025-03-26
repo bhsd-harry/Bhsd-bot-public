@@ -95,8 +95,10 @@ const analyze = (wikitext, pageid, ns) => {
 const main = async (api = new Api(user, pin, url, true), templateOnly = true) => {
 	const mode = runMode('user');
 	if (templateOnly && !module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await api.massEdit(null, mode, '自动修复重复的模板参数');
 			return;
 		}

@@ -50,11 +50,17 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				}
 				: {pageids: targets.map(([pageid]) => pageid)},
 		);
-	for (const {title, pageid, ns, content, timestamp, curtimestamp} of pages) {
+	for (const {title, pageid, ns, content, timestamp, curtimestamp, missing} of pages) {
 		if (mode === 'update') {
 			if (title.startsWith('Template:页面格式/') && !title.endsWith('/doc')) {
-				boilerplates[title] = update(content);
+				if (missing) {
+					delete boilerplates[title];
+				} else {
+					boilerplates[title] = update(content);
+				}
 			}
+			continue;
+		} else if (missing) {
 			continue;
 		}
 		const root = Parser.parse(content, ns === 10, 1),

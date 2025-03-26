@@ -14,7 +14,7 @@ const api = new Api(user, pin, url, true),
 	[,,, geulimit] = process.argv;
 
 (async () => {
-	let mode = runMode('redry');
+	let mode = runMode();
 	if (mode === 'run') {
 		mode = 'dry';
 	}

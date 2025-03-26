@@ -11,7 +11,7 @@ const skip = [1546];
 	const [,,, titles] = process.argv,
 		api = new Api(user, pin, url, true),
 		chat = new Interface();
-	let mode = runMode('redry');
+	let mode = runMode();
 	if (mode === 'run') {
 		mode = 'dry';
 	}

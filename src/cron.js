@@ -39,12 +39,13 @@ const execute = async script => {
 };
 
 (async () => {
-	const mode = runMode();
+	const mode = runMode(),
+		[,,, completed] = process.argv;
 	if (mode !== 'run') {
 		throw new RangeError('仅供cron自动执行，不可使用附加模式！');
 	}
 	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	for (const script of scripts) {
+	for (const script of scripts.slice(scripts.indexOf(completed) + 1)) {
 		await execute(script);
 	}
 })();
