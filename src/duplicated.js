@@ -128,7 +128,7 @@ const main = async (api = new Api(user, pin, url, true), templateOnly = true) =>
 	}).filter(Boolean);
 	await api.massEdit(list, mode, '自动修复重复的模板参数');
 	if (templateOnly && mode === 'run') {
-		main(api, false);
+		await main(api, false);
 	}
 };
 

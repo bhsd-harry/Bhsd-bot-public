@@ -11,7 +11,7 @@ const {performance} = require('perf_hooks'),
 	lintErrors = require('../config/lintErrors'),
 	boilerplates = require('../config/boilerplate'),
 	rcend = require('../config/lint');
-const Parser = globalThis.Parser ?? imported,
+const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imported,
 	skipped = new Set([
 		100_877,
 		110_496,
@@ -307,7 +307,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				const ele = root.elementFromIndex(index).parentNode;
 				if (
 					excerpt.startsWith('ISBN')
-					&& !ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)
+					&& ele && !ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)
 				) {
 					const {top, left} = root.posFromIndex(index);
 					errors.push({
@@ -380,6 +380,7 @@ const main = /** @param {Api} api */ async api => {
 							({severity, code, message, excerpt}) =>
 								severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
 								|| code
+								|| message === `孤立的"'"`
 								|| message === 'URL中的"|"'
 								|| message === '内链目标包含模板'
 								|| message === '段落标题中的粗体',

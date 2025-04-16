@@ -8,6 +8,7 @@ const Api = require('../lib/api'),
 const protectedPages = [
 	100_877,
 	404_396,
+	629_694,
 ];
 
 const main = async (api = new Api(user, pin, url, true)) => {
