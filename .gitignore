@@ -1,4 +1,3 @@
-data/
 dry.json
 .eslintcache
 /lint.sh
@@ -10,6 +9,5 @@ dry.json
 !/config/langlinks.json
 /interactive/lyrics
 /interactive/ruby-*
-/interactive/*llwiki.js
 /interactive/cache/
 /src/lint-ll.js

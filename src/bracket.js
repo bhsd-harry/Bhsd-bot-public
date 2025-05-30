@@ -34,8 +34,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			pageids.length > 0 ? api.revisions({pageids}) : api.taggedRecentChanges('方括号不配对', date)
 		);
 	let edits = [];
-	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		if (skip.includes(pageid)) {
+	for (const {pageid, content, timestamp, curtimestamp, missing} of pages) {
+		if (missing || skip.includes(pageid)) {
 			continue;
 		}
 		edits.push([

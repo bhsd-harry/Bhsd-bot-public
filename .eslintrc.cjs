@@ -13,7 +13,7 @@ for (const key in rules) {
 module.exports = {
 	...config,
 	plugins: plugins.filter(plugin => plugin !== 'jsdoc'),
-	ignorePatterns: ['old'],
+	ignorePatterns: ['old/'],
 	rules: {
 		...rules,
 		camelcase: [

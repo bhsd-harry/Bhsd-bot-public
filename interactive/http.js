@@ -7,7 +7,8 @@ const Api = require('../lib/api'),
 	{runMode, save} = require('../lib/dev');
 
 const api = new Api(user, pin, url, true),
-	chat = new Interface();
+	chat = new Interface(),
+	skip = [632_749, 633_434];
 
 (async () => {
 	let mode = runMode('sort');
@@ -47,7 +48,7 @@ const api = new Api(user, pin, url, true),
 	yesterday.setDate(yesterday.getDate() - 30);
 	const date = (last > yesterday ? last : yesterday).toISOString(), // 不追溯超过1个月
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
-			.filter(({missing, content}) => !missing && content.includes('http://'));
+			.filter(({missing, content, pageid}) => !missing && !skip.includes(pageid) && content.includes('http://'));
 	const edits = pages.length > 0 ? await exturl(pages, chat) : [];
 	await Promise.all([
 		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,

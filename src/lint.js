@@ -51,6 +51,7 @@ const trTemplate = [
 		':BanG Dream!少女乐团派对!/历史活动/EventInfo',
 		':D4DJ Groovy Mix/历史活动/EventInfo',
 		'星穹铁道遗器表格',
+		'星穹铁道光锥表格',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
