@@ -49,6 +49,7 @@ const trTemplate = [
 		'KPL Runoff/Single',
 		'BestGirlContestEveryPerson',
 		':BanG Dream!少女乐团派对!/历史活动/EventInfo',
+		'BanG_Dream!_少女乐团派对！历史活动信息',
 		':D4DJ Groovy Mix/历史活动/EventInfo',
 		'星穹铁道遗器表格',
 		'星穹铁道光锥表格',

@@ -12,7 +12,7 @@
 		"lint": "npm run lint:ts"
 	},
 	"dependencies": {
-		"@bhsd/common": "^0.13.1",
+		"@bhsd/common": "^0.14.1",
 		"@cypress/request": "^3.0.7",
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
@@ -21,13 +21,13 @@
 	},
 	"devDependencies": {
 		"@stylistic/eslint-plugin": "^3.1.0",
-		"@types/node": "^22.13.1",
+		"@types/node": "^24.0.8",
 		"@types/request": "^2.48.12",
 		"@typescript-eslint/eslint-plugin": "^8.29.0",
 		"@typescript-eslint/parser": "^8.29.0",
 		"eslint": "^8.57.1",
 		"eslint-plugin-eslint-comments": "^3.2.0",
-		"eslint-plugin-jsdoc": "^50.6.3",
+		"eslint-plugin-jsdoc": "^51.3.1",
 		"eslint-plugin-json-es": "^1.6.0",
 		"eslint-plugin-n": "^17.15.1",
 		"eslint-plugin-promise": "^7.2.1",

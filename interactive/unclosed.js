@@ -42,16 +42,8 @@ const nestable = new Set(['span', 'big', 'small']);
 			/** @type {Map<Parser.Token, Record<string, Parser.HtmlToken | true>>} */ unclosed = new Map();
 		for (const html of root.querySelectorAll('html[closing=false][selfClosing=false]')) {
 			const {parentNode, name} = html;
-			if (!regex.test(`<${name}>`)) {
+			if (!regex.test(`<${name}>`) || html.findMatchingTag()) {
 				continue;
-			}
-			try {
-				html.findMatchingTag();
-				continue;
-			} catch ({message}) {
-				if (!message.startsWith('Unclosed tag: ')) {
-					continue;
-				}
 			}
 			const cur = unclosed.get(parentNode);
 			if (!cur) {
