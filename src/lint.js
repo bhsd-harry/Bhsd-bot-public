@@ -2,7 +2,7 @@
 
 const {performance} = require('perf_hooks'),
 	imported = require('wikiparser-node'),
-	{refreshStdout} = require('@bhsd/common'),
+	{refreshStdout} = require('@bhsd/nodejs'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
@@ -400,7 +400,8 @@ const main = /** @param {Api} api */ async api => {
 									}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${
 										endLine + 1
 									} 行第 ${endCol + 1} 列\n|<pre>${
-										excerpt.replace(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;').replaceAll('-{', '-&#123;')
+										excerpt.toWellFormed()
+											.replace(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;').replaceAll('-{', '-&#123;')
 									}</pre>`)
 									.join('\n|-\n')
 							}`

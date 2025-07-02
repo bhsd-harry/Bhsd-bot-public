@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('@bhsd/common/eslintrc.node.cjs');
+const config = require('@bhsd/code-standard/eslintrc.node.cjs');
 const {plugins, rules, overrides, settings} = config,
 	[json] = overrides;
 

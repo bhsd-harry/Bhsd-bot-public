@@ -5,33 +5,34 @@
 	"author": "Bhsd",
 	"private": true,
 	"engines": {
-		"node": "^22.11.0"
+		"node": "^22.16.0"
 	},
 	"scripts": {
 		"lint:ts": "eslint --cache .",
 		"lint": "npm run lint:ts"
 	},
 	"dependencies": {
-		"@bhsd/common": "^0.14.1",
+		"@bhsd/nodejs": "^0.0.0",
 		"@cypress/request": "^3.0.7",
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.21.2"
+		"wikiparser-node": "^1.21.3"
 	},
 	"devDependencies": {
+		"@bhsd/code-standard": "^1.0.0",
 		"@stylistic/eslint-plugin": "^3.1.0",
-		"@types/node": "^24.0.8",
+		"@types/node": "^24.0.10",
 		"@types/request": "^2.48.12",
-		"@typescript-eslint/eslint-plugin": "^8.29.0",
-		"@typescript-eslint/parser": "^8.29.0",
+		"@typescript-eslint/eslint-plugin": "^8.35.1",
+		"@typescript-eslint/parser": "^8.35.1",
 		"eslint": "^8.57.1",
 		"eslint-plugin-eslint-comments": "^3.2.0",
-		"eslint-plugin-jsdoc": "^51.3.1",
+		"eslint-plugin-jsdoc": "^51.3.3",
 		"eslint-plugin-json-es": "^1.6.0",
-		"eslint-plugin-n": "^17.15.1",
+		"eslint-plugin-n": "^17.20.0",
 		"eslint-plugin-promise": "^7.2.1",
-		"eslint-plugin-regexp": "^2.7.0",
+		"eslint-plugin-regexp": "^2.9.0",
 		"eslint-plugin-unicorn": "^56.0.1"
 	}
 }
