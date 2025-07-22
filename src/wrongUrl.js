@@ -11,8 +11,10 @@ const testRegex = /(?:https?:?|(?<=\[))\/{0,2}(https?:)\/{0,2}|(https?)(?::\/(?!
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await api.massEdit(null, mode, '自动修复错误格式的外链');
 			return;
 		}

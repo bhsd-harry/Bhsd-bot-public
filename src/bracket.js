@@ -14,8 +14,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	try {
 		({dry, run} = require('../config/abuse8'));
 	} catch {}
-	await api[mode === 'dry' ? 'login' : 'csrfToken']();
-	if (mode === 'rerun') {
+	if (mode !== 'redry') {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
 		if (!dry) {
 			throw new Error('没有保存的dry run！');
 		}

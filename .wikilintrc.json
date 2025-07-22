@@ -1,0 +1,54 @@
+{
+	"bold-header": 2,
+	"format-leakage": 2,
+	"fostered-content": [
+		2,
+		{
+			"transclusion": 1
+		}
+	],
+	"h1": 2,
+	"invalid-gallery": 2,
+	"lonely-apos": [
+		2,
+		{
+			"word": 1
+		}
+	],
+	"lonely-bracket": [
+		2,
+		{
+			"single": 1
+		}
+	],
+	"lonely-http": 2,
+	"no-arg": 2,
+	"no-duplicate": [
+		2,
+		{
+			"id": 0,
+			"unknownImageParameter": 1
+		}
+	],
+	"no-ignored": [
+		2,
+		{
+			"galleryComment": 1,
+			"galleryNoImage": 1
+		}
+	],
+	"obsolete-attr": 0,
+	"obsolete-tag": 0,
+	"unclosed-comment": 2,
+	"unclosed-quote": 2,
+	"unknown-page": 2,
+	"unmatched-tag": [
+		2,
+		{
+			"conditional": 1,
+			"opening": 1
+		}
+	],
+	"url-encoding": 2,
+	"var-anchor": 2
+}

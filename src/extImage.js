@@ -31,8 +31,10 @@ const norefererTemplates = [
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode('noreferer');
 	if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await api.massEdit(null, mode, '自动修复引自bilibili或新浪的图片外链');
 			return;
 		}

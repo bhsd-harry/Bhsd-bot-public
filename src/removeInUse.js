@@ -70,8 +70,10 @@ const format = time => {
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
 	if (!module.parent) {
-		await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await api.massEdit(null, mode, '自动移除超时的[[template:施工中|施工中]]模板');
 			return;
 		}

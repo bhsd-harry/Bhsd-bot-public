@@ -6,6 +6,7 @@ const {user, pin, url} = require('../config/user'),
 	Parser = require('wikiparser-node');
 Parser.warning = false;
 Parser.config = './config/moegirl';
+const skipped = [164_621];
 
 const analyze = (wikitext, pageid, ns) => {
 	let root = Parser.parse(wikitext, ns === 10, 2);
@@ -116,6 +117,9 @@ const main = async (api = new Api(user, pin, url, true), templateOnly = true) =>
 		);
 	}
 	const list = pages.map(({pageid, ns, content, title, timestamp, curtimestamp}) => {
+		if (skipped.includes(pageid)) {
+			return null;
+		}
 		const [text, found] = analyze(content, pageid, ns);
 		if (text === content) {
 			if (!found) {

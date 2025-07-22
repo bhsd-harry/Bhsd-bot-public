@@ -25,8 +25,10 @@ const insertCategory = root => {
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode('includeonly');
 	if (!module.parent) {
-		await api[mode.endsWith('dry') ? 'login' : 'csrfToken']();
-		if (mode === 'rerun') {
+		if (mode !== 'redry') {
+			await api[mode === 'dry' ? 'login' : 'csrfToken']();
+		}
+		if (mode === 'rerun' || mode === 'redry') {
 			await api.massEdit(null, mode, '自动维护模板文档分类');
 			return;
 		}

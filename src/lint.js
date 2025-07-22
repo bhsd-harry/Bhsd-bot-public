@@ -22,6 +22,7 @@ const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imp
 Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
+Parser.lintConfig = require('../.wikilintrc.json');
 
 const mode = runMode(['upload', 'all', 'search', 'dry-upload', 'skipped']),
 	hasArg = new Set();
@@ -43,6 +44,7 @@ const trTemplate = [
 		'音游曲信息/Groove Coaster',
 		'BangdreamSongGai/Game',
 		'D4DJSongGai/Game',
+		'D4DJ Groovy Mix 历史活动模板',
 		'动画作品剧情模板',
 		'Album Infobox/Chronology',
 		'嵌入片段',
@@ -53,6 +55,9 @@ const trTemplate = [
 		':D4DJ Groovy Mix/历史活动/EventInfo',
 		'星穹铁道遗器表格',
 		'星穹铁道光锥表格',
+		'星穹铁道跃迁表格',
+		'绝区零调频表格',
+		'鸣潮唤取表格',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -125,8 +130,8 @@ const trTemplate = [
 		'theme',
 		'spmid',
 	],
-	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw'],
-	params = ['mobileaction', 'useskin', 'hidelinks'],
+	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw', 'avatar'],
+	params = ['mobileaction', 'useskin', 'hidelinks', 'user'],
 	linkSelector = 'link,redirect-target,ext-link,free-ext-link,magic-link,image-parameter#link',
 	norefererTemplates = [
 		'NoReferer',
@@ -225,9 +230,9 @@ const generateErrors = async (pages, errorOnly = false) => {
 							title.startsWith('三国杀')
 							&& (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning')
 						)
-						&& !(title.startsWith('幻书启世录:') && message === '未闭合的标签' && severity === 'warning')
+						&& !(title.startsWith('幻书启世录:') && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
-						&& !(rule === 'obsolete-attr' || rule === 'obsolete-tag' || rule === 'table-layout'),
+						&& rule !== 'table-layout',
 				);
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
@@ -247,7 +252,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 				if (type === 'ext-link' || type === 'free-ext-link') {
 					try {
 						const /** @type {URL} */ uri = token.getUrl(),
-							{hostname, pathname, searchParams, protocol} = uri,
+							{hostname, pathname, search, searchParams, protocol} = uri,
 							bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
 						if (
 							['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
@@ -274,6 +279,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							if (!(
 								action && actions.includes(action)
 								|| params.some(param => searchParams.has(param))
+								|| pathname === '/' && search === ''
 							)) {
 								push(errors, token, '误写作外链的内链', 'warning');
 								error('误写作外链的内链', uri.toString());
@@ -378,17 +384,11 @@ const main = /** @param {Api} api */ async api => {
 			const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 				+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 					Object.values(lintErrors).map(({title, errors}) => {
-						errors = errors.filter(
-							({severity, code, message, excerpt}) =>
-								severity === 'error' && !(message === '孤立的"}"' && excerpt.endsWith('}-'))
-								|| code
-								|| message === `孤立的"'"`
-								|| message === 'URL中的"|"'
-								|| message === '内链目标包含模板'
-								|| message === '段落标题中的粗体',
-						).sort((a, b) =>
-							a.startLine - b.startLine || a.startCol - b.startCol
-							|| a.endLine - b.endLine || a.endCol - b.endCol);
+						errors = errors
+							.filter(({severity, code}) => severity === 'error' || code === 'unknownProperties')
+							.sort((a, b) =>
+								a.startLine - b.startLine || a.startCol - b.startCol
+								|| a.endLine - b.endLine || a.endCol - b.endCol);
 						return errors.length > 0
 							? `|${
 								errors.length > 1 ? `rowspan=${errors.length}|` : ''
