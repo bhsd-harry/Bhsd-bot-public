@@ -27,10 +27,10 @@ const api = new Api(user, pin, url, true),
 	} else if (mode === 'rerun') {
 		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接');
 		const archived = require('../config/broken');
-		await Promise.all([
-			save('../config/broken.json', {...archived, ...newtimestamps}),
-			dry ? save('../config/extLink.json', {run: {geuquery, ...dry}}) : null,
-		]);
+		save('../config/broken.json', {...archived, ...newtimestamps});
+		if (dry) {
+			save('../config/extLink.json', {run: {geuquery, ...dry}});
+		}
 		return;
 	}
 	if (geulimit) {
@@ -49,7 +49,7 @@ const api = new Api(user, pin, url, true),
 		if (mode === 'dry') {
 			info(`下次检查从 ${c.geuoffset} 开始。`);
 		}
-		await save(
+		save(
 			'../config/extLink.json',
 			mode === 'dry' && edits.length > 0 ? {run, dry: c} : {run: {geuquery, ...c}},
 		);

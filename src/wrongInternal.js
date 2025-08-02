@@ -23,10 +23,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			await api[mode === 'dry' || mode === 'mzh' ? 'login' : 'csrfToken']();
 		}
 		if (mode === 'rerun' || mode === 'redry') {
-			await Promise.all([
-				api.massEdit(null, mode, '自动修复误写作外链的内链'),
-				save('../config/abuse15.json', {run: dry}), // 将上一次dry run转化为实际执行
-			]);
+			await api.massEdit(null, mode, '自动修复误写作外链的内链');
+			save('../config/abuse15.json', {run: dry}); // 将上一次dry run转化为实际执行
 			return;
 		}
 	}
@@ -82,10 +80,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 					curtimestamp,
 				],
 		).filter(Boolean).filter(([, content, text]) => content !== text);
-	await Promise.all([
-		edits.length > 0 ? api.massEdit(edits, mode, '自动修复误写作外链的内链') : null,
-		save('../config/abuse15.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
-	]);
+	if (edits.length > 0) {
+		await api.massEdit(edits, mode, '自动修复误写作外链的内链');
+	}
+	save('../config/abuse15.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
 };
 
 if (!module.parent) {

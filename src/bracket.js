@@ -21,10 +21,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		if (!dry) {
 			throw new Error('没有保存的dry run！');
 		}
-		await Promise.all([
-			api.massEdit(null, mode, '自动修复不匹配的方括号'),
-			save('../config/abuse8.json', {run: dry}), // 将上一次dry run转化为实际执行
-		]);
+		await api.massEdit(null, mode, '自动修复不匹配的方括号');
+		save('../config/abuse8.json', {run: dry}); // 将上一次dry run转化为实际执行
 		return;
 	}
 	const last = new Date(run),
@@ -53,12 +51,12 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		]);
 	}
 	edits = edits.filter(([, content, text]) => content !== text);
-	await Promise.all([
-		edits.length > 0 ? api.massEdit(edits, mode, '自动修复不匹配的方括号') : null,
-		pageids.length > 0
-			? null
-			: save('../config/abuse8.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now}),
-	]);
+	if (edits.length > 0) {
+		await api.massEdit(edits, mode, '自动修复不匹配的方括号');
+	}
+	if (pageids.length === 0) {
+		save('../config/abuse8.json', mode === 'dry' && edits.length > 0 ? {run, dry: now} : {run: now});
+	}
 };
 
 if (!module.parent) {

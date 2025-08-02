@@ -348,10 +348,11 @@ const generateErrors = async (pages, errorOnly = false) => {
 			error(`\n页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
 		}
+		if (errorOnly) {
+			//
+		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
-		} else if (errorOnly && !errors.some(({message}) => message === '内链目标包含模板')) {
-			//
 		} else {
 			lintErrors[pageid] = {title, errors};
 			if (errors.some(({message}) => message === '未预期的模板参数' || message === '自身链接')) {
@@ -375,7 +376,7 @@ const main = /** @param {Api} api */ async api => {
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch), ...qsRedirects});
 				await generateErrors(pages);
-				await save('../config/lintErrors.json', lintErrors);
+				save('../config/lintErrors.json', lintErrors);
 			}
 			break;
 		}
@@ -435,7 +436,7 @@ const main = /** @param {Api} api */ async api => {
 					true,
 				);
 			}
-			await save('../config/allpages.json', apcontinue ?? {});
+			save('../config/allpages.json', apcontinue ?? {});
 			gapcontinue = apcontinue; // eslint-disable-line require-atomic-updates
 			break;
 		}
@@ -470,7 +471,7 @@ const main = /** @param {Api} api */ async api => {
 				},
 				pages = await api.revisions(qs);
 			await generateErrors(pages);
-			await save('../config/lint.json', now);
+			save('../config/lint.json', now);
 		}
 	}
 	if (hasArg.size > 0) {
@@ -491,10 +492,8 @@ const main = /** @param {Api} api */ async api => {
 		}
 		hasArg.clear();
 	}
-	await Promise.all([
-		save('../config/lintErrors.json', lintErrors),
-		save('../config/boilerplate.json', boilerplates),
-	]);
+	save('../config/lintErrors.json', lintErrors);
+	save('../config/boilerplate.json', boilerplates);
 	if (worst) {
 		info(`最耗时页面：${worst.title} (${worst.duration.toFixed(3)}ms)`);
 	}

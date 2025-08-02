@@ -35,10 +35,8 @@ const api = new Api(user, pin, url, true),
 		}
 		const newtimestamps = await api.massEdit(null, mode, '自动修复http链接');
 		const archived = require('../config/broken');
-		await Promise.all([
-			save('../config/broken.json', {...archived, ...newtimestamps}),
-			save('../config/abuse32.json', {run: dry}), // 将上一次dry run转化为实际执行
-		]);
+		save('../config/broken.json', {...archived, ...newtimestamps});
+		save('../config/abuse32.json', {run: dry}); // 将上一次dry run转化为实际执行
 		return;
 	}
 	// 以下`mode === 'dry'`
@@ -50,8 +48,8 @@ const api = new Api(user, pin, url, true),
 		pages = (await api.taggedRecentChanges('非https地址插入', date))
 			.filter(({missing, content, pageid}) => !missing && !skip.includes(pageid) && content.includes('http://'));
 	const edits = pages.length > 0 ? await exturl(pages, chat) : [];
-	await Promise.all([
-		edits.length > 0 ? api.massEdit(edits, mode, '自动修复http链接') : null,
-		save('../config/abuse32.json', edits.length > 0 ? {run, dry: now} : {run: now}),
-	]);
+	if (edits.length > 0) {
+		await api.massEdit(edits, mode, '自动修复http链接');
+	}
+	save('../config/abuse32.json', edits.length > 0 ? {run, dry: now} : {run: now});
 })();

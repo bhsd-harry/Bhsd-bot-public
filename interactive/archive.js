@@ -1,5 +1,5 @@
 'use strict';
-const {promises} = require('fs'),
+const fs = require('fs'),
 	Api = require('../lib/api'),
 	{runMode, info, save} = require('../lib/dev'),
 	{broken} = require('../lib/exturl'),
@@ -24,7 +24,7 @@ const skip = [1546];
 	} else if (mode === 'rerun') {
 		const newtimestamps = await api.massEdit(null, mode, '自动添加网页存档或标记失效链接');
 		const archived = require('../config/broken');
-		await save('../config/broken.json', {...archived, ...newtimestamps});
+		save('../config/broken.json', {...archived, ...newtimestamps});
 		return;
 	}
 	let pages, c, archive;
@@ -53,13 +53,11 @@ const skip = [1546];
 	}))).filter(Boolean);
 	try {
 		const temp = require('../config/broken-temp'); // eslint-disable-line n/no-missing-require
-		await Promise.all([
-			save('../config/broken.json', temp),
-			promises.unlink('../config/broken-temp.json'),
-		]);
+		save('../config/broken.json', temp);
+		fs.unlinkSync('../config/broken-temp.json');
 	} catch {}
-	await Promise.all([
-		c ? save('../config/archive.json', c) : null,
-		api.massEdit(edits, mode, '自动添加网页存档或标记失效链接'),
-	]);
+	if (c) {
+		save('../config/archive.json', c);
+	}
+	await api.massEdit(edits, mode, '自动添加网页存档或标记失效链接');
 })();
