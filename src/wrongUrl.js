@@ -9,23 +9,23 @@ const testRegex = /(?:https?:?|(?<=\[))\/{0,2}(https?:)\/{0,2}|(https?)(?::\/(?!
 	replaceRegex = new RegExp(testRegex, 'gu');
 
 const main = async (api = new Api(user, pin, url, true)) => {
+	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
+		({message}) => message === '错误格式的外链' || /^孤立的"https?[:/]\/"$/u.test(message),
+	));
+	if (targets.length === 0) {
+		return;
+	}
 	const mode = runMode();
-	if (!module.parent) {
-		if (mode !== 'redry') {
-			await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		}
-		if (mode === 'rerun' || mode === 'redry') {
-			await api.massEdit(null, mode, '自动修复错误格式的外链');
-			return;
-		}
+	if (mode !== 'redry') {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
+		await api.massEdit(null, mode, '自动修复错误格式的外链');
+		return;
 	}
 
 	// const params = {gsrnamespace: '0|2|3|9|10|11|12|13|14|15|275|829'};
-	const pages = await api.revisions({
-			pageids: Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-				({message}) => message === '错误格式的外链' || /^孤立的"https?[:/]\/"$/u.test(message),
-			)).map(([pageid]) => pageid),
-		}),
+	const pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)}),
 		edits = [...new Set(pages.map(({pageid}) => pageid))].map(pageid => {
 			const {content, timestamp, curtimestamp} = pages.find(({pageid: id}) => id === pageid);
 			if (!testRegex.test(content)) {

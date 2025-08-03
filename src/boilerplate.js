@@ -21,7 +21,7 @@ const update = content => {
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	// eslint-disable-next-line prefer-const
-	let mode = runMode();
+	let mode = runMode('update');
 	if (mode === 'run') {
 		// mode = 'dry';
 	}

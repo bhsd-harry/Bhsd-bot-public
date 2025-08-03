@@ -95,7 +95,7 @@ const analyze = (wikitext, pageid, ns) => {
 
 const main = async (api = new Api(user, pin, url, true), templateOnly = true) => {
 	const mode = runMode('user');
-	if (templateOnly && !module.parent) {
+	if (templateOnly) {
 		if (mode !== 'redry') {
 			await api[mode === 'dry' ? 'login' : 'csrfToken']();
 		}

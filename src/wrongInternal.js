@@ -18,15 +18,13 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	try {
 		({run, dry} = require('../config/abuse15'));
 	} catch {}
-	if (!module.parent) {
-		if (mode !== 'redry') {
-			await api[mode === 'dry' || mode === 'mzh' ? 'login' : 'csrfToken']();
-		}
-		if (mode === 'rerun' || mode === 'redry') {
-			await api.massEdit(null, mode, '自动修复误写作外链的内链');
-			save('../config/abuse15.json', {run: dry}); // 将上一次dry run转化为实际执行
-			return;
-		}
+	if (mode !== 'redry') {
+		await api[mode === 'dry' || mode === 'mzh' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
+		await api.massEdit(null, mode, '自动修复误写作外链的内链');
+		save('../config/abuse15.json', {run: dry}); // 将上一次dry run转化为实际执行
+		return;
 	}
 
 	// 1. 先获取页面

@@ -9,14 +9,12 @@ Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode('user');
-	if (!module.parent) {
-		if (mode !== 'redry') {
-			await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		}
-		if (mode === 'rerun' || mode === 'redry') {
-			await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');
-			return;
-		}
+	if (mode !== 'redry') {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
+		await api.massEdit(null, mode, '自动修复无效自封闭的HTML标签');
+		return;
 	}
 	const pages = await api.categorymembers(
 			'使用无效自封闭HTML标签的页面',

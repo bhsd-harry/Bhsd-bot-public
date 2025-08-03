@@ -280,6 +280,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 								action && actions.includes(action)
 								|| params.some(param => searchParams.has(param))
 								|| pathname === '/' && search === ''
+								|| /\/user:/iu.test(pathname)
 							)) {
 								push(errors, token, '误写作外链的内链', 'warning');
 								error('误写作外链的内链', uri.toString());

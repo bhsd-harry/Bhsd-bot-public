@@ -26,14 +26,12 @@ const addCategory = async (api, mode, allPages = []) => {
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const mode = runMode();
-	if (!module.parent) {
-		if (mode !== 'redry') {
-			await api[mode === 'dry' ? 'login' : 'csrfToken']();
-		}
-		if (mode === 'rerun' || mode === 'redry') {
-			await api.massEdit(null, mode, '自动维护使用模板样式表的模板分类');
-			return;
-		}
+	if (mode !== 'redry') {
+		await api[mode === 'dry' ? 'login' : 'csrfToken']();
+	}
+	if (mode === 'rerun' || mode === 'redry') {
+		await api.massEdit(null, mode, '自动维护使用模板样式表的模板分类');
+		return;
 	}
 	const {query} = await api.get({
 		generator: 'search',
