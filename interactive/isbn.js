@@ -37,7 +37,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			if (text.slice(startIndex, endIndex) !== excerpt) {
 				continue;
 			}
-			const mt = /^(ISBN[-:：]?[\p{Zs}\t]?)((?:\d[\p{Zs}\t-]?){4,}[\dXx])$/u.exec(excerpt);
+			const mt = /^(ISBN[-:：]?[\p{Zs}\t]*)((?:\d[\p{Zs}\t-]?){4,}[\dXx])$/u.exec(excerpt);
 			if (mt) {
 				const [, prefix, isbn] = mt,
 					preserve = /[-:：]/u.test(prefix);

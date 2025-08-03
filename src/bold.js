@@ -10,7 +10,7 @@ Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-		({message}) => message === '段落标题中的粗体',
+		({message}) => message === '章节标题中的粗体文本',
 	));
 	if (targets.length === 0) {
 		return;

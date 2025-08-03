@@ -4,7 +4,7 @@ const Api = require('../lib/api'),
 	{runMode, save} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user');
 
-const skip = [535_567],
+const skip = new Set([535_567]),
 	pageids = [];
 
 const main = async (api = new Api(user, pin, url, true)) => {
@@ -35,7 +35,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		);
 	let edits = [];
 	for (const {pageid, content, timestamp, curtimestamp, missing} of pages) {
-		if (missing || skip.includes(pageid)) {
+		if (missing || skip.has(pageid)) {
 			continue;
 		}
 		edits.push([

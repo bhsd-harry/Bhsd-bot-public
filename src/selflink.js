@@ -12,7 +12,7 @@ Parser.config = './config/moegirl';
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 		({message}) => message === '自身链接',
-	));
+	)).slice(0, 300);
 	if (targets.length === 0) {
 		return;
 	}

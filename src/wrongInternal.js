@@ -8,6 +8,7 @@ const Api = require('../lib/api'),
 const protectedPages = [
 	100_877,
 	404_396,
+	491_299,
 	629_694,
 ];
 

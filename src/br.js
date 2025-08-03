@@ -10,7 +10,7 @@ Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-		({message}) => message === '包含无效属性' || message === '同时闭合和自封闭的标签',
+		({message}) => message === '包含无效属性名的元素' || message === '同时闭合和自封闭的标签',
 	));
 	if (targets.length === 0) {
 		return;
@@ -27,7 +27,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
 	for (const {pageid, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, false, 3);
-		for (const br of root.querySelectorAll('html#br')) {
+		for (const br of root.querySelectorAll('html#br,html#wbr,html#hr')) {
 			br.closing = false;
 			const {firstChild} = br;
 			if (String(firstChild).trim() === '/') {

@@ -5,7 +5,7 @@ const fs = require('fs'),
 	{broken} = require('../lib/exturl'),
 	Interface = require('../lib/interface'),
 	{user, pin, url} = require('../config/user');
-const skip = [1546];
+const skip = new Set([1546]);
 
 (async () => {
 	const [,,, titles] = process.argv,
@@ -43,7 +43,7 @@ const skip = [1546];
 	}
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
-		if (skip.includes(pageid)) {
+		if (skip.has(pageid)) {
 			return false;
 		}
 		const [text, nBroken, nArchived, nFailed] = await broken({

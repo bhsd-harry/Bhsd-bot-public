@@ -12,13 +12,13 @@ const {performance} = require('perf_hooks'),
 	boilerplates = require('../config/boilerplate'),
 	rcend = require('../config/lint');
 const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imported,
-	skipped = new Set([
+	skip = new Set([
 		100_877,
 		110_496,
 		358_642,
 		404_396,
 	]),
-	reISBN = /isbn[-:：]?[\p{Zs}\t]?(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
+	reISBN = /isbn[-:：]?[\p{Zs}\t]*(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
 Parser.i18n = require('wikiparser-node/i18n/zh-hans');
 Parser.warning = false;
 Parser.config = require('wikiparser-node/config/moegirl');
@@ -42,6 +42,7 @@ const trTemplate = [
 		'音游曲信息/sdvx',
 		'音游曲信息/音击',
 		'音游曲信息/Groove Coaster',
+		'音游曲信息/iidx',
 		'BangdreamSongGai/Game',
 		'D4DJSongGai/Game',
 		'D4DJ Groovy Mix 历史活动模板',
@@ -58,6 +59,7 @@ const trTemplate = [
 		'星穹铁道跃迁表格',
 		'绝区零调频表格',
 		'鸣潮唤取表格',
+		'绝区零驱动盘表格',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -129,6 +131,7 @@ const trTemplate = [
 		'session_id',
 		'theme',
 		'spmid',
+		'jump_opus',
 	],
 	actions = ['history', 'info', 'watch', 'unwatch', 'rollback', 'render', 'submit', 'edit', 'raw', 'avatar'],
 	params = ['mobileaction', 'useskin', 'hidelinks', 'user'],
@@ -142,7 +145,7 @@ const trTemplate = [
 		'WUGTop',
 	].map(str => String.raw`template#Template\:${str}`).join(),
 	messages = new Set([
-		'段落标题中的粗体',
+		'章节标题中的粗体文本',
 		'同时闭合和自封闭的标签',
 		'重复的分类',
 		'无效的图片参数',
@@ -182,7 +185,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 		if (
 			missing
 			|| ns === 2
-			|| mode !== 'skipped' && skipped.has(pageid)
+			|| mode !== 'skipped' && skip.has(pageid)
 			|| /^Template:(?:Sandbox|沙盒|页面格式)\//u.test(title)
 		) {
 			delete lintErrors[pageid];
@@ -210,10 +213,11 @@ const generateErrors = async (pages, errorOnly = false) => {
 			if (!worst || duration > worst.duration) {
 				worst = {title, duration};
 			}
+			const isMA = /\{\{\s*乖离MA\s*[|}]/u.test(content);
 			errors = rawErrors
 				.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(
-					({rule, message, excerpt, severity}) =>
+					({rule, message, excerpt, severity, code}) =>
 						!(
 							rule === 'fostered-content'
 							&& (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70)))
@@ -225,14 +229,16 @@ const generateErrors = async (pages, errorOnly = false) => {
 								.test(excerpt)
 						)
 						&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
-						&& !(message === '重复参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
+						&& !(message === '重复的模板参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
 						&& !(
 							title.startsWith('三国杀')
 							&& (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning')
 						)
-						&& !(title.startsWith('幻书启世录:') && message === '未闭合的标签')
+						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
-						&& rule !== 'table-layout',
+						&& !(message === '未闭合的标签' && severity === 'warning' && isMA)
+						&& rule !== 'table-layout'
+						&& code !== 'vendorPrefix',
 				);
 			if (errors.some(({excerpt}) => excerpt.includes('/umamusume/'))) {
 				errors = errors.filter(({message}) => message !== 'URL中的全角标点');
@@ -258,7 +264,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
 							|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
 						) {
-							push(errors, token, '待修正的链接', 'warning');
+							push(errors, token, '待修正的链接', 'error');
 							error('待修正的链接', uri.toString());
 						} else if (
 							pathname === '/watch'
@@ -313,10 +319,16 @@ const generateErrors = async (pages, errorOnly = false) => {
 			}
 			const isbn = /** @type {string} */(content).matchAll(reISBN);
 			for (const {index, 0: excerpt} of isbn) {
-				const ele = root.elementFromIndex(index).parentNode;
+				const ele = root.elementFromIndex(index),
+					{parentNode} = ele;
 				if (
 					excerpt.startsWith('ISBN')
-					&& ele && !ele.matches(linkSelector) && !ele.closest(`${linkSelector},template#Template:ISBN`)
+					&& ele.type !== 'free-ext-link'
+					&& (
+						!parentNode
+						|| !parentNode.matches(linkSelector)
+						&& !parentNode.closest(`${linkSelector},template#Template:ISBN`)
+					)
 				) {
 					const {top, left} = root.posFromIndex(index);
 					errors.push({
@@ -386,11 +398,14 @@ const main = /** @param {Api} api */ async api => {
 			const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 				+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 					Object.values(lintErrors).map(({title, errors}) => {
-						errors = errors
-							.filter(({severity, code}) => severity === 'error' || code === 'unknownProperties')
-							.sort((a, b) =>
+						errors = errors.filter(
+							({severity, code}) => severity === 'error'
+								|| code === 'unknownProperties' || code === 'propertyIgnoredDueToDisplay',
+						).sort(
+							(a, b) =>
 								a.startLine - b.startLine || a.startCol - b.startCol
-								|| a.endLine - b.endLine || a.endCol - b.endCol);
+								|| a.endLine - b.endLine || a.endCol - b.endCol,
+						);
 						return errors.length > 0
 							? `|${
 								errors.length > 1 ? `rowspan=${errors.length}|` : ''
@@ -418,9 +433,10 @@ const main = /** @param {Api} api */ async api => {
 			return;
 		}
 		case 'all': {
-			const qs = {
+			const {argv: [,,, gapnamespace = 0]} = process,
+				qs = {
 					generator: 'allpages',
-					gapnamespace: 0,
+					gapnamespace,
 					gapfilterredir: 'nonredirects',
 					gaplimit: 500,
 					rvprop: 'content|contentmodel',
@@ -453,7 +469,7 @@ const main = /** @param {Api} api */ async api => {
 			break;
 		}
 		case 'skipped': {
-			const pages = await api.revisions({pageids: [...skipped], ...qsRedirects});
+			const pages = await api.revisions({pageids: [...skip], ...qsRedirects});
 			await generateErrors(pages);
 			break;
 		}
@@ -477,13 +493,17 @@ const main = /** @param {Api} api */ async api => {
 	}
 	if (hasArg.size > 0) {
 		info(`共 ${hasArg.size} 个页面包含未预期的模板参数或自身链接。`);
-		const qs = {pageids: [...hasArg], prop: 'transcludedin', tinamespace: '*', tishow: '!redirect', tilimit: 'max'},
+		const ids = [...hasArg],
+			batch = 300,
+			qs = {prop: 'transcludedin', tinamespace: '*', tishow: '!redirect', tilimit: 'max'},
 			pageids = [];
-		let q;
-		do {
-			q = await api.get({...qs, ...q?.continue});
-			pageids.push(...q.query.pages.filter(({transcludedin}) => transcludedin).map(({pageid}) => pageid));
-		} while (q.continue);
+		for (let i = 0; i < ids.length / batch; i++) {
+			let q;
+			do {
+				q = await api.get({pageids: ids.slice(i * batch, (i + 1) * batch), ...qs, ...q?.continue});
+				pageids.push(...q.query.pages.filter(({transcludedin}) => transcludedin).map(({pageid}) => pageid));
+			} while (q.continue);
+		}
 		for (const pageid of pageids) {
 			const page = lintErrors[pageid];
 			page.errors = page.errors.filter(({message}) => message !== '未预期的模板参数' && message !== '自身链接');

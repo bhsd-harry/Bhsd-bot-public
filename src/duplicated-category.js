@@ -45,7 +45,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				) {
 					continue;
 				}
-				const commonAncestor = otherCat.getAncestors().findLast(
+				const commonAncestor = otherCat.getAncestors().find(
 						ancestor => ancestors.includes(ancestor),
 					),
 					catIsChild = parentNode === commonAncestor,

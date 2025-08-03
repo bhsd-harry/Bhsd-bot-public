@@ -5,12 +5,14 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
+const skip = new Set([2266]);
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
 const main = async (api = new Api(user, pin, url, true)) => {
-	const targets = Object.entries(lintErrors)
-		.filter(([, {errors}]) => errors.some(({message}) => message === '未闭合的引号'));
+	const targets = Object.entries(lintErrors).filter(
+		([pageid, {errors}]) => !skip.has(Number(pageid)) && errors.some(({message}) => message === '未闭合的引号'),
+	);
 	if (targets.length === 0) {
 		return;
 	}

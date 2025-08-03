@@ -60,23 +60,15 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				}
 			}
 			continue;
-		} else if (missing) {
+		} else if (missing || ns === 10) {
 			continue;
 		}
-		const root = Parser.parse(content, ns === 10, 1),
+		const root = Parser.parse(content, false, 1),
 			/** @type {Parser.CommentToken[]} */
 			comments = root.querySelectorAll('comment');
 		for (const token of comments) {
 			if (residuals.has(token.innerText)) {
-				const {previousSibling, nextSibling} = token;
-				token.remove();
-				if (
-					previousSibling?.type === 'text' && previousSibling.data.endsWith('\n')
-					&& nextSibling?.type === 'text' && nextSibling.data.startsWith('\n')
-				) {
-					previousSibling.appendData(nextSibling.data.slice(1));
-					nextSibling.remove();
-				}
+				token.remove(true);
 			}
 		}
 		const text = String(root);

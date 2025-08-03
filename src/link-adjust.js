@@ -2,7 +2,7 @@
 
 const Parser = require('wikiparser-node');
 const Api = require('../lib/api');
-const {runMode, ping} = require('../lib/dev');
+const {runMode, ping, error} = require('../lib/dev');
 const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
 Parser.warning = false;
@@ -71,6 +71,7 @@ const ytParams = ['feature', 'ab_channel', 'si'],
 		'session_id',
 		'theme',
 		'spmid',
+		'jump_opus',
 	];
 
 const main = async (api = new Api(user, pin, url, true)) => {
@@ -99,6 +100,11 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			/** @type {(Parser.ExtLinkToken | Parser.MagicLinkToken)[]} */
 			links = root.querySelectorAll('ext-link,free-ext-link');
 		for (const token of links) {
+			const magicLink = token.type === 'ext-link' ? token.firstChild : token;
+			if (magicLink.querySelector('magic-word#=')) {
+				error(`页面 ${pageid} 跳过包含"{{=}}"的链接 ${String(magicLink)}`);
+				continue;
+			}
 			try {
 				let /** @type {URL} */ uri = token.getUrl();
 				if (['b23.tv', 'bili2233.cn', 'youtu.be'].includes(uri.hostname)) {
