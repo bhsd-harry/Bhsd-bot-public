@@ -39,8 +39,8 @@ const nestable = new Set(['span', 'big', 'small']),
 	const pageids = targets.map(([pageid]) => pageid),
 		pages = await api.revisions({pageids}),
 		edits = [];
-	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 8);
+	for (const {pageid, title, ns, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, ns === 10, 8);
 		if (lintErrors[pageid].errors.some(({message}) => message === '未闭合的标签')) {
 			const /** @type {Map<Parser.Token, Record<string, Parser.HtmlToken | true>>} */ unclosed = new Map();
 			for (const html of root.querySelectorAll('html[closing=false][selfClosing=false]')) {

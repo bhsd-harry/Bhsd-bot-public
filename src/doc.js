@@ -37,10 +37,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				'intitle:doc -intitle:sandbox -intitle:沙盒 -insource:includeonly',
 				{gsrnamespace: 10},
 			)).filter(({title}) => regex.test(title)),
-			edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-				const includeCats = getCategories(Parser.parse(content, true, 6));
+			edits = pages.map(({pageid, title, content, timestamp, curtimestamp}) => {
+				const includeCats = getCategories(Parser.parse(content, title, true, 6));
 				if (includeCats.length > 0) {
-					const root = Parser.parse(content, false, 6),
+					const root = Parser.parse(content, title, false, 6),
 						noincludeCats = getCategories(root),
 						repeatedCats = noincludeCats.filter(cat => includeCats.includes(cat));
 					if (repeatedCats.length > 0) {
@@ -73,8 +73,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			{gsrnamespace: 10, prop: 'categories|revisions', cllimit: 'max', clshow: '!hidden'},
 		),
 		uncat = pages.filter(({title, categories}) => !categories && regex.test(title)),
-		edits = uncat.map(({pageid, content, timestamp, curtimestamp}) => {
-			const root = Parser.parse(content, false, 1);
+		edits = uncat.map(({pageid, title, content, timestamp, curtimestamp}) => {
+			const root = Parser.parse(content, title, false, 1);
 			insertCategory(root);
 			return [pageid, content, String(root), timestamp, curtimestamp];
 		}).filter(Boolean);

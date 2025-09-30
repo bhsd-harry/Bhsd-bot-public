@@ -52,12 +52,12 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		+ '-intitle:sandbox -intitle:沙盒 -intitle:doc -incategory:使用模板样式的模板',
 		{gsrnamespace: 10, prop: 'revisions|categories', cllimit: 'max', clcategories: 'Category:使用模板样式的模板'},
 	)).filter(({categories}) => !categories);
-	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const included = Parser.parse(content, true, 1);
+	const edits = pages.map(({pageid, title, content, timestamp, curtimestamp}) => {
+		const included = Parser.parse(content, title, true, 1);
 		if (!included.querySelector('ext#templatestyles')) {
 			return null;
 		}
-		const root = Parser.parse(content, false, 1),
+		const root = Parser.parse(content, title, false, 1),
 			noinclude = root.querySelectorAll('noinclude')
 				.find(token => /<\/noinclude(?:\s[^>]*)?>/iu.test(String(token)));
 		if (noinclude) {

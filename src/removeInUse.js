@@ -93,8 +93,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		return;
 	}
 	const pages = await api.revisions({pageids, inuse: true});
-	const edits = pages.map(({pageid, content, timestamp, curtimestamp}) => {
-		const root = Parser.parse(content, false, 2),
+	const edits = pages.map(({pageid, title, content, timestamp, curtimestamp}) => {
+		const root = Parser.parse(content, title, false, 2),
 			/** @type {Parser.TranscludeToken[]} */ templates = root.querySelectorAll(inuse);
 		for (const token of templates) {
 			const time = parseTime(token) * 60 * 1e3,

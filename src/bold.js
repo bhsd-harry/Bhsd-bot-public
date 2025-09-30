@@ -29,8 +29,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 7);
+	for (const {pageid, title, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, false, 7);
 		for (const quote of root.querySelectorAll('heading-title quote[bold]')) {
 			if (quote.closest('heading-title,ext').type === 'ext') {
 				continue;

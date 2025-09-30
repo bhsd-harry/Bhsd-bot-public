@@ -32,8 +32,8 @@ Parser.warning = false;
 	const pageids = targets.map(([pageid]) => pageid),
 		pages = await api.revisions({pageids}),
 		edits = [];
-	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 4),
+	for (const {pageid, title, ns, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, ns === 10, 4),
 			/** @type {Parser.AttributeToken[]} */
 			styles = root.querySelectorAll('ext-attr#style,html-attr#style,table-attr#style');
 		for (const style of styles) {

@@ -36,8 +36,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 3),
+	for (const {pageid, title, ns, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, ns === 10, 3),
 			/** @type {Parser.ExtToken[]} */
 			exts = root.querySelectorAll('ext#sm2');
 		for (const ext of exts) {

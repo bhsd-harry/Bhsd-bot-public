@@ -30,8 +30,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {ns, pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 4);
+	for (const {ns, pageid, title, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, ns === 10, 4);
 		for (const attr of root.querySelectorAll('ext-attr,html-attr,table-attr')) {
 			if (attr.value === true) {
 				continue;

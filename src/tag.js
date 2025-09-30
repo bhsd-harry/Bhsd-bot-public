@@ -21,8 +21,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			mode === 'user' ? {gcmnamespace: 2} : undefined,
 		),
 		{html: [tags]} = Parser.getConfig();
-	const list = pages.map(({pageid, ns, content, timestamp, curtimestamp}) => {
-		const root = Parser.parse(content, ns === 10, 3),
+	const list = pages.map(({pageid, ns, title, content, timestamp, curtimestamp}) => {
+		const root = Parser.parse(content, title, ns === 10, 3),
 			tokens = root.querySelectorAll('html[selfClosing]').filter(({name}) => tags.includes(name));
 		if (tokens.length === 0) {
 			error(`页面 ${pageid} 未找到无效自封闭的HTML标签！`);

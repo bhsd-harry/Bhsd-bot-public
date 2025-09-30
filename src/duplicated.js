@@ -8,8 +8,8 @@ Parser.warning = false;
 Parser.config = './config/moegirl';
 const skip = new Set([164_621]);
 
-const analyze = (wikitext, pageid, ns) => {
-	let root = Parser.parse(wikitext, ns === 10, 2);
+const analyze = (wikitext, pageid, ns, title) => {
+	let root = Parser.parse(wikitext, title, ns === 10, 2);
 	const comments = root.querySelectorAll('[duplication]:is(template, magic-word#invoke) comment[closed]')
 		.filter(({firstChild: {data}}) => data.includes('<!--'));
 	for (const comment of comments) {
@@ -19,7 +19,7 @@ const analyze = (wikitext, pageid, ns) => {
 			previousSibling.deleteData(-3, 3);
 		}
 	}
-	root = Parser.parse(String(root), ns === 10, 2);
+	root = Parser.parse(String(root), title, ns === 10, 2);
 	let found = false;
 	const templates = root.querySelectorAll('template,magic-word#invoke');
 	for (let token of templates) {
@@ -120,7 +120,7 @@ const main = async (api = new Api(user, pin, url, true), templateOnly = true) =>
 		if (skip.has(pageid)) {
 			return null;
 		}
-		const [text, found] = analyze(content, pageid, ns);
+		const [text, found] = analyze(content, pageid, ns, title);
 		if (text === content) {
 			if (!found) {
 				error(`页面 ${pageid} ${title.replaceAll(' ', '_')} 找不到重复的模板参数！`);

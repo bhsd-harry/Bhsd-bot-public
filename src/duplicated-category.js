@@ -25,8 +25,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 6),
+	for (const {pageid, title, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, false, 6),
 			/** @type {Parser.CategoryToken[]} */
 			cats = root.querySelectorAll('category:not(":has(comment)")');
 		for (let i = 0; i < cats.length; i++) {

@@ -175,7 +175,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 		if (missing) {
 			delete boilerplates[title];
 		} else {
-			boilerplates[title] = update(content);
+			boilerplates[title] = update(content, title);
 		}
 	}
 	const residuals = new Set(Object.values(boilerplates).flat());
@@ -202,7 +202,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 		let errors;
 		try {
 			const start = performance.now(),
-				root = Parser.parse(content, ns === 10),
+				root = Parser.parse(content, title, ns === 10),
 				text = String(root);
 			if (text !== content) {
 				error(`\n${pageid}在解析过程中修改了原始文本！`);
@@ -213,7 +213,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 			if (!worst || duration > worst.duration) {
 				worst = {title, duration};
 			}
-			const isMA = /\{\{\s*乖离MA\s*[|}]/u.test(content);
+			const isMA = /\{\{\s*乖离MA\s*[|}]/u.test(content) || title.startsWith('少女前线:');
 			errors = rawErrors
 				.map(e => ({...e, excerpt: text.slice(Math.max(0, e.startIndex - 30), e.startIndex + 70)}))
 				.filter(
@@ -237,6 +237,10 @@ const generateErrors = async (pages, errorOnly = false) => {
 						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 						&& !(message === '未闭合的标签' && severity === 'warning' && isMA)
+						&& !(
+							message === '重复的图片caption参数' && severity === 'warning'
+							&& /\[\[[^[\]{}<>|]+\.mp3\s*\|/u.test(excerpt)
+						)
 						&& rule !== 'table-layout'
 						&& code !== 'vendorPrefix',
 				);

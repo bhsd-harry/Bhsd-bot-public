@@ -77,7 +77,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		});
 	const pageids = [...new Set(pages.map(({pageid}) => pageid))],
 		edits = pageids.map(pageid => pages.find(({pageid: id}) => id === pageid))
-			.map(({pageid, content, timestamp, curtimestamp}) => {
+			.map(({pageid, title, content, timestamp, curtimestamp}) => {
 				const urls = content.match(regex);
 				if (!urls) {
 					// error(`页面 ${pageid} 找不到图片链接！`);
@@ -89,7 +89,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 						text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
 					}
 				}
-				const parsed = Parser.parse(text, false, 2);
+				const parsed = Parser.parse(text, title, false, 2);
 				if (!parsed.querySelector(norefererTemplates)) {
 					insert(parsed);
 				} else if (mode === 'noreferer') {

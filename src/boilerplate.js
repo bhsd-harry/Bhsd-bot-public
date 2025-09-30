@@ -9,8 +9,8 @@ const {user, pin, url} = require('../config/user'),
 Parser.warning = false;
 Parser.config = './config/moegirl';
 
-const update = content => {
-	const root = Parser.parse(content, true, 1),
+const update = (content, title) => {
+	const root = Parser.parse(content, title, true, 1),
 		/** @type {Parser.CommentToken[]} */
 		comments = root.querySelectorAll('comment');
 	return [
@@ -56,14 +56,14 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				if (missing) {
 					delete boilerplates[title];
 				} else {
-					boilerplates[title] = update(content);
+					boilerplates[title] = update(content, title);
 				}
 			}
 			continue;
 		} else if (missing || ns === 10) {
 			continue;
 		}
-		const root = Parser.parse(content, false, 1),
+		const root = Parser.parse(content, title, false, 1),
 			/** @type {Parser.CommentToken[]} */
 			comments = root.querySelectorAll('comment');
 		for (const token of comments) {

@@ -42,12 +42,12 @@ const skip = new Set([1546]);
 		[pages] = response;
 	}
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
-	const edits = (await Promise.all(pages.map(async ({content, pageid, timestamp, curtimestamp}) => {
+	const edits = (await Promise.all(pages.map(async ({content, pageid, title, timestamp, curtimestamp}) => {
 		if (skip.has(pageid)) {
 			return false;
 		}
 		const [text, nBroken, nArchived, nFailed] = await broken({
-			content, pageid, timestamp, curtimestamp,
+			content, pageid, title, timestamp, curtimestamp,
 		}, chat, true, api);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(Boolean);

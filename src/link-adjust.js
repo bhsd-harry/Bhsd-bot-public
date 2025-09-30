@@ -95,8 +95,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, ns, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, ns === 10, 9),
+	for (const {pageid, title, ns, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, ns === 10, 9),
 			/** @type {(Parser.ExtLinkToken | Parser.MagicLinkToken)[]} */
 			links = root.querySelectorAll('ext-link,free-ext-link');
 		for (const token of links) {

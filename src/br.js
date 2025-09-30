@@ -25,8 +25,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const edits = [],
 		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
-	for (const {pageid, content, timestamp, curtimestamp} of pages) {
-		const root = Parser.parse(content, false, 3);
+	for (const {pageid, title, content, timestamp, curtimestamp} of pages) {
+		const root = Parser.parse(content, title, false, 3);
 		for (const br of root.querySelectorAll('html#br,html#wbr,html#hr')) {
 			br.closing = false;
 			const {firstChild} = br;

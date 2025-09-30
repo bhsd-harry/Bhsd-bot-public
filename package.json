@@ -17,10 +17,10 @@
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.27.0"
+		"wikiparser-node": "^1.29.0"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^1.1.0",
+		"@bhsd/code-standard": "^1.2.0",
 		"@stylistic/eslint-plugin": "^3.1.0",
 		"@types/node": "^24.0.10",
 		"@types/request": "^2.48.12",

@@ -67,14 +67,20 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	}
 	const regex = new RegExp(String.raw`\[{2}((?:https?:)?//${urlRegex}+)(.*?)\]{1,2}`, 'giu'),
 		edits = pages.map(
-			({content, pageid, timestamp, curtimestamp}) =>
+			({content, pageid, title, timestamp, curtimestamp}) =>
 				[
 					pageid,
 					content,
-					wikiUrl.replace(content.replace(
-						regex,
-						(_, p1, p2) => `[${p1}${p2.replace(/^\s*\|/u, p => p.length === 1 ? ' ' : p.slice(0, -1))}]`,
-					), pageid),
+					wikiUrl.replace(
+						content.replace(
+							regex,
+							(_, p1, p2) => `[${p1}${
+								p2.replace(/^\s*\|/u, p => p.length === 1 ? ' ' : p.slice(0, -1))
+							}]`,
+						),
+						title,
+						pageid,
+					),
 					timestamp,
 					curtimestamp,
 				],

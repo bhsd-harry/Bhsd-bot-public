@@ -12,6 +12,7 @@
 		],
 		"h1": 2,
 		"invalid-gallery": 2,
+		"invalid-url": 2,
 		"lonely-apos": [
 			2,
 			{
@@ -21,7 +22,7 @@
 		"lonely-bracket": [
 			2,
 			{
-				"double": 0,
+				"double": 2,
 				"single": 1
 			}
 		],
@@ -69,6 +70,6 @@
 			}
 		],
 		"url-encoding": 2,
-		"var-anchor": 2
+		"var-anchor": 0
 	}
 }

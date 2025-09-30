@@ -36,7 +36,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		for (const {title: t, fragment = ''} of redirects) {
 			Parser.redirects.set(t, title + (fragment && `#${fragment}`));
 		}
-		const root = Parser.parse(content, false, 6);
+		const root = Parser.parse(content, title, false, 6);
 		for (const token of root.links ?? []) {
 			if (token.type === 'ext-link' || token.type === 'free-ext-link') {
 				continue;
