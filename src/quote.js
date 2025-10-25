@@ -13,11 +13,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(
 		([pageid, {errors}]) => !skip.has(Number(pageid)) && errors.some(({message}) => message === '未闭合的引号'),
 	);
-	if (targets.length === 0) {
+	const mode = runMode();
+	if (targets.length === 0 && mode !== 'redry') {
 		return;
 	}
-	// eslint-disable-next-line prefer-const
-	let mode = runMode();
 	if (mode === 'run') {
 		// mode = 'dry';
 	}

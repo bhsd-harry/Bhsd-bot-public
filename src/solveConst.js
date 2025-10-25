@@ -11,11 +11,10 @@ Parser.config = './config/moegirl';
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors)
 		.filter(([, {errors}]) => errors.some(({message}) => message === '未预期的模板参数'));
-	if (targets.length === 0) {
+	const mode = runMode();
+	if (targets.length === 0 && mode !== 'redry') {
 		return;
 	}
-	// eslint-disable-next-line prefer-const
-	let mode = runMode();
 	if (mode === 'run') {
 		// mode = 'dry';
 	}

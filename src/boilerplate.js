@@ -20,15 +20,14 @@ const update = (content, title) => {
 };
 
 const main = async (api = new Api(user, pin, url, true)) => {
-	// eslint-disable-next-line prefer-const
-	let mode = runMode('update');
+	const mode = runMode('update');
 	if (mode === 'run') {
 		// mode = 'dry';
 	}
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 		({message}) => message === '预加载残留',
 	));
-	if (mode !== 'update' && targets.length === 0) {
+	if (mode !== 'update' && mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {

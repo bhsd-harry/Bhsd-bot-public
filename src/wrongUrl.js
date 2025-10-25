@@ -12,10 +12,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 		({message}) => message === '错误格式的外链' || /^孤立的"https?[:/]\/"$/u.test(message),
 	));
-	if (targets.length === 0) {
+	const mode = runMode();
+	if (targets.length === 0 && mode !== 'redry') {
 		return;
 	}
-	const mode = runMode();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}

@@ -14,10 +14,10 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 			({message, severity}) => message === '无效的图片参数' || severity === 'error' && regex.test(message),
 		));
-	if (targets.length === 0) {
+	const mode = runMode();
+	if (targets.length === 0 && mode !== 'redry') {
 		return;
 	}
-	const mode = runMode();
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
