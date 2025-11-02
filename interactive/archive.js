@@ -39,7 +39,6 @@ const skip = new Set([1546]);
 	} else {
 		const response = await api.categorymembers('带有失效链接的条目', archive, Number(titles) || 5);
 		[pages, c] = response;
-		[pages] = response;
 	}
 	info(c ? `下次检查从 ${c.gcmcontinue} 开始。` : '已检查完毕！');
 	const edits = (await Promise.all(pages.map(async ({content, pageid, title, timestamp, curtimestamp}) => {

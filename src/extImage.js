@@ -38,7 +38,6 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		return;
 	}
 
-	// eslint-disable-next-line no-unused-vars
 	const searchHttps = site => api.search(`insource:"https://${site}"`, {
 			gsrnamespace: '0|9|10|11|12|13|14|15|275|829',
 		}),
