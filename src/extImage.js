@@ -60,7 +60,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	const search = mode === 'noreferer' ? searchHttp : searchHttps,
 		regex = mode === 'noreferer' ? regexHttp : regexHttps;
 	// i[0-2].hdslb.com或ww[1-4].sinaimg.cn
-	// const pages = (await Promise.all([ // eslint-disable-line unicorn/no-useless-spread
+	// const pages = (await Promise.all([
 	// ...new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)),
 
 	// ...new Array(4).fill().map((_, i) => _search(`ww${i + 1}.sinaimg.cn`)),

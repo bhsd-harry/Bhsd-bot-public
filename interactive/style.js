@@ -44,7 +44,6 @@ Parser.warning = false;
 					.test(value)
 			) {
 				const newValue = value.replace(
-					// eslint-disable-next-line @stylistic/max-len
 					/^\s*;\s*|(?<=^|;)\s*(?:align\s*:[^;]+;?|text-align\s*:\s*;)|\b\s+padding:\.5em(?=; padding:\.5em)/giu,
 					'',
 				).replace(/\bwidth\s*=/iu, 'width:')

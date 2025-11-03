@@ -2,6 +2,7 @@
 	"fix": false,
 	"computeEditInfo": false,
 	"rules": {
+		"arg-in-ext": 2,
 		"bold-header": 2,
 		"format-leakage": 2,
 		"fostered-content": [
