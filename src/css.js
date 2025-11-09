@@ -12,7 +12,7 @@ const addCategory = async (api, mode, allPages = []) => {
 		for (const {pageid, ns} of pages) {
 			await api.edit({
 				pageid,
-				appendtext: `\n/* [[分类:在${ns === 0 ? '主' : '模板'}名字空间下的CSS页面]] */`,
+				appendtext: `\n/* [[分类:在${ns === 0 ? '主' : '模板'}命名空间下的CSS页面]] */`,
 				summary: '自动维护模板样式表分类',
 			});
 		}
@@ -40,9 +40,9 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		prop: 'categories',
 		cllimit: 'max',
 		gsrsearch: 'contentmodel:"sanitized-css" -intitle:sandbox -intitle:沙盒'
-			+ ' -incategory:在模板名字空间下的CSS页面 -incategory:在主名字空间下的CSS页面'
+			+ ' -incategory:在模板命名空间下的CSS页面 -incategory:在主命名空间下的CSS页面'
 			+ ' -incategory:偶像大师模板CSS -incategory:"赛马娘 Pretty Derby模板CSS"',
-		clcategories: 'Category:在模板名字空间下的CSS页面|Category:在主名字空间下的CSS页面'
+		clcategories: 'Category:在模板命名空间下的CSS页面|Category:在主命名空间下的CSS页面'
 			+ '|Category:偶像大师模板CSS|Category:赛马娘 Pretty Derby模板CSS',
 	});
 	let pages = query?.pages;
