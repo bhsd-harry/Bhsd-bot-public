@@ -4,8 +4,11 @@ const Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const spams = [
 		'*.taobao.com', '*.tmall.com', '*.fanbox.cc', '*.modian.com', 'pan.baidu.com', '*.popiask.cn', '*.peing.net',

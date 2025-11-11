@@ -3,10 +3,13 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{runMode, info} = require('../lib/dev'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
-const addCategory = async (api, mode, allPages = []) => {
+const addCategory = async (api, mode, allPages = []) => { // eslint-disable-line no-unused-vars
 	const pages = allPages.filter(({categories}) => !categories);
 	if (mode !== 'dry') {
 		for (const {pageid, ns} of pages) {
@@ -33,6 +36,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		await api.massEdit(null, mode, '自动维护使用模板样式表的模板分类');
 		return;
 	}
+	// eslint-disable-next-line @stylistic/multiline-comment-style
+	/*
 	const {query} = await api.get({
 		generator: 'search',
 		gsrlimit: 500,
@@ -47,7 +52,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	});
 	let pages = query?.pages;
 	await addCategory(api, mode, pages);
-	pages = (await api.search(
+	*/
+	const pages = (await api.search(
 		'insource:"templatestyles src" '
 		+ '-intitle:sandbox -intitle:沙盒 -intitle:doc -incategory:使用模板样式的模板',
 		{gsrnamespace: 10, prop: 'revisions|categories', cllimit: 'max', clcategories: 'Category:使用模板样式的模板'},

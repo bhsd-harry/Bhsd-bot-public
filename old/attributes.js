@@ -3,8 +3,11 @@ const {runMode, error} = require('../lib/dev'),
 	Parser = require('wikiparser-node'),
 	Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const target = 'cellspacing';
 // const target = 'flashmp3';

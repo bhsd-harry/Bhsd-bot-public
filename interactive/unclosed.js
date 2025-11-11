@@ -5,8 +5,11 @@ const Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
-Parser.config = './config/moegirl';
-Parser.warning = false;
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const nestable = new Set(['span', 'big', 'small']),
 	skip = new Set([231_651, 237_081, 237_973, 238_289, 242_567, 243_737, 248_355, 253_129, 253_789, 255_749, 290_730]);

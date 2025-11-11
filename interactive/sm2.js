@@ -9,8 +9,11 @@ const {user, pin, url} = require('../config/user'),
 const [,,, ...ids] = process.argv,
 	skip = new Set();
 config.ext.push('sm2');
-Parser.warning = false;
-Parser.config = config;
+Object.assign(Parser, {
+	warning: false,
+	config,
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = ids.length === 0

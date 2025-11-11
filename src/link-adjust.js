@@ -5,8 +5,11 @@ const Api = require('../lib/api');
 const {runMode, ping, error} = require('../lib/dev');
 const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 /** @link https://github.com/lihaohong6/MGP-bots/blob/master/bots/link_adjust.py */
 const ytParams = ['feature', 'ab_channel', 'si'],

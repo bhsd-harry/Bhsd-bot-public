@@ -5,8 +5,11 @@ const Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
-Parser.config = './config/moegirl';
-Parser.warning = false;
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 (async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(

@@ -3,8 +3,11 @@ const Api = require('../lib/api'),
 	{runMode, error, info} = require('../lib/dev'),
 	Parser = require('wikiparser-node'),
 	{user, pin, url} = require('../config/user');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const protectedPages = [9658, 33_803, 44_832],
 	age = 1e3 * 86_400 * 7, // 一周

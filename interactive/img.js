@@ -10,8 +10,11 @@ const [,,, ...ids] = process.argv,
 	skip = new Set([389_682, 436_605]);
 config.ext = config.ext.filter(t => t !== 'img');
 config.html[2].push('img');
-Parser.warning = false;
-Parser.config = config;
+Object.assign(Parser, {
+	warning: false,
+	config,
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = ids.length === 0

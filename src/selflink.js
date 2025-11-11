@@ -6,8 +6,11 @@ const Api = require('../lib/api');
 const {runMode} = require('../lib/dev');
 const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(

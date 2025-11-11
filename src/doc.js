@@ -3,8 +3,11 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	{runMode} = require('../lib/dev'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const regex = /\/doc(?:$|\/)/u;
 

@@ -19,10 +19,14 @@ const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imp
 		404_396,
 	]),
 	reISBN = /isbn[-:：]?[\p{Zs}\t]*(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
-Parser.i18n = require('wikiparser-node/i18n/zh-hans');
-Parser.warning = false;
-Parser.config = require('wikiparser-node/config/moegirl');
-Parser.lintConfig = require('../.wikilintrc.json');
+Object.assign(Parser, {
+	i18n: require('wikiparser-node/i18n/zh-hans'),
+	warning: false,
+	config: require('wikiparser-node/config/moegirl'),
+	lintConfig: require('../.wikilintrc.json'),
+	viewOnly: true,
+	internal: true,
+});
 
 const mode = runMode(['upload', 'all', 'search', 'dry-upload', 'skipped']),
 	hasArg = new Set();
@@ -60,6 +64,7 @@ const trTemplate = [
 		'绝区零调频表格',
 		'鸣潮唤取表格',
 		'绝区零驱动盘表格',
+		'BASkillIcons1',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -145,10 +150,10 @@ const trTemplate = [
 		'WUGTop',
 	].map(str => String.raw`template#Template\:${str}`).join(),
 	messages = new Set([
-		'章节标题中的粗体文本',
+		'章节标题中的加粗文本',
 		'同时闭合和自封闭的标签',
 		'重复的分类',
-		'无效的图片参数',
+		'无效的图像参数',
 		'未闭合的引号',
 	]);
 
@@ -179,9 +184,9 @@ const generateErrors = async (pages, errorOnly = false) => {
 		}
 	}
 	const residuals = new Set(Object.values(boilerplates).flat());
-	for (let i = 0; i < pages.length; i++) {
+	for (let i = 0; i < pages.length;) {
 		const {ns, pageid, title, content, missing, redirects = []} = pages[i];
-		refreshStdout(`${i} ${title}`);
+		refreshStdout(`${++i} ${title}`);
 		if (
 			missing
 			|| ns === 2
@@ -228,7 +233,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 							&& /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u
 								.test(excerpt)
 						)
-						&& !(message === '多余的fragment' && /#\s*(?:\||\]\])/u.test(excerpt))
+						&& !(message === '无用的片段' && /#\s*(?:\||\]\])/u.test(excerpt))
 						&& !(message === '重复的模板参数' && /(?<!\{)\{\{\s*c\s*\}\}/iu.test(excerpt))
 						&& !(
 							title.startsWith('三国杀')
@@ -237,10 +242,7 @@ const generateErrors = async (pages, errorOnly = false) => {
 						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 						&& !(message === '未闭合的标签' && severity === 'warning' && isMA)
-						&& !(
-							message === '重复的图片caption参数' && severity === 'warning'
-							&& /\[\[[^[\]{}<>|]+\.mp3\s*\|/u.test(excerpt)
-						)
+						&& !(message === '重复的图像caption参数' && severity === 'warning' && /\.mp3\s*\|/u.test(excerpt))
 						&& rule !== 'table-layout'
 						&& code !== 'vendorPrefix',
 				);

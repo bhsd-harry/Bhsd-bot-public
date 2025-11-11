@@ -5,14 +5,17 @@ const Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
-Parser.config = './config/moegirl';
-Parser.warning = false;
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url)) => {
 	const mode = runMode(),
 		selectedErrors = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(error => {
 			const {message, excerpt} = error;
-			if (message === '未匹配的闭合标签') {
+			if (message === '未匹配的结束标签') {
 				const mt = /(<\/\w+>)[^<\n]+\1$/u.exec(excerpt);
 				if (mt) {
 					error.tag = mt[1].slice(2, -1).toLowerCase();
@@ -67,7 +70,7 @@ const main = async (api = new Api(user, pin, url)) => {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
-	await api.massEdit(edits, mode, '自动修复未匹配的HTML闭合标签');
+	await api.massEdit(edits, mode, '自动修复未匹配的HTML结束标签');
 };
 
 if (!module.parent) {

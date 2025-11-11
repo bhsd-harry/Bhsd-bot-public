@@ -6,8 +6,11 @@ const {runMode, save} = require('../lib/dev');
 const {user, pin, url} = require('../config/user'),
 	/** @type {Record<string, string[]>} */ boilerplates = require('../config/boilerplate'),
 	lintErrors = require('../config/lintErrors');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const update = (content, title) => {
 	const root = Parser.parse(content, title, true, 1),

@@ -4,8 +4,11 @@ const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{error, runMode} = require('../lib/dev'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 const skip = new Set([164_621]);
 
 const analyze = (wikitext, pageid, ns, title) => {

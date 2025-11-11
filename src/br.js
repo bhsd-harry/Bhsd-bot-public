@@ -5,12 +5,15 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-		({message}) => message === '包含无效属性名的元素' || message === '同时闭合和自封闭的标签',
+		({message}) => message === '包含无效属性名称的元素' || message === '同时闭合和自封闭的标签',
 	));
 	const mode = runMode();
 	if (targets.length === 0 && mode !== 'redry') {

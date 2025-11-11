@@ -5,8 +5,11 @@ const Api = require('../lib/api'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	{runMode, urlRegex} = require('../lib/dev');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const regexHttps = new RegExp(
 	String.raw`https://(?:i\d\.hdslb\.com|w[wx]\d\.sinaimg\.cn)/${

@@ -27,6 +27,15 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		save('../config/abuse15.json', {run: dry}); // 将上一次dry run转化为实际执行
 		return;
 	}
+	const wikiUrl = new WikiUrl(
+		mode === 'mzh'
+			? {'mzh.moegirl.org.cn': ''}
+			: {
+				'zh.moegirl.org.cn': '',
+				'commons.moegirl.org.cn': 'cm:',
+			},
+		'/',
+	);
 
 	// 1. 先获取页面
 	// const last = new Date(run);
@@ -53,15 +62,6 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	const pages = queries.flat().filter(({pageid}) => !protectedPages.includes(pageid));
 
 	// 2. 再进行修复
-	const wikiUrl = new WikiUrl(
-		mode === 'mzh'
-			? {'mzh.moegirl.org.cn': ''}
-			: {
-				'zh.moegirl.org.cn': '',
-				'commons.moegirl.org.cn': 'cm:',
-			},
-		'/',
-	);
 	if (mode === 'mzh') {
 		mode = 'dry';
 	}
@@ -78,8 +78,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 								p2.replace(/^\s*\|/u, p => p.length === 1 ? ' ' : p.slice(0, -1))
 							}]`,
 						),
-						title,
 						pageid,
+						title,
 					),
 					timestamp,
 					curtimestamp,

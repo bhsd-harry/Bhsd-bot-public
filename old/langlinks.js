@@ -27,8 +27,11 @@ const config = {
 	mode = runMode(),
 	protectedPages = {zh: ['Category:即将删除的页面']},
 	langs = ['ja', 'en', 'zh'];
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 Parser.getConfig();
 Parser.config.interwiki.push(...langs);
 

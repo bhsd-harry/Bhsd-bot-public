@@ -6,13 +6,16 @@ const damerauLevenshtein = require('talisman/metrics/damerau-levenshtein'),
 	{user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	Parser = require('wikiparser-node');
-Parser.warning = false;
-Parser.config = './config/moegirl';
+Object.assign(Parser, {
+	warning: false,
+	config: './config/moegirl',
+	internal: true,
+});
 
 const main = async (api = new Api(user, pin, url, true)) => {
-	const regex = /^(?:重复的图片[a-z]+|冲突的图片框架)参数$/u,
+	const regex = /^(?:重复的图像[a-z]+|冲突的图像框架)参数$/u,
 		targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
-			({message, severity}) => message === '无效的图片参数' || severity === 'error' && regex.test(message),
+			({message, severity}) => message === '无效的图像参数' || severity === 'error' && regex.test(message),
 		));
 	const mode = runMode();
 	if (targets.length === 0 && mode !== 'redry') {
@@ -22,7 +25,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
 	if (mode === 'rerun' || mode === 'redry') {
-		await api.massEdit(null, mode, '自动移除重复的图片参数');
+		await api.massEdit(null, mode, '自动移除重复的图像参数');
 		return;
 	}
 	const edits = [],
@@ -133,7 +136,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
-	await api.massEdit(edits, mode, '自动移除重复的图片参数');
+	await api.massEdit(edits, mode, '自动移除重复的图像参数');
 };
 
 if (!module.parent) {

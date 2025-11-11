@@ -5,7 +5,10 @@ const Api = require('../lib/api'),
 	{contentLength, info, error, save} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
 	api = new Api(user, pin, url);
-Parser.warning = false;
+Object.assign(Parser, {
+	warning: false,
+	internal: true,
+});
 
 const _generateSelector = titles => titles.map(str => String.raw`template#Template\:${str}`).join();
 
