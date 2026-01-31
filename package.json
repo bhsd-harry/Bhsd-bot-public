@@ -5,32 +5,32 @@
 	"author": "Bhsd",
 	"private": true,
 	"engines": {
-		"node": "^24.11.0"
+		"node": "^24.14.0"
 	},
 	"scripts": {
 		"lint:ts": "eslint --cache .",
 		"lint": "npm run lint:ts"
 	},
 	"dependencies": {
-		"@bhsd/nodejs": "^0.1.0",
-		"@cypress/request": "^3.0.9",
+		"@bhsd/nodejs": "^0.1.1",
+		"@cypress/request": "^3.0.10",
 		"talisman": "^1.1.4",
 		"tongwen-dict": "^1.0.2",
 		"wayback-machine": "^0.2.1",
-		"wikiparser-node": "^1.35.0"
+		"wikiparser-node": "^1.36.0"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^1.4.0",
-		"@stylistic/eslint-plugin": "^5.5.0",
-		"@types/node": "^24.10.1",
+		"@bhsd/code-standard": "^2.1.0",
+		"@stylistic/eslint-plugin": "^5.10.0",
+		"@types/node": "^24.11.0",
 		"@types/request": "^2.48.13",
-		"eslint": "^9.39.1",
+		"eslint": "^9.39.4",
 		"eslint-plugin-eslint-comments": "^3.2.0",
-		"eslint-plugin-jsdoc": "^61.2.1",
-		"eslint-plugin-jsonc": "^2.21.0",
-		"eslint-plugin-n": "^17.23.1",
+		"eslint-plugin-jsdoc": "^62.7.1",
+		"eslint-plugin-jsonc": "^3.1.1",
+		"eslint-plugin-n": "^17.24.0",
 		"eslint-plugin-promise": "^7.2.1",
-		"eslint-plugin-regexp": "^2.10.0",
-		"eslint-plugin-unicorn": "^62.0.0"
+		"eslint-plugin-regexp": "^3.1.0",
+		"eslint-plugin-unicorn": "^63.0.0"
 	}
 }

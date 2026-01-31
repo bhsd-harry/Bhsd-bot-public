@@ -65,6 +65,7 @@ const trTemplate = [
 		'鸣潮唤取表格',
 		'绝区零驱动盘表格',
 		'BASkillIcons1',
+		'冥凰作品归档',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -439,7 +440,7 @@ const main = /** @param {Api} api */ async api => {
 			return;
 		}
 		case 'all': {
-			const {argv: [,,, gapnamespace = 0]} = process,
+			const [,,, gapnamespace = 0] = process.argv,
 				qs = {
 					generator: 'allpages',
 					gapnamespace,
@@ -464,7 +465,7 @@ const main = /** @param {Api} api */ async api => {
 			break;
 		}
 		case 'search': {
-			let {argv: [,,, q]} = process;
+			let [,,, q] = process.argv;
 			if (!q) {
 				throw new RangeError('缺失搜索字符串！');
 			}

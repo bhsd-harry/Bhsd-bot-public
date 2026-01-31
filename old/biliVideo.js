@@ -16,10 +16,10 @@ const Api = require('../lib/api'),
 		await api.massEdit(null, mode);
 		return;
 	}
-	const {query: {usercontribs}} = await api.get({
+	const {usercontribs} = (await api.get({
 		list: 'usercontribs', uclimit: 'max', ucuser: 'AnnAngela-abot', ucnamespace: 0, ucprop: 'ids|comment',
 		uctag: '发现失效视频',
-	});
+	})).query;
 	const uc = usercontribs
 			.filter(({comment}) => new RegExp(String.raw`^发现失效视频：(?:\w+: ${mistakes[mistake]}、?)+$`).test(comment)),
 		pageids = uc.map(({pageid}) => pageid);

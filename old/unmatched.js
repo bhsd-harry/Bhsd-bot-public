@@ -49,7 +49,7 @@ const main = async (api = new Api(user, pin, url)) => {
 					continue;
 				}
 			}
-			const {parentNode: {childNodes}} = html,
+			const {childNodes} = html.parentNode,
 				siblings = childNodes.slice(childNodes.indexOf(html) + 1),
 				i = siblings.findIndex(({type, name}) => type === 'html' && name === html.name),
 				between = siblings.slice(0, i),
