@@ -8,7 +8,6 @@ const {performance} = require('perf_hooks'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
 	{update} = require('../src/boilerplate'),
 	{user, pin, url} = require('../config/user'),
-	lintErrors = require('../config/lintErrors'),
 	boilerplates = require('../config/boilerplate'),
 	rcend = require('../config/lint');
 const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imported,
@@ -175,7 +174,7 @@ const push = /** @param {imported.Token} token */ (errors, token, message, sever
 		excerpt: String(token),
 	});
 };
-const generateErrors = async (pages, errorOnly = false) => {
+const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 	const boilerplatePages = pages.filter(({title}) => /^Template:页面格式\/(?:.(?!\/doc$))+$/u.test(title));
 	for (const {title, content, missing} of boilerplatePages) {
 		if (missing) {
@@ -258,118 +257,131 @@ const generateErrors = async (pages, errorOnly = false) => {
 					error(e.message, pageid);
 				}
 			}
-			const noReferer = root.querySelector(norefererTemplates);
-			let hasSelfLink = false;
-			for (const token of root.links ?? []) {
-				const {type} = token;
-				if (type === 'ext-link' || type === 'free-ext-link') {
-					try {
-						const /** @type {URL} */ uri = token.getUrl(),
-							{hostname, pathname, search, searchParams, protocol} = uri,
-							bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
-						if (
-							['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
-							|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
-						) {
-							push(errors, token, '待修正的链接', 'error');
-							error('待修正的链接', uri.toString());
-						} else if (
-							pathname === '/watch'
-							&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
-							&& ytParams.some(p => searchParams.has(p))
-							|| bilibili && bbParams.some(p => searchParams.has(p))
-						) {
-							push(errors, token, '无用的链接参数', 'warning');
-							error('无用的链接参数', uri.toString());
-						} else if (!noReferer && /^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
-							push(errors, token, '引自bilibili的图片外链', 'warning');
-							error('引自bilibili的图片外链', uri.toString());
-						} else if (hostname === 'http' || hostname === 'https') {
-							push(errors, token, '错误格式的外链', 'warning');
-							error('错误格式的外链', uri.toString());
-						} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
-							const action = searchParams.get('action');
-							if (!(
-								action && actions.includes(action)
-								|| params.some(param => searchParams.has(param))
-								|| pathname === '/' && search === ''
-								|| /\/user:/iu.test(pathname)
-							)) {
-								push(errors, token, '误写作外链的内链', 'warning');
-								error('误写作外链的内链', uri.toString());
+			if (!errorOnly) {
+				const noReferer = root.querySelector(norefererTemplates);
+				let hasSelfLink = false;
+				for (const token of root.links ?? []) {
+					const {type} = token;
+					if (type === 'ext-link' || type === 'free-ext-link') {
+						try {
+							const /** @type {URL} */ uri = token.getUrl(),
+								{hostname, pathname, search, searchParams, protocol} = uri,
+								bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
+							if (
+								['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
+								|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
+							) {
+								push(errors, token, '待修正的链接', 'error');
+								error('待修正的链接', uri.toString());
+							} else if (
+								pathname === '/watch'
+								&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
+								&& ytParams.some(p => searchParams.has(p))
+								|| bilibili && bbParams.some(p => searchParams.has(p))
+							) {
+								push(errors, token, '无用的链接参数', 'warning');
+								error('无用的链接参数', uri.toString());
+							} else if (!noReferer && /^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
+								push(errors, token, '引自bilibili的图片外链', 'warning');
+								error('引自bilibili的图片外链', uri.toString());
+							} else if (hostname === 'http' || hostname === 'https') {
+								push(errors, token, '错误格式的外链', 'warning');
+								error('错误格式的外链', uri.toString());
+							} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
+								const action = searchParams.get('action');
+								if (!(
+									action && actions.includes(action)
+									|| params.some(param => searchParams.has(param))
+									|| pathname === '/' && search === ''
+									|| /\/user:/iu.test(pathname)
+								)) {
+									push(errors, token, '误写作外链的内链', 'warning');
+									error('误写作外链的内链', uri.toString());
+								}
 							}
+						} catch {}
+						continue;
+					} else if (ns === 10 || type === 'redirect-target') {
+						continue;
+					} else if (
+						type === 'magic-link'
+						&& token.protocol === 'ISBN'
+						&& !token.closest('template#Template:ISBN')
+					) {
+						push(errors, token, '无效的ISBN', 'warning');
+						error('无效的ISBN', String(token));
+						continue;
+					}
+					const {link} = token;
+					if (typeof link === 'object') {
+						const [isRedirect, target] = link.getRedirection();
+						if ((isRedirect || !link.fragment) && t2s(target) === title) {
+							push(errors, token, '自身链接', 'warning');
+							hasSelfLink = true;
 						}
-					} catch {}
-					continue;
-				} else if (ns === 10 || type === 'redirect-target') {
-					continue;
-				} else if (
-					type === 'magic-link'
-					&& token.protocol === 'ISBN'
-					&& !token.closest('template#Template:ISBN')
-				) {
-					push(errors, token, '无效的ISBN', 'warning');
-					error('无效的ISBN', String(token));
-					continue;
-				}
-				const {link} = token;
-				if (typeof link === 'object') {
-					const [isRedirect, target] = link.getRedirection();
-					if ((isRedirect || !link.fragment) && t2s(target) === title) {
-						push(errors, token, '自身链接', 'warning');
-						hasSelfLink = true;
 					}
 				}
-			}
-			if (hasSelfLink) {
-				error('自身链接', pageid);
-			}
-			const isbn = /** @type {string} */(content).matchAll(reISBN);
-			for (const {index, 0: excerpt} of isbn) {
-				const ele = root.elementFromIndex(index),
-					{parentNode} = ele;
-				if (
-					excerpt.startsWith('ISBN')
-					&& ele.type !== 'free-ext-link'
-					&& (
-						!parentNode
-						|| !parentNode.matches(linkSelector)
-						&& !parentNode.closest(`${linkSelector},template#Template:ISBN`)
-					)
-				) {
-					const {top, left} = root.posFromIndex(index);
+				if (hasSelfLink) {
+					error('自身链接', pageid);
+				}
+				const isbn = /** @type {string} */(content).matchAll(reISBN);
+				for (const {index, 0: excerpt} of isbn) {
+					const ele = root.elementFromIndex(index),
+						{parentNode} = ele;
+					if (
+						excerpt.startsWith('ISBN')
+						&& ele.type !== 'free-ext-link'
+						&& (
+							!parentNode
+							|| !parentNode.matches(linkSelector)
+							&& !parentNode.closest(`${linkSelector},template#Template:ISBN`)
+						)
+					) {
+						const {top, left} = root.posFromIndex(index);
+						errors.push({
+							message: '无效的ISBN',
+							severity: 'warning',
+							startLine: top,
+							startCol: left,
+							startIndex: index,
+							endLine: top,
+							endCol: left + excerpt.length,
+							endIndex: index + excerpt.length,
+							excerpt,
+						});
+						error('无效的ISBN', excerpt);
+					}
+				}
+				const isbnTemplate = root.querySelector('template#Template:ISBN');
+				if (isbnTemplate) {
 					errors.push({
-						message: '无效的ISBN',
+						message: '包含至少一个待复核的ISBN模板',
 						severity: 'warning',
-						startLine: top,
-						startCol: left,
-						startIndex: index,
-						endLine: top,
-						endCol: left + excerpt.length,
-						endIndex: index + excerpt.length,
-						excerpt,
+						startLine: 0,
+						startCol: 0,
+						startIndex: 0,
+						endLine: 0,
+						endCol: 0,
+						endIndex: content.length,
+						excerpt: String(isbnTemplate),
 					});
-					error('无效的ISBN', excerpt);
 				}
-			}
-			if (!content.includes('虚拟UP主')) {
-				let flag = false;
-				for (const token of root.querySelectorAll('comment')) {
-					if (residuals.has(token.innerText)) {
-						push(errors, token, '预加载残留', 'warning');
-						flag = true;
+				if (!content.includes('虚拟UP主')) {
+					let flag = false;
+					for (const token of root.querySelectorAll('comment')) {
+						if (residuals.has(token.innerText)) {
+							push(errors, token, '预加载残留', 'warning');
+							flag = true;
+						}
 					}
-				}
-				if (flag) {
-					error('预加载残留', pageid);
+					if (flag) {
+						error('预加载残留', pageid);
+					}
 				}
 			}
 		} catch (e) {
 			error(`\n页面 ${pageid} 解析或语法检查失败！`, e);
 			continue;
-		}
-		if (errorOnly) {
-			//
 		}
 		if (errors.length === 0) {
 			delete lintErrors[pageid];
@@ -383,25 +395,38 @@ const generateErrors = async (pages, errorOnly = false) => {
 	console.log();
 };
 
-const main = /** @param {Api} api */ async api => {
+const main = /** @param {Api} api */ async (api, file = '../config/lintErrors.json') => {
+	const lintErrors = require(file);
 	const qsRedirects = {
-		prop: 'revisions|redirects',
-		rdprop: 'title',
-		rdlimit: 'max',
-	};
+			prop: 'revisions|redirects',
+			rdprop: 'title',
+			rdlimit: 'max',
+		},
+		isDefault = file === '../config/lintErrors.json';
+	if (!isDefault) {
+		const {rules} = Parser.lintConfig;
+		for (const key in rules) {
+			if (key !== 'tag-like' && key !== 'lonely-bracket') {
+				rules[key] = 0;
+			}
+		}
+	}
 	switch (mode) {
 		case 'dry': {
 			const pageids = Object.keys(lintErrors),
 				batch = 300;
 			for (let i = 0; i < pageids.length / batch; i++) {
 				const pages = await api.revisions({pageids: pageids.slice(i * batch, (i + 1) * batch), ...qsRedirects});
-				await generateErrors(pages);
-				save('../config/lintErrors.json', lintErrors);
+				await generateErrors(pages, lintErrors, !isDefault);
+				save(file, lintErrors);
 			}
 			break;
 		}
 		case 'dry-upload':
 		case 'upload': {
+			if (!isDefault) {
+				throw new RangeError('仅允许上传lintErrors.json！');
+			}
 			const text = '==可能的语法错误==\n{|class="wikitable sortable"\n'
 				+ `!页面!!错误类型!!class=unsortable|位置!!class=unsortable|源代码摘录\n|-\n${
 					Object.values(lintErrors).map(({title, errors}) => {
@@ -457,6 +482,7 @@ const main = /** @param {Api} api */ async api => {
 				await generateErrors(
 					pages.filter(({revisions}) => revisions && revisions[0]?.contentmodel === 'wikitext')
 						.map(page => ({...page, content: page.revisions[0].content})),
+					lintErrors,
 					true,
 				);
 			}
@@ -472,15 +498,18 @@ const main = /** @param {Api} api */ async api => {
 			q = q.replaceAll('"', '');
 			info(`搜索字符串：${q}`);
 			const pages = await api.search(`insource:"${q}"`, {gsrnamespace: 0, ...qsRedirects});
-			await generateErrors(pages);
+			await generateErrors(pages, lintErrors);
 			break;
 		}
 		case 'skipped': {
 			const pages = await api.revisions({pageids: [...skip], ...qsRedirects});
-			await generateErrors(pages);
+			await generateErrors(pages, lintErrors);
 			break;
 		}
 		default: {
+			if (!isDefault) {
+				throw new RangeError('仅持续更新lintErrors.json！');
+			}
 			const last = rcend && new Date(rcend),
 				now = new Date().toISOString(),
 				yesterday = new Date(Date.now() - 3600 * 1e3 * 24 * 7),
@@ -494,11 +523,11 @@ const main = /** @param {Api} api */ async api => {
 					...qsRedirects,
 				},
 				pages = await api.revisions(qs);
-			await generateErrors(pages);
+			await generateErrors(pages, lintErrors);
 			save('../config/lint.json', now);
 		}
 	}
-	if (hasArg.size > 0) {
+	if (isDefault && hasArg.size > 0) {
 		info(`共 ${hasArg.size} 个页面包含未预期的模板参数或自身链接。`);
 		const ids = [...hasArg],
 			batch = 300,
@@ -520,7 +549,7 @@ const main = /** @param {Api} api */ async api => {
 		}
 		hasArg.clear();
 	}
-	save('../config/lintErrors.json', lintErrors);
+	save(file, lintErrors);
 	save('../config/boilerplate.json', boilerplates);
 	if (worst) {
 		info(`最耗时页面：${worst.title} (${worst.duration.toFixed(3)}ms)`);
@@ -533,11 +562,13 @@ const main = /** @param {Api} api */ async api => {
 		await api[mode === 'upload' ? 'csrfToken' : 'login']();
 	}
 	if (mode === 'all') {
+		const [,,,, file] = process.argv;
 		while (gapcontinue) { // eslint-disable-line no-unmodified-loop-condition
 			console.log(gapcontinue);
-			await main(api);
+			await main(api, file);
 		}
 	} else {
-		main(api);
+		const [,,, file] = process.argv;
+		main(api, file);
 	}
 })();

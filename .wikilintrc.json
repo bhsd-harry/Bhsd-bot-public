@@ -3,6 +3,7 @@
 	"computeEditInfo": false,
 	"rules": {
 		"arg-in-ext": 2,
+		"blank-alt": 0,
 		"bold-header": 2,
 		"format-leakage": 2,
 		"fostered-content": [

@@ -46,9 +46,10 @@ const main = async (api = new Api(user, pin, url)) => {
 				}
 				let style = token.getAttr('style') ?? '',
 					modified = false;
-				for (const [key, prop] of Object.entries(dict)) {
+				for (const key in dict) {
 					const value = token.getAttr(key);
 					if (value && value !== true && (key !== 'cellspacing' || value !== '0')) {
+						const prop = dict[key];
 						if (prop) {
 							if (key === 'cellspacing' && /\bborder-collapse\s*:\s*separate\b/.test(style)) {
 								style = `border-spacing:${value}${isNaN(value) ? '' : 'px'};${style}`; // 必须加在开头

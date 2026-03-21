@@ -7,7 +7,7 @@ const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors'),
 	/** @type {Parser.ConfigData} */ config = require('wikiparser-node/config/moegirl');
 const [,,, ...ids] = process.argv,
-	skip = new Set([389_682, 436_605]);
+	skip = new Set();
 config.ext = config.ext.filter(t => t !== 'img');
 config.html[2].push('img');
 Object.assign(Parser, {
@@ -16,14 +16,17 @@ Object.assign(Parser, {
 	internal: true,
 });
 
+const re = /^(?:https?:)?\/\/(?:img|commons)\.moegirl\.org(?=\/)/iu;
+
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = ids.length === 0
 		? Object.entries(lintErrors).filter(
-			([pageid, {errors}]) => !skip.has(Number(pageid)) && errors.some(
-				({message, excerpt, severity}) =>
-					(message === '孤立的"<"' || message === '孤立的"{"' && severity === 'error')
-					&& /<img\s|\ssrc\s*(?:=|\{\{\s*=\s*\}\})\s*["']?\{\{/iu.test(excerpt),
-			),
+			([pageid, {errors}]) => !skip.has(Number(pageid))
+				&& errors.some(
+					({message, excerpt, severity}) =>
+						(message === '孤立的"<"' || message === '孤立的"{"' && severity === 'error')
+						&& /<img\s|\ssrc\s*(?:=|\{\{\s*=\s*\}\})\s*["']?\{\{/iu.test(excerpt),
+				),
 		)
 		: ids.map(id => [id]);
 	if (targets.length === 0) {
@@ -41,13 +44,17 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		return;
 	}
 	const edits = [],
-		pages = await api.revisions({pageids: targets.map(([pageid]) => pageid)});
+		pages = await api.revisions({pageids: targets.slice(0, 300).map(([pageid]) => pageid)});
 	for (const {pageid, title, ns, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, title, ns === 10, 3),
 			/** @type {Parser.HtmlToken[]} */
 			imgs = root.querySelectorAll('html#img');
 		let changed = false;
 		for (const img of imgs) {
+			const src = img.getAttr('src');
+			if (src && src !== true && re.test(src)) {
+				img.setAttr('src', src.replace(re, '$&.cn'));
+			}
 			if (
 				img.firstChild.querySelector(':not(html-attr-dirty,html-attr,attr-key,attr-value)')
 				|| /\{\{\s*=\s*\}\}/u.test(String(img.firstChild))
@@ -63,6 +70,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				img.replaceWith(output);
 				changed = true;
 			} else if (!img.selfClosing) {
+				img.closing = false;
 				img.selfClosing = true;
 				changed = true;
 			}

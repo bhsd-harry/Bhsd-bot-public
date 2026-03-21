@@ -67,7 +67,8 @@ const _comment = {
 	},
 	findTool(comment) {
 		comment = comment.replace(/没有编辑摘要/, '');
-		for (const [key, val] of Object.entries(tools)) {
+		for (const key in tools) {
+			const val = tools[key];
 			if (val.test(comment)) {
 				return [comment.replace(val, ''), key];
 			}

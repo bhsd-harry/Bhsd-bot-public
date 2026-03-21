@@ -78,9 +78,13 @@ const sourceMain = async source => {
 		info(`${config[source].name}萌可能缺失跨语言链接的页面：`);
 		console.log(missing);
 		for (const missingRecord of missing.filter(({[source]: src}) => !protectedPages[source]?.includes(src))) {
-			for (const [lang, title] of Object.entries(missingRecord)) {
+			for (const lang in missingRecord) {
 				if (lang !== source) {
-					newLinks.push({source: lang, title, links: [{lang: source, title: missingRecord[source]}]});
+					newLinks.push({
+						source: lang,
+						title: missingRecord[lang],
+						links: [{lang: source, title: missingRecord[source]}],
+					});
 				}
 			}
 		}
