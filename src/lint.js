@@ -1,6 +1,7 @@
 'use strict';
 
-const {performance} = require('perf_hooks'),
+const {execSync} = require('child_process'),
+	{performance} = require('perf_hooks'),
 	imported = require('wikiparser-node'),
 	{refreshStdout} = require('@bhsd/nodejs'),
 	{t2s} = require('../lib/tongwen'),
@@ -352,19 +353,42 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 						error('无效的ISBN', excerpt);
 					}
 				}
-				const isbnTemplate = root.querySelector('template#Template:ISBN');
-				if (isbnTemplate) {
-					errors.push({
-						message: '包含至少一个待复核的ISBN模板',
-						severity: 'warning',
-						startLine: 0,
-						startCol: 0,
-						startIndex: 0,
-						endLine: 0,
-						endCol: 0,
-						endIndex: content.length,
-						excerpt: String(isbnTemplate),
-					});
+				const isbnDir = '../ISBN-normaliser-forMGP';
+				for (const template of root.querySelectorAll('template#Template:ISBN')) {
+					const value = template.getValue(2) || template.getValue(1),
+						mt = value && /(?:\d[\p{Zs}\t-]?){9,12}(?:\d|x\b)/iu.exec(value);
+					if (!mt) {
+						continue;
+					}
+					let flag = false;
+					try {
+						const formatted = execSync(
+							`python ${isbnDir}/isbn_normalise.py --xml ${isbnDir}/RangeMessage.xml ${
+								mt[0].replace(/[\p{Zs}\t-]/gu, '')
+							}`,
+							{encoding: 'utf8'},
+						).trim();
+						flag = formatted !== mt[0];
+					} catch (e) {
+						if (!e.message.endsWith('Error: ISBN must be valid ISBN-10 or ISBN-13.\n')) {
+							error(value, e);
+							flag = true;
+						}
+					}
+					if (flag) {
+						errors.push({
+							message: '包含至少一个待复核的ISBN模板',
+							severity: 'warning',
+							startLine: 0,
+							startCol: 0,
+							startIndex: 0,
+							endLine: 0,
+							endCol: 0,
+							endIndex: content.length,
+							excerpt: String(template),
+						});
+						break;
+					}
 				}
 				if (!content.includes('虚拟UP主')) {
 					let flag = false;
