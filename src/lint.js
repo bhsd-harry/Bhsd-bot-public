@@ -1,12 +1,12 @@
 'use strict';
 
-const {execSync} = require('child_process'),
-	{performance} = require('perf_hooks'),
+const {performance} = require('perf_hooks'),
 	imported = require('wikiparser-node'),
 	{refreshStdout} = require('@bhsd/nodejs'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
 	{save, runMode, error, info, diff} = require('../lib/dev'),
+	formatISBN = require('../lib/isbn'),
 	{update} = require('../src/boilerplate'),
 	{user, pin, url} = require('../config/user'),
 	boilerplates = require('../config/boilerplate'),
@@ -66,6 +66,7 @@ const trTemplate = [
 		'绝区零驱动盘表格',
 		'BASkillIcons1',
 		'冥凰作品归档',
+		'Civ7icon',
 	],
 	trTemplateRegex = new RegExp(String.raw`^\s*(?:<[Tt][Rr][\s/>]|\{{3}|\{{2}\s*(?:!!\s*\}{2}|(?:${
 		trTemplate
@@ -204,6 +205,9 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 			}
 			Parser.redirects.set('Template:N/a', 'Template:N/A');
 			Parser.redirects.set('Template:Isbn', 'Template:ISBN');
+			Parser.redirects.set('Template:ISBN_for_Table', 'Template:ISBNT');
+			Parser.redirects.set('Template:Isbn_for_table', 'Template:ISBNT');
+			Parser.redirects.set('Template:Isbnt', 'Template:ISBNT');
 		}
 		let errors;
 		try {
@@ -225,8 +229,10 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 				.filter(
 					({rule, message, excerpt, severity, code}) =>
 						!(
-							rule === 'fostered-content'
-							&& (trTemplateRegex.test(excerpt.slice(-70)) || magicWord.test(excerpt.slice(-70)))
+							rule === 'fostered-content' && (
+								trTemplateRegex.test(excerpt.slice(-70))
+								|| magicWord.test(excerpt.slice(-70))
+							)
 						)
 						&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
 						&& !(
@@ -239,6 +245,13 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 						&& !(
 							title.startsWith('三国杀')
 							&& (message === '孤立的"}"' || message === '孤立的"{"' && severity === 'warning')
+						)
+						&& !(
+							title.startsWith('文明VII:') && (
+								message === '孤立的"{"'
+								&& /\{{3}\s*[Cc]iv7icon\s*\||\{\{\s*[Cc]iv7tree\s*\|\s*\{\s*\|/u.test(excerpt)
+								|| severity === 'warning' && /^孤立的"[{}]"$/u.test(message)
+							)
 						)
 						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
@@ -307,7 +320,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 					} else if (
 						type === 'magic-link'
 						&& token.protocol === 'ISBN'
-						&& !token.closest('template#Template:ISBN')
+						&& !token.closest('template#Template:ISBN,template#Template:ISBNT')
 					) {
 						push(errors, token, '无效的ISBN', 'warning');
 						error('无效的ISBN', String(token));
@@ -353,29 +366,18 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 						error('无效的ISBN', excerpt);
 					}
 				}
-				const isbnDir = '../ISBN-normaliser-forMGP';
-				for (const template of root.querySelectorAll('template#Template:ISBN')) {
-					const value = template.getValue(2) || template.getValue(1),
-						mt = value && /(?:\d[\p{Zs}\t-]?){9,12}(?:\d|x\b)/iu.exec(value);
-					if (!mt) {
-						continue;
-					}
-					let flag = false;
-					try {
-						const formatted = execSync(
-							`python ${isbnDir}/isbn_normalise.py --xml ${isbnDir}/RangeMessage.xml ${
-								mt[0].replace(/[\p{Zs}\t-]/gu, '')
-							}`,
-							{encoding: 'utf8'},
-						).trim();
-						flag = formatted !== mt[0];
-					} catch (e) {
-						if (!e.message.endsWith('Error: ISBN must be valid ISBN-10 or ISBN-13.\n')) {
-							error(value, e);
-							flag = true;
-						}
-					}
-					if (flag) {
+				const isbnTemplates = root.querySelectorAll(
+					'template#Template:ISBN,template#Template:ISBNT,template#Template:Cite_book',
+				);
+				for (const template of isbnTemplates) {
+					if (
+						template.name === 'Template:ISBN'
+						&& (formatISBN(template.getValue(1)) || formatISBN(template.getValue(2)))
+						|| template.name === 'Template:ISBNT'
+						&& formatISBN(template.getValue(1))
+						|| template.name === 'Template:Cite_book'
+						&& formatISBN(template.getValue('isbn'))
+					) {
 						errors.push({
 							message: '包含至少一个待复核的ISBN模板',
 							severity: 'warning',
@@ -387,6 +389,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 							endIndex: content.length,
 							excerpt: String(template),
 						});
+						error('包含至少一个待复核的ISBN模板', template.getValue(1));
 						break;
 					}
 				}
@@ -404,7 +407,8 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 				}
 			}
 		} catch (e) {
-			error(`\n页面 ${pageid} 解析或语法检查失败！`, e);
+			error(`\n页面 ${pageid} 解析或语法检查失败！`);
+			console.error(e);
 			continue;
 		}
 		if (errors.length === 0) {

@@ -9,8 +9,14 @@ Object.assign(Parser, {
 	internal: true,
 });
 
-const addCategory = async (api, mode, allPages = []) => { // eslint-disable-line no-unused-vars
+const addCategory = async (api, mode, allPages = []) => {
 	const pages = allPages.filter(({categories}) => !categories);
+	if (pages.length > 0) {
+		info('待添加分类的CSS页面：');
+		for (const {title} of pages) {
+			console.log(title);
+		}
+	}
 	if (mode !== 'dry') {
 		for (const {pageid, ns} of pages) {
 			await api.edit({
@@ -18,11 +24,6 @@ const addCategory = async (api, mode, allPages = []) => { // eslint-disable-line
 				appendtext: `\n/* [[分类:在${ns === 0 ? '主' : '模板'}命名空间下的CSS页面]] */`,
 				summary: '自动维护模板样式表分类',
 			});
-		}
-	} else if (pages.length > 0) {
-		info('待添加分类的CSS页面：');
-		for (const {title} of pages) {
-			console.log(title);
 		}
 	}
 };
@@ -36,8 +37,6 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		await api.massEdit(null, mode, '自动维护使用模板样式表的模板分类');
 		return;
 	}
-	// eslint-disable-next-line @stylistic/multiline-comment-style
-	/*
 	const {query} = await api.get({
 		generator: 'search',
 		gsrlimit: 500,
@@ -52,8 +51,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	});
 	let pages = query?.pages;
 	await addCategory(api, mode, pages);
-	*/
-	const pages = (await api.search(
+	pages = (await api.search(
 		'insource:"templatestyles src" '
 		+ '-intitle:sandbox -intitle:沙盒 -intitle:doc -incategory:使用模板样式的模板',
 		{gsrnamespace: 10, prop: 'revisions|categories', cllimit: 'max', clcategories: 'Category:使用模板样式的模板'},

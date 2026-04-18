@@ -1,6 +1,7 @@
 dry.json
 .eslintcache
 /lint.sh
+/package-lock.json
 /.vscode/
 /config/
 !/config/example_user.json

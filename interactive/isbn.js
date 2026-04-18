@@ -1,9 +1,9 @@
 'use strict';
 
-const {execSync} = require('child_process');
 const Parser = require('wikiparser-node');
 const Api = require('../lib/api');
 const {runMode} = require('../lib/dev');
+const formatISBN = require('../lib/isbn');
 const {user, pin, url} = require('../config/user'),
 	lintErrors = require('../config/lintErrors');
 Object.assign(Parser, {
@@ -12,8 +12,9 @@ Object.assign(Parser, {
 	internal: true,
 });
 Parser.redirects.set('Template:Isbn', 'Template:ISBN');
-
-const isbnDir = '../ISBN-normaliser-forMGP';
+Parser.redirects.set('Template:ISBN_for_Table', 'Template:ISBNT');
+Parser.redirects.set('Template:Isbn_for_table', 'Template:ISBNT');
+Parser.redirects.set('Template:Isbnt', 'Template:ISBNT');
 
 const main = async (api = new Api(user, pin, url, true)) => {
 	const targets = Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
@@ -30,7 +31,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();
 	}
 	if (mode === 'rerun' || mode === 'redry') {
-		await api.massEdit(null, mode, '自动添加[[T:ISBN]]或调整ISBN格式（测试）');
+		await api.massEdit(null, mode, '自动添加[[T:ISBN]]或调整ISBN格式');
 		return;
 	}
 	const edits = [],
@@ -57,28 +58,39 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			}
 		}
 		if (content !== text || relevant.some(({message}) => message === '包含至少一个待复核的ISBN模板')) {
-			const root = Parser.parse(text);
-			for (const template of root.querySelectorAll('template#Template:ISBN')) {
-				const hasArg2 = template.getValue(2),
-					value = hasArg2 || template.getValue(1),
-					mt = value && /(?:\d[\p{Zs}\t-]?){9,12}(?:\d|x\b)/iu.exec(value);
-				if (!mt) {
-					continue;
-				}
-				try {
-					const formatted = execSync(
-						`python ${isbnDir}/isbn_normalise.py --xml ${isbnDir}/RangeMessage.xml ${
-							mt[0].replace(/[\p{Zs}\t-]/gu, '')
-						}`,
-						{encoding: 'utf8'},
-					).trim();
-					if (formatted !== mt[0]) {
-						template.setValue(
-							hasArg2 ? 2 : 1,
-							value.slice(0, mt.index) + formatted + value.slice(mt.index + mt[0].length),
-						);
+			const root = Parser.parse(text),
+				/** @type {Parser.TranscludeToken[]} */
+				templates = root.querySelectorAll(
+					'template#Template:ISBN,template#Template:ISBNT,template#Template:Cite_book',
+				);
+			for (const template of templates) {
+				if (template.name === 'Template:ISBN') {
+					const formatted1 = formatISBN(template.getValue(1)),
+						formatted2 = formatISBN(template.getValue(2));
+					if (typeof formatted1 === 'string') {
+						template.setValue(1, formatted1);
 					}
-				} catch {}
+					if (typeof formatted2 === 'string') {
+						if (formatted1 === formatted2) {
+							template.removeArg(2);
+							if (!template.hasArg('noprefix') && !template.hasArg('plainlink')) {
+								template.replaceTemplate('ISBNT');
+							}
+						} else {
+							template.setValue(2, formatted2);
+						}
+					}
+				} else if (template.name === 'Template:ISBNT') {
+					const formatted = formatISBN(template.getValue(1));
+					if (typeof formatted === 'string') {
+						template.setValue(1, formatted);
+					}
+				} else {
+					const formatted = formatISBN(template.getValue('isbn'));
+					if (typeof formatted === 'string') {
+						template.setValue('isbn', formatted);
+					}
+				}
 			}
 			text = String(root);
 		}
@@ -86,7 +98,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			edits.push([pageid, content, text, timestamp, curtimestamp]);
 		}
 	}
-	await api.massEdit(edits, mode, '自动添加[[T:ISBN]]或调整ISBN格式（测试）');
+	await api.massEdit(edits, mode, '自动添加[[T:ISBN]]或调整ISBN格式');
 };
 
 if (!module.parent) {
