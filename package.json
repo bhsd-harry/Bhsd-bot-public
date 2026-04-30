@@ -21,7 +21,7 @@
 		"@bhsd/code-standard": "^2.3.0",
 		"@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
 		"@stylistic/eslint-plugin": "^5.10.0",
-		"@types/node": "^24.11.0",
+		"@types/node": "^25.6.0",
 		"@types/request": "^2.48.13",
 		"eslint": "^10.2.1",
 		"eslint-plugin-jsdoc": "^62.9.0",
