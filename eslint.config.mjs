@@ -3,7 +3,10 @@ import {node, extend} from '@bhsd/code-standard';
 export default extend(
 	...node,
 	{
-		ignores: ['old/'],
+		ignores: [
+			'old/',
+			'ISBN-normaliser-forMGP/',
+		],
 	},
 	{
 		rules: {
