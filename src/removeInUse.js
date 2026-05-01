@@ -39,8 +39,8 @@ const parseTime = token => {
 		return fallback;
 	}
 	const last = token.getValue('持续时间') ?? token.getValue(1) ?? '2小时',
-		lapse = last.replace(/[\s个個]/gu, '').replace(/[半零〇一二两兩三四五六七八九]/gu, m => zhnum[m])
-			.replace(/(\d?)十(\d?)/gu, (_, p1, p2) => `${p1 || 1}${p2 || 0}`),
+		lapse = last.replaceAll(/[\s个個]/gu, '').replaceAll(/[半零〇一二两兩三四五六七八九]/gu, m => zhnum[m])
+			.replaceAll(/(\d?)十(\d?)/gu, (_, p1, p2) => `${p1 || 1}${p2 || 0}`),
 		args = [...lapse.matchAll(/(?<![\d.])([\d.]+)\s*([^\d\s.]+)/gu)];
 	if (args.map(([m]) => m).join('') !== lapse) {
 		error(`无法解析的参数：持续 ${lapse}`);
@@ -79,19 +79,16 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		await api.massEdit(null, mode, '自动移除超时的[[template:施工中|施工中]]模板');
 		return;
 	}
-	const pageids = (await Promise.all(
-		(await api.embeddedIn(33_803))
-			.filter(({pageid}) => !protectedPages.includes(pageid))
-			.map(async ({pageid}) => {
-				const {query: {pages: [{revisions: [{timestamp}]}]}, curtimestamp} = await api.get({
-					pageids: pageid, prop: 'revisions', rvprop: 'timestamp', curtimestamp: 1,
-				});
-				if (new Date(curtimestamp).getTime() - new Date(timestamp).getTime() > age) {
-					return pageid;
-				}
-				return null;
-			}),
-	)).filter(Boolean);
+	const found = (await api.embeddedIn(33_803)).filter(({pageid}) => !protectedPages.includes(pageid)),
+		pageids = [];
+	for (const {pageid} of found) {
+		const {query: {pages: [{revisions: [{timestamp}]}]}, curtimestamp} = await api.get({
+			pageids: pageid, prop: 'revisions', rvprop: 'timestamp', curtimestamp: 1,
+		});
+		if (new Date(curtimestamp).getTime() - new Date(timestamp).getTime() > age) {
+			pageids.push(pageid);
+		}
+	}
 	if (pageids.length === 0) {
 		return;
 	}

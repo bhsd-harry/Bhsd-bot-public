@@ -32,7 +32,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				// error(`页面 ${pageid} 找不到错误URL！`);
 				return false;
 			}
-			const text = content.replace(replaceRegex, (_, p1, p2) => `${p1 || `${p2}:`}//`);
+			const text = content.replaceAll(replaceRegex, (_, p1, p2) => `${p1 || `${p2}:`}//`);
 			return text !== content && [pageid, content, text, timestamp, curtimestamp];
 		}).filter(Boolean);
 	await api.massEdit(edits, mode, '自动修复错误格式的外链');

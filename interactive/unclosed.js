@@ -15,6 +15,10 @@ const nestable = new Set(['span', 'big', 'small']),
 	skip = new Set([231_651, 237_081, 237_973, 238_289, 242_567, 243_737, 248_355, 253_129, 253_789, 255_749, 290_730]);
 
 (async (api = new Api(user, pin, url, true)) => {
+	let mode = runMode();
+	if (mode === 'run') {
+		mode = 'dry';
+	}
 	const regex = new RegExp(
 			String.raw`^<(?:center|font|code|ins|h\d|del|strike|strong|em|cite|sup|sub|[sbiu]|${
 				[...nestable].join('|')
@@ -25,12 +29,8 @@ const nestable = new Set(['span', 'big', 'small']),
 			({message, excerpt}) => message === '未闭合的标签' && regex.test(excerpt.slice(-70))
 				|| message === '未闭合的<noinclude>',
 		));
-	if (targets.length === 0) {
+	if (targets.length === 0 && mode !== 'rerun' && mode !== 'redry') {
 		return;
-	}
-	let mode = runMode();
-	if (mode === 'run') {
-		mode = 'dry';
 	}
 	if (mode !== 'redry') {
 		await api[mode === 'dry' ? 'login' : 'csrfToken']();

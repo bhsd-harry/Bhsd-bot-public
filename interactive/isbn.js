@@ -40,7 +40,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		let text = content;
 		// eslint-disable-next-line eqeqeq
 		const relevant = targets.find(([id]) => id == pageid)[1].errors,
-			errors = relevant.filter(({message}) => message === '无效的ISBN').sort((a, b) => b.startIndex - a.startIndex);
+			errors = relevant.filter(({message}) => message === '无效的ISBN')
+				.toSorted((a, b) => b.startIndex - a.startIndex);
 		for (const {startIndex, endIndex, excerpt} of errors) {
 			if (text.slice(startIndex, endIndex) !== excerpt) {
 				continue;

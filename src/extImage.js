@@ -71,7 +71,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 
 	// ])).flat();
 	const pages = mode === 'noreferer'
-		? (await Promise.all(new Array(3).fill().map((_, i) => search(`i${i}.hdslb.com`)))).flat()
+		? (await Promise.all(Array.from({length: 3}, (_, i) => search(`i${i}.hdslb.com`)))).flat()
 		: await api.revisions({
 			pageids: Object.entries(lintErrors).filter(([, {errors}]) => errors.some(
 				({message}) => message === '引自bilibili的图片外链',

@@ -109,7 +109,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				[[key, dist]] = mistakes.map(
 					([k, candidates]) =>
 						[k, Math.min(...candidates.map(candidate => damerauLevenshtein(candidate, lcValue)))],
-				).sort((a, b) => a[1] - b[1]);
+				).toSorted((a, b) => a[1] - b[1]);
 			if (key && dist <= 2) {
 				if (type === 'gallery-image' || childNodes.some(({name}) => name === key)) {
 					parameter.remove();

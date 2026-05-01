@@ -46,7 +46,7 @@ Object.assign(Parser, {
 				/^\s*;|[：；]|\bwidth\s*=|(?:^|;)\s*align\s*:|text-align\s*:\s*;|\b\s+padding:\.5em; padding:\.5em/iu
 					.test(value)
 			) {
-				const newValue = value.replace(
+				const newValue = value.replaceAll(
 					/^\s*;\s*|(?<=^|;)\s*(?:align\s*:[^;]+;?|text-align\s*:\s*;)|\b\s+padding:\.5em(?=; padding:\.5em)/giu,
 					'',
 				).replace(/\bwidth\s*=/iu, 'width:')

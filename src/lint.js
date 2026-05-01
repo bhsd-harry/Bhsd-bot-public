@@ -461,7 +461,7 @@ const main = /** @param {Api} api */ async (api, file = '../config/lintErrors.js
 						errors = errors.filter(
 							({severity, code}) => severity === 'error'
 								|| code === 'unknownProperties' || code === 'propertyIgnoredDueToDisplay',
-						).sort(
+						).toSorted(
 							(a, b) =>
 								a.startLine - b.startLine || a.startCol - b.startCol
 								|| a.endLine - b.endLine || a.endCol - b.endCol,
@@ -478,7 +478,8 @@ const main = /** @param {Api} api */ async (api, file = '../config/lintErrors.js
 										endLine + 1
 									} 行第 ${endCol + 1} 列\n|<pre>${
 										excerpt.toWellFormed()
-											.replace(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;').replaceAll('-{', '-&#123;')
+											.replaceAll(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;')
+											.replaceAll('-{', '-&#123;')
 									}</pre>`)
 									.join('\n|-\n')
 							}`

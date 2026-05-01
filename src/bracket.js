@@ -41,11 +41,11 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		edits.push([
 			pageid,
 			content,
-			content.replace(/\[ (?=(?:https?:)?\/\/)/giu, '[')
-				.replace(/(?<![[/])(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/giu, '[$1')
-				.replace(/\[\[[^[\]]+\](?!\])/gu, '$&]')
-				.replace(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/giu, '$&]')
-				.replace(/\[(?:https?:)?\/\/[^\]]+\]/giu, p => p.replaceAll('\n', ' ')),
+			content.replaceAll(/\[ (?=(?:https?:)?\/\/)/giu, '[')
+				.replaceAll(/(?<![[/])(https?:\/\/[^[\]]+\]|\[[^[\]]+\]\])(?!\])/giu, '[$1')
+				.replaceAll(/\[\[[^[\]]+\](?!\])/gu, '$&]')
+				.replaceAll(/\[(?:https?:)?\/\/[^\]]+(?=<\/ref\s*>)/giu, '$&]')
+				.replaceAll(/\[(?:https?:)?\/\/[^\]]+\]/giu, p => p.replaceAll('\n', ' ')),
 			timestamp,
 			curtimestamp,
 		]);
