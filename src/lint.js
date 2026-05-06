@@ -16,6 +16,7 @@ const /** @type {import('wikiparser-node')} */ Parser = globalThis.Parser ?? imp
 		100_877,
 		110_496,
 		358_642,
+		402_776,
 		404_396,
 	]),
 	reISBN = /isbn[-:：]?[\p{Zs}\t]*(?:\d[\p{Zs}\t-]?){4,}[\dx](?!\.(?:jpe?g|png|webp|gif))/giu;
@@ -255,7 +256,11 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 						)
 						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
-						&& !(message === '未闭合的标签' && severity === 'warning' && isMA)
+						&& !(
+							message === '未闭合的标签'
+							&& severity === 'warning'
+							&& (isMA || !/<(?!div\b)\w+[\s>]/u.test(excerpt))
+						)
 						&& !(message === '重复的图像caption参数' && severity === 'warning' && /\.mp3\s*\|/u.test(excerpt))
 						&& rule !== 'table-layout'
 						&& code !== 'vendorPrefix',

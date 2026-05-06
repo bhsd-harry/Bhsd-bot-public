@@ -50,7 +50,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				({message}) => message === '误写作外链的内链',
 			)).map(([pageid]) => pageid),
 		});
-	const pages = query.filter(({pageid}) => !protectedPages.includes(pageid));
+	const pages = (await query).filter(({pageid}) => !protectedPages.includes(pageid));
 
 	// 2. 再进行修复
 	if (mode === 'mzh') {

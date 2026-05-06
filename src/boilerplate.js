@@ -14,7 +14,6 @@ Object.assign(Parser, {
 
 const update = (content, title) => {
 	const root = Parser.parse(content, title, true, 1),
-		/** @type {Parser.CommentToken[]} */
 		comments = root.querySelectorAll('comment');
 	return [
 		...new Set(comments.map(({innerText}) => innerText)
@@ -66,7 +65,6 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			continue;
 		}
 		const root = Parser.parse(content, title, false, 1),
-			/** @type {Parser.CommentToken[]} */
 			comments = root.querySelectorAll('comment');
 		for (const token of comments) {
 			if (residuals.has(token.innerText)) {
