@@ -1,6 +1,6 @@
 'use strict';
 
-const damerauLevenshtein = require('talisman/metrics/damerau-levenshtein'),
+const damerauLevenshtein = require('../vendor/damlev'),
 	Api = require('../lib/api'),
 	{runMode} = require('../lib/dev'),
 	{user, pin, url} = require('../config/user'),
