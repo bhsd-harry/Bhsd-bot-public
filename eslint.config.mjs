@@ -24,6 +24,7 @@ export default extend(
 				},
 			],
 			'unicorn/prefer-math-min-max': 0,
+			'unicorn/require-css-escape': 0,
 		},
 	},
 	{

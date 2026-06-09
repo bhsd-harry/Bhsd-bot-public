@@ -1,6 +1,5 @@
 {
 	"name": "bhsd-bot-public",
-	"version": "0.0.0",
 	"license": "GPL-3.0-or-later",
 	"author": "Bhsd",
 	"private": true,
@@ -10,14 +9,14 @@
 		"lint": "npm run lint:ts"
 	},
 	"dependencies": {
-		"@bhsd/nodejs": "^1.0.1",
+		"@bhsd/nodejs": "^1.1.0",
 		"tongwen-dict": "^1.0.2",
 		"vscode-css-languageservice": "^6.3.10",
-		"wikiparser-node": "^1.43.0"
+		"wikiparser-node": "^1.44.0"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^2.6.2",
-		"eslint": "^10.4.1"
+		"@bhsd/code-standard": "^3.0.0",
+		"eslint": "^10.6.0"
 	},
 	"engines": {
 		"node": "^26.0.0"
