@@ -16,7 +16,7 @@
 		"wikiparser-node": "^1.43.0"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^2.6.2",
+		"@bhsd/code-standard": "^3.0.0",
 		"eslint": "^10.4.1"
 	},
 	"engines": {
