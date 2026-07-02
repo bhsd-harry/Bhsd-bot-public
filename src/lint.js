@@ -1,7 +1,6 @@
 'use strict';
 
-const {performance} = require('perf_hooks'),
-	imported = require('wikiparser-node'),
+const imported = require('wikiparser-node'),
 	{refreshStdout} = require('@bhsd/nodejs'),
 	{t2s} = require('../lib/tongwen'),
 	Api = require('../lib/api'),
@@ -381,7 +380,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 						|| template.name === 'Template:ISBNT'
 						&& formatISBN(template.getValue(1))
 						|| template.name === 'Template:Cite_book'
-						&& formatISBN(template.getValue('isbn'))
+						&& (formatISBN(template.getValue('isbn')) || formatISBN(template.getValue('ISBN')))
 					) {
 						errors.push({
 							message: '包含至少一个待复核的ISBN模板',

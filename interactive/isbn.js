@@ -87,9 +87,13 @@ const main = async (api = new Api(user, pin, url, true)) => {
 						template.setValue(1, formatted);
 					}
 				} else {
-					const formatted = formatISBN(template.getValue('isbn'));
+					let formatted = formatISBN(template.getValue('isbn'));
 					if (typeof formatted === 'string') {
 						template.setValue('isbn', formatted);
+					}
+					formatted = formatISBN(template.getValue('ISBN'));
+					if (typeof formatted === 'string') {
+						template.setValue('ISBN', formatted);
 					}
 				}
 			}
