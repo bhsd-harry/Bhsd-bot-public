@@ -88,7 +88,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				let text = content;
 				if (mode !== 'noreferer') {
 					for (const imgUrl of urls) {
-						text = text.replace(imgUrl, `http://${imgUrl.slice(8)}`);
+						text = text.replace(imgUrl, () => `http://${imgUrl.slice(8)}`);
 					}
 				}
 				const parsed = Parser.parse(text, title, false, 2);

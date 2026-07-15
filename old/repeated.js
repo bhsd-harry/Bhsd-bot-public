@@ -108,7 +108,7 @@ const _analyze = (wikitext, repeated, pageid, title) => {
 			}
 		} else if (template === 'Template:Timeline' && /in(?:\d+年)?\d+月(?:\d+日)?/.test(param)) { // 修复情形2：{{Timeline}}
 			const [, [start, end]] = candidates,
-				newText = text.slice(start, end).replace(param, `${param}#2`);
+				newText = text.slice(start, end).replace(param, () => `${param}#2`);
 			text = `${text.slice(0, start)}${newText}${text.slice(end)}`;
 		} else {
 			error(`页面 ${pageid} 中重复的模板参数 ${param} 均非空，无法简单修复！`);

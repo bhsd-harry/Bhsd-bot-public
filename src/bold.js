@@ -16,7 +16,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		({message}) => message === '章节标题中的加粗文本',
 	));
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode === 'run') {
@@ -35,7 +35,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		const root = Parser.parse(content, title, false, 7);
 		for (const quote of root.querySelectorAll('heading-title quote[bold]')) {
 			if (quote.closest('heading-title,ext').type === 'ext') {
-				continue;
+				//
 			} else if (quote.italic) {
 				quote.setText("''");
 			} else {

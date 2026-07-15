@@ -234,7 +234,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 								|| magicWord.test(excerpt.slice(-70))
 							)
 						)
-						&& !((message === '孤立的"["' || message === '孤立的"]"') && severity === 'warning')
+						&& (severity !== 'warning' || message !== '孤立的"["' && message !== '孤立的"]"')
 						&& !(
 							rule === 'unknown-page'
 							&& /\{\{(?:星座|[Aa]strology|[Ss]tr[ _]crop|[Tr]rim[ _]prefix|少女歌[剧劇]\/角色信息)\|/u
@@ -253,7 +253,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 								|| severity === 'warning' && /^孤立的"[{}]"$/u.test(message)
 							)
 						)
-						&& !(/^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title) && message === '未闭合的标签')
+						&& !(message === '未闭合的标签' && /^(?:幻书启世录:|LoveLive!学园偶像祭)/u.test(title))
 						&& !(message === 'URL中的全角标点' && /魔法纪录中文Wiki|\/Character\/Detail\//u.test(excerpt))
 						&& !(
 							message === '未闭合的标签'
@@ -299,7 +299,7 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 							) {
 								push(errors, token, '无用的链接参数', 'warning');
 								error('无用的链接参数', uri.toString());
-							} else if (!noReferer && /^i\d\.hdslb\.com$/u.test(hostname) && protocol === 'https:') {
+							} else if (!noReferer && protocol === 'https:' && /^i\d\.hdslb\.com$/u.test(hostname)) {
 								push(errors, token, '引自bilibili的图片外链', 'warning');
 								error('引自bilibili的图片外链', uri.toString());
 							} else if (hostname === 'http' || hostname === 'https') {

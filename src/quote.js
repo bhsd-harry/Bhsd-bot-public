@@ -17,7 +17,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		([pageid, {errors}]) => !skip.has(Number(pageid)) && errors.some(({message}) => message === '未闭合的引号'),
 	);
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode === 'run') {

@@ -16,7 +16,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		({message}) => message === '包含无效属性名称的元素' || message === '同时闭合和自封闭的标签',
 	));
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {

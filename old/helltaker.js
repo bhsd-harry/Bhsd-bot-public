@@ -41,7 +41,7 @@ const api = new Api(user, pin, url);
 			if (/^[Dd]ialogueBG[ _]abyss02.png$/.test(image)) { // 默认背景
 				text = content.replace(regex1, '');
 			} else {
-				text = content.replace(regex1, '').replace(regex3, `$&|背景图片=${image}`);
+				text = content.replace(regex1, '').replace(regex3, p => `${p}|背景图片=${image}`);
 			}
 		}
 		return [pageid, content, text, timestamp, curtimestamp];

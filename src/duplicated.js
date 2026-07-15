@@ -44,29 +44,33 @@ const analyze = (wikitext, pageid, ns, title) => {
 			continue;
 		} else if (token.name === 'Template:Timeline') {
 			for (const key of keys) {
-				if (/^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/u.test(key)) {
-					let i = 2;
-					const attempt = arg => {
-						try {
-							arg.rename(`${key}#${i}`);
-						} catch {
-							i++;
-							attempt(arg);
-						}
-					};
-					for (const arg of [...token.getArgs(key)].slice(1)) {
-						attempt(arg);
-						i++;
-					}
-					keys.delete(key);
+				if (!/^in(?:\d+年)?(?:\d+月)?(?:\d+日)?$/u.test(key)) {
+					continue;
 				}
+				let i = 2;
+				const attempt = arg => {
+					try {
+						arg.rename(`${key}#${i}`);
+					} catch {
+						i++;
+						attempt(arg);
+					}
+				};
+				for (const arg of [...token.getArgs(key)].slice(1)) {
+					attempt(arg);
+					i++;
+				}
+				keys.delete(key);
 			}
 		}
 		for (const key of keys) {
 			error(`页面 ${pageid} 中模板 ${token.name} 的重复参数 ${key.replaceAll('\n', String.raw`\n`)} 均非空！`);
 		}
 	}
-	for (const token of templates.filter(({name}) => /^Template:彩虹社信息[栏欄]$/u.test(name))) {
+	for (const token of templates) {
+		if (!/^Template:彩虹社信息[栏欄]$/u.test(token.name)) {
+			continue;
+		}
 		found = true;
 		for (const key of [
 			'本名',

@@ -18,7 +18,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 			({message, severity}) => message === '无效的图像参数' || severity === 'error' && regex.test(message),
 		));
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {
@@ -91,7 +91,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 				continue;
 			} else if (curName !== 'caption') {
 				continue;
-			} else if (width.test(curValue) || curValue === 'default') {
+			} else if (curValue === 'default' || width.test(curValue)) {
 				parameter.remove();
 				continue;
 			} else if (!repeated.at(-1).value) {

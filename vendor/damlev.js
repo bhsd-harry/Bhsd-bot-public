@@ -1,4 +1,3 @@
-/* eslint-disable no-multi-assign, prefer-destructuring, unicorn/no-new-array */
 'use strict';
 
 /**
@@ -57,7 +56,7 @@ const damerauLevenshtein = (a, b) => {
 	let start = 0;
 
 	// If a common prefix exists of if a is a full b suffix
-	if (a[0] === b[0] || !la) {
+	if (!la || a[0] === b[0]) {
 		// Common prefix can also be ignored
 		while (start < la && a[start] === b[start]) {
 			start++;
@@ -73,14 +72,10 @@ const damerauLevenshtein = (a, b) => {
 		b = b.slice(start, start + lb);
 	}
 
-	const v0 = new Array(lb),
-		v2 = new Array(lb);
+	const v0 = Array.from({length: lb}, (_, i) => i + 1),
+		v2 = Array.from({length: lb});
 
-	for (let i = 0; i < lb; i++) {
-		v0[i] = i + 1;
-	}
-
-	let charA = a[0],
+	let [charA] = a,
 		current = 0;
 
 	// Starting the nested loops
@@ -88,7 +83,7 @@ const damerauLevenshtein = (a, b) => {
 		const previousCharA = charA;
 
 		let nextTranspositionCost = 0,
-			charB = b[0],
+			[charB] = b,
 			left = i;
 
 		current = i + 1;
@@ -102,7 +97,8 @@ const damerauLevenshtein = (a, b) => {
 
 			charB = b[j];
 			nextTranspositionCost = v2[j];
-			v2[j] = current = left;
+			v2[j] = left;
+			current = left;
 			left = v0[j];
 
 			if (charA !== charB) {

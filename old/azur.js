@@ -41,7 +41,7 @@ const api = new Api(user, pin, url);
 				text = content.replace(regex3, '$&|无背景=1');
 			} else { // 将背景图片合并至大家族模板
 				const image = trim(params.replace(/^(?:file:|url\s*=)\s*/i, ''));
-				text = content.replace(regex1, '').replace(regex3, `$&|2=${image}`);
+				text = content.replace(regex1, '').replace(regex3, p => `${p}|2=${image}`);
 			}
 		}
 		return [pageid, content, text, timestamp, curtimestamp];

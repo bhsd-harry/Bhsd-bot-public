@@ -16,7 +16,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		({message}) => message === '无效自封闭标签',
 	)).slice(0, 300);
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {

@@ -16,7 +16,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		({message}) => message === '重复的分类',
 	));
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {
@@ -31,7 +31,8 @@ const main = async (api = new Api(user, pin, url, true)) => {
 	for (const {pageid, title, content, timestamp, curtimestamp} of pages) {
 		const root = Parser.parse(content, title, false, 6),
 			/** @type {Parser.CategoryToken[]} */
-			cats = root.querySelectorAll('category:not(":has(comment)")');
+			allCats = root.querySelectorAll('category:not(":has(comment)")'),
+			cats = allCats.filter(cat => allCats.some(otherCat => otherCat !== cat && otherCat.name === cat.name));
 		for (let i = 0; i < cats.length; i++) {
 			const cat = cats[i];
 			if (!root.contains(cat)) {

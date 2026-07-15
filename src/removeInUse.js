@@ -12,24 +12,39 @@ Object.assign(Parser, {
 const protectedPages = [9658, 33_803, 44_832],
 	age = 1e3 * 86_400 * 7, // 一周
 	inuse = ['Inuse', '施工中', '编辑中', '編輯中'].map(str => String.raw`template#Template\:${str}`).join(),
-	zhnum = {半: '.5', 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 兩: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9},
-	unit = {
-		天: 1440,
-		日: 1440,
-		d: 1440,
-		小时: 60,
-		小時: 60,
-		时: 60,
-		時: 60,
-		钟头: 60,
-		鐘頭: 60,
-		h: 60,
-		分钟: 1,
-		分鐘: 1,
-		分: 1,
-		m: 1,
-		min: 1,
-	};
+	zhnum = new Map([
+		['半', '.5'],
+		['零', 0],
+		['〇', 0],
+		['一', 1],
+		['二', 2],
+		['两', 2],
+		['兩', 2],
+		['三', 3],
+		['四', 4],
+		['五', 5],
+		['六', 6],
+		['七', 7],
+		['八', 8],
+		['九', 9],
+	]),
+	unit = new Map([
+		['天', 1440],
+		['日', 1440],
+		['d', 1440],
+		['小时', 60],
+		['小時', 60],
+		['时', 60],
+		['時', 60],
+		['钟头', 60],
+		['鐘頭', 60],
+		['h', 60],
+		['分钟', 1],
+		['分鐘', 1],
+		['分', 1],
+		['m', 1],
+		['min', 1],
+	]);
 
 const parseTime = token => {
 	const fallback = 2 * 1440,
@@ -39,7 +54,7 @@ const parseTime = token => {
 		return fallback;
 	}
 	const last = token.getValue('持续时间') ?? token.getValue(1) ?? '2小时',
-		lapse = last.replaceAll(/[\s个個]/gu, '').replaceAll(/[半零〇一二两兩三四五六七八九]/gu, m => zhnum[m])
+		lapse = last.replaceAll(/[\s个個]/gu, '').replaceAll(/[半零〇一二两兩三四五六七八九]/gu, m => zhnum.get(m))
 			.replaceAll(/(\d?)十(\d?)/gu, (_, p1, p2) => `${p1 || 1}${p2 || 0}`),
 		args = [...lapse.matchAll(/(?<![\d.])([\d.]+)\s*([^\d\s.]+)/gu)];
 	if (args.map(([m]) => m).join('') !== lapse) {
@@ -48,11 +63,11 @@ const parseTime = token => {
 	}
 	let time = 0;
 	for (const [, n, u] of args) {
-		if (!(u in unit)) {
+		if (!unit.has(u)) {
 			error(`无法解析的参数：持续 ${n}${u}`);
 			return fallback;
 		}
-		time += n * unit[u];
+		time += n * unit.get(u);
 	}
 	return time;
 };

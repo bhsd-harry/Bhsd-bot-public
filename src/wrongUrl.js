@@ -13,7 +13,7 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		({message}) => message === '错误格式的外链' || /^孤立的"https?[:/]\/"$/u.test(message),
 	));
 	const mode = runMode();
-	if (targets.length === 0 && mode !== 'redry') {
+	if (mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {

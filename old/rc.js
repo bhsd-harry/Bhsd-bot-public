@@ -82,7 +82,10 @@ const _group = (groups = []) => groups.join('、') || '（无）';
 const convertTimeZone = time => {
 	const date = new Date(time),
 		timeZone = 'asia/shanghai';
-	return `${date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'}).replace('/', '.')} ${
+	return `${
+		date.toLocaleDateString('zh', {timeZone, month: 'numeric', day: 'numeric'})
+			.replace('/', '.')
+	} ${
 		date.toLocaleTimeString('ia', {timeZone, hour: 'numeric', minute: '2-digit', hour12: false})
 	}`;
 };

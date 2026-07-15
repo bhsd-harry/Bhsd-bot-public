@@ -29,7 +29,7 @@ const nestable = new Set(['span', 'big', 'small']),
 			({message, excerpt}) => message === '未闭合的标签' && regex.test(excerpt.slice(-70))
 				|| message === '未闭合的<noinclude>',
 		));
-	if (targets.length === 0 && mode !== 'rerun' && mode !== 'redry') {
+	if (mode !== 'rerun' && mode !== 'redry' && targets.length === 0) {
 		return;
 	}
 	if (mode !== 'redry') {
@@ -54,7 +54,7 @@ const nestable = new Set(['span', 'big', 'small']),
 				const cur = unclosed.get(parentNode);
 				if (!cur) {
 					unclosed.set(parentNode, {[name]: html});
-				} else if (cur[name]) {
+				} else if (Object.hasOwn(cur, name)) {
 					if (nestable.has(name)) {
 						let {nextSibling} = html;
 						while (nextSibling && !nextSibling.text().trim()) {
@@ -110,6 +110,7 @@ const nestable = new Set(['span', 'big', 'small']),
 							html.remove();
 						} else {
 							nextSibling.replaceData(
+								// eslint-disable-next-line unicorn/no-unsafe-string-replacement
 								nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`),
 							);
 						}
@@ -123,7 +124,7 @@ const nestable = new Set(['span', 'big', 'small']),
 			for (const include of includes) {
 				const re = new RegExp(`<${include.name}>`, 'iu');
 				if (re.test(include.innerText)) {
-					include.innerText = include.innerText.replace(re, `</${include.name}>`);
+					include.innerText = include.innerText.replace(re, () => `</${include.name}>`);
 				} else if (include.eof && !include.innerText.trim()) {
 					include.remove();
 				}

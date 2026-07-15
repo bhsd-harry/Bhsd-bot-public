@@ -9,14 +9,14 @@
 		"lint": "npm run lint:ts"
 	},
 	"dependencies": {
-		"@bhsd/nodejs": "^1.2.0",
+		"@bhsd/nodejs": "^1.2.1",
 		"tongwen-dict": "^1.0.2",
 		"vscode-css-languageservice": "^6.3.10",
-		"wikiparser-node": "^1.45.0"
+		"wikiparser-node": "^1.46.1"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^3.1.0",
-		"eslint": "^10.6.0"
+		"@bhsd/code-standard": "^3.2.0",
+		"eslint": "^10.7.0"
 	},
 	"engines": {
 		"node": "^26.0.0"
