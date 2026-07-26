@@ -18,3 +18,14 @@ updates:
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-minor', 'version-update:semver-patch']
+
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: monthly
+      day: thursday
+    target-branch: main
+    assignees:
+      - bhsd-harry
+    commit-message:
+      prefix: 'deps(isbn)'
