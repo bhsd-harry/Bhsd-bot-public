@@ -39,26 +39,29 @@ const main = async (api = new Api(user, pin, url, true)) => {
 		for (const {title: t, fragment = ''} of redirects) {
 			Parser.redirects.set(t, title + (fragment && `#${fragment}`));
 		}
-		const root = Parser.parse(content, title, false, 6);
-		for (const token of root.links ?? []) {
-			if (token.type === 'ext-link' || token.type === 'free-ext-link') {
-				continue;
-			}
-			const {link, type} = token;
-			if (typeof link === 'object') {
-				const [isRedirect, target] = link.getRedirection();
-				if ((isRedirect || !link.fragment) && t2s(target) === title) {
-					const [, fragment = ''] = String(link).split('#', 2);
-					if (type === 'image-parameter') {
-						token.setValue(fragment && `#${fragment}`);
-					} else if (type === 'link') {
-						if (fragment) {
-							token.setLinkText(token.innerText);
-							token.setTarget(`#${fragment}`);
-						} else if (token.parentNode?.type === 'imagemap-link') {
-							token.parentNode.remove();
-						} else {
-							token.replaceWith(token.innerText);
+		const root = Parser.parse(content, title, false, 6),
+			{links} = root;
+		if (links) {
+			for (const token of links) {
+				if (token.type === 'ext-link' || token.type === 'free-ext-link') {
+					continue;
+				}
+				const {link, type} = token;
+				if (typeof link === 'object') {
+					const [isRedirect, target] = link.getRedirection();
+					if ((isRedirect || !link.fragment) && t2s(target) === title) {
+						const [, fragment = ''] = String(link).split('#', 2);
+						if (type === 'image-parameter') {
+							token.setValue(fragment && `#${fragment}`);
+						} else if (type === 'link') {
+							if (fragment) {
+								token.setLinkText(token.innerText);
+								token.setTarget(`#${fragment}`);
+							} else if (token.parentNode?.type === 'imagemap-link') {
+								token.parentNode.remove();
+							} else {
+								token.replaceWith(token.innerText);
+							}
 						}
 					}
 				}

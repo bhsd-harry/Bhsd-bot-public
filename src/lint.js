@@ -276,66 +276,69 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 				}
 			}
 			if (!errorOnly) {
-				const noReferer = root.querySelector(norefererTemplates);
+				const noReferer = root.querySelector(norefererTemplates),
+					{links} = root;
 				let hasSelfLink = false;
-				for (const token of root.links ?? []) {
-					const {type} = token;
-					if (type === 'ext-link' || type === 'free-ext-link') {
-						try {
-							const /** @type {URL} */ uri = token.getUrl(),
-								{hostname, pathname, search, searchParams, protocol} = uri,
-								bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
-							if (
-								['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
-								|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
-							) {
-								push(errors, token, '待修正的链接', 'error');
-								error('待修正的链接', uri.toString());
-							} else if (
-								pathname === '/watch'
-								&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
-								&& ytParams.some(p => searchParams.has(p))
-								|| bilibili && bbParams.some(p => searchParams.has(p))
-							) {
-								push(errors, token, '无用的链接参数', 'warning');
-								error('无用的链接参数', uri.toString());
-							} else if (!noReferer && protocol === 'https:' && /^i\d\.hdslb\.com$/u.test(hostname)) {
-								push(errors, token, '引自bilibili的图片外链', 'warning');
-								error('引自bilibili的图片外链', uri.toString());
-							} else if (hostname === 'http' || hostname === 'https') {
-								push(errors, token, '错误格式的外链', 'warning');
-								error('错误格式的外链', uri.toString());
-							} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
-								const action = searchParams.get('action');
-								if (!(
-									action && actions.includes(action)
-									|| params.some(param => searchParams.has(param))
-									|| pathname === '/' && search === ''
-									|| /\/user:/iu.test(pathname)
-								)) {
-									push(errors, token, '误写作外链的内链', 'warning');
-									error('误写作外链的内链', uri.toString());
+				if (links) {
+					for (const token of links) {
+						const {type} = token;
+						if (type === 'ext-link' || type === 'free-ext-link') {
+							try {
+								const /** @type {URL} */ uri = token.getUrl(),
+									{hostname, pathname, search, searchParams, protocol} = uri,
+									bilibili = /(?:^|\.)bilibili\.com$/u.test(hostname);
+								if (
+									['b23.tv', 'bili2233.cn', 'youtu.be'].includes(hostname)
+									|| bilibili && /^\/read\/mobile(?:$|\/)/u.test(pathname)
+								) {
+									push(errors, token, '待修正的链接', 'error');
+									error('待修正的链接', uri.toString());
+								} else if (
+									pathname === '/watch'
+									&& /^(?:w{3}\.)?youtube\.com$/u.test(hostname)
+									&& ytParams.some(p => searchParams.has(p))
+									|| bilibili && bbParams.some(p => searchParams.has(p))
+								) {
+									push(errors, token, '无用的链接参数', 'warning');
+									error('无用的链接参数', uri.toString());
+								} else if (!noReferer && protocol === 'https:' && /^i\d\.hdslb\.com$/u.test(hostname)) {
+									push(errors, token, '引自bilibili的图片外链', 'warning');
+									error('引自bilibili的图片外链', uri.toString());
+								} else if (hostname === 'http' || hostname === 'https') {
+									push(errors, token, '错误格式的外链', 'warning');
+									error('错误格式的外链', uri.toString());
+								} else if (hostname === 'zh.moegirl.org.cn' || hostname === 'commons.moegirl.org.cn') {
+									const action = searchParams.get('action');
+									if (!(
+										action && actions.includes(action)
+										|| params.some(param => searchParams.has(param))
+										|| pathname === '/' && search === ''
+										|| /\/user:/iu.test(pathname)
+									)) {
+										push(errors, token, '误写作外链的内链', 'warning');
+										error('误写作外链的内链', uri.toString());
+									}
 								}
+							} catch {}
+							continue;
+						} else if (ns === 10 || type === 'redirect-target') {
+							continue;
+						} else if (
+							type === 'magic-link'
+							&& token.protocol === 'ISBN'
+							&& !token.closest('template#Template:ISBN,template#Template:ISBNT')
+						) {
+							push(errors, token, '无效的ISBN', 'warning');
+							error('无效的ISBN', String(token));
+							continue;
+						}
+						const {link} = token;
+						if (typeof link === 'object') {
+							const [isRedirect, target] = link.getRedirection();
+							if ((isRedirect || !link.fragment) && t2s(target) === title) {
+								push(errors, token, '自身链接', 'warning');
+								hasSelfLink = true;
 							}
-						} catch {}
-						continue;
-					} else if (ns === 10 || type === 'redirect-target') {
-						continue;
-					} else if (
-						type === 'magic-link'
-						&& token.protocol === 'ISBN'
-						&& !token.closest('template#Template:ISBN,template#Template:ISBNT')
-					) {
-						push(errors, token, '无效的ISBN', 'warning');
-						error('无效的ISBN', String(token));
-						continue;
-					}
-					const {link} = token;
-					if (typeof link === 'object') {
-						const [isRedirect, target] = link.getRedirection();
-						if ((isRedirect || !link.fragment) && t2s(target) === title) {
-							push(errors, token, '自身链接', 'warning');
-							hasSelfLink = true;
 						}
 					}
 				}
