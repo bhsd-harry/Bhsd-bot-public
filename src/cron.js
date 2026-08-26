@@ -3,15 +3,11 @@ const {user, pin, url} = require('../config/user'),
 	Api = require('../lib/api'),
 	{runMode} = require('../lib/dev');
 const scripts = [
-	'duplicated',
+	// 依赖lint.js
 	'tag',
 	'extImage',
 	'wrongUrl',
-	'removeInUse',
 	'wrongInternal',
-	'css',
-	'doc',
-	'bracket',
 	'br',
 	'duplicated-image-parameter',
 	'duplicated-category',
@@ -21,6 +17,13 @@ const scripts = [
 	'solveConst',
 	'link-adjust',
 	'boilerplate',
+
+	// 不依赖lint.js
+	'duplicated',
+	'bracket',
+	'css',
+	'doc',
+	'removeInUse',
 ];
 
 const api = new Api(user, pin, url, true);

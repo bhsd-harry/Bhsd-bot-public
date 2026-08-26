@@ -75,45 +75,46 @@ const nestable = new Set(['span', 'big', 'small']),
 				}
 			}
 			for (const [parentNode, cur] of unclosed) {
-				const keys = Object.keys(cur),
-					[key] = keys;
-				if (keys.length === 1) {
-					const html = cur[key];
-					if (html === true) {
-						continue;
-					}
-					let /** @type {{nextSibling: Parser.AstText}} */ {nextSibling} = html;
-					while (
-						nextSibling && !(nextSibling.type === 'text' && nextSibling.data.includes('\n'))
-					) {
-						({nextSibling} = nextSibling);
-					}
-					if (!nextSibling) {
-						if (html.nextSibling) {
-							const {lastChild} = parentNode;
-							parentNode.append(`</${key}>`);
-							if (lastChild.type === 'text') {
-								const [trailing] = /(?<!\s)\s*$/u.exec(lastChild.data);
-								if (trailing) {
-									lastChild.deleteData(-trailing.length);
-									parentNode.append(trailing);
-								}
+				const keys = Object.keys(cur);
+				if (keys.length !== 1) {
+					continue;
+				}
+				const [key] = keys,
+					html = cur[key];
+				if (html === true) {
+					continue;
+				}
+				let /** @type {{nextSibling: Parser.AstText}} */ {nextSibling} = html;
+				while (
+					nextSibling && !(nextSibling.type === 'text' && nextSibling.data.includes('\n'))
+				) {
+					({nextSibling} = nextSibling);
+				}
+				if (!nextSibling) {
+					if (html.nextSibling) {
+						const {lastChild} = parentNode;
+						parentNode.append(`</${key}>`);
+						if (lastChild.type === 'text') {
+							const [trailing] = /(?<!\s)\s*$/u.exec(lastChild.data);
+							if (trailing) {
+								lastChild.deleteData(-trailing.length);
+								parentNode.append(trailing);
 							}
-						} else {
-							html.remove();
 						}
-					} else if (
-						key !== 'center' && key !== 'font' && key !== 'span'
-						|| !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')
-					) {
-						if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
-							html.remove();
-						} else {
-							nextSibling.replaceData(
-								// eslint-disable-next-line unicorn/no-unsafe-string-replacement
-								nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`),
-							);
-						}
+					} else {
+						html.remove();
+					}
+				} else if (
+					key !== 'center' && key !== 'font' && key !== 'span'
+					|| !nextSibling.nextSibling && !nextSibling.data.trimEnd().includes('\n')
+				) {
+					if (html.nextSibling === nextSibling && /^[^\S\n]*\n/u.test(nextSibling.data)) {
+						html.remove();
+					} else {
+						nextSibling.replaceData(
+							// eslint-disable-next-line unicorn/no-unsafe-string-replacement
+							nextSibling.data.replace(/(?<!\s)[^\S\n]*\n/u, `</${key}>$&`),
+						);
 					}
 				}
 			}

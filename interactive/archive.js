@@ -51,7 +51,7 @@ const skip = new Set([1546]);
 		return text !== content && [pageid, content, text, timestamp, curtimestamp, nBroken, nArchived, nFailed];
 	}))).filter(Boolean);
 	try {
-		const temp = require('../config/broken-temp'); // eslint-disable-line n/no-missing-require
+		const temp = require('../config/broken-temp');
 		save('../config/broken.json', temp);
 		fs.unlinkSync('../config/broken-temp.json');
 	} catch {}

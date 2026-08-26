@@ -12,11 +12,11 @@
 		"@bhsd/nodejs": "^1.2.1",
 		"tongwen-dict": "^1.0.2",
 		"vscode-css-languageservice": "^6.3.10",
-		"wikiparser-node": "^1.46.3"
+		"wikiparser-node": "^1.47.0"
 	},
 	"devDependencies": {
-		"@bhsd/code-standard": "^4.1.0",
-		"eslint": "^10.8.1"
+		"@bhsd/code-standard": "^4.2.0",
+		"eslint": "^10.11.0"
 	},
 	"engines": {
 		"node": "^26.0.0"

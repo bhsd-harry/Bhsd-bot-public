@@ -350,28 +350,28 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 					const ele = root.elementFromIndex(index),
 						{parentNode} = ele;
 					if (
-						excerpt.startsWith('ISBN')
-						&& ele.type !== 'free-ext-link'
-						&& (
-							!parentNode
-							|| !parentNode.matches(linkSelector)
-							&& !parentNode.closest(`${linkSelector},template#Template:ISBN`)
+						!excerpt.startsWith('ISBN')
+						|| ele.type === 'free-ext-link'
+						|| parentNode && (
+							parentNode.matches(linkSelector)
+							|| parentNode.closest(`${linkSelector},template#Template:ISBN`)
 						)
 					) {
-						const {top, left} = root.posFromIndex(index);
-						errors.push({
-							message: '无效的ISBN',
-							severity: 'warning',
-							startLine: top,
-							startCol: left,
-							startIndex: index,
-							endLine: top,
-							endCol: left + excerpt.length,
-							endIndex: index + excerpt.length,
-							excerpt,
-						});
-						error('无效的ISBN', excerpt);
+						continue;
 					}
+					const {top, left} = root.posFromIndex(index);
+					errors.push({
+						message: '无效的ISBN',
+						severity: 'warning',
+						startLine: top,
+						startCol: left,
+						startIndex: index,
+						endLine: top,
+						endCol: left + excerpt.length,
+						endIndex: index + excerpt.length,
+						excerpt,
+					});
+					error('无效的ISBN', excerpt);
 				}
 				const isbnTemplates = root.querySelectorAll(
 					'template#Template:ISBN,template#Template:ISBNT,template#Template:Cite_book',
@@ -473,24 +473,22 @@ const main = /** @param {Api} api */ async (api, file = '../config/lintErrors.js
 								a.startLine - b.startLine || a.startCol - b.startCol
 								|| a.endLine - b.endLine || a.endCol - b.endCol,
 						);
-						return errors.length > 0
-							? `|${
-								errors.length > 1 ? `rowspan=${errors.length}|` : ''
-							}[[:${title}]]（[{{fullurl:${title}|action=edit}} 编辑]）\n${
-								errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
-									`|${
-										message.replace(/<(\w+)>/u, '&lt;$1&gt;')
-											.replace(/[{}[\]|]+|(?<=")https?:\/\/(?=")/u, '<nowiki>$&</nowiki>')
-									}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${
-										endLine + 1
-									} 行第 ${endCol + 1} 列\n|<pre>${
-										excerpt.toWellFormed()
-											.replaceAll(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;')
-											.replaceAll('-{', '-&#123;')
-									}</pre>`)
-									.join('\n|-\n')
-							}`
-							: false;
+						return errors.length > 0 && `|${
+							errors.length > 1 ? `rowspan=${errors.length}|` : ''
+						}[[:${title}]]（[{{fullurl:${title}|action=edit}} 编辑]）\n${
+							errors.map(({message, startLine, startCol, endLine, endCol, excerpt}) =>
+								`|${
+									message.replace(/<(\w+)>/u, '&lt;$1&gt;')
+										.replace(/[{}[\]|]+|(?<=")https?:\/\/(?=")/u, '<nowiki>$&</nowiki>')
+								}||第 ${startLine + 1} 行第 ${startCol + 1} 列 ⏤ 第 ${
+									endLine + 1
+								} 行第 ${endCol + 1} 列\n|<pre>${
+									excerpt.toWellFormed()
+										.replaceAll(/<(nowiki|\/pre)>/giu, '&lt;$1&gt;')
+										.replaceAll('-{', '-&#123;')
+								}</pre>`)
+								.join('\n|-\n')
+						}`;
 					}).filter(Boolean).join('\n|-\n')
 				}\n|}\n\n[[Category:积压工作]]\n[[Category:萌娘百科数据报告]]`;
 			if (mode === 'upload') {
