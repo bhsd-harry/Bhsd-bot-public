@@ -430,14 +430,15 @@ const generateErrors = async (pages, lintErrors, errorOnly = false) => {
 	console.log();
 };
 
-const main = /** @param {Api} api */ async (api, file = '../config/lintErrors.json') => {
+const main = /** @param {Api} api */ async (api, filename = 'lintErrors') => {
+	const file = `../config/${filename}.json`;
 	const lintErrors = require(file);
 	const qsRedirects = {
 			prop: 'revisions|redirects',
 			rdprop: 'title',
 			rdlimit: 'max',
 		},
-		isDefault = file === '../config/lintErrors.json';
+		isDefault = filename === 'lintErrors';
 	if (!isDefault) {
 		const {rules} = Parser.lintConfig;
 		for (const key in rules) {
