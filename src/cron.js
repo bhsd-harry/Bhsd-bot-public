@@ -17,6 +17,7 @@ const scripts = [
 	'solveConst',
 	'link-adjust',
 	'boilerplate',
+	'isbn',
 
 	// 不依赖lint.js
 	'duplicated',
